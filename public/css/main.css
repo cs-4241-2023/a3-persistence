@@ -1,0 +1,77 @@
+body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 10px;
+  background-color:#BCACC9;
+  color:white;
+  font-family:'Exo 2';
+}
+
+ul {
+  list-style: none;
+}
+
+ul li {
+  padding: 10px;
+  position: relative;
+  width: auto;
+  margin: 5px;
+  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+ul li:nth-child(even) {
+  background-color: #28103b;
+
+}
+
+ul li:nth-child(odd) {
+  background-color: rgb(124, 92, 150);
+}
+
+ul li button {
+  position: absolute;
+  right: 0;
+  padding: 19.5px;
+  text-align: center;
+  background-color: rgb(243, 70, 70);
+}
+
+.evenFormRow {
+  background-color: rgb(124, 92, 150);
+  padding: 10px;
+}
+
+.oddFormRow {
+  background-color: #28103b;
+  padding: 10px;
+}
+
+#submitButton {
+  margin-top: 5px;
+  font-size: large;
+  font-family: inherit;
+}
+
+#formTitle {
+  color: rgb(124, 92, 150);
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+  padding: 5px;
+  height: 40px;
+}
+
+#resultsTitle {
+  color: rgb(124, 92, 150);
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+  padding: 5px;
+  height: 40px;
+}
+
+#type, #creature, #age{
+  font-family:'Exo 2';
+}
