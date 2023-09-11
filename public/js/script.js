@@ -125,7 +125,7 @@ window.onload = async function() {
     const addButton = document.querySelector(".add-button");
     addButton.onclick = submit;
 
-    const response = await fetch( '/json', {
+    const response = await fetch( '/db', {
         method:'GET'
     })
     const data = await response.json();
