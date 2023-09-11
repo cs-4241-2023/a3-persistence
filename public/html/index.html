@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/main.css"> 
+  </head>
+  <body>
+    <nav class = "positionNavCenterXAndStartY">
+      <a href = "/">Home</a>
+      <a href = "view_music_listening_list.html">View Music Listening List</a>
+    </nav>
+    <header>
+      <h1 class = "positionPageTitleCenterXAndStartY">Music Listening Tracker</h1>
+    </header>
+    <main class = "formContainer">
+      <section>
+        <h2>Submit New Music:</h2>
+          <form class = "setFormFieldColumnDirectionAndSpace">
+            <label for="bandname">Band Name:</label>
+            <input type="text" id="bandname" value="band name here">
+            <label for="albumname">Album Name:</label>
+            <input type="text" id="albumname" value="album name here">
+            <label for="releaseyear">Release Year:</label>
+            <input type ="text" id="releaseyear" value="release year here">
+            <button id = "submitMusic">Submit Music</button>
+          </form>
+          <div id = "submissionInfo"></div>
+      </section>
+      <section>
+        <h2>Delete Existing Music:</h2>
+          <form class = "setFormFieldColumnDirectionAndSpace">
+            <label for="bandname">Band Name:</label>
+            <input type="text" id="deletebandname" value="band name here">
+            <label for="albumname">Album Name:</label>
+            <input type="text" id="deletealbumname" value="album name here">
+            <label for="releaseyear">Release Year:</label>
+            <input type ="text" id="deletereleaseyear" value="release year here">
+            <button id = "submitMusicForDeletion">Delete Music</button>
+          </form>
+          <div id = "submissionForDeletionInfo"></div>
+      </section>
+    </main>
+      <footer class = "positionFooterCenterXAndEndY">
+        Music Listening Tracker created by Matthew McAlarney
+      </footer>
+      <script src="js/new_music_submission.js"></script>
+      <script src="js/existing_music_deletion.js"></script>
+  </body>
+</html>
