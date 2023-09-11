@@ -19,46 +19,14 @@ const server = http.createServer( function( request,response ) {
     handleGet( request, response )
   }else if( request.method === 'POST' ){
     handlePost( request, response );
-  }else if( request.method === 'DELETE' ){
-    handleDelete( request, response );
   }
 })
-
-const handleDelete = function( request, response ) {
-  console.log("Handle Delete");
-  let dataString = ''
-
-  request.on( 'data', function( data ) {
-    dataString += data
-  })
-
-  request.on( 'end', function() {
-    let data=JSON.parse( dataString );
-    console.log(data);
-  })
-
-  /*request.on( 'data', function( data ) {
-    dataString += data
-  })
-
-  console.log(dataString);
-
-  request.on( 'end', function() {
-    let data = JSON.parse(dataString);
-    let index=appdata.indexOf(data);
-    console.log(data);
-    console.log(index);
-    if (index > -1) {
-      appdata.splice(index, 1);
-    }
-  });*/
-}
 
 const handleGet = function( request, response ) {
   SortData();
   const filename = dir + request.url.slice( 1 )
   if( request.url === '/' ) {
-    sendFile( response, 'public/index.html' )
+    sendFile( response, 'public/app.html' )
   }else if (request.url === '/json' ) {
     handleGetData(request, response);
   }else{
@@ -80,12 +48,7 @@ const handlePost = function( request, response ) {
 
   request.on( 'end', function() {
     console.log(dataString)
-    if (request.url === '/addtask'){
-      appdata.push(JSON.parse(dataString))
-    } else {  //deleteItem
-      let index = appdata.indexOf(JSON.parse(dataString))
-      appdata.splice(index, 1)
-    }
+    appdata.push(JSON.parse(dataString))
 
     SortData();
     response.writeHead( 200, "OK", {'Content-Type': 'text/json' })

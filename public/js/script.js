@@ -65,7 +65,6 @@ function DateDifference(day1,day2){
 
 function CreateFirstRow(){
     let row=document.createElement("tr");
-    row.append(CreateHeaderCell(""));
     row.append(CreateHeaderCell("Task"));
     row.append(CreateHeaderCell("Creation Date"));
     row.append(CreateHeaderCell("Deadline"));
@@ -81,22 +80,11 @@ function CreateHeaderCell(cellInfo){
 
 function CreateRow(task,creationDate,deadline,priority,jsonString){
     let row=document.createElement("tr");
-    row.append(CreateDeleteButton(jsonString));
     row.append(CreateCell(task));
     row.append(CreateCell(creationDate));
     row.append(CreateCell(deadline));
     row.append(CreateCell(priority));
     return row;
-}
-
-function deleteRow(jsonString){
-    console.log(jsonString)
-    fetch( "/deletetask", {
-        method:"POST",
-        body:jsonString
-    }).then(()=>{
-        console.log('task deleted')
-    })
 }
 
 function ClearForm(){
@@ -105,20 +93,7 @@ function ClearForm(){
     form.Deadline.value="";
     form.CreationDate.value="";
 }
-function CreateDeleteButton(jsonString){
-    const cell = document.createElement('td');
-    cell.className="delete";
 
-    const button=document.createElement('button');
-    button.className="delete-button";
-    button.innerHTML = <i class="fa-solid fa-trash"></i>;
-    button.onclick= () => {
-        deleteRow(JSON.stringify(jsonString));
-    }
-
-    cell.append(button);
-    return cell;
-}
 
 function CreateCell(cellInfo){
     const cell = document.createElement('td');
