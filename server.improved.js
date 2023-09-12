@@ -1,14 +1,6 @@
-const http = require('http'),
-  fs = require('fs'),
-  // IMPORTANT: you must run `npm install` in the directory for this assignment
-  // to install the mime library if you're testing this on your local machine.
-  // However, Glitch will install it automatically by looking in your package.json
-  // file.
-  mime = require('mime'),
-  crypto = require('crypto'),
+const crypto = require('crypto'),
   express = require('express'),
   app = express(),
-  dir = 'public/',
   start_time = Date.now()
 
 const inventory = [
@@ -21,9 +13,10 @@ app.use( express.static( 'public' ) )
 app.use( express.json() )
 
 app.get( '/start_time', (req, res) => {
-    res.writeHeader(200, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify({ start_time }))
+  res.writeHeader(200, { 'Content-Type': 'application/json' })
+  res.end(JSON.stringify({ start_time }))
 })
+
 app.get( '/data', (req, res) => {
   res.writeHeader(200, { 'Content-Type': 'application/json' })
   res.end(JSON.stringify(inventory))
