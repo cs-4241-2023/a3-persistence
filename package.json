@@ -1,0 +1,15 @@
+{
+  "name": "a2-nadiaz2-nelson-diaz",
+  "version": "",
+  "description": "",
+  "author": "",
+  "scripts": {
+    "start": "node server.improved.js"
+  },
+  "dependencies": {
+    "mime": "^2.4.4"
+  },
+  "engines": {
+    "node": ">14.17.0"
+  }
+}
