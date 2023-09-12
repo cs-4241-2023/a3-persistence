@@ -1,0 +1,12 @@
+{
+  "name": "a2_assignment",
+  "version": "",
+  "description": "College Schedule Maker",
+  "author": "Thea Caplan",
+  "scripts": {
+    "start": "node server.improved.js"
+  },
+  "dependencies": {
+    "mime": "^2.6.0"
+  }
+}

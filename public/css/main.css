@@ -1,0 +1,126 @@
+@import url("https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap");
+body {
+  margin: 0;
+  font-family: "Courier Prime", monospace;
+  background:rgb(40, 40, 40);
+  color:white;
+}
+
+header {
+  text-align: center;
+}
+
+main {
+  display: grid;
+}
+
+main .column {
+  margin-left: 50px;
+  margin-right: 50px;
+  max-width: fit-content;
+  text-align: center;
+}
+
+form {
+  border: 1px white solid;
+  max-width: fit-content;
+  text-align: center;
+  padding: 10px;
+  padding-bottom: 20px;
+  text-align: center;
+  display: inline-block;
+}
+
+.grid-container {
+  display: grid;
+  max-width: fit-content;
+  text-align: center;
+}
+
+.grid-item {
+  padding: 10px;
+}
+
+.grid-item label :not(fieldset) {
+  padding-right: 5px;
+}
+
+.grid-row {
+  display: grid;
+  text-align: center;
+}
+
+.grid-item .right {
+  float: right;
+  padding-left: 10px;
+}
+
+.grid-item .left {
+  float: left;
+  padding-left: 10px;
+}
+
+#leftContent {
+  grid-column: 1 / 2;
+}
+
+#middleContent {
+  grid-column: 2 / 3;
+}
+
+#rightContent {
+  grid-column: 3 / 3;
+}
+
+.classForm {
+  margin-bottom: 50px;
+}
+
+td {
+  padding: 30px;
+}
+
+tr:nth-child(odd) {
+  background-color: #40567a;
+}
+tr:nth-child(even) {
+  background-color: #4C8BF5;
+}
+
+fieldset label {
+  padding-left: 15px;
+}
+
+.warning {
+  color: red;
+}
+
+.classDisplay h2 {
+  font-size: larger;
+}
+
+.classDisplay h3 {
+  font-size: large;
+}
+
+.classHeader {
+  padding: 10px
+}
+
+#singleClassDisplay {
+  border: 1px solid white;
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+/* Schedule Display */
+
+#dataView {
+  margin: 0 auto;
+  margin-bottom: 50px;
+}
+
+#dataView th {
+  padding: 5px 5px 10px 10px;
+}
