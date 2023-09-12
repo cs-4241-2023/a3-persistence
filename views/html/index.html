@@ -1,22 +1,21 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>CS4241 Assignment 2</title>
+    <title>CS4241 Assignment 3</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/main.css"> 
   </head>
   <body>
-    <nav class = "positionNavCenterXAndStartY">
+    <nav>
       <a href = "/">Home</a>
-      <a href = "view_music_listening_list.html">View Music Listening List</a>
+      <a href = "view_music_listening_list.html">View and Modify Music Listening List</a>
     </nav>
     <header>
-      <h1 class = "positionPageTitleCenterXAndStartY">Music Listening Tracker</h1>
+      <h1>Music Listening Tracker</h1>
     </header>
-    <main class = "formContainer">
+    <main>
       <section>
         <h2>Submit New Music:</h2>
-          <form class = "setFormFieldColumnDirectionAndSpace">
+          <form>
             <label for="bandname">Band Name:</label>
             <input type="text" id="bandname" value="band name here">
             <label for="albumname">Album Name:</label>
@@ -29,7 +28,7 @@
       </section>
       <section>
         <h2>Delete Existing Music:</h2>
-          <form class = "setFormFieldColumnDirectionAndSpace">
+          <form>
             <label for="bandname">Band Name:</label>
             <input type="text" id="deletebandname" value="band name here">
             <label for="albumname">Album Name:</label>
@@ -41,10 +40,10 @@
           <div id = "submissionForDeletionInfo"></div>
       </section>
     </main>
-      <footer class = "positionFooterCenterXAndEndY">
+      <footer>
         Music Listening Tracker created by Matthew McAlarney
       </footer>
-      <script src="js/new_music_submission.js"></script>
-      <script src="js/existing_music_deletion.js"></script>
+      <script src="/new_music_submission.js"></script>
+      <script src="/existing_music_deletion.js"></script>
   </body>
 </html>

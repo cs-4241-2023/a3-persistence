@@ -4,7 +4,7 @@
   "description": "Web application that stores the music a user has listened to recently or over their lifetime. Music can be added and deleted as desired.",
   "author": "Matthew McAlarney",
   "scripts": {
-    "start": "node server.improved.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.18.2",

@@ -54,6 +54,7 @@ const deletionSubmit = async function(event)
 
         const response = await fetch('/submitForDelete', { 
             method:'DELETE', 
+            headers: {'Content-Type': 'application/json'},
             body 
         })
 

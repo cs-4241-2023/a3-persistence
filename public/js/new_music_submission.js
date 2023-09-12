@@ -79,7 +79,8 @@ const additionSubmit = async function(event) { //The async keyword here means th
       //The text of the response body
 
     const response = await fetch('/submitForAddition', { //wait until the fetch of the response to the form submit resolves to store the response.
-      method:'POST', //pass in the HTTP method (so sending new data to server through POST)
+      method: 'POST', //pass in the HTTP method (so sending new data to server through POST)
+      headers: {'Content-Type': 'application/json'},
       body //pass in the response body
     })
   
