@@ -50,11 +50,6 @@ const additionSubmit = async function(event) { //The async keyword here means th
     submissionInfo.appendChild(submissionInfoParagraph)
     setSubmissionInfoID()
   }
-  else if(inputObj.bandname === 'band name here' || inputObj.albumname === 'album name here' || inputObj.releaseyear === 'release year here') {
-    submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
-    submissionInfo.appendChild(submissionInfoParagraph)
-    setSubmissionInfoID()
-  }
   else if(inputObj.releaseyear < startingYear) {
     submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.releaseyear} is not a valid year.`
     submissionInfo.appendChild(submissionInfoParagraph)

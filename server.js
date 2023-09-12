@@ -7,9 +7,9 @@ app.use(express.static(__dirname + '/views/html')) //HTML files served last
 app.use(express.json()) //Body-parser middleware for all incoming requests that will only take action if data sent to the server is passed with a Content-Type header of application/json
 
 let musicListeningData = [
-  {'bandName': 'Dry Kill Logic', 'albumName': 'The Darker Side of Nonsense', 'releaseYear': '2001', 'albumAge': 22},
-  {'bandName': 'Dry Kill Logic', 'albumName': 'The Dead and Dreaming', 'releaseYear': '2004', 'albumAge': 19},
-  {'bandName': 'Killswitch Engage', 'albumName': 'Alive or Just Breathing', 'releaseYear': '2002', 'albumAge': 21} 
+  {'ID' : 0, 'bandName': 'Dry Kill Logic', 'albumName': 'The Darker Side of Nonsense', 'releaseYear': '2001', 'albumAge': 22},
+  {'ID' : 1, 'bandName': 'Dry Kill Logic', 'albumName': 'The Dead and Dreaming', 'releaseYear': '2004', 'albumAge': 19},
+  {'ID' : 2, 'bandName': 'Killswitch Engage', 'albumName': 'Alive or Just Breathing', 'releaseYear': '2002', 'albumAge': 21} 
 ]
 
 app.get('/getMusicData', (req, res) => {
@@ -34,20 +34,22 @@ function countDuplicatesInMusicListeningData(dataObject) {
 
 }
 
-function createDerivedFieldAndPush(dataObject) {
-  
+function getDerivedAlbumAge(dataObject) {
   const currentYear = 2023
   const albumReleaseYear = parseInt(dataObject.releaseyear)
   const albumAge = currentYear - albumReleaseYear
 
-  console.log(dataObject) //JSON.parse converts a JSON string into an object. To access object members, use the member names that make up the JSON.
-  musicListeningData.push({'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+  return albumAge
+}
 
+function assignIDAndAdd(dataObject, albumAge) {
+  console.log(dataObject) //JSON.parse converts a JSON string into an object. To access object members, use the member names that make up the JSON.
+  musicListeningData.push({'ID': (musicListeningData[musicListeningData.length - 1].ID + 1), 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
 }
 
 //Music deletion helper functions:
 
-function searchAndSplice(dataObject) {
+function searchAndDelete(dataObject) {
 
   musicListeningData.forEach(d => {
     if(((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))) {
@@ -59,12 +61,26 @@ function searchAndSplice(dataObject) {
 
 }
 
+//Music modification helper functions:
+
+function searchAndUpdate(dataObject) {
+
+  musicListeningData.forEach(d => {
+    if(dataObject.ID === d.ID) {
+      musicListeningData.splice(musicListeningData.indexOf(d), 1, {'ID': dataObject.ID, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': getDerivedAlbumAge(dataObject)})
+    }
+    else {
+      console.log("No ID in musicListeningData matches the ID of the input object.")
+    }
+  })
+}
+
 app.post('/submitForAddition', (req, res) => {
      
   const dataObject = req.body
     
   if(countDuplicatesInMusicListeningData(dataObject) === 0) {
-    createDerivedFieldAndPush(dataObject)
+    assignIDAndAdd(dataObject, getDerivedAlbumAge(dataObject))
   }
 
   res.writeHead(200, {'Content-Type': 'application/json'})
@@ -75,19 +91,23 @@ app.delete('/submitForDelete', (req, res) => {
   
   const dataObject = req.body
 
-  searchAndSplice(dataObject)
+  searchAndDelete(dataObject)
   
   res.writeHead(200, {'Content-Type': 'application/json'})
   res.end(JSON.stringify(musicListeningData))
 })
 
-/*
-app.patch('/submit', express.json(), (req, res) => {
-  musicListeningData.push(req.body)
+
+app.put('/submitForModification', (req, res) => {
+  
+  const dataObject = req.body
+
+  searchAndUpdate(dataObject)
+
   res.writeHead(200, {'Content-Type': 'application/json'})
   res.end(JSON.stringify(musicListeningData))
 })
-*/
+
 
 app.listen(3000, () => {console.log('Server is running on port 3000')})
 

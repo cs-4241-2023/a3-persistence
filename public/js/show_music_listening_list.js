@@ -47,7 +47,7 @@ const showMusicListeningList = async function(event) {
         data.forEach(d => {
             const musicItem = document.createElement('li')
             console.log(musicItem)
-            musicItem.innerHTML = `<strong>Band Name</strong>: ${d.bandName}, <strong>Album Name</strong>: ${d.albumName}, <strong>Release Year</strong>: ${d.releaseYear}, <strong>Album Age</strong>: ${d.albumAge}` //Template literal example
+            musicItem.innerHTML = `<strong>ID</strong>: ${d.ID}, <strong>Band Name</strong>: ${d.bandName}, <strong>Album Name</strong>: ${d.albumName}, <strong>Release Year</strong>: ${d.releaseYear}, <strong>Album Age</strong>: ${d.albumAge}` //Template literal example
             musicList.appendChild(musicItem)
         })
     

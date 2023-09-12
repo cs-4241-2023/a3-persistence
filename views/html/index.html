@@ -7,34 +7,34 @@
   <body>
     <nav>
       <a href = "/">Home</a>
-      <a href = "view_music_listening_list.html">View and Modify Music Listening List</a>
+      <a href = "modify_music_listening_list.html">Modify Music Listening List</a>
     </nav>
     <header>
       <h1>Music Listening Tracker</h1>
     </header>
     <main>
       <section>
-        <h2>Submit New Music:</h2>
+        <h2>Submit New Music</h2>
           <form>
             <label for="bandname">Band Name:</label>
-            <input type="text" id="bandname" value="band name here">
+            <input type="text" id="bandname">
             <label for="albumname">Album Name:</label>
-            <input type="text" id="albumname" value="album name here">
+            <input type="text" id="albumname">
             <label for="releaseyear">Release Year:</label>
-            <input type ="text" id="releaseyear" value="release year here">
+            <input type ="text" id="releaseyear">
             <button id = "submitMusic">Submit Music</button>
           </form>
           <div id = "submissionInfo"></div>
       </section>
       <section>
-        <h2>Delete Existing Music:</h2>
+        <h2>Delete Existing Music</h2>
           <form>
             <label for="bandname">Band Name:</label>
-            <input type="text" id="deletebandname" value="band name here">
+            <input type="text" id="deletebandname">
             <label for="albumname">Album Name:</label>
-            <input type="text" id="deletealbumname" value="album name here">
+            <input type="text" id="deletealbumname">
             <label for="releaseyear">Release Year:</label>
-            <input type ="text" id="deletereleaseyear" value="release year here">
+            <input type ="text" id="deletereleaseyear">
             <button id = "submitMusicForDeletion">Delete Music</button>
           </form>
           <div id = "submissionForDeletionInfo"></div>

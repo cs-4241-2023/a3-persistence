@@ -34,11 +34,6 @@ const deletionSubmit = async function(event)
         deletionInfo.appendChild(deletionInfoParagraph)
         setDeletionInfoID()
     }
-    else if(inputObj.bandname === 'band name here' || inputObj.albumname === 'album name here' || inputObj.releaseyear === 'release year here') {
-        deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
-        deletionInfo.appendChild(deletionInfoParagraph)
-        setDeletionInfoID()
-    }
     else if(inputObj.releaseyear < startingYear) {
         deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.releaseyear} is not a valid year.`
         deletionInfo.appendChild(deletionInfoParagraph)
@@ -61,7 +56,7 @@ const deletionSubmit = async function(event)
         const data = await response.json()
         console.log(data)
 
-        deletionInfoParagraph.innerHTML = `<strong>Here is the music that has been sent to the server to compare against existing data. Check View Music Listening List page to see if there was a deletion</strong>: Band Name: ${inputObj.bandname}, Album Name: ${inputObj.albumname}, Release Year: ${inputObj.releaseyear}`
+        deletionInfoParagraph.innerHTML = `<strong>Here is the music that has been sent to the server to compare against existing data. Check Modify Music Listening List page to see if there was a deletion</strong>: Band Name: ${inputObj.bandname}, Album Name: ${inputObj.albumname}, Release Year: ${inputObj.releaseyear}`
         deletionInfo.appendChild(deletionInfoParagraph)
         setDeletionInfoID()
     }
