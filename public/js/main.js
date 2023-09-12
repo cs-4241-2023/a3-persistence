@@ -26,6 +26,7 @@ const addData = async function(event) {
 
   const response = await fetch( '/add', {
     method:'POST',
+    headers: { 'Content-Type': 'application/json' },
     body 
   })
 
@@ -105,6 +106,7 @@ const deleteData = async function(event) {
 
   const response = await fetch( '/delete', {
     method:'POST',
+    headers: { 'Content-Type': 'application/json' },
     body
   })
 
@@ -182,6 +184,7 @@ const saveData = async function(event) {
 
   const response = await fetch( '/modify', {
     method:'POST',
+    headers: { 'Content-Type': 'application/json' },
     body 
   })
 
