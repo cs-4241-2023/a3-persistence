@@ -28,7 +28,8 @@ const deletionSubmit = async function(event)
     const releaseYearInput = document.querySelector('#deletereleaseyear')
 
     let inputObj = {bandname: bandInput.value, albumname: albumInput.value, releaseyear: releaseYearInput.value}
-    
+    console.log(inputObj)
+
     if(inputObj.bandname.trim().length === 0 || inputObj.albumname.trim().length === 0 || inputObj.releaseyear.trim().length === 0) {
         deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
         deletionInfo.appendChild(deletionInfoParagraph)

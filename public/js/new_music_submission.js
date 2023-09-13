@@ -43,7 +43,7 @@ const additionSubmit = async function(event) { //The async keyword here means th
   //Proper format of JSON when there is a list of objects: [{a1:o1}, {a2:o2}, {a3:o3}]
   //The structure of the object before stringification and parsing should match the structure of an object entry in the destination array.
   let inputObj = {bandname: bandInput.value, albumname: albumInput.value, releaseyear: releaseYearInput.value}
-  console.log(inputObj.releaseyear)
+  console.log(inputObj)
 
   if(inputObj.bandname.trim().length === 0 || inputObj.albumname.trim().length === 0 || inputObj.releaseyear.trim().length === 0) {
     submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
@@ -83,7 +83,7 @@ const additionSubmit = async function(event) { //The async keyword here means th
     const latestDataEntry = data[data.length - 1]
 
     //Template literals
-    submissionInfoParagraph.innerHTML = `<strong>Here is the music saved in the server memory</strong>: Band Name: ${latestDataEntry.bandName}, Album Name: ${latestDataEntry.albumName}, Release Year: ${latestDataEntry.releaseYear}`
+    submissionInfoParagraph.innerHTML = `<strong>Here is the music saved in server memory</strong>: Band Name: ${latestDataEntry.bandName}, Album Name: ${latestDataEntry.albumName}, Release Year: ${latestDataEntry.releaseYear}`
     additionalInfoParagraph.innerHTML = `<strong>And here is the age of</strong> ${latestDataEntry.albumName}: ${latestDataEntry.albumAge}`
 
     submissionInfo.appendChild(submissionInfoParagraph)

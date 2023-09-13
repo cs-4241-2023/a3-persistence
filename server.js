@@ -65,14 +65,24 @@ function searchAndDelete(dataObject) {
 
 function searchAndUpdate(dataObject) {
 
+  const IDToNumber = parseInt(dataObject.ID)
+  let foundMatch = false
+  
+  console.log(typeof(IDToNumber))
+  console.log(IDToNumber)
+
   musicListeningData.forEach(d => {
-    if(dataObject.ID === d.ID) {
-      musicListeningData.splice(musicListeningData.indexOf(d), 1, {'ID': dataObject.ID, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': getDerivedAlbumAge(dataObject)})
-    }
-    else {
-      console.log("No ID in musicListeningData matches the ID of the input object.")
+    if(IDToNumber === d.ID) {
+      musicListeningData.splice(musicListeningData.indexOf(d), 1, {'ID': IDToNumber, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': getDerivedAlbumAge(dataObject)})
+      foundMatch = true
     }
   })
+
+  if(foundMatch === false) {
+    console.log("No ID in musicListeningData matches the ID of the input object.")
+  }
+
+  console.log(musicListeningData)
 }
 
 app.post('/submitForAddition', (req, res) => {
