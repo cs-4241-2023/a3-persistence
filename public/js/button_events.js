@@ -108,7 +108,7 @@ const modifyData = async function(event) {
 
   const valueData = tableRow.children[2]
   const valueInput = document.createElement('input')
-  valueInput.value = valueData.textContent.replaceAll(',', '')
+  valueInput.value = valueData.textContent.replace('$', '').replaceAll(',', '')
   valueData.textContent = ''
   valueData.className = 'modifyTD'
   valueData.appendChild(valueInput)
@@ -152,11 +152,11 @@ const saveData = async function(event) {
 
   tableRow.children[0].textContent = responseJson['item']
   tableRow.children[0].className = ''
-  tableRow.children[1].textContent = responseJson['amount'].toLocaleString()
+  tableRow.children[1].textContent = numberFormat.format(responseJson['amount'])
   tableRow.children[1].className = ''
-  tableRow.children[2].textContent = responseJson['unit_value'].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+  tableRow.children[2].textContent = currencyFormat.format(responseJson['unit_value'])
   tableRow.children[2].className = ''
-  tableRow.children[3].textContent = responseJson['total_value'].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+  tableRow.children[3].textContent = currencyFormat.format(responseJson['total_value'])
   tableRow.children[3].className = ''
 
   // Hide 'Save', display 'Modify'

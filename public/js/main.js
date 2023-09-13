@@ -1,6 +1,8 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
 let last_updated = Date.now()
+const currencyFormat = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', currencyDisplay: 'narrowSymbol', minimumFractionDigits: 2 })
+const numberFormat = new Intl.NumberFormat('en-US')
 
 window.onload = function() {
   document.getElementById('inputForm').onsubmit = addData;
@@ -33,15 +35,15 @@ const addTableRow = function(data) {
   newRow.appendChild(itemData)
 
   const amountData = document.createElement('td')
-  amountData.textContent = data['amount'].toLocaleString()
+  amountData.textContent = numberFormat.format(data['amount'])
   newRow.appendChild(amountData)
 
   const unitValueData = document.createElement('td')
-  unitValueData.textContent = data['unit_value'].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+  unitValueData.textContent = currencyFormat.format(data['unit_value'])
   newRow.appendChild(unitValueData)
 
   const totalValueData = document.createElement('td')
-  totalValueData.textContent = data['total_value'].toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})
+  totalValueData.textContent = currencyFormat.format(data['total_value'])
   newRow.appendChild(totalValueData)
 
   const modifyButtonData = document.createElement('td')
