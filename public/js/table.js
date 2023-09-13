@@ -13,7 +13,7 @@ function populateExpenseList(data) {
     let totalCost = 0;
 
     // Return if list is empty
-    if (data === null || data.length === 0) {
+    if (data === null || !Array.isArray(data) || data.length === 0) {
         return;
     }
 
