@@ -1,0 +1,16 @@
+{
+  "name": "shortstack",
+  "description": "Assignment 2 - Short Stack: Basic Two-tier Web Application using HTML/CSS/JS and Node.js  \r ===",
+  "author": "",
+  "scripts": {
+    "start": "node server.improved.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mime": "^2.6.0"
+  },
+  "version": "1.0.0",
+  "main": "server.improved.js",
+  "keywords": [],
+  "license": "ISC"
+}
