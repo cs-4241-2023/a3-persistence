@@ -19,12 +19,6 @@ const loadData = function() {
 const addTableRow = function(data) {
   const table = document.getElementById('dataTable')
 
-  const newForm = document.createElement('form')
-  newForm.id = 'form:' + data['uuid']
-  newForm.autocomplete = 'off'
-  newForm.onsubmit = saveData
-  document.body.appendChild(newForm)
-
   const newRow = document.createElement('tr')
   newRow.id = data['uuid']
   table.append(newRow)

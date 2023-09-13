@@ -69,7 +69,10 @@ const deleteData = async function(event) {
 
   if(response.ok) {
     tableRow.remove()
-    document.getElementById('form:'+uuid).remove()
+    const form = document.getElementById('form:'+uuid)
+	if(form) {
+		form.remove()
+	}
   } else {
     alert('Failed to delete data')
   }
@@ -82,6 +85,13 @@ const modifyData = async function(event) {
 
   const tableRow = this.parentElement.parentElement
   const uuid = tableRow.id
+
+  const newForm = document.createElement('form')
+  newForm.id = 'form:' + uuid
+  newForm.autocomplete = 'off'
+  newForm.onsubmit = saveData
+  document.body.appendChild(newForm)
+
 
   const itemData = tableRow.children[0]
   const itemInput = document.createElement('input')
@@ -164,5 +174,7 @@ const saveData = async function(event) {
   // Hide 'Save', display 'Modify'
   tableRow.children[4].lastElementChild.hidden = true
   tableRow.children[4].firstElementChild.hidden = false
+
+  document.getElementById('form:'+uuid).remove()
 }
 
