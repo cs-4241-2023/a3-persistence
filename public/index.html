@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>CS4241 Assignment 2</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/main.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&display=swap" rel="stylesheet">
+  <!-- get rid of favicon error -->
+  <!-- <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> -->
+</head>
+
+<body>
+  <div class="main-header">
+    <p class="header-text">Vehicle Service Log Book</p>
+    <img class="motor-sports-logo" src="https://logos-world.net/wp-content/uploads/2022/03/BMW-M-Emblem.png">
+  </div>
+
+  <div class="main-container">
+    <div class="ctitle-container">
+      <p id="content-title">Vehicle Maintenace Log</p>
+    </div>
+
+    <div class="row-content">
+      <form id="user-inputs" class="main-form">
+
+        <div class="input-text-container">
+          <label for="year">Year:</label>
+          <input class="form__input" type="text" placeholder="Ex: 2014" id="year" required>
+        </div>
+
+        <div class="input-text-container" id="make">
+          <label for="car_make">Make:</label>
+          <input class="form__input" type="text" placeholder="Ex: BMW" id="car_make" required>
+        </div>
+
+        <div class="input-text-container">
+          <label for="model">Model:</label>
+          <input class="form__input" type="text" placeholder="Ex: 335i xDrive" id="model" required>
+        </div>
+
+        <div class="input-text-container">
+          <label for="service-type">Service Type:</label>
+          <input class="form__input" type="text" placeholder="Ex: Oil Change" id="service-type" required>
+        </div>
+
+        <div class="input-text-container">
+          <label for="appointment-date">Appointment Date:</label>
+          <input class="form__input" type="date" id="appointment-date" required>
+        </div>
+
+        <div class="buttons-container">
+          <button type="submit" id="submit">Submit</button>
+          <button type="reset" id="clear">Clear</button>
+        </div>
+      </form>
+
+      <div id="middle-line"></div>
+
+      <div class="instruction-info">
+        <p>Instructions</p>
+        <div class="list-container">
+          <ul class="unordered-list">
+            <li class="first-item">
+              <strong class="add-instruction">To add an appointment: </strong>Fill out the form completely and click the
+              'Submit' button.
+            </li>
+            <li class="second-item">
+              <strong class="modify-instruction">To modify an appointment: </strong> Fill out the form with new info and
+              then click the
+              'Modify' button for the
+              vehicle appointment you want to update.
+            </li>
+            <li class="third-item">
+              <strong class="remove-instruction">To remove an appointment: </strong>Click the 'Remove' button for the
+              vehicle appointment you want to remove.
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="table-container">
+      <table id="myTable" class="vehicle-table">
+        <caption
+          style="border-radius: 20px; border: 1px solid black; margin-top: 20px; margin-bottom: 20px; padding: 5px;">
+          Vehicle Appointments
+        </caption>
+        <tr>
+          <th>Year</th>
+          <th>Make</th>
+          <th>Model</th>
+          <th>Service Type</th>
+          <th>Appointment Date</th>
+          <th>Days Until Appointment</th>
+          <th>UUID</th>
+          <th>Action 1</th>
+          <th>Action 2</th>
+        </tr>
+      </table>
+    </div> <!-- End of table-container tag -->
+    <div class="empty-table-text">
+      <p id="empty-text">
+        <!-- Appointment list is EMPTY. Go ahead and add an appointment! -->
+      </p>
+    </div>
+  </div> <!--End of main container tag-->
+</body>
+
+</html>
