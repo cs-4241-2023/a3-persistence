@@ -1,7 +1,8 @@
 const crypto = require('crypto'),
   express = require('express'),
-  app = express(),
-  start_time = Date.now()
+  app = express()
+
+let last_updated = Date.now()
 
 const inventory = [
   { 'item': 'Baseball', 'amount': 25, 'unit_value': 2.10, 'uuid': '47ffd1bf-4bc4-4028-b1d0-4bb1f7212b0b', 'total_value': 52.50 },
@@ -12,9 +13,9 @@ const inventory = [
 app.use( express.static( 'public' ) )
 app.use( express.json() )
 
-app.get( '/start_time', (req, res) => {
+app.get( '/last_updated', (req, res) => {
   res.writeHeader(200, { 'Content-Type': 'application/json' })
-  res.end(JSON.stringify({ start_time }))
+  res.end(JSON.stringify({ last_updated }))
 })
 
 app.get( '/data', (req, res) => {
@@ -28,6 +29,7 @@ app.post( '/add', (req, res) => {
   data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
   inventory.push(data)
   console.log('ADD:', data)
+  last_updated = Date.now()
 
   res.writeHeader(200, { 'Content-Type': 'application/json' })
   res.end(JSON.stringify(data))
@@ -47,6 +49,7 @@ app.post( '/delete', (req, res) => {
     const index = inventory.indexOf(foundElement)
     inventory.splice(index, 1)
     console.log('DELETE:', foundElement)
+    last_updated = Date.now()
 
     res.writeHeader(200, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify(foundElement))
@@ -69,6 +72,7 @@ app.post( '/modify', (req, res) => {
     data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
     inventory[i] = data
     console.log('MODIFY:', data)
+    last_updated = Date.now()
 
     res.writeHeader(200, { 'Content-Type': 'text/plain' })
     res.end(JSON.stringify(data))
