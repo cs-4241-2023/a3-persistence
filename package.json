@@ -1,0 +1,13 @@
+{
+  "name": "Webware Assignment 2",
+  "version": "0.0.1",
+  "description": "Simple input form and tabular dataset",
+  "author": "Andrew Hariyanto",
+  "scripts": {
+    "start": "node server.improved.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mime": "^2.6.0"
+  }
+}
