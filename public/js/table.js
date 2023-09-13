@@ -8,9 +8,14 @@ const MONTH_NAMES = ["January", "February", "March", "April", "May", "June", "Ju
 function populateExpenseList(data) {
     const tbody = document.querySelector("#expenseList tbody");
     let thisMonthCost = 0;
+    let currentMonth = '';
     tbody.innerHTML = "";
     let totalCost = 0;
-    let currentMonth = '';
+
+    // Return if list is empty
+    if (data === null || data.length === 0) {
+        return;
+    }
 
     // Sort data by date in ascending order
     data.sort((a, b) => {

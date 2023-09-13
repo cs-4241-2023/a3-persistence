@@ -1,9 +1,9 @@
 // Create function to get expenses
 async function getExpenses() {
   try {
-    const response = await fetch("/expenses");
+    const response = await fetch("/api/expenses", { method: "GET" });
     const data = await response.json();
-    populateExpenseList(data);
+    populateExpenseList(data.expenses);
   } catch (error) {
     console.error("Error fetching expenses: ", error);
   }
@@ -20,37 +20,41 @@ document.addEventListener("DOMContentLoaded", function () {
     let cost = document.getElementById("cost").value;
     cost = parseFloat(cost).toFixed(2);
 
-    fetch("/expenses", {
+    fetch("/api/expenses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ Item: item, Cost: cost }),
-    }).then(response => response.json());
+      body: JSON.stringify({ Item: item, Cost: cost, Date: new Date().toISOString() }),
+    }).then(response => response.json())
+      .then(() => getExpenses());
 
-    // Re-fetch all data
-    getExpenses();
+    document.getElementById("expense").value = "";
+    document.getElementById("cost").value = "";
   });
 
   // Add delete event
   window.deleteExpense = function (expense) {
-    fetch(`/deleteExpense/${expense.Id}`, {
-      method: "DELETE"
-    }).then(response => response.json());
-
-    getExpenses();
+    fetch(`/api/expenses`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ _id: expense._id })
+    }).then(response => response.json())
+      .then(() => getExpenses());
   };
 
   // Add save event
   window.saveExpense = function (expense, newItem, newCost) {
     const updatedExpense = {
-      Id: expense.Id,
+      _id: expense._id,
       Item: newItem,
       Cost: parseFloat(newCost).toFixed(2),
       Date: expense.Date
     };
 
-    fetch(`/updateExpense/${expense.Id}`, {
+    fetch(`/api/expenses`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -58,8 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
       body: JSON.stringify(updatedExpense)
     })
       .then(response => response.json())
-
-    getExpenses();
+      .then(() => getExpenses());
   };
 
   // Add refresh button click event
