@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8" />
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- get rid of favicon error -->
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon" />
+  </head>
+  <body>
+    <div class="song-header">
+      <h1 id="header"></h1>
+    </div>
+    <div class="header-container">
+      <div class="header-content">
+        <p>Add a Song to a Season Playlist!</p>
+      </div>
+    </div>
+    <div class="form-container">
+      <div class="form">
+        <div class="input-flex">
+          <label for="season">Select a season!</label>
+          <p></p>
+          <select name="season" id="season">
+            <option value="fall">Fall</option>
+            <option value="winter">Winter</option>
+            <option value="spring">Spring</option>
+            <option value="summer">Summer</option>
+          </select>
+          <input type="text" id="title" placeholder="Song Title*" />
+          <input type="text" id="artist" placeholder="Artist*" />
+          <input type="number" id="length" placeholder="Length in Seconds*" />
+          <p></p>
+          <ul id="output"></ul>
+        </div>
+      </div>
+    </div>
+    <button id="add">Submit</button>
+    
+   
+
+      <!--For derived field: longest playlist, taking total song length and seasons and return the season with the longest playlist and the total length-->
+  </body>
+</html>
