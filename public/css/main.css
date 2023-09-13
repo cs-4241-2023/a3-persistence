@@ -34,7 +34,7 @@ td {
   text-align: center;
 }
 
-td:nth-child(4) .edit-button {
+td:nth-child(5) .edit-button {
   background-color: var(--edit-button-bg);
   padding-top: 0px !important;
   border-radius: 4px;
@@ -48,7 +48,7 @@ td:nth-child(4) .edit-button {
   border: none;
 }
 
-td:nth-child(4) .delete-button {
+td:nth-child(5) .delete-button {
   background-color: var(--delete-button-bg);
   padding-top: 0px !important;
   border-radius: 4px;
@@ -61,7 +61,7 @@ td:nth-child(4) .delete-button {
   border: none;
 }
 
-td:nth-child(4) .save-button {
+td:nth-child(5) .save-button {
   background-color: var(--save-button-bg);
   padding-top: 0px !important;
   border-radius: 4px;

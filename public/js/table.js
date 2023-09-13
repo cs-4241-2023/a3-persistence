@@ -80,8 +80,8 @@ function editExpense(expense, row) {
         window.saveExpense(expense, itemInput.value, costInput.value);
     };
 
-    cells[3].innerHTML = "";
-    cells[3].appendChild(saveButton);
+    cells[4].innerHTML = "";
+    cells[4].appendChild(saveButton);
 }
 
 // Helper function to create an expense row
@@ -90,12 +90,16 @@ function createExpenseRow(tbody, expense) {
     const cellItem = row.insertCell(0);
     const cellCost = row.insertCell(1);
     const cellDate = row.insertCell(2);
-    const cellAction = row.insertCell(3);
+    const cellCategory = row.insertCell(3);
+    const cellAction = row.insertCell(4);
 
     cellItem.textContent = expense.Item;
     cellDate.textContent = formatDate(expense.Date);
     cellCost.textContent = `$${parseFloat(expense.Cost).toFixed(2)}`;
     cellCost.style.textAlign = "center";
+
+    cellCategory.textContent = categorizeExpense(expense.Item);
+    cellCategory.style.textAlign = "center";
 
     const deleteButton = document.createElement("button");
     deleteButton.className = "btn-small waves-effect waves-light delete-button";
@@ -137,6 +141,7 @@ function createSummaryRow(tbody, label, cost, timeElapsed) {
 
     // Empty cell for alignment
     row.insertCell(3);
+    row.insertCell(4);
 }
 
 // Helper function to format time elapsed
