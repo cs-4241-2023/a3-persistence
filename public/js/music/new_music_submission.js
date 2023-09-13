@@ -4,11 +4,11 @@ const submissionInfo = document.getElementById("submissionInfo")
 const submissionInfoParagraph = document.createElement('p')
 const additionalInfoParagraph = document.createElement('p')
 
-function setSubmissionInfoID() {
+function setSubmissionInfoParagraphID() {
   submissionInfoParagraph.setAttribute('id', 'submissionInfoPresent')
 }
 
-function setAdditionalInfoID() {
+function setAdditionalInfoParagraphID() {
   additionalInfoParagraph.setAttribute('id', 'additionalInfoPresent') 
 }
 
@@ -49,17 +49,17 @@ const additionSubmit = async function(event) { //The async keyword here means th
   if(inputObj.bandname.trim().length === 0 || inputObj.albumname.trim().length === 0 || inputObj.releaseyear.trim().length === 0) {
     submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
     submissionInfo.appendChild(submissionInfoParagraph)
-    setSubmissionInfoID()
+    setSubmissionInfoParagraphID()
   }
   else if(inputObj.releaseyear < startingYear) {
     submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.releaseyear} is not a valid year.`
     submissionInfo.appendChild(submissionInfoParagraph)
-    setSubmissionInfoID()
+    setSubmissionInfoParagraphID()
   }
   else if(inputObj.releaseyear > currentYear) {
     submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.albumname} has not been released yet.`
     submissionInfo.appendChild(submissionInfoParagraph)
-    setSubmissionInfoID()
+    setSubmissionInfoParagraphID()
   }
   else {
     const body = JSON.stringify(inputObj)
@@ -89,8 +89,8 @@ const additionSubmit = async function(event) { //The async keyword here means th
 
     submissionInfo.appendChild(submissionInfoParagraph)
     submissionInfo.appendChild(additionalInfoParagraph)
-    setSubmissionInfoID()  
-    setAdditionalInfoID()
+    setSubmissionInfoParagraphID()  
+    setAdditionalInfoParagraphID()
   }
 }
 

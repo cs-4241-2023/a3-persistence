@@ -2,7 +2,7 @@ const express = require('express'), //Express.js is a Node.js framework
 app = express()
 //Express will fully qualify (create the full paths) all paths to JS, CSS, and HTML files using the below middleware.
 //Serves all GET requests for files located in public and views folder
-app.use(express.static(__dirname + '/public/js/login')) //JS files must be served first. CSS files must be served second if there are any
+app.use(express.static(__dirname + '/public/js/account')) //JS files must be served first. CSS files must be served second if there are any
 app.use(express.static(__dirname + '/public/js/music'))
 app.use(express.static(__dirname + '/views/html')) //HTML files served last
 app.use(express.json()) //Body-parser middleware for all incoming requests that will only take action if data sent to the server is passed with a Content-Type header of application/json
@@ -13,7 +13,8 @@ app.use(express.json()) //Body-parser middleware for all incoming requests that 
 //   a. Contains a key: value pair of username: password
 //   b. Contains an array of music associated with that username/password
 //3. Display music for each user by grabbing the array of music in the list of objects associated with the logged-in user.
-//4. Persist music data for the associated user to the MongoDB music table also associated with that user during each server session.
+//4. Persist music data for the associated user to the MongoDB music table also associated with that user during each server session. 
+//   a. Also need to persist all new created users to a table of users
 //5. Server-side data and MongoDB data need to be the same by the end of server session:
     //At the start of each server session, all server-side data from a previous session is going to be wiped from the server.
     //And so at the start of each server session, all music data must be queried from MongoDB for the logged-in user and stored server-side.
@@ -21,28 +22,72 @@ app.use(express.json()) //Body-parser middleware for all incoming requests that 
 
 
 //Password encryption:
+//Password hashing is turning a password into alphanumeric letters using specific algorithms
+//Bcrypt allows us to create a salt and use that salt with the password to create a hashed password.
+//We really only need password hashing server-side, not needed on the client-side.
 const bcrypt = require('bcrypt')
 
-//User data operations
+//Server Data:
+let musicListeningData = []
+const users = [{"username": "joe", "password": "pw"}]
 
-const users = []
+//User data operations and helper functions:
 
-app.get('/userLogin', (req, res) => {
+function verifyUniqueUsername(newUsername) {
+  
+  let duplicateUsernameCounter = 0
+  
+  users.forEach(u => {
+    if(u.username === newUsername) {
+      duplicateUsernameCounter++
+    }
+  })
 
+  return duplicateUsernameCounter
+}
+
+app.post('/userLogin', async (req, res) => {
+  const user = users.find(u => u.username === req.body.username)
+
+  if(user === null) {
+    return res.status(400).end("UserNotFound") //send function just sends the HTTP response.
+  }
+
+  try {
+    if(await bcrypt.compare(req.body.password, user.password)) { //prevents timing attacks
+      res.end("SuccessfulLogin")
+    } else {
+      res.end("NoPasswordMatch")
+    }
+  } catch {
+    res.status(500).end("InternalServerError") //500 status indicates an internal server error
+  }
 })
 
-app.post('/createNewUser', (req, res) => {
-  const newUser = {username: req.body.username, password: req.body.password}
-  users.push(newUser)
+app.post('/createNewUser', async (req, res) => {
+  
+  if(verifyUniqueUsername(req.body.username) === 0) {
+    
+    try {
+      const salt = await bcrypt.genSalt(10) //A salt is a random data that is used as an additional input to a one-way function that hashes data
+      const hashedPassword = await bcrypt.hash(req.body.password, salt)
+      
+      console.log(salt)
+      console.log(hashedPassword)
+      
+      const newUser = {username: req.body.username, password: hashedPassword}
+      users.push(newUser)
+      res.status(201).end("SuccessfulUserCreation")
+    } catch {
+      res.status(500).end("ErrorCreatingNewUser")
+    }
+  } else {
+      res.end("UsernameTakenByPreviousUserCreation")
+  }
+
 })
 
 //Music data CRUD operations
-
-let musicListeningData = [
-  {'ID' : 0, 'bandName': 'Dry Kill Logic', 'albumName': 'The Darker Side of Nonsense', 'releaseYear': '2001', 'albumAge': 22},
-  {'ID' : 1, 'bandName': 'Dry Kill Logic', 'albumName': 'The Dead and Dreaming', 'releaseYear': '2004', 'albumAge': 19},
-  {'ID' : 2, 'bandName': 'Killswitch Engage', 'albumName': 'Alive or Just Breathing', 'releaseYear': '2002', 'albumAge': 21} 
-]
 
 app.get('/getMusicData', (req, res) => {
   res.writeHead(200, {'Content-Type': 'application/json'})
@@ -76,7 +121,13 @@ function getDerivedAlbumAge(dataObject) {
 
 function assignIDAndAdd(dataObject, albumAge) {
   console.log(dataObject) //JSON.parse converts a JSON string into an object. To access object members, use the member names that make up the JSON.
-  musicListeningData.push({'ID': (musicListeningData[musicListeningData.length - 1].ID + 1), 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+  
+  if(musicListeningData.length === 0) {
+    musicListeningData.push({'ID': 0, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+  } else {
+    musicListeningData.push({'ID': (musicListeningData[musicListeningData.length - 1].ID + 1), 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+  }
+  
 }
 
 //Music deletion helper functions:

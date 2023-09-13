@@ -3,11 +3,11 @@ const modifyInfo = document.getElementById("submissionForModifyInfo")
 const modifyInfoParagraph = document.createElement('p')
 const additionalModifyInfoParagraph = document.createElement('p')
 
-function setModifyInfoID() {
+function setModifyInfoParagraphID() {
   modifyInfoParagraph.setAttribute('id', 'modifyInfoPresent')
 }
 
-function setAdditionalModifyInfoID() {
+function setAdditionalModifyInfoParagraphID() {
   additionalModifyInfoParagraph.setAttribute('id', 'additionalModifyInfoPresent') 
 }
 
@@ -49,22 +49,22 @@ const modifySubmit = async function(event) { //The async keyword here means that
   if(inputObj.ID.toString().trim().length === 0 || inputObj.bandname.trim().length === 0 || inputObj.albumname.trim().length === 0 || inputObj.releaseyear.trim().length === 0) {
     modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
     modifyInfo.appendChild(modifyInfoParagraph)
-    setModifyInfoID()
+    setModifyInfoParagraphID()
   }
   else if(inputObj.ID < 0) {
     modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.ID} is not a valid ID.`
     modifyInfo.appendChild(modifyInfoParagraph)
-    setModifyInfoID()
+    setModifyInfoParagraphID()
   }
   else if(inputObj.releaseyear < startingYear) {
     modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.releaseyear} is not a valid year.`
     modifyInfo.appendChild(modifyInfoParagraph)
-    setModifyInfoID()
+    setModifyInfoParagraphID()
   }
   else if(inputObj.releaseyear > currentYear) {
     modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.albumname} has not been released yet.`
     modifyInfo.appendChild(modifyInfoParagraph)
-    setModifyInfoID()
+    setModifyInfoParagraphID()
   }
   else {
     const body = JSON.stringify(inputObj)
@@ -96,8 +96,8 @@ const modifySubmit = async function(event) { //The async keyword here means that
 
     modifyInfo.appendChild(modifyInfoParagraph)
     modifyInfo.appendChild(additionalModifyInfoParagraph)
-    setModifyInfoID()  
-    setAdditionalModifyInfoID()
+    setModifyInfoParagraphID()  
+    setAdditionalModifyInfoParagraphID()
   }
 }
 

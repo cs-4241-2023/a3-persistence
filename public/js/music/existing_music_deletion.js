@@ -2,7 +2,7 @@
 const deletionInfo = document.getElementById("submissionForDeletionInfo")
 const deletionInfoParagraph = document.createElement('p')
 
-function setDeletionInfoID() {
+function setDeletionInfoParagraphID() {
     deletionInfoParagraph.setAttribute('id', 'deletionInfoPresent')
 }
 
@@ -33,17 +33,17 @@ const deletionSubmit = async function(event)
     if(inputObj.bandname.trim().length === 0 || inputObj.albumname.trim().length === 0 || inputObj.releaseyear.trim().length === 0) {
         deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
         deletionInfo.appendChild(deletionInfoParagraph)
-        setDeletionInfoID()
+        setDeletionInfoParagraphID()
     }
     else if(inputObj.releaseyear < startingYear) {
         deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.releaseyear} is not a valid year.`
         deletionInfo.appendChild(deletionInfoParagraph)
-        setDeletionInfoID()
+        setDeletionInfoParagraphID()
     }
     else if(inputObj.releaseyear > currentYear) {
         deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.albumname} has not been released yet.`
         deletionInfo.appendChild(deletionInfoParagraph)
-        setDeletionInfoID()
+        setDeletionInfoParagraphID()
     }
     else {
         const body = JSON.stringify(inputObj)
@@ -59,7 +59,7 @@ const deletionSubmit = async function(event)
 
         deletionInfoParagraph.innerHTML = `<strong>Here is the music that has been sent to the server to compare against existing data. Click the Get Music Listening List button to refresh and view the music data to see if there was a deletion</strong>: Band Name: ${inputObj.bandname}, Album Name: ${inputObj.albumname}, Release Year: ${inputObj.releaseyear}`
         deletionInfo.appendChild(deletionInfoParagraph)
-        setDeletionInfoID()
+        setDeletionInfoParagraphID()
     }
 }
 
