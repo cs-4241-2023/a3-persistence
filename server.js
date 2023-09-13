@@ -2,9 +2,41 @@ const express = require('express'), //Express.js is a Node.js framework
 app = express()
 //Express will fully qualify (create the full paths) all paths to JS, CSS, and HTML files using the below middleware.
 //Serves all GET requests for files located in public and views folder
-app.use(express.static(__dirname + '/public/js')) //JS files must be served first. CSS files must be served second if there are any
+app.use(express.static(__dirname + '/public/js/login')) //JS files must be served first. CSS files must be served second if there are any
+app.use(express.static(__dirname + '/public/js/music'))
 app.use(express.static(__dirname + '/views/html')) //HTML files served last
 app.use(express.json()) //Body-parser middleware for all incoming requests that will only take action if data sent to the server is passed with a Content-Type header of application/json
+
+//User Login/Creation Plan:
+//1. Give user option to login or create account
+//2. Store a list of objects where each object:
+//   a. Contains a key: value pair of username: password
+//   b. Contains an array of music associated with that username/password
+//3. Display music for each user by grabbing the array of music in the list of objects associated with the logged-in user.
+//4. Persist music data for the associated user to the MongoDB music table also associated with that user during each server session.
+//5. Server-side data and MongoDB data need to be the same by the end of server session:
+    //At the start of each server session, all server-side data from a previous session is going to be wiped from the server.
+    //And so at the start of each server session, all music data must be queried from MongoDB for the logged-in user and stored server-side.
+    //During a session, all updates/deletes to/from server-side data must be immediately reflected in the MongoDB table associated with the logged-in user.
+
+
+//Password encryption:
+const bcrypt = require('bcrypt')
+
+//User data operations
+
+const users = []
+
+app.get('/userLogin', (req, res) => {
+
+})
+
+app.post('/createNewUser', (req, res) => {
+  const newUser = {username: req.body.username, password: req.body.password}
+  users.push(newUser)
+})
+
+//Music data CRUD operations
 
 let musicListeningData = [
   {'ID' : 0, 'bandName': 'Dry Kill Logic', 'albumName': 'The Darker Side of Nonsense', 'releaseYear': '2001', 'albumAge': 22},
@@ -67,7 +99,7 @@ function searchAndUpdate(dataObject) {
 
   const IDToNumber = parseInt(dataObject.ID)
   let foundMatch = false
-  
+
   console.log(typeof(IDToNumber))
   console.log(IDToNumber)
 

@@ -1,4 +1,5 @@
 //FRONT-END (CLIENT) JAVASCRIPT FOR NEW MUSIC SUBMISSIONS HERE
+//Note about Node.js: The require keyword is part of Node.js and cannot be used on client-side JavaScript. The require keyword can only be used on server-side JavaScript as Node.js is a backend framework.
 const submissionInfo = document.getElementById("submissionInfo")
 const submissionInfoParagraph = document.createElement('p')
 const additionalInfoParagraph = document.createElement('p')
@@ -83,7 +84,7 @@ const additionSubmit = async function(event) { //The async keyword here means th
     const latestDataEntry = data[data.length - 1]
 
     //Template literals
-    submissionInfoParagraph.innerHTML = `<strong>Here is the music saved in server memory</strong>: Band Name: ${latestDataEntry.bandName}, Album Name: ${latestDataEntry.albumName}, Release Year: ${latestDataEntry.releaseYear}`
+    submissionInfoParagraph.innerHTML = `<strong>Here is the music saved in server memory. Click the Get Music Listening List button to refresh and view the music data to see the addition of your submitted music</strong>: Band Name: ${latestDataEntry.bandName}, Album Name: ${latestDataEntry.albumName}, Release Year: ${latestDataEntry.releaseYear}`
     additionalInfoParagraph.innerHTML = `<strong>And here is the age of</strong> ${latestDataEntry.albumName}: ${latestDataEntry.albumAge}`
 
     submissionInfo.appendChild(submissionInfoParagraph)

@@ -91,7 +91,7 @@ const modifySubmit = async function(event) { //The async keyword here means that
     console.log(typeof(inputObj.ID))
 
     //Template literals
-    modifyInfoParagraph.innerHTML = `<strong>Here is the modified music saved in server memory</strong> for list item with ID ${latestModifiedDataEntry.ID}: Band Name: ${latestModifiedDataEntry.bandName}, Album Name: ${latestModifiedDataEntry.albumName}, Release Year: ${latestModifiedDataEntry.releaseYear}`
+    modifyInfoParagraph.innerHTML = `<strong>Here is the modified music saved in server memory</strong>. Click the Get Music Listening List button to refresh and view the music data to see the modification for list item with ID ${latestModifiedDataEntry.ID}: Band Name: ${latestModifiedDataEntry.bandName}, Album Name: ${latestModifiedDataEntry.albumName}, Release Year: ${latestModifiedDataEntry.releaseYear}`
     additionalModifyInfoParagraph.innerHTML = `<strong>And here is the age of</strong> ${latestModifiedDataEntry.albumName}: ${latestModifiedDataEntry.albumAge}`
 
     modifyInfo.appendChild(modifyInfoParagraph)

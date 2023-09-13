@@ -1,7 +1,7 @@
 {
-  "name": "Music Listening Tracker",
-  "version": "2.0",
-  "description": "Web application that stores the music a user has listened to recently or over their lifetime. Music can be added and deleted as desired.",
+  "name": "Music Listening Builder",
+  "version": "1.0",
+  "description": "Web application that stores the music a user has listened to recently or over their lifetime. Music can be added, modified and deleted as desired.",
   "author": "Matthew McAlarney",
   "scripts": {
     "start": "node server.js"

@@ -5,17 +5,33 @@
     <meta charset="utf-8">
   </head>
   <body>
-    <nav>
-      <a href = "/">Login</a>
-      <a href = "build_music_listening_list.html">Build Music Listening List</a>
-    </nav>
     <header>
-      <h1>Music Listening Tracker</h1>
+      <h1>Music Listening Builder</h1>
     </header>
     <main>
+      <section>
+        <h2>Login</h2>
+        <form>
+          <label for="username">Username:</label>
+          <input type="text" id="username">
+          <label for="password">Password:</label>
+          <input type="text" id="password">
+          <button id = "submitLogin">Login</button>
+        </form>
+      </section>
+      <section>
+        <h2>Create New Account</h2>
+        <form>
+          <label for="newusername">Username:</label>
+          <input type="text" id="newusername">
+          <label for="newpassword">Password:</label>
+          <input type="text" id="newpassword">
+          <button id = "submitCreateAccount">Create Account</button>
+        </form>
+      </section>
     </main>
       <footer>
-        Music Listening Tracker created by Matthew McAlarney
+        Music Listening Builder created by Matthew McAlarney
       </footer>
   </body>
 </html>
