@@ -104,6 +104,7 @@ const modifyData = async function(event) {
   amountInput.name = 'amount'
   amountInput.required = true
   amountInput.min = 0
+  amountInput.max = 999999999
   amountInput.setAttribute('form', 'form:'+uuid)
 
   const valueData = tableRow.children[2]
@@ -116,6 +117,7 @@ const modifyData = async function(event) {
   valueInput.name = 'unit_value'
   valueInput.required = true
   valueInput.min = 0
+  valueInput.max = 999999999
   valueInput.step = 0.01
   valueInput.setAttribute('form', 'form:'+uuid)
 
