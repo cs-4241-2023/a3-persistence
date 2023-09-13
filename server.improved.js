@@ -40,7 +40,7 @@ app.post( '/delete', (req, res) => {
     if(element['uuid'] === data['uuid']) {
       foundElement = element
     }
-  });
+  })
 
   if(foundElement !== undefined) {
     // remove object from inventory

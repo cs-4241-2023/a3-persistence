@@ -3,9 +3,16 @@
   <head>
     <title>CS4241 Assignment 2</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Author: Nelson Diaz, Assignment: a3-persistence,
+      Class: CS4241 Webware, Instructor: Charlie Roberts">
+
     <script src="js/main.js"></script>
-    <link rel="stylesheet" href="css/main.css">
-    
+
+    <!--Pure-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/custom.css">
+
     <!-- get rid of favicon error -->
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
@@ -16,39 +23,40 @@
   </head>
 
   <body>
-    <div id="inputDiv">
-      <form id="inputForm" autocomplete="off">
-        <label for="itemInput">Item:</label>
-        <input type="text" id="itemInput" name="item" placeholder="e.g. Baseball" required>
+  <div id="formDiv">
+    <form id="inputForm" autocomplete="off" class="pure-form pure-form-aligned">
+      <fieldset>
+        <div class="pure-control-group">
+          <label for="itemInput">Item:</label>
+          <input type="text" id="itemInput" name="item" placeholder="e.g. Baseball" required>
+        </div>
         
-        <label for="amountInput">Amount:</label>
-        <input type="number" id="amountInput" name="amount" min="0" placeholder="25" required>
+        <div class="pure-control-group">
+          <label for="amountInput">Amount:</label>
+          <input type="number" id="amountInput" name="amount" min="0" placeholder="25" required>
+        </div>
 
-        <label for="valueInput">Unit Value:</label>
-        <input type="number" id="valueInput" name="unit_value" min="0" step="0.01" placeholder="2.10" required>
+        <div class="pure-control-group">
+          <label for="valueInput">Unit Value:</label>
+          <input type="number" id="valueInput" name="unit_value" min="0" step="0.01" placeholder="2.10" required>
+        </div>
 
-        <button type="submit" id="submitButton">Add Item</button>
-      </form>
-    </div>
+        <button type="submit" id="submitButton" class="button-submit pure-button">Add Item</button>
+      </fieldset>
+    </form>
+  </div>
 
-    <div id="rightDiv">
-      <h1>Inventory</h1>
-      <div id="dataDiv">
-        <table id="dataTable">
-          <tbody>
-            <tr>
-              <th>Item</th>
-              <th>Amount</th>
-              <th>Unit Value</th>
-              <th>Total Value</th>
-              <!---->
-              <th class="visually-hidden">Modify</th>
-              <th class="visually-hidden">Delete</th>
-              <!---->
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <h1>Inventory</h1>
+    <table id="dataTable" class="pure-table pure-table-bordered pure-table-striped">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th>Amount</th>
+          <th>Unit Value</th>
+          <th>Total Value</th>
+          <th colspan="2">Edit Data</th>
+        </tr>
+      </thead>
+    </table>
   </body>
 </html>
