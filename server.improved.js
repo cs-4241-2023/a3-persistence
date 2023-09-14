@@ -115,11 +115,11 @@ app.put('/api/expenses', async (req, res) => {
 
 app.delete('/api/expenses', async (req, res) => {
   try {
-    const { _id } = req.params;
+    const { _id } = req.body;
     const result = await dbCollection.deleteOne({ _id: new ObjectId(_id) });
     res.json({ message: 'Expense deleted', result });
   } catch (error) {
-    res.json({ message: 'Failed to delete expense', error });
+    res.status(500).json({ message: 'Failed to delete expense', error });
   }
 });
 

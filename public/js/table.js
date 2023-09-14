@@ -106,7 +106,7 @@ function createExpenseRow(tbody, expense) {
     deleteButton.style.fontWeight = "bold";
     deleteButton.textContent = "Delete";
     deleteButton.onclick = function () {
-        deleteExpense(expense);
+        window.deleteExpense(expense);
     };
 
     const editButton = document.createElement("button");
@@ -114,7 +114,7 @@ function createExpenseRow(tbody, expense) {
     editButton.style.fontWeight = "bold";
     editButton.textContent = "Edit";
     editButton.onclick = function () {
-        editExpense(expense, row);
+        window.editExpense(expense, row);
     };
     cellAction.appendChild(editButton);
     cellAction.appendChild(deleteButton);
