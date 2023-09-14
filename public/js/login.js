@@ -31,8 +31,7 @@ if (loginBtn != null) {
                 alert('Invalid username or password.');
             }
         }).catch(error => {
-            console.error('Error:', error.message);
-            alert(error.message);
+            alert('Invalid username or password.');
         });
     });
 }
