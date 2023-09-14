@@ -127,7 +127,7 @@ const getAllData = async function () {
  * @returns {Promise<void>}
  */
 const deleteAssignment = async function(assignment) {
-  const response = await fetch("/" ,{
+  const response = await fetch("/assignment-delete" ,{
     method: "DELETE",
     body: JSON.stringify(assignment)});
 
@@ -172,7 +172,7 @@ const editAssignment = async function(assignmentId) {
     priority: "" // priority will be re-calculated on the server
   });
 
-  const response = await fetch("/" ,{
+  const response = await fetch("/assignment-edit" ,{
     method: "PUT",
     body: editedJSON
   });
