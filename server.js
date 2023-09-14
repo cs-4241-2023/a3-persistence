@@ -2,6 +2,8 @@
 const http = require('http'),
     fs   = require('fs'),
     mime = require('mime'),
+    express = require('express'),
+    app = express(),
     dir  = 'public/',
     port = 3000
 
