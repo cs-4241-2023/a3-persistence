@@ -1,0 +1,16 @@
+
+node_modules/.bin/mime
+node_modules/.bin/mime.cmd
+node_modules/.bin/mime.ps1
+node_modules/.package-lock.json
+node_modules/mime/CHANGELOG.md
+node_modules/mime/cli.js
+node_modules/mime/index.js
+node_modules/mime/LICENSE
+node_modules/mime/lite.js
+node_modules/mime/Mime.js
+node_modules/mime/package.json
+node_modules/mime/README.md
+node_modules/mime/types/other.js
+node_modules/mime/types/standard.js
+package-lock.json
