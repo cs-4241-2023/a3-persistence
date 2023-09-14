@@ -1,4 +1,3 @@
-// import node.js, mime, and other dependencies
 const express = require('express'),
       app = express(),
       port = 3000
@@ -8,8 +7,7 @@ const appdata = [
   {id: 200000 , className: "CS 3013", assignmentName: "Homework 1", dueDate:"2023-09-05", difficulty: 3, priority: "Low"}
 ];
 
-// Send static files in public directory to Node.js server
-app.use(express.static("public"));
+app.use(express.static("public")); // send static files
 
 app.get("/assignment-data", (request, response) => {
   response.writeHead(200, "OK", {'Content-Type': 'text/json'});
@@ -78,7 +76,6 @@ app.delete("/assignment-delete", (request, response) => {
 app.listen(process.env.PORT || port) // set up server to listen on port 3000
 
 const handleAssignmentData = function(sentData) {
-  // verify data integrity, reject bad data
   let id = sentData.id;
   let className = sentData.className;
   let assignmentName = sentData.assignmentName;
