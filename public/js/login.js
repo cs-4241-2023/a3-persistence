@@ -1,4 +1,4 @@
-const oauthGoogleLoginBtn = document.getElementById('oauthGoogleLoginBtn');
+const googleLoginBtn = document.getElementById('googleLoginBtn');
 const usernameInput = document.getElementById('username');
 const passwordInput = document.getElementById('password');
 const loginBtn = document.getElementById('loginBtn');
@@ -36,8 +36,8 @@ if (loginBtn != null) {
     });
 }
 
-if (oauthGoogleLoginBtn != null) {
-    oauthGoogleLoginBtn.addEventListener('click', function (event) {
+if (googleLoginBtn != null) {
+    googleLoginBtn.addEventListener('click', function (event) {
         event.preventDefault();
         window.location.href = '/auth/google';
     });

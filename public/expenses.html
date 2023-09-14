@@ -14,10 +14,11 @@
   <div class="container">
     <header class="row">
       <div class="col s10">
-        <h1 aria-label="Title">Expense Tracker</h1>
+        <h1>Expense Tracker</h1>
       </div>
       <div class="col s2 right-align">
         <button id="fetchExpensesBtn" class="btn waves-effect waves-light" aria-label="Fetch Expenses">Fetch</button>
+        <span class="sr-only" id="fetchExpensesDesc">Click to fetch all expenses.</span>
       </div>
     </header>
     <main>
@@ -46,10 +47,14 @@
       <form id="expenseForm" class="row">
         <article>
           <div class="input-field col s5">
-            <input type="text" id="expense" name="expense" placeholder="Item" aria-label="Item">
+            <input type="text" id="expense" name="expense" placeholder="Item Name" aria-label="Item Name"
+              aria-describedby="expenseDesc">
+            <span class="sr-only" id="expenseDesc">Enter the name of the expense item.</span>
           </div>
           <div class="input-field col s5">
-            <input type="number" id="cost" name="cost" placeholder="Cost" min="0" step="0.01" aria-label="Cost">
+            <input type="number" id="cost" name="cost" placeholder="Cost" min="0" step="0.01" aria-label="Cost"
+              aria-describedby="costDesc">
+            <span class="sr-only" id="costDesc">Enter the cost of the expense item.</span>
           </div>
           <div class="input-field col s2">
             <button type="submit" class="btn waves-effect waves-light" aria-label="Add Expense">Add</button>
