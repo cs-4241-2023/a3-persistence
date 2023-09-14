@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS:GO Stats Tracker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Statistics Tracker for Counter-Strike: Global Offensive">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="https://www.counter-strike.net/favicon.ico">
+  </head>
+  <body>
+    <h1 class="border-element">
+      Counter-Strike: Global Offensive Statistics Tracker
+    </h1>
+    <form>
+      <input type="number" min="0" id="frag-input" placeholder="Input number of frags" required>
+      <input type="number" min="0" id="assist-input" placeholder="Input number of assists" required>
+      <input type="number" min="0" id="death-input" placeholder="Input number of deaths" required>
+      <button type="submit" id="submit-button">Submit</button>
+    </form>
+    <br>
+    <button type="button" id="toggle-table">Show Table</button>
+    <br>
+    <table class="border-element" id="stat-table" hidden>
+      <thead>
+        <tr>
+          <th>Frags</th>
+          <th>Assists</th>
+          <th>Deaths</th>
+          <th>K/D</th>
+          <th>Remove</th>
+          <th>Modify</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+  "name": "a3-ThomasPianka",
+  "version": "1.0",
+  "description": "WPI CS4241 Assignment 3",
+  "author": "Thomas Pianka",
+  "scripts": {
+    "start": "node server.improved.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongodb": "^6.0.0"
+  }
+}
