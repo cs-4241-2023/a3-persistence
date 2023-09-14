@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>CS4241 Assignment 2</title>
+  <meta charset="utf-8">
+  <script src="js/main.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+<body>
+<div id="header-and-text">
+  <h1>WPI School Work Tracker</h1>
+  <p>This application allows you to track assignments for your WPI classes. Please input information about the assignment
+    below and this web application will store it for you! The application will also calculate a relative priority for the
+    assignment based on the difficulty and due date of the inputted assignment.</p>
+</div>
+
+<div id="edit-window">
+  <h3>Edit Assignment Information:</h3>
+  <input type="text" id="class-name-edit" placeholder="Class Name">
+  <input type="text" id="assignment-name-edit" placeholder="Assignment Name">
+  <input type="date" id="due-date-edit">
+  <input type="number" id="difficulty-edit" placeholder="Difficulty (1 to 10)">
+  <button id="cancel-edit-button">Cancel</button>
+  <button id="submit-button-edit">Submit</button>
+  <p id="edit-message">Text</p>
+</div>
+
+<form id="assignment-form">
+  <input type="text" id="class-name" placeholder="Class Name">
+  <input type="text" id="assignment-name" placeholder="Assignment Name">
+  <input type="date" id="due-date">
+  <input type="number" id="difficulty" placeholder="Difficulty (1 to 10)">
+  <button id="submit-button">Submit</button>
+  <p id="submission-message">Text</p>
+</form>
+<h3 id="table-title">Tracked Assignments Stored on Node.js Server</h3>
+</body>
+</html>
