@@ -1,12 +1,11 @@
 const { time } = require('console')
 
+
+const express = require("express");
+
+const app = express();
 const http = require( 'http' ),
       fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
-      // to install the mime library if you're testing this on your local machine.
-      // However, Glitch will install it automatically by looking in your package.json
-      // file.
-      mime = require( 'mime' ),
       dir  = 'public/',
       port = 3000
 
@@ -25,6 +24,20 @@ let timelineData = [
   {'era': 'Second Age', 'date': 1567, 'description': 'The defeat of the witch-king of Angmar'},
   {'era': 'The Space Age', 'date': 2552, 'description': 'The Fall of Reach'}
 ]
+
+
+
+app.get('/', (request, response) => {
+  handleGet( request, response )
+})
+
+app.post('/', (request, response) =>{
+  handlePost( request, response ) 
+})
+
+app.delete('/', (request, response) => {
+  handleDelete( request, response)
+})
 
 const server = http.createServer( function( request,response ) {
   if( request.method === 'GET' ) {
@@ -190,7 +203,9 @@ function SortTimeline(){
 }
 
 const sendFile = function( response, filename ) {
-   const type = mime.getType( filename ) 
+   const type = response.type( filename )
+   
+  
 
    fs.readFile( filename, function( err, content ) {
 
@@ -211,4 +226,4 @@ const sendFile = function( response, filename ) {
    })
 }
 
-server.listen( process.env.PORT || port )
+app.listen( process.env.PORT || port , () => console.log("server running"));
