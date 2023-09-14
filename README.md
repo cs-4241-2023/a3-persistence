@@ -1,6 +1,9 @@
 # Expense Tracker
 
-#### Live on Render: https://cs4241-assignment3.onrender.com/
+### Live on Render: https://cs4241-assignment3.onrender.com/
+**Username:** cs4241
+
+**Password:** ihatejs
 
 ![Image or screenshot of your application](/ExpenseTracker.png)
 
