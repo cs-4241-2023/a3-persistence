@@ -20,8 +20,6 @@ const expenseKeywords = {
         "Mortgage",
         "Taxes",
         "Home",
-        "Maintenance",
-        "Improvement"
     ],
     "Healthcare": [
         "Health",
@@ -40,8 +38,8 @@ const expenseKeywords = {
     ],
     "Entertainment": [
         "Dinner",
-        "Movies",
-        "Concerts",
+        "Movie",
+        "Concert",
         "Hobbies",
         "Subscriptions",
         "Travel"
@@ -50,7 +48,7 @@ const expenseKeywords = {
         "Clothing",
         "Electronics",
         "Furniture",
-        "Gifts",
+        "Gift",
         "Online",
         "Groceries"
     ],

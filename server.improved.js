@@ -1,11 +1,15 @@
 require('dotenv').config();
-
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
-const http = require('http');
 const path = require('path');
-const fs = require('fs');
-const dir = 'public';
+const express = require('express');
+const passport = require('passport');
+const session = require('express-session');
+const passportLocal = require('passport-local');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+
+// Initialize Express
 const port = 3000;
+const app = express();
 
 function connectToDatabase() {
   try {
@@ -27,132 +31,124 @@ function connectToDatabase() {
   }
 }
 
-let db = connectToDatabase();
-
 // Get or create collection
+let db = connectToDatabase();
 let dbCollection = db.collection('Expenses');
 if (dbCollection === null || dbCollection === undefined) {
   console.error("MongoDB does not have collection, 'Expenses'!");
   return;
 }
 
-function handleApiCalls(req, res) {
-  const method = req.method;
-  res.writeHead(200, { 'Content-Type': 'application/json' });
+// Initialize and setup passport and session
+app.use(session({
+  secret: process.env.GOOGLE_CLIENT_ID,
+  resave: false,
+  saveUninitialized: true,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.json());
 
-  switch (method) {
-    case 'GET':
-      fetchExpenses(req, res);
-      break;
-    case 'POST':
-      addExpense(req, res);
-      break;
-    case 'PUT':
-      updateExpense(req, res);
-      break;
-    case 'DELETE':
-      deleteExpense(req, res);
-      break;
-    default:
-      res.end(JSON.stringify({ message: 'Method not supported' }));
-      break;
+// Middleware to check if user is authenticated
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
   }
+  res.redirect('/');
 }
 
-async function fetchExpenses(req, res) {
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
+// For OAuth
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: 'http://localhost:3000/auth/google/callback',
+}, (accessToken, refreshToken, profile, done) => {
+  return done(null, profile);
+}));
+
+// For username and password
+passport.use(new passportLocal.Strategy((username, password, done) => {
+  if (username === 'cs4241' && password === 'ihatejs') {
+    return done(null, { id: username });
+  } else {
+    return done(null, false, { message: 'Invalid username or password' });
+  }
+}));
+
+// API Routes for Expenses
+app.get('/api/expenses', async (req, res) => {
   try {
     const expenses = await dbCollection.find().toArray();
-    res.end(JSON.stringify({ expenses }));
+    res.json({ expenses });
   } catch (error) {
-    res.end(JSON.stringify({ message: 'Failed to fetch expenses', error }));
-  }
-}
-
-async function addExpense(req, res) {
-  let body = '';
-
-  req.on('data', chunk => {
-    body += chunk.toString();
-  });
-
-  req.on('end', async () => {
-    try {
-      const { Cost, Date, Item } = JSON.parse(body);
-      const result = dbCollection.insertOne({ Cost, Date, Item });
-      res.end(JSON.stringify({ message: 'Expense added', result }));
-    } catch (error) {
-      res.end(JSON.stringify({ message: 'Failed to add expense', error }));
-    }
-  });
-}
-
-async function updateExpense(req, res) {
-  let body = '';
-
-  req.on('data', chunk => {
-    body += chunk.toString();
-  });
-
-  req.on('end', async () => {
-    try {
-      const { _id, Cost, Date, Item } = JSON.parse(body);
-      const result = await dbCollection.updateOne({ _id: new ObjectId(_id) }, { $set: { Cost, Date, Item } });
-      res.end(JSON.stringify({ message: 'Expense updated', result }));
-    } catch (error) {
-      res.end(JSON.stringify({ message: 'Failed to update expense', error }));
-    }
-  });
-}
-
-async function deleteExpense(req, res) {
-  let body = '';
-
-  req.on('data', chunk => {
-    body += chunk.toString();
-  });
-
-  req.on('end', async () => {
-    try {
-      const { _id } = JSON.parse(body);
-      const result = await dbCollection.deleteOne({ _id: new ObjectId(_id) });
-      res.end(JSON.stringify({ message: 'Expense deleted', result }));
-    } catch (error) {
-      res.end(JSON.stringify({ message: 'Failed to delete expense', error }));
-    }
-  });
-}
-
-function serveStaticFiles(req, res) {
-  const filePath = path.join(__dirname, dir, req.url === '/' ? 'index.html' : req.url);
-  const extname = String(path.extname(filePath)).toLowerCase();
-  const mimeTypes = {
-    '.html': 'text/html',
-    '.js': 'text/javascript',
-    '.css': 'text/css'
-  };
-  const contentType = mimeTypes[extname] || 'application/octet-stream';
-
-  fs.readFile(filePath, (error, content) => {
-    if (error) {
-      res.writeHead(404);
-      res.end('File Does Not Exist.');
-    } else {
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(content, 'utf-8');
-    }
-  });
-}
-
-const server = http.createServer((req, res) => {
-  //console.log(req.url);
-
-  if (req.url.includes("/api")) {
-    handleApiCalls(req, res);
-  } else {
-    serveStaticFiles(req, res);
+    res.json({ message: 'Failed to fetch expenses', error });
   }
 });
 
-server.listen(port, () => {
+app.post('/api/expenses', async (req, res) => {
+  try {
+    const { Cost, Date, Item } = req.body;
+    const result = await dbCollection.insertOne({ Cost, Date, Item });
+    res.json({ message: 'Expense added', result });
+  } catch (error) {
+    res.json({ message: 'Failed to add expense', error });
+  }
+});
+
+app.put('/api/expenses', async (req, res) => {
+  try {
+    const { _id, Cost, Date, Item } = req.body;
+    const result = await dbCollection.updateOne({ _id: new ObjectId(_id) }, { $set: { Cost, Date, Item } });
+    res.json({ message: 'Expense updated', result });
+  } catch (error) {
+    res.json({ message: 'Failed to update expense', error });
+  }
+});
+
+app.delete('/api/expenses', async (req, res) => {
+  try {
+    const { _id } = req.params;
+    const result = await dbCollection.deleteOne({ _id: new ObjectId(_id) });
+    res.json({ message: 'Expense deleted', result });
+  } catch (error) {
+    res.json({ message: 'Failed to delete expense', error });
+  }
+});
+
+// OAuth endpoints
+app.get('/auth/google', passport.authenticate('google', { scope: ['https://www.googleapis.com/auth/plus.login'] }));
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect('/expenses.html');
+  }
+);
+
+// Local Auth endpoints
+app.post('/auth/local', (req, res, next) => {
+  next();
+}, passport.authenticate('local', { failureRedirect: '/' }), (req, res) => {
+  res.json({ success: true });
+});
+
+
+// Serve Static Files for Authenticated Users
+app.get('/expenses.html', ensureAuthenticated, (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'expenses.html'));
+});
+
+// Serve Static Files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Start the server
+app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
