@@ -12,11 +12,6 @@ const deletionSubmit = async function(event)
         console.log("Child will be removed")
         deletionInfo.removeChild(deletionInfoParagraph)
     }
-      
-    if(document.getElementById("deletionInfoPresent") !== null) {
-        console.log("child will be removed")
-        deletionInfo.removeChild(deletionInfoParagraph)
-    }
 
     event.preventDefault()
 

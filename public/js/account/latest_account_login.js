@@ -1,5 +1,5 @@
 //FRONT-END (CLIENT) JAVASCRIPT FOR CAPTURING LATEST ACCOUNT LOGIN HERE:
-const loginInfo = document.getElementById("failedLogin")
+const loginInfo = document.getElementById("loginStatus")
 const loginInfoParagraph = document.createElement('p')
 
 function setLoginInfoParagraphID() {

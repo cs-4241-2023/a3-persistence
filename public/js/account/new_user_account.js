@@ -1,5 +1,5 @@
 //FRONT-END (CLIENT) JAVASCRIPT FOR CAPTURING LATEST ACCOUNT CREATION HERE:
-const newUserInfo = document.getElementById("failedAccountCreation")
+const newUserInfo = document.getElementById("accountCreation")
 const newUserInfoParagraph = document.createElement('p')
 
 function setNewUserInfoParagraphID() {

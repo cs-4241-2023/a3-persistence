@@ -29,7 +29,7 @@ const bcrypt = require('bcrypt')
 
 //Server Data:
 let musicListeningData = []
-const users = []
+let users = []
 
 //User data operations and helper functions:
 
@@ -48,19 +48,20 @@ function verifyUniqueUsername(newUsername) {
 
 app.post('/userLogin', async (req, res) => {
   const user = users.find(u => u.username === req.body.username)
+  console.log(user)
 
-  if(user === null) {
+  if(typeof user === 'undefined') {
     return res.status(400).end(JSON.stringify("UserNotFound")) //send function just sends the HTTP response.
   }
 
   try {
     if(await bcrypt.compare(req.body.password, user.password)) { //prevents timing attacks
-      res.end(JSON.stringify("SuccessfulLogin"))
+      return res.end(JSON.stringify("SuccessfulLogin"))
     } else {
-      res.end(JSON.stringify("NoPasswordMatch")) //Convert value into JSON String
+      return res.end(JSON.stringify("NoPasswordMatch")) //Convert value into JSON String
     }
   } catch {
-    res.status(500).end(JSON.stringify("InternalServerError")) //500 status indicates an internal server error
+    return res.status(500).end(JSON.stringify("InternalServerError")) //500 status indicates an internal server error
   }
 })
 
@@ -77,12 +78,12 @@ app.post('/createNewUser', async (req, res) => {
       
       const newUser = {username: req.body.username, password: hashedPassword}
       users.push(newUser)
-      res.status(201).end(JSON.stringify("SuccessfulUserCreation"))
+      return res.status(201).end(JSON.stringify("SuccessfulUserCreation"))
     } catch {
-      res.status(500).end(JSON.stringify("ErrorCreatingNewUser"))
+      return res.status(500).end(JSON.stringify("ErrorCreatingNewUser"))
     }
   } else {
-      res.end(JSON.stringify("UsernameTakenByPreviousUserCreation"))
+      return res.end(JSON.stringify("UsernameTakenByPreviousUserCreation"))
   }
 
 })
