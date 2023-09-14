@@ -1,10 +1,10 @@
 {
-  "name": "",
+  "name": "a3-samkarkache",
   "version": "",
-  "description": "",
-  "author": "",
+  "description": "Assignment 3 for CS4241",
+  "author": "Samuel Karkache",
   "scripts": {
-    "start": "node server.improved.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "mime": "^2.4.4"
