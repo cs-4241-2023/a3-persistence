@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Expense Tracker | Login</title>
+
+    <!-- Preconnect to important domains -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <!-- Prefetch important resources -->
+    <link rel="prefetch" href="/css/main.min.css">
+    <link rel="prefetch" href="/js/login.js">
+
+    <!-- Minified CSS Files -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="/css/main.min.css">
+</head>
+
+<body>
+    <div class="container card-container" role="main">
+        <div class="card" role="form">
+            <header>
+                <h1 aria-label="Title">Login</h1>
+            </header>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="row">
+                <div class="input-field col s12">
+                    <input style="z-index: 1;" type="text" id="username" name="username" placeholder="Username"
+                        aria-label="Username" required>
+                    <label for="username">Username</label>
+                </div>
+                <div class="input-field col s12">
+                    <input style="z-index: 1;" type="password" id="password" name="password" placeholder="Password"
+                        aria-label="Password" required>
+                    <label for="password">Password</label>
+                </div>
+                <div class="input-field col s12">
+                    <button id="loginBtn" type="submit" class="btn waves-effect waves-light"
+                        aria-label="Login">Login</button>
+                </div>
+            </form>
+
+            <!-- Separator -->
+            <div class="col s12 center-align or-separator">
+                OR
+            </div>
+
+            <button id="googleLoginBtn" class="btn waves-effect waves-light google-login-btn" type="button">
+                <span class="material-icons aligned-icon">account_circle</span>
+                Login with Google
+            </button>
+        </div>
+    </div>
+
+    <!-- Login Page JS -->
+    <script src="/js/login.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js" defer></script>
+</body>
+
+</html>

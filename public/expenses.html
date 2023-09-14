@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Expense Tracker</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/main.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <header class="row">
+      <div class="col s10">
+        <h1>Expense Tracker</h1>
+      </div>
+      <div class="col s2 right-align">
+        <button id="fetchExpensesBtn" class="btn waves-effect waves-light" aria-label="Fetch Expenses">Fetch</button>
+        <span class="sr-only" id="fetchExpensesDesc">Click to fetch all expenses.</span>
+      </div>
+    </header>
+    <main>
+
+      <!-- Expense List Table -->
+      <section id="expenseList" class="scrollable-table">
+        <article>
+          <table class="highlight">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Cost</th>
+                <th>Date</th>
+                <th>Category</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows will be populated here -->
+            </tbody>
+          </table>
+        </article>
+      </section>
+
+      <!-- Expense Add Form -->
+      <form id="expenseForm" class="row">
+        <article>
+          <div class="input-field col s5">
+            <input type="text" id="expense" name="expense" placeholder="Item Name" aria-label="Item Name"
+              aria-describedby="expenseDesc">
+            <span class="sr-only" id="expenseDesc">Enter the name of the expense item.</span>
+          </div>
+          <div class="input-field col s5">
+            <input type="number" id="cost" name="cost" placeholder="Cost" min="0" step="0.01" aria-label="Cost"
+              aria-describedby="costDesc">
+            <span class="sr-only" id="costDesc">Enter the cost of the expense item.</span>
+          </div>
+          <div class="input-field col s2">
+            <button type="submit" class="btn waves-effect waves-light" aria-label="Add Expense">Add</button>
+          </div>
+        </article>
+      </form>
+
+    </main>
+  </div>
+
+  <script src="/js/login.js"></script>
+  <script src="/js/expenseCategories.js"></script>
+  <script src="/js/table.js"></script>
+  <script src="/js/main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+
+</html>
