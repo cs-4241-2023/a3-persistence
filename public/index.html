@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>CS4241 Assignment 2</title>
+  <meta charset="utf-8">
+  <script src="js/main.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;900&display=swap" rel="stylesheet">
+
+  <!-- get rid of favicon error -->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+
+<body>
+  <main>
+    <div class="tasks-list--sidebar">
+      <div class="tasks-list--container" id="sidebar">
+      </div>
+    </div>
+    <form id="form">
+      <div class="task-info--input">
+        <label for="task-title">Title:</label>
+        <input name="title" type="text" id="task-title" class="task-title" required="true"/>
+      </div>
+      <div class="task-info--input">
+        <label for="task-date">Date:</label>
+        <input name="date" type="date" id="task-date" class="task-date">
+      </div>
+      <div class="task-info--input">
+        <label for="due-date">Due Date</label>
+        <input name="due" type="date" id="due-date" class="task-date" readonly>
+      </div>
+      <div class="task-info--input">
+        <label for="task-priority">Priority:</label>
+        <select name="priority" id="task-priority">
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
+      </div>
+      <textarea name="description" id="task-body" cols="30" rows="25" placeholder="Type task here..."></textarea>
+      <div class="input-buttons">
+        <input type="submit" id="save" value="Save Note">
+        <button id="delete-note" type="button" onclick="deleteTask()">Delete Note</button>
+      </div>
+    </form>
+  </main>
+  <footer>
+    <table>
+      <thead>
+        <tr>
+          <th>Task ID</th>
+          <th>Title</th>
+          <th>Date</th>
+          <th>Due Date</th>
+          <th>Priority</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody id="tablebody"></tbody>
+    </table>
+  </footer>
+</body>
+
+</html>

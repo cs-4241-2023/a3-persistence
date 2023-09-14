@@ -1,0 +1,131 @@
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  background: black;
+  /* Remove default margin that comes with html */
+  margin: 0 auto;
+}
+
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  gap: 10px;
+}
+
+footer {
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+}
+
+table {
+  background-color: white;
+}
+/* 
+=====================================
+  Form Styling                      |
+=====================================
+*/
+form {
+  background: white;
+  width: 85vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 50px;
+  box-sizing: border-box;
+  gap: 20px;
+}
+
+input, label {
+  display: block;
+}
+
+label { 
+  margin-right: 5px;
+}
+
+.task-info--input {
+  display: block;
+  width: 90%;
+  justify-content: center;
+}
+
+.task-title, .task-date {
+  margin-right: 10px;
+}
+
+.task-title, .task-date {
+  margin-right: 10px;
+}
+
+textarea {
+  resize: none;
+  width: 90%;
+  height: 50%;
+}
+
+textarea#task-body {
+  padding: 0;
+}
+
+.input-buttons {
+  display:flex;
+  gap: 10px;
+}
+
+/* 
+=====================================
+  Sidebar Styling                   |
+=====================================
+*/
+.tasks-list--sidebar {
+  background: white;
+  width: 215px;
+  overflow-y: auto;
+}
+
+.tasks-list--container {
+  width: 215px;
+  overflow-y: auto;
+  float: left;
+  position: relative;
+  /* scrollbar-color: white black; */
+}
+
+.tasks-list--task {  
+  background-color: #0336FF;
+  color: white;
+  padding: 10px;
+  margin: 10px;
+}
+
+.tasks-list--task:hover {
+  cursor: pointer;
+}
+
+.tasks-list--task.selected {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.tasks-list--new {
+  background-color: white;
+  padding: 10px;
+  margin: 10px;
+  border: 1px solid black;
+}
+
+.tasks-list--new:hover {
+  cursor: pointer;
+}
+
+form, .tasks-list--container {
+  height: 85vh;
+}
