@@ -2,6 +2,8 @@ const crypto = require('crypto'),
   express = require('express'),
   app = express()
 
+require('dotenv').config()
+
 let last_updated = Date.now()
 
 const inventory = [
@@ -14,12 +16,12 @@ app.use( express.static( 'public' ) )
 app.use( express.json() )
 
 app.get( '/last_updated', (req, res) => {
-  res.writeHeader(200, { 'Content-Type': 'application/json' })
+  res.writeHead(200, { 'Content-Type': 'application/json' })
   res.end(JSON.stringify({ last_updated }))
 })
 
 app.get( '/data', (req, res) => {
-  res.writeHeader(200, { 'Content-Type': 'application/json' })
+  res.writeHead(200, { 'Content-Type': 'application/json' })
   res.end(JSON.stringify(inventory))
 })
 
@@ -31,7 +33,7 @@ app.post( '/add', (req, res) => {
   console.log('ADD:', data)
   last_updated = Date.now()
 
-  res.writeHeader(200, { 'Content-Type': 'application/json' })
+  res.writeHead(200, { 'Content-Type': 'application/json' })
   res.end(JSON.stringify(data))
 })
 
@@ -51,12 +53,12 @@ app.post( '/delete', (req, res) => {
     console.log('DELETE:', foundElement)
     last_updated = Date.now()
 
-    res.writeHeader(200, { 'Content-Type': 'application/json' })
+    res.writeHead(200, { 'Content-Type': 'application/json' })
     res.end(JSON.stringify(foundElement))
   } else {
     console.log(`Delete Failed: UUID not found. (${data['uuid']})`)
 
-    res.writeHeader(412, { 'Content-Type': 'text/plain' })
+    res.writeHead(412, { 'Content-Type': 'text/plain' })
     res.end('Could not delete object: UUID Not Found')
   }
 })
@@ -74,14 +76,14 @@ app.post( '/modify', (req, res) => {
     console.log('MODIFY:', data)
     last_updated = Date.now()
 
-    res.writeHeader(200, { 'Content-Type': 'text/plain' })
+    res.writeHead(200, { 'Content-Type': 'text/plain' })
     res.end(JSON.stringify(data))
     elementFound = true
     break
   }
 
   if(!elementFound) {
-    res.writeHeader(412, { 'Content-Type': 'text/plain' })
+    res.writeHead(412, { 'Content-Type': 'text/plain' })
     res.end('Could not delete object: UUID Not Found')
   }
 })
