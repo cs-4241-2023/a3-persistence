@@ -28,6 +28,7 @@ const appdata = [
 ];
 
 app.use(express.static('public'));
+app.use(express.json());
 
 app.get('/', (request, response) => {
   const filename = dir + request.url.slice(1);
