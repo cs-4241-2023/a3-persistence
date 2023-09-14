@@ -1,90 +1,83 @@
-const crypto = require('crypto'),
-  express = require('express'),
+const express = require('express'),
+  { MongoClient, ObjectId } = require("mongodb"),
   app = express()
 
 require('dotenv').config()
-
 let last_updated = Date.now()
 
-const inventory = [
-  { 'item': 'Baseball', 'amount': 25, 'unit_value': 2.10, 'uuid': '47ffd1bf-4bc4-4028-b1d0-4bb1f7212b0b', 'total_value': 52.50 },
-  { 'item': 'Shoes', 'amount': 2000, 'unit_value': 150.00, 'uuid': '76fba967-baec-46f1-9fa2-2383b6c4f7d7', 'total_value': 300000.00 },
-  { 'item': 'Table', 'amount': 7, 'unit_value': 25.03, 'uuid': '46d67fca-9211-4fda-84a8-ac41a12cafc3', 'total_value': 175.21 },
-]
+
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.vfm3cn4.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`
+const client = new MongoClient( uri )
+
+let collection = null
+
+async function run() {
+  await client.connect()
+  collection = client.db("a3_persistence").collection("inventory")
+}
+run()
+
 
 app.use( express.static( 'public' ) )
 app.use( express.json() )
 
+app.use( (req,res,next) => {
+  if( collection !== null ) {
+    next()
+  }else{
+    res.status( 503 ).send()
+  }
+})
+
 app.get( '/last_updated', (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' })
-  res.end(JSON.stringify({ last_updated }))
+  res.json({ last_updated })
 })
 
-app.get( '/data', (req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' })
-  res.end(JSON.stringify(inventory))
+app.get( '/data', async (req, res) => {
+  const docs = await collection.find({}).toArray()
+  res.json( docs )
 })
 
-app.post( '/add', (req, res) => {
+app.post( '/add', async (req, res) => {
   const data = req.body
-  data['uuid'] = crypto.randomUUID()
   data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
-  inventory.push(data)
+  await collection.insertOne( data )
+  data['_id'] = data['_id']
+
   console.log('ADD:', data)
   last_updated = Date.now()
 
-  res.writeHead(200, { 'Content-Type': 'application/json' })
-  res.end(JSON.stringify(data))
+  res.json( data )
 })
 
-app.post( '/delete', (req, res) => {
+app.post( '/delete', async (req, res) => {
   const data = req.body
-  let foundElement
-  inventory.forEach(element => {
-    if(element['uuid'] === data['uuid']) {
-      foundElement = element
-    }
-  })
+  const response = await collection.deleteOne( { _id: new ObjectId(data['_id']) } )
 
-  if(foundElement !== undefined) {
-    // remove object from inventory
-    const index = inventory.indexOf(foundElement)
-    inventory.splice(index, 1)
-    console.log('DELETE:', foundElement)
+  if(response.deletedCount == 1) {
+    res.status( 200 ).send()
+    console.log('DELETE:', data)
     last_updated = Date.now()
-
-    res.writeHead(200, { 'Content-Type': 'application/json' })
-    res.end(JSON.stringify(foundElement))
   } else {
-    console.log(`Delete Failed: UUID not found. (${data['uuid']})`)
-
-    res.writeHead(412, { 'Content-Type': 'text/plain' })
-    res.end('Could not delete object: UUID Not Found')
+    console.log(`Delete Failed: ID not found. (${data['_id']})`)
+    res.status( 412 ).send()
   }
 })
 
-app.post( '/modify', (req, res) => {
+app.post( '/modify', async (req, res) => {
   const data = req.body
-  let elementFound = false
-  for(let i = 0; i < inventory.length; i++) {
-    if(inventory[i]['uuid'] !== data['uuid']) {
-      continue
-    }
-
-    data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
-    inventory[i] = data
+  data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
+  data['_id'] = new ObjectId(data['_id'])
+  
+  const response = await collection.replaceOne( { _id: data['_id'] }, data )
+  
+  if(response.modifiedCount == 1) {
+    res.json( data )
     console.log('MODIFY:', data)
     last_updated = Date.now()
-
-    res.writeHead(200, { 'Content-Type': 'text/plain' })
-    res.end(JSON.stringify(data))
-    elementFound = true
-    break
-  }
-
-  if(!elementFound) {
-    res.writeHead(412, { 'Content-Type': 'text/plain' })
-    res.end('Could not delete object: UUID Not Found')
+  } else {
+    console.log(`Modify Failed: ID not found. (${data['_id']})`)
+    res.status( 412 ).send()
   }
 })
 

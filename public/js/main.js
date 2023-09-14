@@ -20,7 +20,7 @@ const addTableRow = function(data) {
   const table = document.getElementById('dataTable')
 
   const newRow = document.createElement('tr')
-  newRow.id = data['uuid']
+  newRow.id = data['_id']
   table.append(newRow)
 
 
@@ -51,7 +51,7 @@ const addTableRow = function(data) {
   const saveButton = document.createElement('button')
   saveButton.textContent = 'Save'
   saveButton.hidden = true
-  saveButton.setAttribute('form', 'form:'+data['uuid'])
+  saveButton.setAttribute('form', 'form:'+data['_id'])
   saveButton.type = 'submit'
   modifyButtonData.appendChild(saveButton)
 

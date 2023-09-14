@@ -53,10 +53,10 @@ const deleteData = async function(event) {
   }
   
   const tableRow = this.parentElement.parentElement
-  const uuid = tableRow.id
+  const _id = tableRow.id
 
   const json = {
-    uuid
+    _id
   }
   const body = JSON.stringify(json)
 
@@ -69,10 +69,10 @@ const deleteData = async function(event) {
 
   if(response.ok) {
     tableRow.remove()
-    const form = document.getElementById('form:'+uuid)
-	if(form) {
-		form.remove()
-	}
+    const form = document.getElementById('form:'+_id)
+    if(form) {
+      form.remove()
+    }
   } else {
     alert('Failed to delete data')
   }
@@ -84,10 +84,10 @@ const modifyData = async function(event) {
   }
 
   const tableRow = this.parentElement.parentElement
-  const uuid = tableRow.id
+  const _id = tableRow.id
 
   const newForm = document.createElement('form')
-  newForm.id = 'form:' + uuid
+  newForm.id = 'form:' + _id
   newForm.autocomplete = 'off'
   newForm.onsubmit = saveData
   document.body.appendChild(newForm)
@@ -102,7 +102,7 @@ const modifyData = async function(event) {
   itemInput.type = 'text'
   itemInput.name = 'item'
   itemInput.required = true
-  itemInput.setAttribute('form', 'form:'+uuid)
+  itemInput.setAttribute('form', 'form:'+_id)
 
   const amountData = tableRow.children[1]
   const amountInput = document.createElement('input')
@@ -115,7 +115,7 @@ const modifyData = async function(event) {
   amountInput.required = true
   amountInput.min = 0
   amountInput.max = 999999999999
-  amountInput.setAttribute('form', 'form:'+uuid)
+  amountInput.setAttribute('form', 'form:'+_id)
 
   const valueData = tableRow.children[2]
   const valueInput = document.createElement('input')
@@ -129,7 +129,7 @@ const modifyData = async function(event) {
   valueInput.min = 0
   valueInput.max = 999999999
   valueInput.step = 0.01
-  valueInput.setAttribute('form', 'form:'+uuid)
+  valueInput.setAttribute('form', 'form:'+_id)
 
   // Hide 'Modify', display 'Save'
   this.hidden = true
@@ -143,12 +143,12 @@ const saveData = async function(event) {
   }
 
   const data = new FormData(event.target)
-  const uuid = event.target.id.slice(5)
+  const _id = event.target.id.slice(5)
 
   const json = Object.fromEntries(data.entries())
   json['amount'] = Number(json['amount'])
   json['unit_value'] = Number(json['unit_value'])
-  json['uuid'] = uuid
+  json['_id'] = _id
   const body = JSON.stringify( json )
 
   const response = await fetch( '/modify', {
@@ -160,7 +160,7 @@ const saveData = async function(event) {
 
   const responseJson = await response.json()
 
-  tableRow = document.getElementById(uuid)
+  tableRow = document.getElementById(_id)
 
   tableRow.children[0].textContent = responseJson['item']
   tableRow.children[0].className = ''
@@ -175,6 +175,6 @@ const saveData = async function(event) {
   tableRow.children[4].lastElementChild.hidden = true
   tableRow.children[4].firstElementChild.hidden = false
 
-  document.getElementById('form:'+uuid).remove()
+  document.getElementById('form:'+_id).remove()
 }
 
