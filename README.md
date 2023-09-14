@@ -1,6 +1,8 @@
 Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
 ===
 
+using milligram for css
+
 Due: September 22nd, by 11:59 AM.
 
 This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), 

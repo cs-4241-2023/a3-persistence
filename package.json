@@ -4,11 +4,13 @@
   "description": "",
   "author": "",
   "scripts": {
-    "start": "node server.improved.js"
+    "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
+    "milligram": "^1.4.1",
     "mime": "^2.4.4",
+    "mongoose": "^7.5.1",
     "serve-index": "^1.9.1"
   }
 }
