@@ -26,7 +26,7 @@ app.use('/dashboard', express.static('dashboard'));
 passport.use(new GitHubStrategy({
     clientID: '2f57ce73062e051b78b6',
     clientSecret: '1b0a2826717acc2113bb86e589109aa919aa5c59',
-    callbackURL: 'http://localhost:3000/auth/github/callback'
+    callbackURL: 'http://18.117.113.195:3000/auth/github/callback'
 }, async (accessToken, refreshToken, profile, done) => {
     const githubId = profile.id;
 
@@ -73,6 +73,7 @@ app.get('/auth/github/callback',
 
 app.use(express.static('public'));
 
+/*
 const corsOptions = {
     origin: 'http://localhost:3000',
   };
@@ -90,6 +91,7 @@ app.get('/logout', cors(corsOptions), (req, res) => {
         console.log('User is not authenticated');
     }
 });
+*/
 
 
 app.get('/user-info', (req, res) => {
