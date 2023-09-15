@@ -22,12 +22,6 @@ app.post( '/submit', express.json(), ( req, res ) => {
     console.log(req)
     serverPlayerLog.push( req.body)
 
-    // Sort serverPlayerLog by score and add rank to each player
-    // Abstract this into sort function
-    // serverPlayerLog.sort((a, b) => (a.score < b.score) ? 1 : -1)
-    // serverPlayerLog.forEach((player, index) => {
-    //   player.rank = index + 1;
-    // })
     rankPlayers(serverPlayerLog);
 
     res.writeHead( 200, { 'Content-Type': 'application/json'})
