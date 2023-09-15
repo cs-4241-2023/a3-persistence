@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.static('public')) // Static files from public directory
-app.use(express.json()) // for parsing application/json
+app.use(express.json()) // For parsing application/json
 
 // List of Players on Server
 let playerList = [
