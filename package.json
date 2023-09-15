@@ -1,0 +1,14 @@
+{
+  "name": "a2-SmeeBoi",
+  "version": "",
+  "description": "Spacebar Game",
+  "author": "Sameer Desai",
+  "scripts": {
+    "start": "node server.improved.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mime": "^2.4.4",
+    "mongodb": "^6.0.0"
+  }
+}
