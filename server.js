@@ -20,7 +20,6 @@ app.use(express.json()) //Body-parser middleware for all incoming requests that 
     //And so at the start of each server session, all music data must be queried from MongoDB for the logged-in user and stored server-side.
     //During a session, all updates/deletes to/from server-side data must be immediately reflected in the MongoDB table associated with the logged-in user.
 
-
 //Password encryption:
 //Password hashing is turning a password into alphanumeric letters using specific algorithms
 //Bcrypt allows us to create a salt and use that salt with the password to create a hashed password.
@@ -28,8 +27,10 @@ app.use(express.json()) //Body-parser middleware for all incoming requests that 
 const bcrypt = require('bcrypt')
 
 //Server Data:
-let musicListeningData = []
-let users = []
+//Const defines a constant reference to an array
+const musicListeningDataForEveryUser = []
+const users = []
+let user = {}
 
 //User data operations and helper functions:
 
@@ -47,7 +48,7 @@ function verifyUniqueUsername(newUsername) {
 }
 
 app.post('/userLogin', async (req, res) => {
-  const user = users.find(u => u.username === req.body.username)
+  user = users.find(u => u.username === req.body.username)
   console.log(user)
 
   if(typeof user === 'undefined') {
@@ -91,8 +92,11 @@ app.post('/createNewUser', async (req, res) => {
 //Music data CRUD operations
 
 app.get('/getMusicData', (req, res) => {
+
+  //Need to know who the current user is
+
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(musicListeningData))
+  res.end(JSON.stringify(musicListeningDataForEveryUser))
 })
 
 //Music submission helper functions:
@@ -100,16 +104,16 @@ app.get('/getMusicData', (req, res) => {
 function countDuplicatesInMusicListeningData(dataObject) {  
   
   let counter = 0
-  musicListeningData.forEach(d => {        
+
+  musicListeningDataForEveryUser.forEach(d => {        
     console.log((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))
-    
+      
     if(((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))) {
       counter++
     }
   })
 
   return counter
-
 }
 
 function getDerivedAlbumAge(dataObject) {
@@ -120,25 +124,48 @@ function getDerivedAlbumAge(dataObject) {
   return albumAge
 }
 
+//[{'luke': [{'ID': 0, 'bandName': 'D', 'albumName': 'D', 'releaseYear': '2001', 'albumAge': 22},
+//{'ID': 1, 'bandName': 'A', 'albumName': 'A', 'releaseYear': '2002', 'albumAge': 21},
+//{'ID': 2, 'bandName': 'B', 'albumName': 'B', 'releaseYear': '2003', 'albumAge': 20}]}]
+
 function assignIDAndAdd(dataObject, albumAge) {
   console.log(dataObject) //JSON.parse converts a JSON string into an object. To access object members, use the member names that make up the JSON.
+  let userInList = false
+
+  musicListeningDataForEveryUser.forEach(entry => {
+    const entryKey = entry.keys()
+    if(user.username === entryKey) {
+      userInList = true
+    }
+  })
   
-  if(musicListeningData.length === 0) {
-    musicListeningData.push({'ID': 0, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+  if(userInList === true) {
+
+    const usern = user.username
+
+    const userIndex = musicListeningDataForEveryUser.findIndex(entry => {
+      return usern === entry.keys()
+    })
+
+    if(userIndex >= 0 && (musicListeningDataForEveryUser[userIndex].values()).length === 0) {
+      musicListeningDataForEveryUser[userIndex][usern].push({'ID': 0, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+    } else {
+      musicListeningDataForEveryUser.push({'ID': (musicListeningDataForEveryUser[musicListeningDataForEveryUser.length - 1].ID + 1), 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+    }
+
   } else {
-    musicListeningData.push({'ID': (musicListeningData[musicListeningData.length - 1].ID + 1), 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+
   }
-  
 }
 
 //Music deletion helper functions:
 
 function searchAndDelete(dataObject) {
 
-  musicListeningData.forEach(d => {
+  musicListeningDataForEveryUser.forEach(d => {
     if(((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))) {
-      let currentIndex = musicListeningData.indexOf(d)
-      musicListeningData.splice(currentIndex, 1)
+      let currentIndex = musicListeningDataForEveryUser.indexOf(d)
+      musicListeningDataForEveryUser.splice(currentIndex, 1)
       console.log("Music previously at index " + currentIndex + " has been removed from musicListeningData")
     }
   })
@@ -155,9 +182,9 @@ function searchAndUpdate(dataObject) {
   console.log(typeof(IDToNumber))
   console.log(IDToNumber)
 
-  musicListeningData.forEach(d => {
+  musicListeningDataForEveryUser.forEach(d => {
     if(IDToNumber === d.ID) {
-      musicListeningData.splice(musicListeningData.indexOf(d), 1, {'ID': IDToNumber, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': getDerivedAlbumAge(dataObject)})
+      musicListeningDataForEveryUser.splice(musicListeningDataForEveryUser.indexOf(d), 1, {'ID': IDToNumber, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': getDerivedAlbumAge(dataObject)})
       foundMatch = true
     }
   })
@@ -166,7 +193,7 @@ function searchAndUpdate(dataObject) {
     console.log("No ID in musicListeningData matches the ID of the input object.")
   }
 
-  console.log(musicListeningData)
+  console.log(musicListeningDataForEveryUser)
 }
 
 app.post('/submitForAddition', (req, res) => {
@@ -178,7 +205,7 @@ app.post('/submitForAddition', (req, res) => {
   }
 
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(musicListeningData))
+  res.end(JSON.stringify(musicListeningDataForEveryUser))
 })
 
 app.delete('/submitForDelete', (req, res) => {
@@ -188,7 +215,7 @@ app.delete('/submitForDelete', (req, res) => {
   searchAndDelete(dataObject)
   
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(musicListeningData))
+  res.end(JSON.stringify(musicListeningDataForEveryUser))
 })
 
 
@@ -199,7 +226,7 @@ app.put('/submitForModification', (req, res) => {
   searchAndUpdate(dataObject)
 
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(musicListeningData))
+  res.end(JSON.stringify(musicListeningDataForEveryUser))
 })
 
 
