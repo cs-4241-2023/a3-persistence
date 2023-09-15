@@ -51,7 +51,7 @@ The project utilizes several Express middleware packages to enhance functionalit
 
 1. **OAuth Authentication**: Implemented OAuth authentication using GitHub OAuth for secure user logins.
 
-2. **Hosting on Render**: The application is hosted on Render, providing a reliable hosting service. Some of the hosting sites that I tried were really annoying to get setup and a lot of them required payment. It made me appreciate how simple Glitch is. I found that Render was also pretty easy to setup and free.
+2. **Hosting on AWS EC2**: The application is hosted on EC2, providing a reliable hosting service. Some of the hosting sites that I tried were really annoying to get setup and a lot of them required payment. It made me appreciate how simple Glitch is. I probably wouldn't have done EC2 if Akim didn't help me set it up because its more complicated than others, but it seems to work great and I have more control this way.
 
 3. **Lighthouse Test Scores**: Achieved 100% scores in all four Lighthouse tests, ensuring excellent performance, accessibility, best practices, and SEO. See the image here:
 
