@@ -6,6 +6,14 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('public')) // Static files from public directory
 app.use(express.json()) // For parsing application/json
 
+const uri = "mongodb+srv://tester0:<password>@cluster0.grsplgu.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp";
+
+
+
+
+
+
+
 // List of Players on Server
 let playerList = [
     { name: 'example-player', color: 'red', score: 0, rank: 0 }
