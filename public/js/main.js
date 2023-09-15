@@ -6,10 +6,12 @@ const showData = data => {
     const row = document.createElement('tr');
     row.id = rowNum;
     for (const key in d) {
-      const cell = document.createElement('td');
-      cell.innerText = d[key];
-      cell.id = key + rowNum;
-      row.appendChild(cell);
+      if (key !== "_id") {
+        const cell = document.createElement('td');
+        cell.innerText = d[key];
+        cell.id = key + rowNum;
+        row.appendChild(cell);
+      }
     }
 
     const deleteCell = document.createElement('td');
@@ -31,41 +33,46 @@ const showData = data => {
   });
 }
 
-const submit = function( event ) {
-  event.preventDefault()
+const submit = async function(event) {
+  event.preventDefault();
   
-  const frags = document.querySelector( '#frag-input' ),
-        assists = document.querySelector( '#assist-input' ),
-        deaths = document.querySelector( '#death-input' ),
-        json = { frags: parseInt(frags.value), assists: parseInt(assists.value), deaths: parseInt(deaths.value) },
-        body = JSON.stringify( json )
+  const frags = document.querySelector('#frag-input'),
+        assists = document.querySelector('#assist-input'),
+        deaths = document.querySelector('#death-input'),
+        json = {frags: parseInt(frags.value), assists: parseInt(assists.value), deaths: parseInt(deaths.value)},
+        body = JSON.stringify(json);
 
   if (!(frags.value && deaths.value && deaths.value)) {
     alert("Please fill out all input boxes before submitting.")
   } else if (parseInt(frags.value) < 0 || parseInt(assists.value) < 0 || parseInt(deaths.value) < 0) {
     alert("Please ensure that all values are not negative.")
   } else {
-    fetch('/submit', {
+    const response = await fetch('/submit', {
       method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+      headers: {"Content-Type": "application/json"},
       body
-    })
-    .then(response => response.json())
-    .then(json => {(document.querySelector('#toggle-table').innerText === "Hide Table") ? showData(json) : null});
+    });
+
+    const json = await response.json();
+    const button = document.querySelector('#toggle-table');
+    if (button.innerText === "Hide Table") {
+      showData(json);
+    }
     frags.value = '';
     assists.value = '';
     deaths.value = '';
   }
 }
 
-const getTable = function(event) {
+const getTable = async function(event) {
   event.preventDefault();
 
-  fetch('/getTable', {
+  const response = await fetch('/getTable', {
     method: 'GET'
-  })
-  .then(response => response.json())
-  .then(data => getTableHelper(data));
+  });
+
+  const json = await response.json();
+  getTableHelper(json);
 }
 
 const getTableHelper = data => {
@@ -81,17 +88,18 @@ const getTableHelper = data => {
   }
 }
 
-const deleteData = function(event, obj) {
+const deleteData = async function(event, obj) {
   event.preventDefault();
   const body = JSON.stringify(obj);
 
-  fetch('/deleteData', {
+  const response = await fetch('/deleteData', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body
-  })
-  .then(response => response.json())
-  .then(data => showData(data));
+  });
+
+  const json = await response.json();
+  showData(json);
 }
 
 const modifyData = function(rowNum, obj) {
@@ -117,23 +125,24 @@ const modifyData = function(rowNum, obj) {
   }
 }
 
-const applyModification = function(event, rowNum, obj) {
+const applyModification = async function(event, rowNum, obj) {
   event.preventDefault();
   const frags = document.querySelector(`#frags${rowNum}`),
         assists = document.querySelector(`#assists${rowNum}`),
         deaths = document.querySelector(`#deaths${rowNum}`),
-        json = { frags: parseInt(frags.lastElementChild.value),
-                 assists: parseInt(assists.lastElementChild.value),
-                 deaths: parseInt(deaths.lastElementChild.value) },
+        json = {frags: parseInt(frags.lastElementChild.value),
+                assists: parseInt(assists.lastElementChild.value),
+                deaths: parseInt(deaths.lastElementChild.value)},
         body = JSON.stringify({ obj: obj, newObj: json });
 
-  fetch('/modifyData', {
+  const response = await fetch('/modifyData', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body
-  })
-  .then(response => response.json())
-  .then(data => showData(data));
+  });
+
+  const responseJSON = await response.json();
+  showData(responseJSON);
 }
 
 window.onload = function() {

@@ -1,59 +1,73 @@
 const express = require('express'),
+      { MongoClient, ObjectId } = require('mongodb');
       app = express(),
-      port = 3000
-
-const appdata = [
-  { 'frags': 24, 'assists': 2, 'deaths': 7, 'kd': 3.43 },
-  { 'frags': 12, 'assists': 5, 'deaths': 16, 'kd': 0.75 },
-  { 'frags': 15, 'assists': 3, 'deaths': 12, 'kd': 1.25 }
-]
+      port = 3000;
+      require('dotenv').config();
 
 app.use(express.static('public'));
 app.use(express.static('public/css'));
 app.use(express.static('public/js'));
 app.use(express.json());
 
-app.get('/getTable', (request, response) => {
-  response.writeHead(200, {'Content-Type': 'application/json'});
-  response.end(JSON.stringify(appdata));
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`;
+const client = new MongoClient(uri);
+
+let collection = null;
+
+async function run() {
+  await client.connect();
+  collection = await client.db("appdata").collection("appdata");
+}
+run();
+
+app.use((request, response, next) => {
+  if (collection !== null) {
+    next()
+  } else {
+    response.status(503).send();
+  }
 })
 
-app.post('/submit', (request, response) => {
-  const body = request.body
-  const kd = (parseInt(body.deaths) === 0) ? body.frags : (body.frags / body.deaths).toFixed(2);
-  body['kd'] = parseFloat(kd);
-  appdata.push(body);
-  response.writeHead(200, {'Content-Type': 'application/json'});
-  response.end(JSON.stringify(appdata));
+app.get('/getTable', async (request, response) => {
+  if (collection !== null) {
+    const appdata = await collection.find({}).toArray();
+    response.json(appdata);
+  }
 })
 
-app.post('/deleteData', (request, response) => {
-  const newData = request.body;
-  appdata.splice(appdata.findIndex(element => {
-    let frags = element.frags === newData.frags;
-    let assists = element.assists === newData.assists;
-    let deaths = element.deaths === newData.deaths;
-    let kd = element.kd === newData.kd;
-    return frags && assists && deaths && kd;
-  }), 1);
-  response.writeHead(200, {'Content-Type': 'application/json'});
-  response.end(JSON.stringify(appdata));
+app.post('/submit', async (request, response) => {
+  if (collection !== null) {
+    const body = request.body
+    const kd = (parseInt(body.deaths) === 0) ? body.frags : (body.frags / body.deaths).toFixed(2);
+    body['kd'] = parseFloat(kd);
+    await collection.insertOne(body);
+    const appdata = await collection.find({}).toArray();
+    response.json(appdata);
+  }
 })
 
-app.post('/modifyData', (request, response) => {
-  const newData = request.body;
-  let index = appdata.findIndex(element => {
-    let frags = element.frags === newData.obj.frags;
-    let assists = element.assists === newData.obj.assists;
-    let deaths = element.deaths === newData.obj.deaths;
-    let kd = element.kd === newData.obj.kd;
-    return frags && assists && deaths && kd;
-  });
-  const kd = (parseInt(newData.newObj.deaths) === 0) ? newData.newObj.frags : (newData.newObj.frags / newData.newObj.deaths).toFixed(2);
-  newData.newObj['kd'] = parseFloat(kd);
-  appdata[index] = newData.newObj;
-  response.writeHead(200, {'Content-Type': 'application/json'});
-  response.end(JSON.stringify(appdata));
+app.post('/deleteData', async (request, response) => {
+  if (collection !== null) {
+    await collection.deleteOne({
+      _id: new ObjectId(request.body._id)
+    })
+    const appdata = await collection.find({}).toArray();
+    response.json(appdata);
+  }
+})
+
+app.post('/modifyData', async (request, response) => {
+  if (collection !== null) {
+    const body = request.body;
+    const kd = (parseInt(body.newObj.deaths) === 0) ? body.newObj.frags : (body.newObj.frags / body.newObj.deaths).toFixed(2);
+    body.newObj['kd'] = parseFloat(kd);
+    await collection.updateOne(
+      {_id: new ObjectId(body.obj._id)},
+      {$set: {frags: body.newObj.frags, assists: body.newObj.assists, deaths: body.newObj.deaths, kd: kd}}
+    )
+    const appdata = await collection.find({}).toArray();
+    response.json(appdata);
+  }
 })
 
 app.listen(process.env.PORT || port);
