@@ -39,9 +39,6 @@ const submit = async function (event) {
 
 // Populate list of players in html with server data
 function populateList(serverData) {
-
-
-
   playerList = document.getElementById('playerList');
   if (playerList) {
     playerList.remove();  // Reset player list by removing old list

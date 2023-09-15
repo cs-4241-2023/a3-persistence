@@ -71,8 +71,6 @@ const handlePost = function (request, response) {
   })
 }
 
-
-
 // DELETE: Client is deleting data from server
 const handleDelete = function (request, response) {
   let clientDataString = ''
