@@ -121,6 +121,7 @@ async function editPlayer(playerName) {
 
     const response = await fetch('/edit', {
       method: 'PUT',
+      headers: { 'Content-Type': 'application/json' }, // **Added this to get body data in server
       body: JSON.stringify(editPlayer)
     })
 
@@ -138,6 +139,7 @@ async function deletePlayer(playerName) {
 
   const response = await fetch('/delete', {
     method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' }, // **Added this to get body data in server
     body: JSON.stringify(deletePlayer)
   })
 

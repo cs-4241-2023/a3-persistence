@@ -18,17 +18,13 @@ app.get( '/', ( req, res ) => res.send( 'Handled GET request' ) )
 
 // POST 
 app.post( '/submit', express.json(), ( req, res ) => {
-    
-    console.log(req)
-    serverPlayerLog.push( req.body)
-
+    serverPlayerLog.push(req.body) // Add new player to serverPlayerLog 
     rankPlayers(serverPlayerLog);
-
     res.writeHead( 200, { 'Content-Type': 'application/json'})
     res.end( JSON.stringify( serverPlayerLog ) )
   })
 
-  // Sort function that inputs serverPlayerLog and outputs sorted serverPlayerLog
+  // Rank Players sort serverPlayerLog and gives each player a rank
     function rankPlayers(serverPlayerLog) {
         serverPlayerLog.sort((a, b) => (a.score < b.score) ? 1 : -1)
         serverPlayerLog.forEach((player, index) => {
@@ -36,6 +32,8 @@ app.post( '/submit', express.json(), ( req, res ) => {
         })
         return serverPlayerLog;
     }
+
+// 
 
 
 
