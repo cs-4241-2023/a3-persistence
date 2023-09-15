@@ -6,7 +6,7 @@ require('dotenv').config()
 let last_updated = Date.now()
 
 
-const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.vfm3cn4.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new MongoClient( uri )
 
 let collection = null
