@@ -1,0 +1,12 @@
+.dark-field {
+  background-color: #333;
+  color: white;
+  border: 1px solid #555;
+}
+
+.dark-field:focus {
+  background-color: #333;
+  color: white;
+  border: 1px solid #777;
+  box-shadow: none;
+}
