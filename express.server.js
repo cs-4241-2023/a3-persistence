@@ -34,29 +34,8 @@ app.put('/edit', express.json(), (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-    console.log(`Server is running on Port ${PORT}`);
+    console.log(`Server running on Port ${PORT}`);
 });
-
-// Rank Players sort  playerList and gives each player a rank
-function rankPlayers(playerList) {
-    playerList.sort((a, b) => (a.score < b.score) ? 1 : -1)
-    playerList.forEach((player, index) => {
-        player.rank = index + 1;
-    })
-    return playerList;
-}
-
-// Send response json to client
-function sendResponse(res, data) {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(data));
-}
-
-// respondToClient function
-function respond(res, playerList) {
-    rankPlayers(playerList);
-    sendResponse(res, playerList);
-}
 
 // Delete player function
 function deletePlayer(playerList, playerToDelete) {
@@ -76,4 +55,20 @@ function editPlayer(playerList, playerToEdit) {
         }
     })
     return playerList;
+}
+
+// Rank Players sorts playerList and gives each player a rank
+function rankPlayers(playerList) {
+    playerList.sort((a, b) => (a.score < b.score) ? 1 : -1)
+    playerList.forEach((player, index) => {
+        player.rank = index + 1;
+    })
+    return playerList;
+}
+
+// Respond to client with playerList
+function respond(res, playerList) {
+    rankPlayers(playerList); // Rank players before sending to client
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(playerList));
 }
