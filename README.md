@@ -1,6 +1,6 @@
 # **Expense Tracker - Ryan Kornitsky**
 
-# **Glitch site : (enter this later)**
+# ** Hosted site : http://18.117.113.195:3000/
 
 The Expense Tracker is a web application designed to help users manage their budgets efficiently. It allows users to keep track of their expenses, view a list of all their transactions, and perform various actions such as adding, updating, and deleting expenses.
 
