@@ -18,7 +18,7 @@ const addTimelineItem = async function (event) {
 
     const json = { era: eraInput.value, date: parseInt(dateInput.value), description: descriptionInput.value }, body = JSON.stringify(json)
 
-    const response = await fetch('/submit', {
+    const response = await fetch('/timelineData', {
       method: 'POST',
       body
     })
@@ -27,6 +27,8 @@ const addTimelineItem = async function (event) {
 
     console.log('text:', data)
     CreateTimeline(data);
+    window.dispatchEvent(updateCharactersEvent)
+    
     return true;
   }
 }
@@ -49,21 +51,24 @@ function CreateTimeline(data) {
     modifyButton.innerHTML = "Modify"
     
     //edit button appearance
-    deleteButton.onclick= () => {
+    deleteButton.onclick= async function() {
       let text = "timelineItem" + i;
       const tempButton = document.getElementById(text).outerHTML="";
       let json = JSON.stringify(data[i]);
-      fetch( "/timelineData", {
+      const timelineData = await fetch( "/timelineData", {
         method:"DELETE",
         body: json
       })
+
+      const newTimeline = await timelineData.json();
       //account for in backend
       console.log(tempButton.id);
       window.dispatchEvent(updateCharactersEvent)
+      CreateTimeline(newTimeline);
 
     }
 
-    modifyButton.onclick = () => {
+    modifyButton.onclick = async () => {
       
       //TODO: create error checking features
       let text = "timelineItem" + i;
@@ -71,21 +76,22 @@ function CreateTimeline(data) {
       const eraInput = document.querySelector('#era');
       const dateInput = document.querySelector('#date');
       const descriptionInput = document.querySelector('#description');
-  
+      //error checking
       const errorMsg = document.getElementById("timelineErrorMessage")
       if (isNaN(dateInput.value)) {
         errorMsg.style.display = "block";
     } else{
-      const tempButton = document.getElementById(text).outerHTML="";
-      let json = JSON.stringify(data[i]);
-      fetch( "/timelineData", {
-        method:"DELETE",
-        body: json
+
+      const json = { era: eraInput.value, date: parseInt(dateInput.value), description: descriptionInput.value }, body = i + " " + JSON.stringify(json)
+      
+      const timelineData = await fetch( "/modifyTimelineData", {
+        method:"POST",
+        body: body
       })
-      //account for in backend
-      console.log(tempButton.id);
+
+      const newTimeline = await timelineData.json();
       window.dispatchEvent(updateCharactersEvent)
-      addTimelineItem(event);
+      CreateTimeline(newTimeline);
     }
       
       

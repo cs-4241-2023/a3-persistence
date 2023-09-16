@@ -32,7 +32,7 @@ const addCharacter = async function (event) {
 
         const json = { name: nameInput.value, start: startInput.value, end: endInput.value, era: "" }, body = JSON.stringify(json)
 
-        const response = await fetch('/submit', {
+        const response = await fetch('/characterData', {
             method: 'POST',
             body
         })
@@ -130,26 +130,15 @@ async function ModifyRow(id) {
     } else {
         document.getElementById("characterErrorMessage").style.display = "none";
 
-        console.log("Delete Row")
-        fetch("/characterData", {
-            method: "DELETE",
-            body: nameArray[id]
-        })
+      
 
+        const json = { name: nameInput.value, start: startInput.value, end: endInput.value, era: "" }, body = id + " " + JSON.stringify(json)
 
-        for (let i = 1; i < rows.length; i++) {
-            const cell = rows[i].getElementsByTagName("td")[0];
-            if (cell.textContent === name) {
-                rows[1].innerHTML = "";
-                break;
-            }
-        }
+        
 
-        const json = { name: nameInput.value, start: startInput.value, end: endInput.value, era: "" }, body = JSON.stringify(json)
-
-        const response = await fetch('/submit', {
+        const response = await fetch('/modifyCharacterData', {
             method: 'POST',
-            body
+            body: body
         })
 
         const data = await response.json()
@@ -196,6 +185,7 @@ window.addEventListener('load', async function () {
 
     const data = await response.json();
     CreateCharacterTable(data);
+
 
 
 
