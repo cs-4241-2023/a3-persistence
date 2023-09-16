@@ -4,7 +4,7 @@
 require('dotenv').config()
 
 const express = require('express'), //Express.js is a Node.js framework
-{MongoClient} = require("mongodb"),
+{MongoClient} = require('mongodb'),
 app = express()
 //Express will fully qualify (create the full paths) all paths to JS, CSS, and HTML files using the below middleware.
 //Serves all GET requests for files located in public and views folder
@@ -51,15 +51,24 @@ run()
 
 async function verifyUniqueUsername(newUsername) { //
   
-  const allUsers = await collection.find({}, {usern: 1, _id: 0}).toArray()
+  const allUsers = await collection.find({}, {usern: 1, _id: 0}).toArray().then(function(result){
+    console.log(result)
+  })
+  
+  console.log(allUsers)
+  console.log(newUsername)
 
   let duplicateUsernameCounter = 0
   
-  allUsers.forEach(u => {
-    if(u.usern === newUsername) {
-      duplicateUsernameCounter++
-    }
-  })
+  if(allUsers.length !== 0) {
+    allUsers.forEach(u => {
+      if(u.usern === newUsername) {
+        duplicateUsernameCounter++
+      }
+    })
+  }
+
+  console.log(duplicateUsernameCounter)
 
   return duplicateUsernameCounter
 }
@@ -85,10 +94,11 @@ app.post('/userLogin', async (req, res) => { //
   }
 })
 
-app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a technical achievement for 5 points
-                                                        //
+app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a technical achievement for 5 points //
+       
+  console.log(verifyUniqueUsername(req.body.username))
+  
   if(verifyUniqueUsername(req.body.username) === 0) {
-    
     try {
       const salt = await bcrypt.genSalt(10) //A salt is a random data that is used as an additional input to a one-way function that hashes data
       const hashedPassword = await bcrypt.hash(req.body.password, salt)
@@ -110,7 +120,7 @@ app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a te
 
 //Music data CRUD operations
 
-app.get('/getMusicData', async (req, res) => { //
+app.get('/getMusicData', (req, res) => { //
   res.writeHead(200, {'Content-Type': 'application/json'})
   res.end(JSON.stringify(userData.musiclisteninglist))
 })
