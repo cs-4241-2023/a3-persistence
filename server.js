@@ -13,6 +13,17 @@ app.use(express.static(__dirname + '/public/js/music'))
 app.use(express.static(__dirname + '/views/html')) //HTML files served last
 app.use(express.json()) //Body-parser middleware for all incoming requests that will only take action if data sent to the server is passed with a Content-Type header of application/json
 
+//Server Data structure:
+//Const defines a constant reference to an array
+
+//userData = {
+// usern: (string)
+// passw: (string)
+// musiclisteninglist (array)
+//}
+
+let userData = {}
+
 //MongoDB Connection
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new MongoClient(uri)
@@ -36,34 +47,16 @@ async function run() {
 }
 run()
 
-app.use((req,res,next) => {
-  if(collection !== null) {
-    next()
-  } else{
-    res.status(503).end("Database collection is null")
-  }
-})
-
-//Server Data structure:
-//Const defines a constant reference to an array
-
-//userData = {
-// uIdentifier:
-// username:
-// password:
-// musicListeningList array
-//}
-
-let userData = {}
-
 //User data operations and helper functions:
 
-function verifyUniqueUsername(newUsername) {
+async function verifyUniqueUsername(newUsername) { //
   
+  const allUsers = await collection.find({}, {usern: 1, _id: 0}).toArray()
+
   let duplicateUsernameCounter = 0
   
-  users.forEach(u => {
-    if(u.username === newUsername) {
+  allUsers.forEach(u => {
+    if(u.usern === newUsername) {
       duplicateUsernameCounter++
     }
   })
@@ -71,16 +64,18 @@ function verifyUniqueUsername(newUsername) {
   return duplicateUsernameCounter
 }
 
-app.post('/userLogin', async (req, res) => {
-  userData.username = users.find(u => u.username === req.body.username)
-  console.log(userData.username)
+app.post('/userLogin', async (req, res) => { //
+  
+  userData = await collection.find(({usern: req.body.username},{_id: 0}))
 
-  if(typeof user === 'undefined') {
+  console.log(userData.usern)
+
+  if(typeof userData.usern === 'undefined') {
     return res.status(400).end(JSON.stringify("UserNotFound")) //send function just sends the HTTP response.
   }
 
   try {
-    if(await bcrypt.compare(req.body.password, user.password)) { //prevents timing attacks
+    if(await bcrypt.compare(req.body.password, userData.passw)) { //prevents timing attacks
       return res.end(JSON.stringify("SuccessfulLogin"))
     } else {
       return res.end(JSON.stringify("NoPasswordMatch")) //Convert value into JSON String
@@ -91,7 +86,7 @@ app.post('/userLogin', async (req, res) => {
 })
 
 app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a technical achievement for 5 points
-  
+                                                        //
   if(verifyUniqueUsername(req.body.username) === 0) {
     
     try {
@@ -101,8 +96,8 @@ app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a te
       console.log(salt)
       console.log(hashedPassword)
       
-      const newUser = {username: req.body.username, password: hashedPassword}
-      users.push(newUser)
+      await collection.insertOne({usern: req.body.username, passw: hashedPassword, musiclisteninglist: []})
+      
       return res.status(201).end(JSON.stringify("SuccessfulUserCreation"))
     } catch {
       return res.status(500).end(JSON.stringify("ErrorCreatingNewUser"))
@@ -115,33 +110,25 @@ app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a te
 
 //Music data CRUD operations
 
-app.get('/getMusicData', (req, res) => { //
+app.get('/getMusicData', async (req, res) => { //
   res.writeHead(200, {'Content-Type': 'application/json'})
-
-  if(isUserInMusicData()) {
-    res.end(JSON.stringify(musicListeningDataForUser[getUserIndex()][user.username]))
-  } else {
-    res.end(JSON.stringify([]))
-  }
-  
+  res.end(JSON.stringify(userData.musiclisteninglist))
 })
 
 //Music submission helper functions:
 
-function countDuplicatesInUserMusicListeningData(dataObject) { // 
+function countDuplicatesInUserMusicListeningData(dataObject) { //
   
   let counter = 0
-
-  if(getUserIndex() >= 0) {
-    musicListeningDataForUser[getUserIndex()][user.username].forEach(d => {        
-      console.log((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))
+  
+  userData.musiclisteninglist.forEach(d => {        
+    console.log((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))
         
-      if(((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))) {
-        counter++
-      }
-    })
-  }
-
+    if(((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))) {
+      counter++
+    }
+  })
+  
   return counter
 }
 
@@ -153,26 +140,13 @@ function getDerivedAlbumAge(dataObject) { //
   return albumAge
 }
 
-//[{'luke': [{'ID': 0, 'bandName': 'D', 'albumName': 'D', 'releaseYear': '2001', 'albumAge': 22},
-//{'ID': 1, 'bandName': 'A', 'albumName': 'A', 'releaseYear': '2002', 'albumAge': 21},
-//{'ID': 2, 'bandName': 'B', 'albumName': 'B', 'releaseYear': '2003', 'albumAge': 20}]}]
-
-function assignIDAndAdd(dataObject, albumAge) { //
+function assignMusicIDAndAdd(dataObject, albumAge) { //
   console.log(dataObject) //JSON.parse converts a JSON string into an object. To access object members, use the member names that make up the JSON.
   
-  if(isUserInMusicData()) {
-
-    if(getUserIndex() >= 0 && Object.values(musicListeningDataForUser[getUserIndex()]).length === 0) {
-      musicListeningDataForUser[getUserIndex()][user.username].push({'ID': 0, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
-    } else {
-      musicListeningDataForUser[getUserIndex()][user.username].push({'ID': ((musicListeningDataForUser[getUserIndex()][user.username].ID) + 1), 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
-    }
-
+  if(userData.musiclisteninglist.length === 0) {
+    userData.musiclisteninglist.push({'ID': 0, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
   } else {
-    console.log("About to push first object for user")
-    musicListeningDataForUser.push({[user.username]: [{'ID': 0, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge}]})
-    console.log(musicListeningDataForUser)
-    console.log(getUserIndex())
+    userData.musiclisteninglist.push({'ID': (((userData.musiclisteninglist[userData.musiclisteninglist.length - 1]).ID) + 1), 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
   }
 }
 
@@ -180,11 +154,11 @@ function assignIDAndAdd(dataObject, albumAge) { //
 
 function searchAndDelete(dataObject) { //
 
-  musicListeningDataForUser[getUserIndex()][user.username].forEach(d => {
+  userData.musiclisteninglist.forEach(d => {
     if(((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))) {
-      let currentIndex = musicListeningDataForUser[getUserIndex()][user.username].indexOf(d)
-      musicListeningDataForUser[getUserIndex()][user.username].splice(currentIndex, 1)
-      console.log("Music previously at index " + currentIndex + " has been removed from musicListeningData for user " + user.username)
+      let currentIndex = userData.musiclisteninglist.indexOf(d)
+      userData.musiclisteninglist.splice(currentIndex, 1)
+      console.log("Music previously at index " + currentIndex + " has been removed from musicListeningData for user " + userData.usern)
     }
   })
 
@@ -200,52 +174,55 @@ function searchAndUpdate(dataObject) { //
   console.log(typeof(IDToNumber))
   console.log(IDToNumber)
 
-  musicListeningDataForEveryUser[getUserIndex()][user.username].forEach(d => {
+  userData.musiclisteninglist.forEach(d => {
     if(IDToNumber === d.ID) {
-      musicListeningDataForEveryUser[getUserIndex()][user.username].splice(musicListeningDataForEveryUser[getUserIndex()][user.username].indexOf(d), 1, {'ID': IDToNumber, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': getDerivedAlbumAge(dataObject)})
+      userData.musiclisteninglist.splice(userData.musiclisteninglist.indexOf(d), 1, {'ID': IDToNumber, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': getDerivedAlbumAge(dataObject)})
       foundMatch = true
     }
   })
 
   if(foundMatch === false) {
-    console.log("No ID in musicListeningData for user " + user.username + " matches the ID of the input object.")
+    console.log("No ID in musicListeninglist for user " + userData.usern + " matches the ID of the input object.")
   }
 
-  console.log(musicListeningDataForEveryUser[getUserIndex()][user.username])
+  console.log(userData.musiclisteninglist)
 }
 
-app.post('/submitForAddition', (req, res) => { //
+app.post('/submitForAddition', async (req, res) => { //
      
   const dataObject = req.body
     
-  if(countDuplicatesInUserMusicListeningData(dataObject) === 0) { //
+  if(countDuplicatesInUserMusicListeningData(dataObject) === 0) { 
     console.log("0 duplicates")
-    assignIDAndAdd(dataObject, getDerivedAlbumAge(dataObject)) //
+    assignMusicIDAndAdd(dataObject, getDerivedAlbumAge(dataObject)) 
+    await collection.updateOne({usern: userData.usern}, {$set: {musiclisteninglist: userData.musiclisteninglist}})
   }
 
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(musicListeningDataForEveryUser[getUserIndex()][user.username]))
+  res.end(JSON.stringify(userData.musiclisteninglist))
 })
 
-app.delete('/submitForDelete', (req, res) => { //
+app.delete('/submitForDelete', async (req, res) => { //
   
   const dataObject = req.body
 
-  searchAndDelete(dataObject) //
+  searchAndDelete(dataObject) 
+  await collection.updateOne({usern: userData.usern}, {$set: {musiclisteninglist: userData.musiclisteninglist}})
   
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(musicListeningDataForEveryUser[getUserIndex()][user.username]))
+  res.end(JSON.stringify(userData.musiclisteninglist))
 })
 
 
-app.put('/submitForModification', (req, res) => { //
+app.put('/submitForModification', async (req, res) => { //
   
   const dataObject = req.body
 
-  searchAndUpdate(dataObject) //
+  searchAndUpdate(dataObject)
+  await collection.updateOne({usern: userData.usern}, {$set: {musiclisteninglist: userData.musiclisteninglist}})
 
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(musicListeningDataForEveryUser[getUserIndex()][user.username]))
+  res.end(JSON.stringify(userData.musiclisteninglist))
 })
 
 
