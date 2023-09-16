@@ -20,7 +20,8 @@ const submit = async function (event) {
   console.log(body);
   const response = await fetch("/submit", {
     method: "POST",
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: body,
   });
 
   const data = await response.json();
