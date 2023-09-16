@@ -1,4 +1,39 @@
 const express = require('express');
+require('dotenv').config();
+
+// TODO
+/* Add .env file to store secret keys 
+ * Project File Restructure: (Views, Routes)
+ * Create register and login page
+ * Store users in the database 
+ * Get session id from users 
+ * 
+ * Github OAuth (final)
+ */
+
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@vehicleservicelogcluste.no66rrt.mongodb.net/VSL-DB?retryWrites=true&w=majority`;
+
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+// Connect to DB then run server
+client.connect().then(() => {
+  console.log("We have connected to the database ");
+  app.listen(port, () => console.log("Server has started on port 3000"));
+});
+
+// create db from client
+const vehicleServiceLogs = client.db("VehicleSL");
+
 const app = express(),
   fs = require('fs'),
   // IMPORTANT: you must run `npm install` in the directory for this assignment
@@ -7,7 +42,6 @@ const app = express(),
   // file.
   mime = require('mime'),
   crypto = require('crypto'),
-  dir = 'public/',
   port = 3000
 
 const appdata = [];
@@ -33,26 +67,35 @@ app.get('/', (_, response) => {
   sendFile(response, 'public/index.html')
 });
 
-app.get('/req-server-data', (_, response) => {
+app.get('/req-server-data', async (_, response) => {
   const res_type = mime.getType(JSON.stringify(appdata));
   response.writeHeader(200, { 'Content-Type': res_type })
-  response.end(JSON.stringify(appdata));
+
+  const appdata_frm_db = await vehicleServiceLogs.collection('VSLogs').find({}).toArray();
+  const rm_id_frm_appdata_db = appdata_frm_db.map(function (obj) {
+    return Object.fromEntries(Object.entries(obj).filter(([key]) => key !== '_id'));
+  });
+
+  console.log("app data from db");
+  console.log(rm_id_frm_appdata_db);
+  response.end(JSON.stringify(rm_id_frm_appdata_db));
 });
 
-app.post('/submit', stringToJSONMiddleware, (request, response) => {
+app.post('/submit', stringToJSONMiddleware, async (request, response) => {
+
   const user_data_json = request.parsedBody;
   console.log("Data being added: ");
   console.log(user_data_json);
 
   // Add user vehice service appointment data to appdata
-  // Before adding it to the array of JSON objects, add new derived field 
   user_data_json['day-until-appointment'] = addNewDataField(user_data_json);
   user_data_json['uuid'] = crypto.randomUUID();
 
-  appdata.push(user_data_json);
+  // add data to mongoDB
+  vehicleServiceLogs.collection('VSLogs').insertOne(user_data_json);
 
   console.log("Server Data after submission: ");
-  console.log(appdata);
+  console.log(await vehicleServiceLogs.collection('VSLogs').find({}).toArray());
   response.writeHead(200, "OK", { 'Content-Type': 'text/plain' })
   response.end('Success')
 });
@@ -60,6 +103,10 @@ app.post('/submit', stringToJSONMiddleware, (request, response) => {
 app.post('/delete-frm-table', express.text(), (request, response) => {
   const unique_identifier = request.body;
   console.log(`Server: Removing UUID ${unique_identifier}`);
+
+  // remove from db
+  vehicleServiceLogs.collection('VSLogs').findOneAndDelete({ uuid: unique_identifier });
+
   const index = appdata.findIndex(entry => entry.uuid === unique_identifier);
 
   if (index !== -1) {
@@ -70,7 +117,7 @@ app.post('/delete-frm-table', express.text(), (request, response) => {
   response.end('Success');
 });
 
-app.post('/modify-table-entry', stringToJSONMiddleware, (request, response) => {
+app.post('/modify-table-entry', stringToJSONMiddleware, async (request, response) => {
 
   const data_to_modify = request.parsedBody;
   console.log("Modified Data: ");
@@ -78,22 +125,13 @@ app.post('/modify-table-entry', stringToJSONMiddleware, (request, response) => {
 
   const modify_uuid = data_to_modify[0];
   const modify_form_data = JSON.parse(data_to_modify[1]);
+  modify_form_data['day-until-appointment'] = addNewDataField(modify_form_data);
 
-  // Locate entry we want to modify using the UUID
-  const modify_index = appdata.findIndex(entry => entry.uuid === modify_uuid);
-
-  // modify appdata
-  appdata[modify_index]['year'] = modify_form_data['year'];
-  appdata[modify_index]['car_make'] = modify_form_data['car_make'];
-  appdata[modify_index]['model'] = modify_form_data['model'];
-  appdata[modify_index]['service_type'] = modify_form_data['service_type'];
-  appdata[modify_index]['appointment_date'] = modify_form_data['appointment_date'];
-
-  const new_days_until_apt = addNewDataField(appdata[modify_index])
-  appdata[modify_index]['day-until-appointment'] = new_days_until_apt;
+  // Locate entry we want to modify in db using uuid
+  vehicleServiceLogs.collection('VSLogs').findOneAndUpdate({ uuid: modify_uuid }, { $set: modify_form_data });
 
   console.log("App data after modification");
-  console.log(appdata);
+  console.log(await vehicleServiceLogs.collection('VSLogs').find({}).toArray());
 
   response.writeHead(200, "OK", { 'Content-Type': 'text/plain' })
   response.end('Modify Success');
@@ -138,4 +176,4 @@ const sendFile = function (response, filename) {
 }
 
 // server.listen(process.env.PORT || port)
-app.listen(port, () => console.log("Server has started on port 3000"));
+// app.listen(port, () => console.log("Server has started on port 3000"));
