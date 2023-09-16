@@ -1,0 +1,36 @@
+.logindivs{
+    text-align:center;
+    margin-bottom: 10%;
+}
+
+#mainheader{
+    border: solid black 3px;
+}
+
+.icon{
+    mix-blend-mode: multiply;
+    max-width:5%;
+    max-height:5%;
+    margin-top:1%;
+}
+
+.logindivheader{
+    font-size:29px;
+}
+
+#bodyshell{
+    background-image: url('../images/grey-wallpaper.jpg');
+    background-color:snow;
+    background-blend-mode:difference;
+    background-size: cover;
+    background-clip: padding-box;
+}
+
+#titlediv{
+    background-color: lightgrey;
+    text-align: center;
+}
+
+#errortext{
+    text-align: center;
+}

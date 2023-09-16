@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="css/login.css"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.6.0.min.css"/>
+        <title>MyArtists</title>
+    </head>
+    <body>
+        <div id="bodyshell">
+            <div id="titlediv">
+                <h1 id="mainheader">MyArtists Database Login</h1>
+            </div>
+            <div id="logincontainer">
+                <div class="logindivs">
+                    <img src="images/key.png" alt="Key clip art" class="icon">
+                    <p class="logindivheader">Enter Login Information</p>
+                    <form id="loginform">
+                        <input type="text" placeholder="Username" id="userinput">
+                        <input type="password" placeholder="Password" id="passinput">
+                        <button id="loginbutton">Login</button>
+                    </form> 
+                </div>
+                <p id="errortext"></p>
+                <div class="logindivs">
+                    <img src="images/usericon.jpg" alt="User Account Icon" class="icon">
+                    <p class="logindivheader">Create New Account</p>
+                    <form id="newacctform">
+                        <input type="text" placeholder="New Account Username" id="newusername">
+                        <input type="password" placeholder="New Account Password" id="newpassword">
+                        <button id="newacctbutton">Create</button>
+                    </form>
+                </div>
+            </div>  
+        </div>
+
+    </body>
+   <script src="js/login.js"></script> 
+   
+</html>

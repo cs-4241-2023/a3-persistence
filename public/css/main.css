@@ -1,0 +1,121 @@
+body {
+  background:white;
+  color:black;
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+input::placeholder {
+  color: gray;
+  font-style: italic; 
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+.grayed-out-input::placeholder {
+  color: gray;
+  font-style: italic; 
+}
+
+#artistname{
+  max-width: 15%;
+  margin-left:15%;
+  margin-right:3.75%;
+}
+
+#genre{
+  max-width: 15%;
+  margin-left: 3.75%;
+  margin-right: 3.75%;
+}
+
+#rating{
+  max-width: 15%;
+  margin-left: 3.75%;
+  margin-right: 7%;
+}
+
+#createform{
+  justify-content: center;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  margin-bottom: 10px;
+  border: solid black 1px;
+}
+
+#deleteaside{
+  float: right;
+  width:30%;
+  text-align: center;
+  height: 100%;
+  padding-left: 4%;
+}
+
+h1{
+  text-align: center;
+  border-style: solid;
+  border-radius: 2px;
+}
+
+ol li{
+  margin-bottom: 4%;
+}
+
+main{
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  justify-content: flex-start;
+  align-items: flex-start;
+  text-align: center;
+  background-color:rgb(165, 162, 162);
+}
+
+#leaderboard{
+  padding-left: 4%;
+  padding-right: 4%;
+  width:30%;
+}
+
+button{
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+input[type=text] {   
+  font-family: 'Chakra Petch', sans-serif;
+}
+
+#head{
+  background-color:rgb(165, 165, 165);
+}
+
+#favshowcase{
+  align-items: center;
+  padding-right: 4%;
+  width:30%;
+}
+
+.secondheader{
+  background-color: black;
+  text-align: center;
+  margin:0px;
+  font-size: 22px;
+}
+
+.divheader{
+  width:100%;
+  background-color: black;
+}
+
+#deldivheader{
+  color:rgb(223, 92, 92);
+  border:solid red 1px;
+}
+
+#favdivheader{
+  color:yellow;
+  border:solid yellow 1px;
+}
+
+#rankdivheader{
+  color:green;
+  border:solid green 1px;
+}
