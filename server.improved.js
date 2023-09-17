@@ -5,8 +5,15 @@ const http = require( 'http' ),
       // However, Glitch will install it automatically by looking in your package.json
       // file.
       mime = require( 'mime' ),
+      { MongoClient, ServerApiVersion } = require('mongodb'),
+      express = require( 'express' ),
       dir  = 'public/',
-      port = 3000
+      port = 3000,
+      mongouser = process.env.MONGO_USERNAME,
+      mongopass = process.env.MONGO_PASSWORD;
+      
+const uri = "mongodb+srv://" + mongouser + ":" + mongopass + "@cs4241.mwubspm.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp";
+
 
 const startDate = new Date()
 //console.log(startDate)
