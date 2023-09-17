@@ -1,10 +1,12 @@
 const express = require('express');
 const serveIndex = require('serve-index');
+require("dotenv").config(); 
 
 const app = express();
 const mongoose = require("mongoose");
-const uri = "mongodb+srv://cabbag3:webware2023@creaturecreatorcluster.loiqv5g.mongodb.net/?retryWrites=true&w=majority";
-
+const { MongoClient } = require('mongodb');
+const uri = process.env.HOST;
+//const client = new MongoClient(uri);
 mongoose.connect(
   uri, 
   {
@@ -40,7 +42,7 @@ const creaturePics = {"Chameleon": 'https://lafeber.com/vet/wp-content/uploads/V
                       "Capybara": 'https://gvzoo.com/cms-data/gallery/blog/animals/capybara/banner-capybara-sq.jpg',}
 
 
-/* const exampleCreature = new Creature({
+ const exampleCreature = new Creature({
   name: 'Babu',
   type: 'Frog',
   age: 3,
@@ -51,7 +53,7 @@ const creaturePics = {"Chameleon": 'https://lafeber.com/vet/wp-content/uploads/V
 exampleCreature.save().then(
   () => console.log("One entry added"), 
   (err) => console.log(err)
-); */
+); 
 
 app.use((req, res, next) => {
   console.log('Time: ', Date.now());
