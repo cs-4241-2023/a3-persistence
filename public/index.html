@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <div class="grid_container">
+      <div class="title">
+        <h1>
+          David's Most Subway Stops in One Hour
+        </h1>
+        <p>
+          Submit the number of subway stops you have been to in one hour to be recognized on this leaderboard!
+        </p>
+      </div>
+      <div class="manual_score_text">
+        <p class="thick">Manually Submit Score:</p>
+        <p>To change your score, simply use the same name as your original score with a new value to change it.</p>
+        <p>To delete your score, use your same name, then set the score to a negative value</p>
+      </div>
+      <div class="score_table">
+        <p class="thick">Leaderboard:</p>
+        <table id="score_table">
+        </table>
+      </div>
+      <div class="manual_score_form">
+        <form>
+          <label for="yourname">Name: </label>
+          <input type="text" id="yourname" placeholder="name"> <br>
+          <label for="score">Score: </label>
+          <input type="text" id="score" placeholder="score"> <br>
+          <button id="sub_button">Submit</button>
+          <button id="ref_button">Refresh</button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
