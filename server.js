@@ -51,15 +51,14 @@ run()
 
 async function verifyUniqueUsername(newUsername) { //
   
-  const allUsers = await collection.find({}, {usern: 1, _id: 0}).toArray().then(function(result){
-    console.log(result)
-  })
+  let duplicateUsernameCounter = 0
+
+  const allUsers = await collection.find({}, {usern: 1, _id: 0}).toArray().then(function(allUsersResult){ //Then function captures the result of the promise
+    console.log(allUsersResult)})
   
   console.log(allUsers)
   console.log(newUsername)
 
-  let duplicateUsernameCounter = 0
-  
   if(allUsers.length !== 0) {
     allUsers.forEach(u => {
       if(u.usern === newUsername) {
