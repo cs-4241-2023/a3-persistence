@@ -1,5 +1,5 @@
 const express = require("express"),
-  { MongoClient } = require("mongodb"),
+  { MongoClient, ObjectId } = require("mongodb"),
   app = express(),
   dir = "public/",
   port = 3000;
@@ -40,6 +40,7 @@ async function run() {
   //route to submit data
   app.post('/submit', async (req, res) => {
     console.log(req.body)
+    let start = new Date(req.body.startDate),
       today = new Date(),
       diff = new Date(today - start).getFullYear() - 1970,
       deposit = req.body.deposit,
@@ -52,6 +53,51 @@ async function run() {
       console.log(appdata)
       res.json(appdata)
     }
+  })
+
+  //route to delete
+  app.post('/delete', async (req, res) => {
+    console.log(req.body._id)
+    const result = await collection.deleteOne({
+      _id: new ObjectId(req.body._id)
+    })
+
+    const appdata = await collection.find({}).toArray()
+    console.log(appdata)
+    res.json(appdata)
+  })
+
+  //route to modify
+  app.post('/modify', async (req, res) => {
+
+    console.log("modify request", req.body);
+
+    for (let i = 0; i < req.body.length; i++) {
+      if (req.body[i].changed === 1) {
+        let start = new Date(req.body[i].startDate),
+          today = new Date(),
+          diff = new Date(today - start).getFullYear() - 1970,
+          deposit = req.body[i].deposit,
+          rate = req.body[i].rate,
+          accrued = deposit * (1 + rate * diff);
+
+        const result = await collection.updateOne(
+          { _id: new ObjectId(req.body[i]._id) },
+          {
+            $set: {
+              deposit: deposit,
+              rate: rate,
+              startDate: req.body[i].startDate,
+              accrued: accrued,
+            }
+          }
+        )
+      }
+    }
+
+    const appdata = await collection.find({}).toArray()
+    console.log(appdata)
+    res.json(appdata)
   })
 }
 

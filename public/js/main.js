@@ -33,7 +33,7 @@ const submit = async function (event) {
 
 const firstLoad = async function () {
   const response = await fetch("/getData");
-  
+
   console.log("first load");
 
   const data = await response.json();
@@ -69,8 +69,7 @@ const displayModifyView = (data) => {
       depositColumn = document.createElement("td"),
       startDateColumn = document.createElement("td"),
       rateColumn = document.createElement("td"),
-      accruedColumn = document.createElement("td"),
-      deleteButtonColumn = document.createElement("td");
+      accruedColumn = document.createElement("td");
 
     //input elements
     let textId = document.createElement("p"),
@@ -94,7 +93,18 @@ const displayModifyView = (data) => {
     inputStart.setAttribute("form", "modifyForm");
     setTodayMax(inputStart);
 
-    textId.textContent = data[i].id;
+    let actualDeposit = document.createElement("p"),
+    actualStart = document.createElement("p"),
+    actualRate = document.createElement("p");
+
+    actualDeposit.hidden = true;
+    actualStart.hidden = true;
+    actualRate.hidden = true;
+    actualDeposit.textContent = data[i].deposit;
+    actualStart.textContent = data[i].startDate;
+    actualRate.textContent = data[i].rate * 100;
+
+    textId.textContent = data[i]._id;
     inputDeposit.value = data[i].deposit;
     inputStart.value = data[i].startDate;
     inputRate.value = data[i].rate * 100;
@@ -102,8 +112,11 @@ const displayModifyView = (data) => {
     idColumn.appendChild(textId);
     idColumn.hidden = true;
     depositColumn.appendChild(inputDeposit);
+    depositColumn.appendChild(actualDeposit);
     startDateColumn.appendChild(inputStart);
+    startDateColumn.appendChild(actualStart);
     rateColumn.appendChild(inputRate);
+    rateColumn.appendChild(actualRate);
     accruedColumn.appendChild(textAccrued);
     tableRow.appendChild(idColumn);
     tableRow.appendChild(depositColumn);
@@ -134,7 +147,7 @@ const displayResults = (data) => {
       textAccrued = document.createElement("p"),
       deleteButton = document.createElement("button");
 
-    textId.textContent = data[i].id;
+    textId.textContent = data[i]._id;
     textDeposit.textContent = data[i].deposit.toLocaleString("en-US", {
       style: "currency",
       currency: "USD",
@@ -161,7 +174,6 @@ const displayResults = (data) => {
     deleteButton.textContent = "Delete";
     deleteButton.onclick = async () => {
       await deleteData(i);
-      //document.getElementById("dataView").deleteRow(i);
     };
     deleteButtonColumn.appendChild(deleteButton);
     deleteButtonColumn.setAttribute("class", "deleteButton");
@@ -201,13 +213,14 @@ const deleteData = async function (row) {
   let dataRow = document.getElementById("dataView").getElementsByTagName("tr");
   let idValue = dataRow[row].querySelector("td"),
     json = {
-      id: Number(idValue.textContent),
+      _id: idValue.textContent,
     },
     body = JSON.stringify(json);
 
   const response = await fetch("/delete", {
     method: "POST",
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: body,
   });
 
   const data = await response.json();
@@ -254,19 +267,33 @@ const sendModifiedReq = async (event) => {
   const modifiedData = [];
 
   let modifiedDataRow = document.getElementById("modifyView").children;
-  for (let i = 0; i < modifiedDataRow.length; i++) {
-    let inputs = modifiedDataRow[i].children;
 
+    
+  for (let i = 0; i < modifiedDataRow.length; i++) {
+    let inputs = modifiedDataRow[i].children
+
+      
     let id = inputs[0].firstElementChild,
       depositInput = inputs[1].firstElementChild,
       startInput = inputs[2].firstElementChild,
       rateInput = inputs[3].firstElementChild;
 
+      console.log(depositInput.value, "vs", inputs[1].children[1].textContent)
+      console.log(startInput.value, "vs", inputs[2].children[1].textContent)
+      console.log(rateInput.value, "vs", inputs[3].children[1].textContent)
+
+      let changed = 1
+      if(depositInput.value === inputs[1].children[1].textContent && startInput.value === inputs[2].children[1].textContent && rateInput.value === inputs[3].children[1].textContent){
+        changed = 0
+      }
+
+
     let json = {
       deposit: depositInput.value / 1,
       startDate: startInput.value,
       rate: rateInput.value / 100,
-      id: id.textContent,
+      _id: id.textContent,
+      changed: changed,
     };
 
     modifiedData.push(json);
@@ -276,7 +303,8 @@ const sendModifiedReq = async (event) => {
 
   const response = await fetch("/modify", {
     method: "POST",
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: body,
   });
 
   const data = await response.json();
