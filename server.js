@@ -4,11 +4,15 @@ const app = express();
 const { MongoClient } = require("mongodb");
 const PORT = process.env.PORT || 3000;
 
+require('dotenv').config()
+// console.log(process.env) // remove this after you've confirmed it is working
+
 app.use(express.static('public')) // Static files from public directory
 app.use(express.json()) // For parsing application/json
 
-// const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
-const uri = "mongodb+srv://tester0:pass0@cluster0.pt7vcfa.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp";
+const uri = `mongodb+srv://${process.env.TESTER}:${process.env.PASS}@${process.env.HOST}`
+console.log("uri: " + uri);
+// const uri = "mongodb+srv://tester0:pass0@cluster0.pt7vcfa.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp";
 
 const client = new MongoClient( uri )
 
