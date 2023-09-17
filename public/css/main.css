@@ -1,0 +1,162 @@
+body, html {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+}
+
+html {
+  background-color: lightgray;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background-color: #C7C7B8;
+  border-bottom: 1px solid rgb(51, 51, 51);
+  width: 100%;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#logo {
+  border-left: 1px solid rgb(51, 51, 51);
+  padding: 10px;
+}
+
+form {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 90%;
+}
+
+.input-type {
+  display: flex;
+  align-items: center;
+}
+
+.input-type label {
+  font-size: 14px;
+  border: 1px solid rgb(51, 51, 51);
+  padding: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  min-width: max-content;
+  background-color: white;
+}
+
+.input-type input {
+  padding: 5px;
+  border: 1px solid rgb(51, 51, 51);
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  flex: 1;
+}
+
+.input-type input:focus {
+  outline-style: none;
+}
+
+.input-type select {
+  font-size: 15px;
+  padding: 4px;
+  border: 1px solid rgb(51, 51, 51);
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#taskInput {
+  width: 40%;
+}
+
+#taskInput input {
+  font-size: 15px;
+}
+
+#dateInput {
+  width: 20%;
+}
+
+#dateInput input {
+  font-size: 13px;
+}
+
+#priorityInput {
+  width: 10%;
+}
+
+form button {
+  font-size: 14px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 1px solid rgb(51, 51, 51);
+  border-radius: 5px 5px 5px 5px;
+}
+
+section {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  font-family: 'Ubuntu', sans-serif;
+  background-color: #cbeeec;
+  border: 1px solid lightgray;
+}
+
+ul {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+ul li:nth-child(odd) {
+  background: #DEF2F1;
+}
+
+ul li:nth-child(even) {
+  background: #FEFFFF;
+}
+
+#listBox {
+  background-color: white;
+  width: 50%;
+  height: 400px;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.list-label {
+  width: 24%;
+  text-align: center;
+}
+
+li button {
+  width: 4%;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+li button:hover {
+  background-color: #FF6961;
+}
+
+#headerItem {
+  background-color: #3AAFA9;
+}

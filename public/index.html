@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Ubuntu&display=swap" rel="stylesheet">
+    
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <header>
+      <form class="inputs">
+        <div id="taskInput" class="input-type">
+          <label for="taskName">Task:</label>
+          <input type="text" id="taskName" name="taskname" placeholder="Enter task..." required>
+        </div>
+
+        <div id="dateInput" class="input-type">
+          <label for="dueDate">Due Date:</label>
+          <input type="date" id="dueDate" name="duedate" placeholder="MM-DD-YYYY" required>  
+        </div>
+
+        <div id="priorityInput" class="input-type">
+          <label for="priorityFlag">Priority:</label>
+          <select id="priorityFlag" name="priority">
+            <option value="none">None</option>
+            <option value="high">High</option>
+            <option value="medium">Medium</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+
+        <button id="addTaskButton" disabled>Add</button>
+      </form>
+      <p id="logo">TO-DO APP</p>
+    </header>
+    <section class="results">
+      <section id="listBox">
+        <ul>
+          <li id="headerItem">
+            <p class="list-label">Task Name</p>
+            <p class="list-label">Due Date</p>
+            <p class="list-label">Days Remaining</p>
+            <p class="list-label">Priority</p>
+          </li>
+        </ul>
+      </section>
+    </section>
+  </body>
+</html>
