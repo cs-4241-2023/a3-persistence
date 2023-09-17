@@ -28,7 +28,7 @@ const submit = async function (event) {
   const response = await fetch('/submit', { // Send client data to server 
     method: 'POST',
     headers: { 'Content-Type': 'application/json' }, // **Added this to get body data in server
-    body: JSON.stringify(formData) // Convert clientData to JSON string
+    body: JSON.stringify(formData) // Convert formData to JSON string
   })
 
   let serverData = await response.json() // Get server response

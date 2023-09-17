@@ -7,7 +7,9 @@ const PORT = process.env.PORT || 3000;
 app.use(express.static('public')) // Static files from public directory
 app.use(express.json()) // For parsing application/json
 
-const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
+// const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
+const uri = "mongodb+srv://tester0:pass0@cluster0.pt7vcfa.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp";
+
 const client = new MongoClient( uri )
 
 let collection = null
@@ -29,6 +31,22 @@ async function run() {
   run()
   
   app.listen(3000)
+
+  app.use( (req,res,next) => {
+    if( collection !== null ) {
+      next()
+    }else{
+      res.status( 503 ).send()
+    }
+  })
+
+  app.post( '/add', async (req,res) => {
+    const result = await collection.insertOne( req.body )
+    console.log( 'Req.body: ' + req.body );
+
+    res.json( result )
+    console.log( 'Result: ' + result );
+  })
 
 
 
