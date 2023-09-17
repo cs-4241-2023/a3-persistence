@@ -14,47 +14,56 @@ const uri = `mongodb+srv://${process.env.TESTER}:${process.env.PASS}@${process.e
 console.log("uri: " + uri);
 // const uri = "mongodb+srv://tester0:pass0@cluster0.pt7vcfa.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp";
 
-const client = new MongoClient( uri )
+const client = new MongoClient(uri)
 
 let collection = null
 
 
 async function run() {
-    await client.connect()
-    collection = await client.db("testA3").collection("testList")
-  
-    // route to get all docs
-    app.get("/docs", async (req, res) => {
-      if (collection !== null) {
-        const docs = await collection.find({}).toArray()
-        res.json( docs )
-      }
-    })
+  await client.connect()
+  collection = await client.db("testA3").collection("testList")
+}
+
+run()
+
+
+// Middelware to check if link to collection has been created properly
+// This way we don't have to check that database is connected in every route
+app.use((req, res, next) => {
+  if (collection !== null) {
+    next()
+  } else {
+    res.status(503).send()
   }
+})
+
+
+// route to get all docs
+app.get("/docs", async (req, res) => {
+    const docs = await collection.find({}).toArray()
+    // find is how you search the database
+    res.json(docs)
+})
+
+// Prof's code to add a new doc to database in chrome dev tools
+// const response = await fetch('/add', {
+//   method:'POST',
+//   headers:{'Content-Type': 'application/json'},
+//   body: JSON.stringify({name:'charlie'})
+// });
+// const data = await response.json();
+// console.log(data);
+
+
+// Add a new doc to database
+// app.post( '/submit', async (req,res) => {
+//   const result = await collection.insertOne( req.body )
+//   res.json( result )
+// })
   
-  run()
-  
-  app.listen(3000)
-
-  app.use( (req,res,next) => {
-    if( collection !== null ) {
-      next()
-    }else{
-      res.status( 503 ).send()
-    }
-  })
-
-  app.post( '/add', async (req,res) => {
-    const result = await collection.insertOne( req.body )
-    console.log( 'Req.body: ' + req.body );
-
-    res.json( result )
-    console.log( 'Result: ' + result );
-  })
 
 
-
-
+app.listen(3000)
 
 
 
@@ -71,6 +80,42 @@ async function run() {
 //     playerList.push(req.body) // Add player to  playerList 
 //     respond(res, playerList);
 // })
+
+// // POST attempt 01
+// app.post('/submit', express.json(), (req, res) => {
+
+//   // Add new player to database
+//   collection.insertOne( req.body )
+
+
+//   // Sort all plaryers in database and give them a rank
+
+//   // Respond to client with full list of players in database
+//   res.writeHead(200, { 'Content-Type': 'application/json' });
+//   res.end(JSON.stringify(collection.find({}).toArray()));
+
+// })
+
+// POST attempt 02
+app.post('/submit', express.json(), async (req, res) => {
+  try {
+    // Add new player to the database
+    await collection.insertOne(req.body);
+
+    // Retrieve all players from the database
+    const players = await collection.find({}).toArray();
+
+    // Call rank players function here:
+
+
+    // Respond to the client with a JSON string of players
+    res.status(200).json(players);
+  } catch (error) {
+    // Handle error
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 // // DELETE
 // app.delete('/delete', express.json(), (req, res) => {
