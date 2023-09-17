@@ -51,7 +51,7 @@ function loadTasks(taskList) {
         body
       })
     
-      const getResponse = await fetch('/tasks', {
+      const getResponse = await fetch('/getTasks', {
         method: 'GET',
       })
     
@@ -95,12 +95,12 @@ const submit = async function( event ) {
   const json = { taskName: taskInput, dueDate: dateInput, priority: priorityInput};
   const body = JSON.stringify(json);
 
-  const postResponse = await fetch( '/submit', {
+  const postResponse = await fetch( '/submitTasks', {
     method:'POST',
     body 
   })
 
-  const getResponse = await fetch('/tasks', {
+  const getResponse = await fetch('/getTasks', {
     method: 'GET',
   })
 

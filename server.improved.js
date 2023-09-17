@@ -1,56 +1,24 @@
-const http = require( 'http' ),
-      fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
-      // to install the mime library if you're testing this on your local machine.
-      // However, Glitch will install it automatically by looking in your package.json
-      // file.
-      mime = require( 'mime' ),
-      dir  = 'public/',
-      port = 3000
+const express = require('express'),
+      app = express();
 
-let taskId = 0;
 let taskList = [];
+let taskId = 0;
 
-const server = http.createServer( function( request,response ) {
-  if( request.method === 'GET' ) {
-    handleGet( request, response )    
-  }else if( request.method === 'POST' ){
-    handlePost( request, response ) 
-  }
-})
+app.use(express.static('public'));
 
-const handleGet = function( request, response ) {
-  const filename = dir + request.url.slice(1); 
+app.get('/getTasks', (req, res) => {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(taskList));
+}); 
 
-  if( request.url === '/' ) {
-    sendFile(response, 'public/index.html');
-  }
-  else if (request.url === '/tasks') {
-    response.writeHead(200, { 'Content-Type': 'application/json' });
-    response.end(JSON.stringify(taskList));
-  }
-  else{
-    sendFile(response, filename);
-  }
-}
-
-const handlePost = function(request, response) {
-  if (request.url === '/submit') {
-    submitTasks(request, response);
-  }
-  else if (request.url === '/deleteTask') {
-    deleteTask(request, response);
-  }
-}
-
-const submitTasks = function( request, response ) {
+app.post('/submitTasks', (req, res) => {
   let dataString = '';
 
-  request.on( 'data', function(data) {
-      dataString += data;
-  })
+  req.on('data', function(data) {
+    dataString += data;
+  });
 
-  request.on('end', function() {
+  req.on('end', function() {
     let info = JSON.parse(dataString);
 
     const currentDate = new Date();
@@ -70,19 +38,20 @@ const submitTasks = function( request, response ) {
     console.log(info);
     taskList.push(info);
 
-    response.writeHead(200, "OK", {'Content-Type': 'text/plain' });
-    response.end('test');
-  })
-}
+    res.writeHead(200, "OK", {'Content-Type': 'text/plain' });
+    res.end('Submit Success');
+  });
 
-const deleteTask = function(request, response) {
+});
+
+app.post('/deleteTask', (req, res) => {
   let dataString = '';
 
-  request.on( 'data', function(data) {
+  req.on( 'data', function(data) {
       dataString += data;
   })
 
-  request.on('end', function() {
+  req.on('end', function() {
     let info = JSON.parse(dataString);
     for (let i = 0; i < taskList.length; i++) {
       if (parseInt(info.id) === taskList[i].taskId) {
@@ -91,31 +60,9 @@ const deleteTask = function(request, response) {
       }
     }
 
-    response.writeHead(200, "OK", {'Content-Type': 'text/plain' });
-    response.end('test');
+    res.writeHead(200, "OK", {'Content-Type': 'text/plain' });
+    res.end('Delete Success');
   })
-}
+});
 
-const sendFile = function( response, filename ) {
-   const type = mime.getType( filename ) 
-
-   fs.readFile( filename, function( err, content ) {
-
-     // if the error = null, then we've loaded the file successfully
-     if( err === null ) {
-
-       // status code: https://httpstatuses.com
-       response.writeHeader( 200, { 'Content-Type': type })
-       response.end( content )
-
-     }else{
-
-       // file not found, error code 404
-       response.writeHeader( 404 )
-       response.end( '404 Error: File Not Found' )
-
-     }
-   })
-}
-
-server.listen( process.env.PORT || port )
+app.listen(process.env.PORT || 3000);
