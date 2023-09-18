@@ -1,0 +1,16 @@
+{
+  "name": "",
+  "version": "",
+  "description": "",
+  "author": "",
+  "engines": {
+    "node": ">14.17.0"
+  },
+  "scripts": {
+    "start": "node server.improved.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mime": "^2.4.4"
+  }
+}
