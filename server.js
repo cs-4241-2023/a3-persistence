@@ -40,9 +40,9 @@ app.use((req, res, next) => {
 
 // route to get all docs
 app.get("/docs", async (req, res) => {
-    const docs = await collection.find({}).toArray()
-    // find is how you search the database
-    res.json(docs)
+  const docs = await collection.find({}).toArray()
+  // find is how you search the database
+  res.json(docs)
 })
 
 // Prof's code to add a new doc to database in chrome dev tools
@@ -60,7 +60,6 @@ app.get("/docs", async (req, res) => {
 //   const result = await collection.insertOne( req.body )
 //   res.json( result )
 // })
-  
 
 
 app.listen(3000)
@@ -96,7 +95,7 @@ app.listen(3000)
 
 // })
 
-// POST attempt 02
+// working POST attempt 02
 app.post('/submit', express.json(), async (req, res) => {
   try {
     // Add new player to the database
@@ -106,7 +105,7 @@ app.post('/submit', express.json(), async (req, res) => {
     const players = await collection.find({}).toArray();
 
     // Call rank players function here:
-
+    rankPlayers(collection);
 
     // Respond to the client with a JSON string of players
     res.status(200).json(players);
@@ -115,6 +114,23 @@ app.post('/submit', express.json(), async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+// POST attempt 02
+// app.post('/submit', express.json(), async (req, res) => {
+//   try {
+//     // Add new player to the database
+//     await collection.insertOne(req.body);
+
+//     // Call rank players function here:
+//     const rankedPlayers = rankPlayers(collection);
+
+//     // Respond to the client with a JSON string of players
+//     res.status(200).json(rankedPlayers);
+//   } catch (error) {
+//     // Handle error
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
 
 
 // // DELETE
@@ -154,7 +170,7 @@ app.post('/submit', express.json(), async (req, res) => {
 //     return playerList;
 // }
 
-// // Rank Players sorts playerList and gives each player a rank
+// Rank Players sorts playerList and gives each player a rank
 // function rankPlayers(playerList) {
 //     playerList.sort((a, b) => (a.score < b.score) ? 1 : -1)
 //     playerList.forEach((player, index) => {
@@ -162,6 +178,27 @@ app.post('/submit', express.json(), async (req, res) => {
 //     })
 //     return playerList;
 // }
+
+// // progress Rank fxn for MongoDB
+async function rankPlayers(collection) {
+  try {
+    // Retrieve all players from the database and sort them by score in descending order
+    const sortedPlayers = await collection.find({}).sort({ score: -1 }).toArray();
+
+    // Give each player a rank
+    sortedPlayers.forEach((player, index) => {
+      player.rank = index + 1;
+    });
+    
+
+    // Return the sorted and ranked players
+    return sortedPlayers;
+  } catch (error) {
+    throw error;
+  }
+}
+
+
 
 // // Respond to client with playerList
 // function respond(res, playerList) {
