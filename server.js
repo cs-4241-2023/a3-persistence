@@ -27,7 +27,7 @@ app.use(express.static("views"));
 app.use(express.json());
 
 app.get("/init", (req, res) => {
-  res.header({"Content-Type": "application/json"})
+  res.header({ "Content-Type": "application/json" });
   res.send(JSON.stringify(taskData));
 });
 
@@ -38,5 +38,3 @@ app.post("/submit", (req, res) => {
 });
 
 app.listen(process.env.PORT);
-
-// function handleSubmit() {}

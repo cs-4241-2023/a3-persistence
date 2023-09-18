@@ -20,13 +20,14 @@ const submit = async function (event) {
 
   let edit = { ...body, id: currentNote };
 
-  console.log(typeof JSON.stringify(edit));
+  console.log(edit);
 
   await fetch("/submit", {
     method: "POST",
-    header: { "Content-Type": "application/json" },
-    body: JSON.stringify({ bomb: "Submitting" }),
-  }).then((response) => (taskData = JSON.parse(response.text())));
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(edit),
+  }).then(response => response.json())
+  .then(json => console.log(json));
 
   loadTasks();
 };
