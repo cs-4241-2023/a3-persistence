@@ -1,25 +1,43 @@
-const express    = require('express'),
-    app          = express(),
-    mongodb      =require("mongodb"),
-    bodyParser   =require("body-parser"),
-    appData      = []
+const express = require( 'express' ),
+    mongodb = require( 'mongodb' ),
+    app = express()
 
-app.use(bodyParser.urlencoded({extended:true}))
-app.use( express.static( 'public' ) )
-app.use( express.static( 'views'  ) )
+require('dotenv').config();
+
+app.use( express.static('./public/') )
 app.use( express.json() )
 
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
+const client = new mongodb.MongoClient( uri, { useNewUrlParser: true, useUnifiedTopology:true })
+let collection = null
 
-const uri = 'mongodb+srv://'+process.env.USER+':'+process.env.PASS+'@'+process.env.HOST;
-const client = new mongodb.MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:true });
+client.connect()
+    .then( () => {
+        // will only create collection if it doesn't exist
+        return client.db( 'Cluster0' ).collection( 'Collection0' )
+    })
+    .then( __collection => {
+        // store reference to collection
+        collection = __collection
+        // blank query returns all documents
+        return collection.find({ }).toArray()
+    })
+    .then( console.log )
 
-//Grabs Json body and puts it in req
-app.post( '/submit', (req, res) => {
-    appData.push( req.body.newdata )
-    res.writeHead( 200, { 'Content-Type': 'application/json' })
-    res.end( JSON.stringify( appData ) )
+// route to get all docs
+app.get( '/', (req,res) => {
+    if( collection !== null ) {
+        // get array and pass to res.json
+        collection.find({ }).toArray().then( result => res.json( result ) )
+    }
 })
 
-app.listen( 3000,()=>{
-    console.log("Connected");
-} )
+app.use( (req,res,next) => {
+    if( collection !== null ) {
+        next()
+    }else{
+        res.status( 503 ).send()
+    }
+})
+
+app.listen( 3000 )
