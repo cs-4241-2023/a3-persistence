@@ -69,7 +69,7 @@ function verifyUniqueUsername(newUsername, users) { //
 
   if(users.length !== 0) {
     users.forEach(u => {
-      if(u === newUsername) {
+      if(u.usern === newUsername) {
         duplicateUsernameCounter++
       }
     })
@@ -106,18 +106,17 @@ app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a te
 
 app.post('/userLogin', async (req, res) => { //
   
-  const usernameData = await collection.find({usern: req.body.username}, {usern: 1, _id: 0})
-  const passwordData = await collection.find({usern: req.body.username}, {passw: 1, _id: 0})
+  const userData = await collection.find({usern: req.body.username}, {usern: 1, _id: 0}).toArray()
 
-  console.log(usernameData)
+  console.log(userData)
   console.log(req.body.password)
 
-  if(typeof usernameData === 'undefined') {
+  if(typeof userData === 'undefined') {
     return res.status(400).end(JSON.stringify("UserNotFound")) //send function just sends the HTTP response.
   }
 
   try {
-    if(await bcrypt.compare(req.body.password, passwordData)) { //prevents timing attacks
+    if(await bcrypt.compare(req.body.password, userData[0].passw)) { //prevents timing attacks
       return res.end(JSON.stringify("SuccessfulLogin"))
     } else {
       return res.end(JSON.stringify("NoPasswordMatch")) //Convert value into JSON String
