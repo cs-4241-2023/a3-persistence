@@ -7,6 +7,9 @@ const mongoose = require("mongoose");
 const { MongoClient } = require('mongodb');
 const uri = process.env.HOST;
 //const client = new MongoClient(uri);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'html');
+
 mongoose.connect(
   uri, 
   {
@@ -23,6 +26,12 @@ const creatureSchema = new mongoose.Schema({
   status: String
 });
 const Creature = mongoose.model('Creature', creatureSchema);
+
+const loginSchema = new mongoose.Schema({
+  username: {type: String, min: 10, max: 30, required: true},
+  password: {type: String, min: 5, max: 30, required: true}
+});
+const Login = mongoose.model('Login', loginSchema);
 
 const avgAges = {"Chameleon": 7, "Gecko": 7,
                  "Frog": 10, "Snake": 15,
@@ -50,11 +59,21 @@ const creaturePics = {"Chameleon": 'https://lafeber.com/vet/wp-content/uploads/V
   status: 'your creature is young!'
 });
 
-exampleCreature.save().then(
+const practiceLogin = new Login({
+  username: 'mylogin',
+  password: '1234'
+});
+
+/* practiceLogin.save().then(
+  () => console.log("added login"),
+  (err) => console.log(err)
+); */
+
+/* exampleCreature.save().then(
   () => console.log("One entry added"), 
   (err) => console.log(err)
 ); 
-
+ */
 app.use((req, res, next) => {
   console.log('Time: ', Date.now());
   next();
@@ -71,7 +90,26 @@ app.use( express.json() );
 
 app.post('/submit', (req, res, next) => {
     //add stuff to handle submit of data
-    next();
+    console.log("in submit")
+  
+    const json = { username: req.body.username,
+      password: req.body.password}
+
+    console.log(json)
+    Login.findOne({username: json.username, password: json.password}).then (function (result, err) {
+      if(result){
+        console.log(result)
+        console.log('success')
+        res.redirect('creatureMaker.html')
+      }else{
+        console.log('fail')
+        console.log(err)
+        res.sendFile(__dirname + '/public/index.html')
+        //return res.redirect('/')
+      }
+      
+  })
+    //next();
 });
 
 app.get('/', (req, res) => {
