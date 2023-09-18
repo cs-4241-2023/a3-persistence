@@ -26,8 +26,9 @@ const submit = async function (event) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(edit),
-  }).then(response => response.json())
-  .then(json => console.log(json));
+  })
+    .then((response) => response.json())
+    .then((json) => console.log(json));
 
   loadTasks();
 };
@@ -128,15 +129,14 @@ function loadTasks() {
   // Add onclick event to div
   newTask.addEventListener("click", async (event) => {
     // Send a request for a new task
-    const response = await fetch("/new", {
+    await fetch("/new", {
       method: "POST",
-      body: JSON.stringify("make a new note"),
-    });
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((json) => (taskData = json));
 
-    const text = await response.text();
-
-    taskData = JSON.parse(text);
-
+    // Set the current note to the new note
     currentNote = taskData.slice(-1)[0].id;
 
     form.reset();

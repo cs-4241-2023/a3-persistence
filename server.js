@@ -37,4 +37,20 @@ app.post("/submit", (req, res) => {
   res.end(JSON.stringify(taskData));
 });
 
+app.post("/new", (req, res) => {
+  const newTask = {
+    title: "New Note",
+    date: new Date().toISOString().split("T")[0],
+    priority: "Low",
+    description: "",
+    dueDate: "",
+    id: nanoid(),
+  };
+
+  taskData.push(newTask);
+
+  res.writeHead(200, "OK", { "Content-Type": "text/plain" });
+  res.end(JSON.stringify(taskData));
+});
+
 app.listen(process.env.PORT);
