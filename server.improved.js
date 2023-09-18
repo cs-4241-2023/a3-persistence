@@ -1,13 +1,6 @@
-const http = require( 'http' ),
-      fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
-      // to install the mime library if you're testing this on your local machine.
-      // However, Glitch will install it automatically by looking in your package.json
-      // file.
-      mime = require( 'mime' ),
-      { MongoClient, ServerApiVersion } = require('mongodb'),
+const { MongoClient, ServerApiVersion } = require('mongodb'),
       express = require( 'express' ),
-      dir  = 'public/',
+      app = express(),
       port = 3000,
       mongouser = process.env.MONGO_USERNAME,
       mongopass = process.env.MONGO_PASSWORD;
@@ -15,66 +8,14 @@ const http = require( 'http' ),
 const uri = "mongodb+srv://" + mongouser + ":" + mongopass + "@cs4241.mwubspm.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp";
 
 
-const startDate = new Date()
-//console.log(startDate)
+let scores = []
 
-let scores = [
-  { 'name': 'david', 'score': 13, 'date': startDate}
-]
+app.use(express.static('public'));
+app.use(express.static('views'));
+app.use(express.json());
 
-const appdata = [
-  { 'model': 'toyota', 'year': 1999, 'mpg': 23 },
-  { 'model': 'honda', 'year': 2004, 'mpg': 30 },
-  { 'model': 'ford', 'year': 1987, 'mpg': 14} 
-]
-
-const server = http.createServer( function( request,response ) {
-  if( request.method === 'GET' ) {
-    handleGet( request, response )    
-  }else if( request.method === 'POST' ){
-    handlePost( request, response ) 
-  }
-})
-
-const handleGet = function( request, response ) {
-  const filename = dir + request.url.slice( 1 ) 
-
-  if( request.url === '/' ) {
-    sendFile( response, 'public/index.html' )
-  }else{
-    sendFile( response, filename )
-  }
-}
-
-const handlePost = function( request, response ) {
-  if (request.url === '/submit') {
-    handleManualScore(request, response)
-  } else {
-    refresh(response)
-  }
-}
-
-const sendFile = function( response, filename ) {
-   const type = mime.getType( filename ) 
-
-   fs.readFile( filename, function( err, content ) {
-
-     // if the error = null, then we've loaded the file successfully
-     if( err === null ) {
-
-       // status code: https://httpstatuses.com
-       response.writeHeader( 200, { 'Content-Type': type })
-       response.end( content )
-
-     }else{
-
-       // file not found, error code 404
-       response.writeHeader( 404 )
-       response.end( '404 Error: File Not Found' )
-
-     }
-   })
-}
+app.post('/submit', handleManualScore);
+app.post('/refresh', refresh);
 
 function newScore(name, score) {
   const dateSub = new Date()
@@ -83,7 +24,7 @@ function newScore(name, score) {
   scores.push(newsc)
 }
 
-function refresh(response) {
+function refresh(request, response) {
   //console.log(scores)
   response.writeHeader(200, {'Content-Type': 'text/plain'})
   response.end(JSON.stringify(scores))
@@ -132,5 +73,5 @@ function handleManualScore(request, response) {
 
 }
 
-server.listen( process.env.PORT || port )
+app.listen( process.env.PORT || port )
  
