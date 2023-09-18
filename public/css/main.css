@@ -1,0 +1,76 @@
+body {
+  background-attachment: fixed;
+  background-image: linear-gradient(to bottom, #7697a0, #c2c8c5);
+  color: white;
+  font-family: 'Oswald', sans-serif;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+input[type="text"], input[type="date"] {
+  width: 400px;
+  padding: 12px 20px;
+  margin: 8px 0;
+  border: 1px solid #c2c8c5;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #7697a0;
+  font-family: 'Oswald', sans-serif;
+}
+
+::placeholder {
+  color: #7697a0;
+}
+
+#submit {
+  width: 100%;
+  background-color: #4a707a;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+}
+
+input[type="submit"]:hover {
+  background-color: #7697a0;
+}
+
+#form {
+  display: flex;
+  justify-content: center;
+}
+
+.title {
+  margin: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+table {
+  display: flex;
+  justify-content: center;
+  border-collapse: collapse;
+  margin: 25px 0;
+  min-width: 400px;
+}
+
+tr {
+  background-color: #94b0b7;
+}
+
+tr:first-child {
+  background-color: #4a707a;
+  text-align: left;
+}
+
+th, td {
+  padding: 15px 50px;
+  border-bottom: 1px solid #4a707a;
+}
