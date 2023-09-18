@@ -13,20 +13,20 @@ const submit = async function (event) {
   const form = document.querySelector("form");
   const body = parseForm(form);
 
-  if(body.title === "") {
+  if (body.title === "") {
     alert("Please add a title");
-    return
+    return;
   }
 
   let edit = { ...body, id: currentNote };
 
-  const response = await fetch("/submit", {
-    method: "POST",
-    body: JSON.stringify(edit),
-  });
+  console.log(typeof JSON.stringify(edit));
 
-  const text = await response.text();
-  taskData = JSON.parse(text);
+  await fetch("/submit", {
+    method: "POST",
+    header: { "Content-Type": "application/json" },
+    body: JSON.stringify({ bomb: "Submitting" }),
+  }).then((response) => (taskData = JSON.parse(response.text())));
 
   loadTasks();
 };
@@ -35,13 +35,12 @@ window.onload = async function () {
   const button = document.querySelector("#save");
   button.onclick = submit;
 
-  const response = await fetch("/init", {
-    method: "POST",
-    body: JSON.stringify("test"),
-  });
+  await fetch("/init", {
+    method: "GET",
+  })
+    .then((response) => response.json())
+    .then((json) => (taskData = json));
 
-  const text = await response.text();
-  taskData = JSON.parse(text);
   loadTasks();
 };
 
@@ -222,6 +221,6 @@ function generateTable() {
           break;
       }
     });
-    tablebody.appendChild(newRow)
+    tablebody.appendChild(newRow);
   });
 }
