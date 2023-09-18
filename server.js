@@ -32,7 +32,25 @@ app.get("/init", (req, res) => {
 });
 
 app.post("/submit", (req, res) => {
-  console.log(req.body);
+  let newTask = req.body;
+
+  if (newTask.due === "") {
+    const originalDate = new Date(newTask.date);
+    switch (newTask.priority) {
+      case "Low":
+        newTask.due = addDays(originalDate, 5).toISOString().split("T")[0];
+        break;
+      case "Medium":
+        newTask.due = addDays(originalDate, 3).toISOString().split("T")[0];
+        break;
+      case "High":
+        newTask.due = addDays(originalDate, 1).toISOString().split("T")[0];
+        break;
+    }
+  }
+  let index = taskData.findIndex((task) => task.id === newTask.id);
+  taskData[index] = newTask;
+
   res.writeHead(200, { "Content-Type": "application/json" });
   res.end(JSON.stringify(taskData));
 });
@@ -64,3 +82,10 @@ app.delete("/delete", (req, res) => {
 });
 
 app.listen(process.env.PORT);
+
+// Simple function to add days to date
+function addDays(date, days) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+}

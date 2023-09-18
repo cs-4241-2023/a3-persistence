@@ -20,15 +20,13 @@ const submit = async function (event) {
 
   let edit = { ...body, id: currentNote };
 
-  console.log(edit);
-
   await fetch("/submit", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(edit),
   })
     .then((response) => response.json())
-    .then((json) => console.log(json));
+    .then((json) => (taskData = json));
 
   loadTasks();
 };
@@ -86,7 +84,7 @@ function loadTasks() {
       currentNote = task.id;
       title.value = task.title;
       date.value = task.date;
-      dueDate.value = task.dueDate;
+      dueDate.value = task.due;
       priority.value = task.priority;
       description.value = task.description;
     } else {
@@ -108,6 +106,7 @@ function loadTasks() {
       // Make the new selected task look selected
       event.target.className = "tasks-list--task selected";
       const taskID = await findTask(currentNote);
+
       title.value = taskID.title;
       date.value = taskID.date;
       dueDate.value = taskID.dueDate;
@@ -153,8 +152,8 @@ async function deleteTask() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ taskID: currentNote }),
   })
-  .then(response => response.json())
-  .then(json => taskData = json);
+    .then((response) => response.json())
+    .then((json) => (taskData = json));
 
   // Need to now default to 0 since the current note is now gone (can default to something else but lazy)
   currentNote = 0;
@@ -162,18 +161,15 @@ async function deleteTask() {
   loadTasks();
 }
 
-async function editNote() {
-  const noteToEdit = await findTask(currentNote);
-
-  const response = await fetch("/edit", {
-    method: "POST",
-    body: JSON.stringify(noteToEdit),
+// Function to find a note within the array given an id
+async function findTask(id) {
+  let returnTask = null;
+  taskData.forEach((task) => {
+    if (task.id === id) {
+      returnTask = task;
+    }
   });
-
-  const text = await response.text();
-  taskData = JSON.parse(text);
-
-  loadTasks();
+  return returnTask;
 }
 
 function generateTable() {
