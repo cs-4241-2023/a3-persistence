@@ -146,28 +146,15 @@ function loadTasks() {
   sidebar.appendChild(newTask);
 }
 
-// Function to find a note within the array given an id
-async function findTask(id) {
-  let returnTask = null;
-  taskData.forEach((task) => {
-    if (task.id === id) {
-      returnTask = task;
-    }
-  });
-  return returnTask;
-}
-
 // Function to delete a note
 async function deleteTask() {
-  const noteToDelete = await findTask(currentNote);
-
   const response = await fetch("/delete", {
-    method: "POST",
-    body: JSON.stringify(noteToDelete),
-  });
-
-  const text = await response.text();
-  taskData = JSON.parse(text);
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ taskID: currentNote }),
+  })
+  .then(response => response.json())
+  .then(json => taskData = json);
 
   // Need to now default to 0 since the current note is now gone (can default to something else but lazy)
   currentNote = 0;

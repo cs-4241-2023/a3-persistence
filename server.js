@@ -3,7 +3,7 @@ import { nanoid } from "nanoid";
 import "dotenv/config";
 
 const app = express();
-const taskData = [
+let taskData = [
   {
     title: "Assignment 1",
     date: "2023-09-15",
@@ -50,6 +50,16 @@ app.post("/new", (req, res) => {
   taskData.push(newTask);
 
   res.writeHead(200, "OK", { "Content-Type": "text/plain" });
+  res.end(JSON.stringify(taskData));
+});
+
+app.delete("/delete", (req, res) => {
+  taskData = taskData.filter((task) => {
+    return task.id !== req.body.taskID;
+  });
+
+  res.writeHead(200, "OK", { "Content-Type": "application/json" });
+
   res.end(JSON.stringify(taskData));
 });
 
