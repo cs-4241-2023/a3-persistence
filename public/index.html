@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>CS4241 Assignment 3</title>
+    <meta charset="utf-8">
+    <script src="main.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+
+<body>
+    <header>
+        <h1>My Blog</h1>
+    </header>
+
+    <section id="new-blog-post">
+        <h2>Add a New Blog Post</h2>
+        <form id="blog-post-form">
+            <label for="title">Title:</label>
+            <br>
+            <input type="text" id="title" required>
+            <br>
+            <label for="content">Content:</label>
+            <br>
+            <textarea id="content" rows="4" required></textarea>
+            <br>
+            <button type="submit" id="create-button">Submit</button>
+        </form>
+    </section>
+
+    <section id="blog-posts">
+        <h2 id="post-header">Posts</h2>
+    </section>
+
+</body>
+
+</html>
