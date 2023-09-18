@@ -21,6 +21,7 @@ const submitAssignment = async function(event) {
   // post JSON to server
   const response = await fetch( '/submit', {
     method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: inputJSON
   });
 
@@ -127,8 +128,9 @@ const getAllData = async function () {
  * @returns {Promise<void>}
  */
 const deleteAssignment = async function(assignment) {
-  const response = await fetch("/assignment-delete" ,{
+  await fetch("/assignment-delete" ,{
     method: "DELETE",
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(assignment)});
 
   await getAllData();
@@ -174,6 +176,7 @@ const editAssignment = async function(assignmentId) {
 
   const response = await fetch("/assignment-edit" ,{
     method: "PUT",
+    headers: { 'Content-Type': 'application/json' },
     body: editedJSON
   });
 
