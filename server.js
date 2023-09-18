@@ -25,6 +25,7 @@ app.use(express.json()) //Body-parser middleware for all incoming requests that 
 let userData = {}
 
 //MongoDB Connection
+
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new MongoClient(uri)
 
@@ -47,57 +48,43 @@ async function run() {
 }
 run()
 
+app.use((req, res, next) => {
+  if(collection !== null) {
+    console.log("Collection has been assigned.")
+    next() //The next() function is a function in the Express router that, when invoked, executes the next middleware in the middleware stack. If the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging.
+  }else{
+    console.log("Collection is null.") //Middleware stack stops at this point
+  }
+})
+
 //User data operations and helper functions:
 
-async function verifyUniqueUsername(newUsername) { //
+function verifyUniqueUsername(newUsername, users) { //
   
   let duplicateUsernameCounter = 0
-
-  const allUsers = await collection.find({}, {usern: 1, _id: 0}).toArray().then(function(allUsersResult){ //Then function captures the result of the promise
-    console.log(allUsersResult)})
   
-  console.log(allUsers)
+  console.log(users)
   console.log(newUsername)
+  console.log(typeof(users))
 
-  if(allUsers.length !== 0) {
-    allUsers.forEach(u => {
-      if(u.usern === newUsername) {
+  if(users.length !== 0) {
+    users.forEach(u => {
+      if(u === newUsername) {
         duplicateUsernameCounter++
       }
     })
   }
-
+  
   console.log(duplicateUsernameCounter)
 
   return duplicateUsernameCounter
 }
 
-app.post('/userLogin', async (req, res) => { //
-  
-  userData = await collection.find(({usern: req.body.username},{_id: 0}))
-
-  console.log(userData.usern)
-
-  if(typeof userData.usern === 'undefined') {
-    return res.status(400).end(JSON.stringify("UserNotFound")) //send function just sends the HTTP response.
-  }
-
-  try {
-    if(await bcrypt.compare(req.body.password, userData.passw)) { //prevents timing attacks
-      return res.end(JSON.stringify("SuccessfulLogin"))
-    } else {
-      return res.end(JSON.stringify("NoPasswordMatch")) //Convert value into JSON String
-    }
-  } catch {
-    return res.status(500).end(JSON.stringify("InternalServerError")) //500 status indicates an internal server error
-  }
-})
-
 app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a technical achievement for 5 points //
        
-  console.log(verifyUniqueUsername(req.body.username))
+  const allUsers = await collection.find({}, {usern: 1, _id: 0}).toArray() 
   
-  if(verifyUniqueUsername(req.body.username) === 0) {
+  if(verifyUniqueUsername(req.body.username, allUsers) === 0) {
     try {
       const salt = await bcrypt.genSalt(10) //A salt is a random data that is used as an additional input to a one-way function that hashes data
       const hashedPassword = await bcrypt.hash(req.body.password, salt)
@@ -115,6 +102,30 @@ app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a te
       return res.end(JSON.stringify("UsernameTakenByPreviousUserCreation"))
   }
 
+})
+
+app.post('/userLogin', async (req, res) => { //
+  
+  const usernameData = await collection.find({usern: req.body.username}, {usern: 1, _id: 0})
+  const passwordData = await collection.find({usern: req.body.username}, {passw: 1, _id: 0})
+
+  console.log(usernameData)
+  console.log(req.body.password)
+
+  if(typeof usernameData === 'undefined') {
+    return res.status(400).end(JSON.stringify("UserNotFound")) //send function just sends the HTTP response.
+  }
+
+  try {
+    if(await bcrypt.compare(req.body.password, passwordData)) { //prevents timing attacks
+      return res.end(JSON.stringify("SuccessfulLogin"))
+    } else {
+      return res.end(JSON.stringify("NoPasswordMatch")) //Convert value into JSON String
+    }
+  } catch {
+    return res.status(500).end(JSON.stringify("InternalServerError")) //500 status indicates an internal server error
+  }
+  
 })
 
 //Music data CRUD operations
