@@ -6,35 +6,33 @@
     <meta charset="utf-8">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./main.js"></script>
-    <link rel="stylesheet" href="./main.css">
+    <base href="/">
+    <link rel="stylesheet" href="output.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
 
     <!-- get rid of favicon error -->
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 </head>
 
-<body>
-    <header>
-        <h1>My Blog</h1>
+<body class="bg-gray-100 font-roboto">
+
+    <header class="text-center py-4">
+        <h1 class="text-3xl font-bold underline">My Blog</h1>
     </header>
 
-    <section id="new-blog-post">
-        <h2>Add a New Blog Post</h2>
+    <section id="new-blog-post" class="bg-white shadow-md rounded px-4 py-4 mx-auto max-w-lg mt-8">
+        <h2 class="text-2xl mb-4">Add a New Blog Post</h2>
         <form id="blog-post-form">
-            <label for="title">Title:</label>
-            <br>
-            <input type="text" id="title" required>
-            <br>
-            <label for="content">Content:</label>
-            <br>
-            <textarea id="content" rows="4" required></textarea>
-            <br>
-            <button type="submit" id="create-button">Submit</button>
+            <label for="title" class="block font-semibold">Title:</label>
+            <input type="text" id="title" class="border rounded px-2 py-1 w-full mt-2" required>
+            <label for="content" class="block font-semibold mt-4">Content:</label>
+            <textarea id="content" rows="4" class="border rounded px-2 py-1 w-full mt-2" required></textarea>
+            <button type="submit" id="create-button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded">Submit</button>
         </form>
     </section>
 
-    <section id="blog-posts">
-        <h2 id="post-header">Posts</h2>
+    <section id="blog-posts" class="mt-8">
+        <h2 id="post-header" class="text-2xl">Posts</h2>
     </section>
 
 </body>
