@@ -143,11 +143,37 @@ app.delete('/delete', express.json(), async (req, res) => {
 });
 
 
-// // PUT
-// app.put('/edit', express.json(), (req, res) => {
-//     editPlayer(playerList, req.body)
-//     respond(res, playerList);
-// })
+// PUT
+app.put('/edit', express.json(), async (req, res) => {
+  try {
+    const playerName = req.body.name;
+    const newPlayerName = req.body.newName
+    console.log("Player to delete: " + playerName);
+
+    // Update the player's name in the MongoDB collection
+    await collection.updateOne({ name: playerName } , { $set: {name: newPlayerName }});
+
+   // Retrieve all players from the database and sort them by score in descending order
+   const players = await collection.find({}).sort({ score: -1 }).toArray();
+
+   // Assign ranks to players based on their position in the sorted list
+   players.forEach((player, index) => {
+     player.rank = index + 1;
+   });
+
+   // Update the rank for each player in the database 
+   players.forEach(async (player) => {
+     await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
+   });
+   res.status(200).json(players);
+    
+  } catch (error) {
+    // Handle error
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 
 // // Delete player function
