@@ -1,12 +1,10 @@
 let currentlyEditingPostId = null;
 
-const getAllBlogs = function () {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', '/fetch', true);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            const data = JSON.parse(xhr.responseText);
+const displayPosts = function () {
+    axios
+        .get('/blogs')
+        .then((response) => {
+            const data = response.data;
 
             const blogPostsSection = document.getElementById('blog-posts');
             blogPostsSection.innerHTML = '';
@@ -16,24 +14,21 @@ const getAllBlogs = function () {
                 blogPostDiv.classList.add('blog-post'); // Add a class for styling
                 blogPostDiv.id = `blog-post-${blogPost.id}`; // Unique ID for each post
                 blogPostDiv.innerHTML = `
-                <h3>${blogPost.title}<h3>
-                <p>id: ${blogPost.id}</p>
-                <p>Reading Time: ${blogPost.readingTime} min</p>
-                <p id="content-${blogPost.id}">${blogPost.content}</p>
-                <button onclick="editPost(${blogPost.id})">Edit</button>
-                <button onclick="deletePost(${blogPost.id})">Delete</button>
+                    <h3>${blogPost.title}</h3>
+                    <p>id: ${blogPost.id}</p>
+                    <p>Reading Time: ${blogPost.readingTime} min</p>
+                    <p id="content-${blogPost.id}">${blogPost.content}</p>
+                    <button onclick="editPost(${blogPost.id})">Edit</button>
+                    <button onclick="deletePost(${blogPost.id})">Delete</button>
                 `;
 
                 blogPostsSection.appendChild(blogPostDiv);
             });
-        } else if (xhr.readyState === 4 && xhr.status !== 200) {
-            console.error('Failed to fetch blog posts');
-        }
-    };
-
-    xhr.send();
+        })
+        .catch((error) => {
+            console.error('Failed to fetch blog posts', error);
+        });
 };
-
 
 const createPost = function (event) {
     event.preventDefault();
@@ -46,43 +41,25 @@ const createPost = function (event) {
         content: contentInput.value,
     };
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/submit', true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
+    axios
+        .post('/blogs', blogPost, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(() => {
             console.log('Blog post created successfully');
-            console.log(blogPost);
             titleInput.value = '';
             contentInput.value = '';
-            getAllBlogs(); // Fetch and display updated blog posts
-        } else if (xhr.readyState === 4 && xhr.status !== 200) {
-            console.error('Failed to create blog post');
-        }
-    };
-
-    xhr.send(JSON.stringify(blogPost));
+            displayPosts(); // Fetch and display updated blog posts
+        })
+        .catch((error) => {
+            console.error('Failed to create blog post', error);
+        });
 };
-
-const deletePost = function (postId) {
-    const xhr = new XMLHttpRequest();
-    xhr.open('DELETE', `/delete/${postId}`, true);
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log('Blog post deleted successfully');
-            getAllBlogs(); // Fetch and display updated blog posts
-        } else if (xhr.readyState === 4 && xhr.status !== 200) {
-            console.error('Failed to delete blog post');
-        }
-    };
-
-    xhr.send();
-};
-
 
 const editPost = function (postId) {
+
     const blogPostDiv = document.querySelector(`#blog-post-${postId}`);
     const titleElement = blogPostDiv.querySelector('h3');
     const contentElement = blogPostDiv.querySelector(`#content-${postId}`);
@@ -101,7 +78,6 @@ const editPost = function (postId) {
     const contentInput = document.createElement('textarea');
     contentInput.rows = '4';
     contentInput.value = contentElement.textContent;
-
 
     const saveButton = document.createElement('button');
     saveButton.textContent = 'Save';
@@ -123,40 +99,43 @@ const editPost = function (postId) {
     editForm.appendChild(saveButton);
 };
 
-
 const updatePost = function (postId) {
     event.preventDefault();
-
-    // Get the new title and content
+    
     const editedTitle = document.querySelector(`#blog-post-${postId} input[type="text"]`).value;
     const editedContent = document.querySelector(`#blog-post-${postId} textarea`).value;
 
-    // Prepare the data for the PUT request
     const updatedBlogPost = {
         title: editedTitle,
         content: editedContent,
     };
 
-    const xhr = new XMLHttpRequest();
-    xhr.open('PUT', `/update/${postId}`, true);
-    xhr.setRequestHeader('Content-Type', 'application/json');
-
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                console.log('Blog post updated successfully');
-                getAllBlogs(); // Fetch and display updated blog posts
-            } else {
-                console.error('Failed to update blog post');
-            }
-        }
-    };
-
-    xhr.send(JSON.stringify(updatedBlogPost));
+    axios
+        .put(`/blogs/${postId}`, updatedBlogPost, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(() => {
+            console.log('Blog post updated successfully');
+            displayPosts(); // Fetch and display updated blog posts
+        })
+        .catch((error) => {
+            console.error('Failed to update blog post', error);
+        });
 };
 
-
-
+const deletePost = function (postId) {
+    axios
+        .delete(`/blogs/${postId}`)
+        .then(() => {
+            console.log(`Blog post id:${postId} deleted successfully`);
+            displayPosts(); // Fetch and display updated blog posts
+        })
+        .catch((error) => {
+            console.error('Failed to delete blog post', error);
+        });
+};
 
 const hideAllPosts = function () {
     const blogPostDivs = document.querySelectorAll('.blog-post');
@@ -172,5 +151,5 @@ window.onload = function () {
     const createButton = document.querySelector('#create-button');
     createButton.onclick = createPost;
 
-    getAllBlogs();
+    displayPosts();
 };
