@@ -18,7 +18,15 @@ const mongoose = require("mongoose");
 const { MongoClient } = require('mongodb');
 const uri = process.env.HOST;
 //const client = new MongoClient(uri);
-app.engine( 'handlebars',  hbs() )
+//app.engine( 'handlebars',  hbs() )
+app.engine(
+  "hbs",
+  hbs({
+    extname: "hbs",
+    defaultLayout: false,
+    layoutsDir: "views/layouts/"
+  })
+);
 app.set(    'view engine', 'handlebars' )
 app.set(    'views',       './public' )
 
@@ -43,7 +51,14 @@ const loginSchema = new mongoose.Schema({
   username: {type: String, min: 10, max: 30, required: true},
   password: {type: String, min: 5, max: 30, required: true}
 });
+
 const Login = mongoose.model('Login', loginSchema);
+
+const userSchema = new mongoose.Schema({
+  username: {type: String, min: 10, max: 30, required: true},
+});
+
+const Username = mongoose.model('Username', userSchema);
 
 const avgAges = {"Chameleon": 7, "Gecko": 7,
                  "Frog": 10, "Snake": 15,
@@ -78,7 +93,7 @@ app.use( express.json() );
 
 app.get('/', (req, res) => {
   console.log('get main')
-  res.render('layouts/main.handlebars')
+  res.render('views/layouts/index.hbs')
 })
 
 app.post('/submit', (req, res, next) => {
@@ -97,7 +112,7 @@ app.post('/submit', (req, res, next) => {
       }else{
         console.log('fail')
         console.log(err)
-        res.render('layouts/main.handlebars',{msg: 'login failed'})
+        res.render('views/layouts/index.hbs',{msg: 'login failed'})
         //res.redirect('/')
       }
       
@@ -106,29 +121,34 @@ app.post('/submit', (req, res, next) => {
 });
 
 app.get('/creatureMaker', (req, res) => {
-  res.render('layouts/creatureMaker.handlebars')
+  res.render('views/layouts/creatureMaker.hbs')
 })
 
 app.get('/createAccount', (req, res) => {
-  res.render('layouts/createAccount.handlebars')
+  console.log('get create account')
+  res.render('views/layouts/createAccount.hbs', req.body)
 })
 
-app.post('/createAccount', (req, res) => {
+ 
+
+app.post('/saveAcc', (req, res) => {
   const acc = new Login({
     username: req.body.user,
-    password: req.body.password
+    password: req.body.pass
   })
-  Login.findOne({username: acc.username}).then(function (result, err) {
+  Username.findOne({username: acc.username}).then(function (result, err) {
     if(result){
       //username is taken
       console.log('username in use')
-      res.render('createAccount', {msg: 'username is taken :('})
+      res.render('views/layouts/createAccount.hbs', {msg: 'username is taken :('})
     }else{
       //successfully created account
       console.log('creating new account...')
       const newUser = new Login ({username: acc.username, password: acc.password})
       newUser.save()
-      res.render('createAccount', {msg: 'account created successfully!'})
+      const saveUsername = new Username ({username: acc.username})
+      saveUsername.save()
+      res.render('views/layouts/createAccount.hbs', {msg: 'account created successfully!'})
     }
   })
 
