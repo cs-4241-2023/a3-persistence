@@ -8,24 +8,23 @@
 	<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
 	<script src="https://kit.fontawesome.com/0765699ff8.js" crossorigin="anonymous"></script>
-	<script src="../public/js/script.js"></script>
 	<title>Login</title>
 </head>
 <body>
 <div class="login">
 	<h1>Login</h1>
 	<form action='/login' method='POST'>
-		<input type='text' placeholder="Username" name='username' required="required">
-		<input type='password' placeholder="Password" name='password' required="required">
-		<input type='login'>
+		<input type='text' placeholder="Username" name='Username' required="required">
+		<input type='password' placeholder="Password" name='Password' required="required">
+		<button class="login-button">login</button>
 	</form>
 </div>
 <div class="signup">
 	<h1>Signup</h1>
-	<form>
+	<form action='/signup' method='POST'>
 		<input type="text" name="Username" placeholder="Username" required="required">
 		<input type="text" name="Password" placeholder="Password" required="required">
-		<button class="login-button">Signup</button>
+		<button class="signup">Signup</button>
 	</form>
 </div>
 </body>

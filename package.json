@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/Tdonnelly20/a3-persistence#readme",
   "dependencies": {
-    "dotenv": "^16.3.1"
+    "cookie-session": "^2.0.0",
+    "dotenv": "^16.3.1",
+    "model": "^6.0.1"
   }
 }
