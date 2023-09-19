@@ -1,14 +1,26 @@
-const express = require('express');
-const serveIndex = require('serve-index');
+const express = require('express'),
+      cookie = require('cookie-session'),
+      hbs = require('express-handlebars').engine,
+      app = express();
 require("dotenv").config(); 
 
-const app = express();
+// use express.urlencoded to get data sent by defaut form actions
+// or GET requests
+app.use( express.urlencoded({ extended:true }) )
+
+// cookie middleware! The keys are used for encryption and should be
+// changed
+app.use( cookie({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
 const mongoose = require("mongoose");
 const { MongoClient } = require('mongodb');
 const uri = process.env.HOST;
 //const client = new MongoClient(uri);
-app.set('views', __dirname + '/views');
-app.set('view engine', 'html');
+app.engine( 'handlebars',  hbs() )
+app.set(    'view engine', 'handlebars' )
+app.set(    'views',       './public' )
 
 mongoose.connect(
   uri, 
@@ -50,30 +62,6 @@ const creaturePics = {"Chameleon": 'https://lafeber.com/vet/wp-content/uploads/V
                       "Rat": 'https://images.squarespace-cdn.com/content/v1/55801f1be4b0bd4b73b60d65/1449930415127-EU3SDWQQMOO6LV0Y0QJF/rat+square.jpg', 
                       "Capybara": 'https://gvzoo.com/cms-data/gallery/blog/animals/capybara/banner-capybara-sq.jpg',}
 
-
- const exampleCreature = new Creature({
-  name: 'Babu',
-  type: 'Frog',
-  age: 3,
-  picture: creaturePics.Frog,
-  status: 'your creature is young!'
-});
-
-const practiceLogin = new Login({
-  username: 'mylogin',
-  password: '1234'
-});
-
-/* practiceLogin.save().then(
-  () => console.log("added login"),
-  (err) => console.log(err)
-); */
-
-/* exampleCreature.save().then(
-  () => console.log("One entry added"), 
-  (err) => console.log(err)
-); 
- */
 app.use((req, res, next) => {
   console.log('Time: ', Date.now());
   next();
@@ -84,42 +72,102 @@ app.use('/request-type', (req, res, next) => {
   next();
 });
 
-app.use(express.static('public'));
+//app.use(express.static('index'));
 app.use( express.json() );
 //app.use('/public', serveIndex('public'));
 
-app.post('/submit', (req, res, next) => {
+app.get('/', (req, res) => {
+  console.log('get main')
+  res.render('layouts/main.handlebars')
+})
+
+app.post('/login', (req, res, next) => {
     //add stuff to handle submit of data
-    console.log("in submit")
   
-    const json = { username: req.body.username,
-      password: req.body.password}
+    const json = { username: req.body.user,
+      password: req.body.pass}
 
     console.log(json)
     Login.findOne({username: json.username, password: json.password}).then (function (result, err) {
       if(result){
         console.log(result)
         console.log('success')
-        res.redirect('creatureMaker.html')
+        res.redirect('creatureMaker')
       }else{
         console.log('fail')
         console.log(err)
-        res.sendFile(__dirname + '/public/index.html')
-        //return res.redirect('/')
+        res.render('main.handlebars',{msg: 'login failed'})
+        //res.redirect('/')
       }
       
   })
     //next();
 });
 
-app.get('/', (req, res) => {
-  Creature.find({}, (err, found) => {
+app.get('/creatureMaker', (req, res) => {
+  res.render('layouts/creatureMaker.handlebars')
+})
+
+app.get('/createAccount.handlebars', (req, res) => {
+  res.redirect('createAccount')
+})
+
+app.post('/createAccount', (req, res) => {
+  const acc = new Login({
+    username: req.body.user,
+    password: req.body.password
+  })
+  Login.findOne({username: acc.username}).then(function (result, err) {
+    if(result){
+      //username is taken
+      console.log('username in use')
+      res.render('createAccount', {msg: 'username is taken :('})
+    }else{
+      //successfully created account
+      console.log('creating new account...')
+      const newUser = new Login ({username: acc.username, password: acc.password})
+      newUser.save()
+      res.render('createAccount', {msg: 'account created successfully!'})
+    }
+  })
+
+})
+
+/* app.get('/creatureMaker', (req, res) => {
+  Creature.find({}).then(function (result, err) {
     if (!err) {
-      res.send(found);
+      res.send(result);
     }
     console.log(err);
     res.send("an error occured")
   }).catch(err => console.log("error occured, "+ err));
 });
+
+app.post('/creatureMaker', (req, res) => {
+  const newCreature = new Creature({
+    name: req.body.name,
+    type: req.body.type,
+    age: req.body.age,
+    picture: creaturePics[req.body.type],
+    status: calcStatus(req.body.age, req.body.type)
+  })
+  Creature.findOne(newCreature).then(function (result, err) {
+    if(result){
+      //creature already exists
+    }else{
+      newCreature.save()
+    }
+  })
+}) */
+
+const calcStatus = (age, type) =>{
+  if(age <= avgAges[type] / 2){
+    return "your creature is young!"
+  }else if(age >= maxAges[type]){
+    return "your creature is ancient!!"
+  }else{
+    return "your creature is middle aged"
+  }
+}
 
 app.listen(process.env.PORT || 3000, () => console.log('Example app is listening on port 3000.'));

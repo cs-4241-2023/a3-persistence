@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="js/main.js"></script>
+    <link rel="icon" href="https://cdn.discordapp.com/attachments/1149381126847201290/1149381185739432047/poryittobig.jpg" type="image/x-icon"> 
+    <link rel="stylesheet" href="https://unpkg.com/turretcss/dist/turretcss.min.css" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <div>
+      <h1 id="formTitle">Create a Creature!!</h1>
+      <form id="creature" method="post">
+        <div class="oddFormRow">
+          <label>Name your creature</label>
+          <input type="text" id="name" maxlength="30" required>
+        </div>
+        <div class="evenFormRow">
+          <label>Creature type</label>
+          <select id="type">
+            <option value="Chameleon">Chameleon</option>
+            <option value="Gecko">Gecko</option>
+            <option value="Frog">Frog</option>
+            <option value="Snake">Snake</option>
+            <option value="Cat">Cat</option>
+            <option value="Dog">Dog</option>
+            <option value="Rat">Rat</option>
+            <option value="Capybara">Capybara</option>
+          </select>
+        </div>
+        <div class="oddFormRow">
+          <label>Creature age</label>
+          <input type="number" id="age" min="0" required>
+        </div>
+        <button id="submitButton">Create</button>
+      </form>
+    </div>
+    <div id="resultsDiv">
+      <h1 id="resultsTitle">Your Creatures</h1>
+    </div>
+  </body>
+</html>

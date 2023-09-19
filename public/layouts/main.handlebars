@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Creature Creator Login</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="js/login.js"></script>
+    <link rel="icon" href="https://cdn.discordapp.com/attachments/1149381126847201290/1149381185739432047/poryittobig.jpg" type="image/x-icon"> 
+    <link rel="stylesheet" href="https://unpkg.com/turretcss/dist/turretcss.min.css" crossorigin="anonymous">
+  </head>
+  <body>
+    <h1>Login to Creature Creator</h1>
+    <form method="post" action="/login">
+      <input type="text" name="user" maxlength="30" required>
+      <input type="text" name="pass" maxlength="30" required>
+
+      <button id="login">Login</button>
+    </form>
+    {{{msg}}}
+    <p>No account? <a href="createAccount">Create one here!</a></p>
+  </body>
+</html>

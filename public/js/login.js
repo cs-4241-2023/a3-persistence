@@ -15,11 +15,13 @@ const submitLogin = async function( event ) {
   if(json.username === '' || json.password === ''){
     alert('ERROR! one or more invalid input')
   }else{
-    const response = await fetch( '/submit', {
+    console.log(body + " in loginJS")
+    const response = await fetch( '/login', {
       method:'POST',
       headers: { 'Content-Type': 'application/json' },
       body
-    })
+    }).then( response => response.json() )
+    .then( json => console.log( json ) )
   
     jsonData.forEach(e => {
       const item = document.createElement('li')
