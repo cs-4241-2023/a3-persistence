@@ -53,9 +53,9 @@ app.delete('/delete', express.json(), async (req, res) => {
 // PUT
 app.put('/edit', express.json(), async (req, res) => {
   const playerName = req.body.name;
-  const newPlayerName = req.body.newName
+  const newName = req.body.newName
   // Update the player's name in the MongoDB collection
-  await collection.updateOne({ name: playerName }, { $set: { name: newPlayerName } });
+  await collection.updateOne({ name: playerName }, { $set: { name: newName } });
   updatePlayersAndRespond(res)
 });
 
