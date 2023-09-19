@@ -85,7 +85,7 @@ const getAllData = async function () {
 
   // create table element in HTML
   const table = document.createElement("table");
-  table.innerHTML = "<th>Class Name</th> <th>Assignment Name</th> <th>Due Date</th> <th>Difficulty</th> <th>Priority</th>";
+  table.innerHTML = "<th>Class</th> <th>Name</th> <th>Due Date</th> <th>Difficulty</th> <th>Priority</th>";
 
   // add assignment information to corresponding row
   appDataJSON.forEach((assignment) => {
@@ -101,11 +101,10 @@ const getAllData = async function () {
     const editButton = document.createElement("button");
     deleteButton.textContent = "Delete";
     editButton.textContent = "Edit";
+    editButton.style.marginLeft = "25px"
 
-    deleteButton.style.paddingLeft = "5px";
-    deleteButton.style.fontWeight = "light";
-    editButton.style.paddingLeft = "5px";
-    editButton.style.fontWeight = "light";
+    deleteButton.style.fontWeight = "normal";
+    editButton.style.fontWeight = "normal";
 
     deleteButton.onclick = () => {
       deleteAssignment(assignment);
@@ -137,10 +136,8 @@ const deleteAssignment = async function(assignment) {
 }
 const editPopUp = function (assignment) {
   // hide original form and show pop-up
-  document.querySelector("#assignment-form").style.visibility = "hidden";
-  document.querySelector("#edit-window").style.visibility = "visible";
-  document.querySelector("#edit-message").style.visibility = "hidden";
-  document.querySelector("#submission-message").textContent = "";
+  document.querySelector("#assignment-form").style.display = "none"
+  document.querySelector("#edit-window").style.display = "block";
 
   // populate text boxes with existing data
   document.querySelector("#class-name-edit").value = assignment.className;
@@ -148,12 +145,14 @@ const editPopUp = function (assignment) {
   document.querySelector("#due-date-edit").value = assignment.dueDate;
   document.querySelector("#difficulty-edit").value = assignment.difficulty;
 
+  // set on-click listener for edit submission
   document.querySelector("#submit-button-edit").onclick = () => editAssignment(assignment.id);
 
+  // close pop-up window and show original form if cancel is clicked
   document.querySelector("#cancel-edit-button").onclick = () => {
-    // hide pop-up and restore normal form
-    document.querySelector("#assignment-form").style.visibility = "visible";
-    document.querySelector("#edit-window").style.visibility = "hidden";
+    document.querySelector("#edit-window").style.display = "none";
+    document.querySelector("#assignment-form").style.display = "block";
+    document.querySelector("#submission-message").textContent = "";
   }
 }
 
@@ -181,13 +180,12 @@ const editAssignment = async function(assignmentId) {
   });
 
   const dataResponse = await response.json();
-  let message = document.querySelector("#edit-message");
 
   if(dataResponse.result === "success")
   {
     // show success message
-    message.style.color = "green";
-    message.textContent = "Edit Successful!";
+    document.querySelector("#submission-message").style.color = "green";
+    document.querySelector("#submission-message").textContent = "Edit Successful!";
 
     // update data table with new data
     await getAllData();
@@ -195,14 +193,12 @@ const editAssignment = async function(assignmentId) {
   else
   {
     // show failure message
-    message.style.color = "red";
-    message.textContent = "Edit Failure:  " + dataResponse.message;
+    document.querySelector("#submission-message").style.color = "red";
+    document.querySelector("#submission-message").textContent = "Edit Failure:  " + dataResponse.message;
   }
-  // un-hide element
-  message.style.visibility = "visible"
-
-  document.querySelector("#assignment-form").style.visibility = "visible";
-  document.querySelector("#edit-window").style.visibility = "hidden";
+  document.querySelector("#submission-message").style.visibility = "visible"
+  document.querySelector("#assignment-form").style.display = "block";
+  document.querySelector("#edit-window").style.display = "none";
 }
 
 /**
