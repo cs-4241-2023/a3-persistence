@@ -80,36 +80,63 @@ app.listen(3000)
 //     respond(res, playerList);
 // })
 
-
-// working POST attempt 02
+// POST works to add rank in mongodb
 app.post('/submit', express.json(), async (req, res) => {
   try {
     // Add new player to the database
     await collection.insertOne(req.body);
 
-    // Add rank field based on index of each player
+    // Retrieve all players from the database and sort them by score in descending order
+    const players = await collection.find({}).sort({ score: -1 }).toArray();
 
-    // Retrieve all players from the database
-    const players = await collection.find({}).sort({score: -1});
+    // Assign ranks to players based on their position in the sorted list
+    players.forEach((player, index) => {
+      player.rank = index + 1;
+    });
 
-    
+    // Update the rank for each player in the database (optional)
+    // players.forEach(async (player) => {
+    //   await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
+    // });
 
-    const finalPlayers = await players.toArray();
-    
     // Respond to the client with a JSON string of players
-    res.status(200).json(finalPlayers);
+    res.status(200).json(players);
   } catch (error) {
     // Handle error
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
-
 // // DELETE
 // app.delete('/delete', express.json(), (req, res) => {
 //     deletePlayer(playerList, req.body)
 //     respond(res, playerList);
 // })
+
+app.delete('/delete', express.json(), async (req, res) => {
+  try {
+    const playerName = req.body.name;
+    console.log(playerName);
+
+    // // Use MongoDB's deleteOne method to remove the player by name
+    const result = await collection.deleteOne({ name: playerName });
+
+    if (result.deletedCount === 1) {
+  //   //   // Player with the specified name has been deleted
+  //   //   // You can also respond with a success message or updated player list here
+  //   //   // Example: res.status(200).json({ message: 'Player deleted successfully' });
+  //   //   // Retrieve all players from the database and respond with the updated list
+      const players = await collection.find({}).toArray();
+      res.status(200).json(players);
+    } else {
+      res.status(404).json({ error: 'Player not found' });
+    }
+  } catch (error) {
+  //   // Handle error
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 
 // // PUT
 // app.put('/edit', express.json(), (req, res) => {
@@ -140,41 +167,4 @@ app.post('/submit', express.json(), async (req, res) => {
 //         }
 //     })
 //     return playerList;
-// }
-
-// Rank Players sorts playerList and gives each player a rank
-// function rankPlayers(playerList) {
-//     playerList.sort((a, b) => (a.score < b.score) ? 1 : -1)
-//     playerList.forEach((player, index) => {
-//         player.rank = index + 1;
-//     })
-//     return playerList;
-// }
-
-// // progress Rank fxn for MongoDB
-// async function rankPlayers(collection) {
-//   try {
-//     // Retrieve all players from the database and sort them by score in descending order
-//     const sortedPlayers = await collection.find({}).sort({ score: -1 }).toArray();
-
-//     // Give each player a rank
-//     sortedPlayers.forEach((player, index) => {
-//       player.rank = index + 1;
-//     });
-    
-
-//     // Return the sorted and ranked players
-//     return sortedPlayers;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
-
-
-
-// // Respond to client with playerList
-// function respond(res, playerList) {
-//     rankPlayers(playerList); // Rank players before sending to client
-//     res.writeHead(200, { 'Content-Type': 'application/json' });
-//     res.end(JSON.stringify(playerList));
 // }
