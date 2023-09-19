@@ -127,14 +127,14 @@ app.delete('/delete', express.json(), async (req, res) => {
     const players = await collection.find({}).sort({ score: -1 }).toArray();
 
     // // Assign ranks to players based on their position in the sorted list
-    // players.forEach((player, index) => {
-    //   player.rank = index + 1;
-    // });
+    players.forEach((player, index) => {
+      player.rank = index + 1;
+    });
 
     // // Update the rank for each player in the database 
-    // players.forEach(async (player) => {
-    //   await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
-    // });
+    players.forEach(async (player) => {
+      await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
+    });
     res.status(200).json(players);
   } catch (error) {
     //   // Handle error
