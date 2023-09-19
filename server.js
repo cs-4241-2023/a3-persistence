@@ -26,6 +26,11 @@ async function run() {
 
 run()
 
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running on Port ${PORT}`);
+});
+
 
 // Middelware to check if link to collection has been created properly
 // This way we don't have to check that database is connected in every route
@@ -60,9 +65,6 @@ app.get("/docs", async (req, res) => {
 //   const result = await collection.insertOne( req.body )
 //   res.json( result )
 // })
-
-
-app.listen(3000)
 
 
 
@@ -116,23 +118,26 @@ app.post('/submit', express.json(), async (req, res) => {
 app.delete('/delete', express.json(), async (req, res) => {
   try {
     const playerName = req.body.name;
-    console.log(playerName);
+    console.log("Player to delete: " + playerName);
 
     // // Use MongoDB's deleteOne method to remove the player by name
-    const result = await collection.deleteOne({ name: playerName });
+    await collection.deleteOne({ name: playerName });
 
-    if (result.deletedCount === 1) {
-  //   //   // Player with the specified name has been deleted
-  //   //   // You can also respond with a success message or updated player list here
-  //   //   // Example: res.status(200).json({ message: 'Player deleted successfully' });
-  //   //   // Retrieve all players from the database and respond with the updated list
-      const players = await collection.find({}).toArray();
-      res.status(200).json(players);
-    } else {
-      res.status(404).json({ error: 'Player not found' });
-    }
+    // // Retrieve all players from the database and sort them by score in descending order
+    const players = await collection.find({}).sort({ score: -1 }).toArray();
+
+    // // Assign ranks to players based on their position in the sorted list
+    // players.forEach((player, index) => {
+    //   player.rank = index + 1;
+    // });
+
+    // // Update the rank for each player in the database 
+    // players.forEach(async (player) => {
+    //   await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
+    // });
+    res.status(200).json(players);
   } catch (error) {
-  //   // Handle error
+    //   // Handle error
     res.status(500).json({ error: 'Internal server error' });
   }
 });
@@ -144,10 +149,6 @@ app.delete('/delete', express.json(), async (req, res) => {
 //     respond(res, playerList);
 // })
 
-// // Start server
-// app.listen(PORT, () => {
-//     console.log(`Server running on Port ${PORT}`);
-// });
 
 // // Delete player function
 // function deletePlayer(playerList, playerToDelete) {
