@@ -13,7 +13,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 const blogPostSchema = new mongoose.Schema({
-    id: { type: mongoose.Schema.Types.ObjectId, auto: true, primary: true },
+    _id: { type: mongoose.Schema.Types.ObjectId, auto: true, primary: true },
     title: String,
     content: String,
     readingTime: Number,
@@ -76,7 +76,7 @@ app.put('/blogs/:id', async (req, res) => {
 
 
 app.delete('/blogs/:id', async (req, res) => {
-    const postId = req.params.id;
+    const postId = req.params._id;
 
     try {
         await BlogPost.findByIdAndDelete(postId);

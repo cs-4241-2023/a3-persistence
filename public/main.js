@@ -12,14 +12,14 @@ const displayPosts = function () {
             data.forEach((blogPost) => {
                 const blogPostDiv = document.createElement('div');
                 blogPostDiv.classList.add('blog-post'); // Add a class for styling
-                blogPostDiv.id = `blog-post-${blogPost.id}`; // Unique ID for each post
+                blogPostDiv.id = `blog-post-${blogPost._id}`; // Unique ID for each post
                 blogPostDiv.innerHTML = `
                     <h3>${blogPost.title}</h3>
-                    <p>id: ${blogPost.id}</p>
+                    <p>id: ${blogPost._id}</p>
                     <p>Reading Time: ${blogPost.readingTime} min</p>
-                    <p id="content-${blogPost.id}">${blogPost.content}</p>
-                    <button onclick="editPost(${blogPost.id})">Edit</button>
-                    <button onclick="deletePost(${blogPost.id})">Delete</button>
+                    <p id="content-${blogPost._id}">${blogPost.content}</p>
+                    <button onclick="editPost('${blogPost._id}')">Edit</button>
+                    <button onclick="deletePost('${blogPost._id}')">Delete</button>
                 `;
 
                 blogPostsSection.appendChild(blogPostDiv);
@@ -59,7 +59,6 @@ const createPost = function (event) {
 };
 
 const editPost = function (postId) {
-
     const blogPostDiv = document.querySelector(`#blog-post-${postId}`);
     const titleElement = blogPostDiv.querySelector('h3');
     const contentElement = blogPostDiv.querySelector(`#content-${postId}`);
@@ -108,6 +107,7 @@ const updatePost = function (postId) {
     const updatedBlogPost = {
         title: editedTitle,
         content: editedContent,
+        _id: postId,
     };
 
     axios
@@ -140,7 +140,7 @@ const deletePost = function (postId) {
 const hideAllPosts = function () {
     const blogPostDivs = document.querySelectorAll('.blog-post');
     blogPostDivs.forEach((div) => {
-        if (div.id !== `blog-post-${currentlyEditingPostId}`) {
+        if (div._id !== `blog-post-${currentlyEditingPostId}`) {
             // Only hide posts that are not being edited
             div.style.display = 'none';
         }
