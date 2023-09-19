@@ -5,26 +5,21 @@ const { MongoClient } = require("mongodb");
 const PORT = process.env.PORT || 3000;
 
 require('dotenv').config()
-// console.log(process.env) // remove this after you've confirmed it is working
 
 app.use(express.static('public')) // Static files from public directory
 app.use(express.json()) // For parsing application/json
 
 const uri = `mongodb+srv://${process.env.TESTER}:${process.env.PASS}@${process.env.HOST}`
-console.log("uri: " + uri);
-// const uri = "mongodb+srv://tester0:pass0@cluster0.pt7vcfa.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp";
 
-const client = new MongoClient(uri)
+const client = new MongoClient(uri);
+let collection = undefined;
 
-let collection = null
-
-
+// Set collection global value with database
 async function run() {
   await client.connect()
   collection = client.db("testA3").collection("testList")
 }
-
-run()
+run();
 
 // Start server
 app.listen(PORT, () => {
@@ -39,14 +34,6 @@ app.use((req, res, next) => {
   } else {
     res.status(503).send()
   }
-})
-
-
-// route to get all docs
-app.get("/docs", async (req, res) => {
-  const docs = await collection.find({}).toArray()
-  // find is how you search the database
-  res.json(docs)
 })
 
 // POST works to add rank in mongodb
