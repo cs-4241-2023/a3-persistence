@@ -21,9 +21,12 @@ const submit = async (event, id = null) => {
 
   if (submitButton.textContent == "Submit Task") {
     try {
-      const response = await fetch("/submit", {
+      const response = await fetch("/tasks", {
         method: "POST",
         body,
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       if (response.ok) {
@@ -38,9 +41,12 @@ const submit = async (event, id = null) => {
     }
   } else if (submitButton.textContent == "Edit Task") {
     try {
-      const response = await fetch("/", {
+      const response = await fetch(`/tasks/${id}`, {
         method: "PUT",
         body: body,
+        headers: {
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
@@ -85,14 +91,16 @@ const priorityCalculator = dueDate => {
   return priority;
 };
 
-// Uses fetch to delete a task instance from server, returns error if task deletion goes wrong
 const deleteTask = async task => {
   const jsonString = JSON.stringify(task);
 
   try {
-    const deleteResponse = await fetch("/json", {
+    const deleteResponse = await fetch(`/tasks/${task.id}`, {
       method: "DELETE",
       body: jsonString,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
     if (deleteResponse.status === 200) {
@@ -127,7 +135,14 @@ const createHeaderRow = () => {
   const header = document.createElement("thead");
   const headerRow = document.createElement("tr");
 
-  const headers = ["ID", "Task", "Description", "Due Date", "Priority"];
+  const headers = [
+    "ID",
+    "Task",
+    "Description",
+    "Due Date",
+    "Priority",
+    "Buttons",
+  ];
   headers.forEach(text => {
     const headerCell = document.createElement("th");
     headerCell.textContent = text;

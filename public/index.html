@@ -4,34 +4,46 @@
     <title>CS4241 Assignment 2</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="css/main.css" />
+    <!-- Include Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
 
-    <!-- get rid of favicon error -->
+    <!-- Include Bootstrap JavaScript dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
   </head>
-
-  <body>
+  <body class="bg-secondary">
     <div class="container">
       <h1>To-do List</h1>
 
       <div id="form-container">
-        <form id="task-form">
+        <form id="task-form" class="p-4 rounded mb-4">
           <div class="input-grid">
             <div class="input-container">
               <label for="task">Task</label>
-              <input type="text" id="task" placeholder="Task name" />
+              <input
+                type="text"
+                id="task"
+                placeholder="Task name"
+                class="p-3"
+              />
             </div>
-
             <div class="input-container">
               <label for="dueDate">Due Date</label>
-              <input type="date" id="dueDate" />
+              <input type="date" id="dueDate" class="p-3" />
             </div>
-
             <div class="input-container single">
               <label for="description">Description</label>
               <input
                 type="text"
                 id="description"
                 placeholder="Describe your task"
+                class="p-3"
               />
             </div>
           </div>
@@ -39,7 +51,7 @@
         </form>
       </div>
 
-      <table>
+      <table class="table table-bordered mt-4">
         <tbody></tbody>
       </table>
     </div>
