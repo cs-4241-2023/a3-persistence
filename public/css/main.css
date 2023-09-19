@@ -1,3 +1,42 @@
+/* CSS Positioning of login page (styling is done by CSS framework */
+#login-form {
+    display: grid;
+    grid-template-columns: repeat(10, 10%);
+    grid-template-rows: repeat(10, 10%);
+}
+
+#login-header {
+    grid-column: 4 / 8;
+    grid-row: 1 / 2;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#username-input, #password-input, #login-button, #login-attempt-text {
+    grid-column: 5 / 7;
+    width: 50%;
+    margin: 10px auto;
+}
+
+#username-input {
+    grid-row: 2 / 4;
+}
+
+#password-input {
+    grid-row: 4 / 6;
+}
+
+#login-button {
+    grid-row: 6 / 8;
+}
+
+#login-attempt-text {
+    grid-row: 8 / 9;
+    font-size: small;
+    text-align: center;
+}
+
+
 /* Position the header and description text using grid */
 #header-and-text {
     display: grid;
@@ -8,7 +47,6 @@
 #website-header {
     grid-column: 2 / 5;
     text-align: center;
-    margin-top: 0;
 }
 
 #header-description {
