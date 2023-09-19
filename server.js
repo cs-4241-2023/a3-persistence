@@ -95,9 +95,9 @@ app.post('/submit', express.json(), async (req, res) => {
     });
 
     // Update the rank for each player in the database (optional)
-    // players.forEach(async (player) => {
-    //   await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
-    // });
+    players.forEach(async (player) => {
+      await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
+    });
 
     // Respond to the client with a JSON string of players
     res.status(200).json(players);
