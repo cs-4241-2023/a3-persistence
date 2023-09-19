@@ -50,38 +50,6 @@ app.get("/docs", async (req, res) => {
   res.json(docs)
 })
 
-// Prof's code to add a new doc to database in chrome dev tools
-// const response = await fetch('/add', {
-//   method:'POST',
-//   headers:{'Content-Type': 'application/json'},
-//   body: JSON.stringify({name:'charlie'})
-// });
-// const data = await response.json();
-// console.log(data);
-
-
-// Add a new doc to database
-// app.post( '/submit', async (req,res) => {
-//   const result = await collection.insertOne( req.body )
-//   res.json( result )
-// })
-
-
-
-// // List of Players on Server
-// let playerList = [
-//     { name: 'example-player', color: 'red', score: 0, rank: 0 }
-// ]
-
-// // GET
-// app.get('/', (req, res) => res.send('Handled GET request'))
-
-// // POST 
-// app.post('/submit', express.json(), (req, res) => {
-//     playerList.push(req.body) // Add player to  playerList 
-//     respond(res, playerList);
-// })
-
 // POST works to add rank in mongodb
 app.post('/submit', express.json(), async (req, res) => {
   try {
@@ -109,12 +77,7 @@ app.post('/submit', express.json(), async (req, res) => {
   }
 });
 
-// // DELETE
-// app.delete('/delete', express.json(), (req, res) => {
-//     deletePlayer(playerList, req.body)
-//     respond(res, playerList);
-// })
-
+// DELETE
 app.delete('/delete', express.json(), async (req, res) => {
   try {
     const playerName = req.body.name;
@@ -173,25 +136,3 @@ app.put('/edit', express.json(), async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-
-
-// // Delete player function
-// function deletePlayer(playerList, playerToDelete) {
-//     playerList.forEach(player => {
-//         if (playerToDelete.name === player.name) {
-//             playerList.splice(playerList.indexOf(player), 1)
-//         }
-//     })
-//     return playerList;
-// }
-
-// // Edit player function
-// function editPlayer(playerList, playerToEdit) {
-//     playerList.forEach(player => {
-//         if (player.name === playerToEdit.name) {
-//             player.name = playerToEdit.newName;
-//         }
-//     })
-//     return playerList;
-// }
