@@ -43,7 +43,7 @@ app.put( '/edit', express.json(),( req, res ) => {
 });
 
 
-const listener = app.listen( process.env.PORT || 3000 )
+
 
 //MongoDB Database Code:
 
@@ -98,4 +98,4 @@ app.post( '/update', async (req,res) => {
   res.json( result )
 })
 
-app.listen(3000)
+const listener = app.listen( process.env.PORT || 3000 )
