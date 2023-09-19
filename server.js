@@ -7,8 +7,9 @@ const appdata = [
   {id: 200000 , className: "CS 3013", assignmentName: "Homework 1", dueDate:"2023-09-05", difficulty: 3, priority: "Low"}
 ];
 
-app.use(express.static("public")); // send static files
-app.use(express.json())
+app.use(express.static("public"));
+app.use(express.static("public/views"));
+app.use(express.json());
 
 app.get("/assignment-data", (request, response) => {
   response.writeHead(200, "OK", {'Content-Type': 'text/json'});
