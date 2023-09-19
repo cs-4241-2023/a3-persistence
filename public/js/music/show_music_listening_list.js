@@ -39,7 +39,7 @@ const showMusicListeningList = async function(event) {
     console.log(data)
 
     if(data.length === 0) {
-        listEmptyMessage.innerHTML = '<strong>All music has been deleted from the server memory.</strong>'
+        listEmptyMessage.innerHTML = '<strong>No music present for current user.</strong>'
         listDivision.appendChild(listEmptyMessage)
         setListEmptyMessagePresentID()
     }

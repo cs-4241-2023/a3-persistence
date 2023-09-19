@@ -55,7 +55,7 @@ const loginSubmit = async function(event) { //The async keyword here means that 
         setLoginInfoParagraphID()
     }
     else if(responseMessage.valueOf() === "NoPasswordMatch") {
-        loginInfoParagraph.innerHTML = `<strong>The entered password did not match any passwords saved in server memory</strong>.`
+        loginInfoParagraph.innerHTML = `<strong>Incorrect password entered for user </strong> ${inputObj.username}.`
         loginInfo.appendChild(loginInfoParagraph)
         setLoginInfoParagraphID()
     }

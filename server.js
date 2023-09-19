@@ -42,13 +42,13 @@ const bcrypt = require('bcrypt')
 
 let collection = null
 
-async function run() {
+async function run() { //
   await client.connect()
   collection = await client.db("MusicListeningBuilder").collection("MusicListeningDataForEveryUser")
 }
 run()
 
-app.use((req, res, next) => {
+app.use((req, res, next) => { //
   if(collection !== null) {
     console.log("Collection has been assigned.")
     next() //The next() function is a function in the Express router that, when invoked, executes the next middleware in the middleware stack. If the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function. Otherwise, the request will be left hanging.
@@ -106,12 +106,9 @@ app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a te
 
 app.post('/userLogin', async (req, res) => { //
   
-  const userData = await collection.find({usern: req.body.username}, {usern: 1, _id: 0}).toArray()
+  userData = await collection.find({usern: req.body.username}).toArray()
 
-  console.log(userData)
-  console.log(req.body.password)
-
-  if(typeof userData === 'undefined') {
+  if(typeof userData !== undefined && userData.length === 0) {
     return res.status(400).end(JSON.stringify("UserNotFound")) //send function just sends the HTTP response.
   }
 
@@ -131,7 +128,7 @@ app.post('/userLogin', async (req, res) => { //
 
 app.get('/getMusicData', (req, res) => { //
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(userData.musiclisteninglist))
+  res.end(JSON.stringify(userData[0].musiclisteninglist))
 })
 
 //Music submission helper functions:
@@ -140,7 +137,7 @@ function countDuplicatesInUserMusicListeningData(dataObject) { //
   
   let counter = 0
   
-  userData.musiclisteninglist.forEach(d => {        
+  userData[0].musiclisteninglist.forEach(d => {        
     console.log((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))
         
     if(((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))) {
@@ -162,10 +159,10 @@ function getDerivedAlbumAge(dataObject) { //
 function assignMusicIDAndAdd(dataObject, albumAge) { //
   console.log(dataObject) //JSON.parse converts a JSON string into an object. To access object members, use the member names that make up the JSON.
   
-  if(userData.musiclisteninglist.length === 0) {
-    userData.musiclisteninglist.push({'ID': 0, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+  if(userData[0].musiclisteninglist.length === 0) {
+    userData[0].musiclisteninglist.push({'ID': 0, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
   } else {
-    userData.musiclisteninglist.push({'ID': (((userData.musiclisteninglist[userData.musiclisteninglist.length - 1]).ID) + 1), 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
+    userData[0].musiclisteninglist.push({'ID': (((userData[0].musiclisteninglist[userData[0].musiclisteninglist.length - 1]).ID) + 1), 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': albumAge})
   }
 }
 
@@ -173,11 +170,11 @@ function assignMusicIDAndAdd(dataObject, albumAge) { //
 
 function searchAndDelete(dataObject) { //
 
-  userData.musiclisteninglist.forEach(d => {
+  userData[0].musiclisteninglist.forEach(d => {
     if(((d.bandName === dataObject.bandname) && (d.albumName === dataObject.albumname) && (d.releaseYear === dataObject.releaseyear))) {
-      let currentIndex = userData.musiclisteninglist.indexOf(d)
-      userData.musiclisteninglist.splice(currentIndex, 1)
-      console.log("Music previously at index " + currentIndex + " has been removed from musicListeningData for user " + userData.usern)
+      let currentIndex = userData[0].musiclisteninglist.indexOf(d)
+      userData[0].musiclisteninglist.splice(currentIndex, 1)
+      console.log("Music previously at index " + currentIndex + " has been removed from musicListeningData for user " + userData[0].usern)
     }
   })
 
@@ -193,18 +190,18 @@ function searchAndUpdate(dataObject) { //
   console.log(typeof(IDToNumber))
   console.log(IDToNumber)
 
-  userData.musiclisteninglist.forEach(d => {
+  userData[0].musiclisteninglist.forEach(d => {
     if(IDToNumber === d.ID) {
-      userData.musiclisteninglist.splice(userData.musiclisteninglist.indexOf(d), 1, {'ID': IDToNumber, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': getDerivedAlbumAge(dataObject)})
+      userData[0].musiclisteninglist.splice(userData[0].musiclisteninglist.indexOf(d), 1, {'ID': IDToNumber, 'bandName': dataObject.bandname, 'albumName': dataObject.albumname, 'releaseYear': dataObject.releaseyear, 'albumAge': getDerivedAlbumAge(dataObject)})
       foundMatch = true
     }
   })
 
   if(foundMatch === false) {
-    console.log("No ID in musicListeninglist for user " + userData.usern + " matches the ID of the input object.")
+    console.log("No ID in musicListeninglist for user " + userData[0].usern + " matches the ID of the input object.")
   }
 
-  console.log(userData.musiclisteninglist)
+  console.log(userData[0].musiclisteninglist)
 }
 
 app.post('/submitForAddition', async (req, res) => { //
@@ -214,11 +211,11 @@ app.post('/submitForAddition', async (req, res) => { //
   if(countDuplicatesInUserMusicListeningData(dataObject) === 0) { 
     console.log("0 duplicates")
     assignMusicIDAndAdd(dataObject, getDerivedAlbumAge(dataObject)) 
-    await collection.updateOne({usern: userData.usern}, {$set: {musiclisteninglist: userData.musiclisteninglist}})
+    await collection.updateOne({usern: userData[0].usern}, {$set: {musiclisteninglist: userData[0].musiclisteninglist}})
   }
 
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(userData.musiclisteninglist))
+  res.end(JSON.stringify(userData[0].musiclisteninglist))
 })
 
 app.delete('/submitForDelete', async (req, res) => { //
@@ -226,10 +223,10 @@ app.delete('/submitForDelete', async (req, res) => { //
   const dataObject = req.body
 
   searchAndDelete(dataObject) 
-  await collection.updateOne({usern: userData.usern}, {$set: {musiclisteninglist: userData.musiclisteninglist}})
+  await collection.updateOne({usern: userData[0].usern}, {$set: {musiclisteninglist: userData[0].musiclisteninglist}})
   
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(userData.musiclisteninglist))
+  res.end(JSON.stringify(userData[0].musiclisteninglist))
 })
 
 
@@ -238,10 +235,10 @@ app.put('/submitForModification', async (req, res) => { //
   const dataObject = req.body
 
   searchAndUpdate(dataObject)
-  await collection.updateOne({usern: userData.usern}, {$set: {musiclisteninglist: userData.musiclisteninglist}})
+  await collection.updateOne({usern: userData[0].usern}, {$set: {musiclisteninglist: userData[0].musiclisteninglist}})
 
   res.writeHead(200, {'Content-Type': 'application/json'})
-  res.end(JSON.stringify(userData.musiclisteninglist))
+  res.end(JSON.stringify(userData[0].musiclisteninglist))
 })
 
 

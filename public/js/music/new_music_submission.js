@@ -47,17 +47,17 @@ const additionSubmit = async function(event) { //The async keyword here means th
   console.log(inputObj)
 
   if(inputObj.bandname.trim().length === 0 || inputObj.albumname.trim().length === 0 || inputObj.releaseyear.trim().length === 0) {
-    submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
+    submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: Missing information in at least one input field.`
     submissionInfo.appendChild(submissionInfoParagraph)
     setSubmissionInfoParagraphID()
   }
   else if(inputObj.releaseyear < startingYear) {
-    submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.releaseyear} is not a valid year.`
+    submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: ${inputObj.releaseyear} is not a valid year.`
     submissionInfo.appendChild(submissionInfoParagraph)
     setSubmissionInfoParagraphID()
   }
   else if(inputObj.releaseyear > currentYear) {
-    submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.albumname} has not been released yet.`
+    submissionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: ${inputObj.albumname} has not been released yet.`
     submissionInfo.appendChild(submissionInfoParagraph)
     setSubmissionInfoParagraphID()
   }
@@ -84,7 +84,7 @@ const additionSubmit = async function(event) { //The async keyword here means th
     const latestDataEntry = data[data.length - 1]
 
     //Template literals
-    submissionInfoParagraph.innerHTML = `<strong>Here is the music saved in server memory. Click the Get Music Listening List button to refresh and view the music data to see the addition of your submitted music</strong>: Band Name: ${latestDataEntry.bandName}, Album Name: ${latestDataEntry.albumName}, Release Year: ${latestDataEntry.releaseYear}`
+    submissionInfoParagraph.innerHTML = `<strong>Here is the music saved for your account. Click the Get Music Listening List button to refresh and view the music data to see the addition of your submitted music</strong>: Band Name: ${latestDataEntry.bandName}, Album Name: ${latestDataEntry.albumName}, Release Year: ${latestDataEntry.releaseYear}`
     additionalInfoParagraph.innerHTML = `<strong>And here is the age of</strong> ${latestDataEntry.albumName}: ${latestDataEntry.albumAge}`
 
     submissionInfo.appendChild(submissionInfoParagraph)

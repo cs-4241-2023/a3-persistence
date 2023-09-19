@@ -26,17 +26,17 @@ const deletionSubmit = async function(event)
     console.log(inputObj)
 
     if(inputObj.bandname.trim().length === 0 || inputObj.albumname.trim().length === 0 || inputObj.releaseyear.trim().length === 0) {
-        deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
+        deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: Missing information in at least one input field.`
         deletionInfo.appendChild(deletionInfoParagraph)
         setDeletionInfoParagraphID()
     }
     else if(inputObj.releaseyear < startingYear) {
-        deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.releaseyear} is not a valid year.`
+        deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: ${inputObj.releaseyear} is not a valid year.`
         deletionInfo.appendChild(deletionInfoParagraph)
         setDeletionInfoParagraphID()
     }
     else if(inputObj.releaseyear > currentYear) {
-        deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.albumname} has not been released yet.`
+        deletionInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: ${inputObj.albumname} has not been released yet.`
         deletionInfo.appendChild(deletionInfoParagraph)
         setDeletionInfoParagraphID()
     }
@@ -52,7 +52,7 @@ const deletionSubmit = async function(event)
         const data = await response.json()
         console.log(data)
 
-        deletionInfoParagraph.innerHTML = `<strong>Here is the music that has been sent to the server to compare against existing data. Click the Get Music Listening List button to refresh and view the music data to see if there was a deletion</strong>: Band Name: ${inputObj.bandname}, Album Name: ${inputObj.albumname}, Release Year: ${inputObj.releaseyear}`
+        deletionInfoParagraph.innerHTML = `<strong>Here is the music that has been sent for comparison against existing music linked to your account. Click the Get Music Listening List button to refresh and view the music data to see if there was a deletion</strong>: Band Name: ${inputObj.bandname}, Album Name: ${inputObj.albumname}, Release Year: ${inputObj.releaseyear}`
         deletionInfo.appendChild(deletionInfoParagraph)
         setDeletionInfoParagraphID()
     }

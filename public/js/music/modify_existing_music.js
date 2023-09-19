@@ -47,22 +47,22 @@ const modifySubmit = async function(event) { //The async keyword here means that
   console.log(inputObj)
 
   if(inputObj.ID.toString().trim().length === 0 || inputObj.bandname.trim().length === 0 || inputObj.albumname.trim().length === 0 || inputObj.releaseyear.trim().length === 0) {
-    modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: Missing information in at least one input field.`
+    modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: Missing information in at least one input field.`
     modifyInfo.appendChild(modifyInfoParagraph)
     setModifyInfoParagraphID()
   }
   else if(inputObj.ID < 0) {
-    modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.ID} is not a valid ID.`
+    modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: ${inputObj.ID} is not a valid ID.`
     modifyInfo.appendChild(modifyInfoParagraph)
     setModifyInfoParagraphID()
   }
   else if(inputObj.releaseyear < startingYear) {
-    modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.releaseyear} is not a valid year.`
+    modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: ${inputObj.releaseyear} is not a valid year.`
     modifyInfo.appendChild(modifyInfoParagraph)
     setModifyInfoParagraphID()
   }
   else if(inputObj.releaseyear > currentYear) {
-    modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be sent to the server</strong>: ${inputObj.albumname} has not been released yet.`
+    modifyInfoParagraph.innerHTML = `<strong>The music you submitted cannot be processed</strong>: ${inputObj.albumname} has not been released yet.`
     modifyInfo.appendChild(modifyInfoParagraph)
     setModifyInfoParagraphID()
   }
@@ -91,7 +91,7 @@ const modifySubmit = async function(event) { //The async keyword here means that
     console.log(typeof(inputObj.ID))
 
     //Template literals
-    modifyInfoParagraph.innerHTML = `<strong>Here is the modified music saved in server memory</strong>. Click the Get Music Listening List button to refresh and view the music data to see the modification for list item with ID ${latestModifiedDataEntry.ID}: Band Name: ${latestModifiedDataEntry.bandName}, Album Name: ${latestModifiedDataEntry.albumName}, Release Year: ${latestModifiedDataEntry.releaseYear}`
+    modifyInfoParagraph.innerHTML = `<strong>Here is the modified music saved for your account</strong>. Click the Get Music Listening List button to refresh and view the music data to see the modification for list item with ID ${latestModifiedDataEntry.ID}: Band Name: ${latestModifiedDataEntry.bandName}, Album Name: ${latestModifiedDataEntry.albumName}, Release Year: ${latestModifiedDataEntry.releaseYear}`
     additionalModifyInfoParagraph.innerHTML = `<strong>And here is the age of</strong> ${latestModifiedDataEntry.albumName}: ${latestModifiedDataEntry.albumAge}`
 
     modifyInfo.appendChild(modifyInfoParagraph)
