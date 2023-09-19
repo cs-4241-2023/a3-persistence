@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="css/main.css" />
+
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>To-do List</h1>
+
+      <div id="form-container">
+        <form id="task-form">
+          <div class="input-grid">
+            <div class="input-container">
+              <label for="task">Task</label>
+              <input type="text" id="task" placeholder="Task name" />
+            </div>
+
+            <div class="input-container">
+              <label for="dueDate">Due Date</label>
+              <input type="date" id="dueDate" />
+            </div>
+
+            <div class="input-container single">
+              <label for="description">Description</label>
+              <input
+                type="text"
+                id="description"
+                placeholder="Describe your task"
+              />
+            </div>
+          </div>
+          <button id="submitButton">Submit Task</button>
+        </form>
+      </div>
+
+      <table>
+        <tbody></tbody>
+      </table>
+    </div>
+    <script src="js/main.js"></script>
+  </body>
+</html>

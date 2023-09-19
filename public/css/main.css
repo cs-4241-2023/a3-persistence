@@ -1,0 +1,98 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@200&display=swap");
+
+body {
+  background: rgb(88, 87, 87);
+  color: white;
+  font-family: "Source Code Pro", monospace;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#form-container {
+  display: flex;
+  gap: 30px;
+}
+
+#task-form {
+  background-color: gray;
+  padding: 20px 50px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 50px;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 40px;
+  margin-bottom: 20px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.single {
+  grid-column: 1 / 3;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.flex {
+  display: flex;
+}
+
+.taskButton {
+  text-align: center;
+  padding: 4px 14px;
+  margin: 0 10px;
+}
+
+label {
+  font-size: 1.2rem;
+}
+
+input {
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  height: 20px;
+  padding: 4px 10px;
+}
+
+button {
+  align-self: flex-end;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  padding: 6px 10px;
+}
+
+table {
+  background-color: gray;
+  border-collapse: collapse;
+  border: 1px solid black;
+  width: 80%;
+}
+
+th,
+td {
+  border: 1px solid black;
+  padding: 10px;
+  text-align: center;
+}
+
+td {
+  background-color: rgb(155, 155, 155);
+}
