@@ -81,7 +81,7 @@ app.get('/', (req, res) => {
   res.render('layouts/main.handlebars')
 })
 
-app.post('/login', (req, res, next) => {
+app.post('/submit', (req, res, next) => {
     //add stuff to handle submit of data
   
     const json = { username: req.body.user,
@@ -92,11 +92,12 @@ app.post('/login', (req, res, next) => {
       if(result){
         console.log(result)
         console.log('success')
+        //res.render('layouts/creatureMaker.handlebars')
         res.redirect('creatureMaker')
       }else{
         console.log('fail')
         console.log(err)
-        res.render('main.handlebars',{msg: 'login failed'})
+        res.render('layouts/main.handlebars',{msg: 'login failed'})
         //res.redirect('/')
       }
       
@@ -108,8 +109,8 @@ app.get('/creatureMaker', (req, res) => {
   res.render('layouts/creatureMaker.handlebars')
 })
 
-app.get('/createAccount.handlebars', (req, res) => {
-  res.redirect('createAccount')
+app.get('/createAccount', (req, res) => {
+  res.render('layouts/createAccount.handlebars')
 })
 
 app.post('/createAccount', (req, res) => {
