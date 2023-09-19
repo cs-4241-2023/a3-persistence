@@ -76,7 +76,7 @@ app.put('/blogs/:id', async (req, res) => {
 
 
 app.delete('/blogs/:id', async (req, res) => {
-    const postId = req.params._id;
+    const postId = req.params.id;
 
     try {
         await BlogPost.findByIdAndDelete(postId);
