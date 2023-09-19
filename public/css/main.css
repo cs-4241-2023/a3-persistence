@@ -30,6 +30,17 @@ body {
   z-index: 100;
 }
 
+.row-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+#logoutButton {
+  margin-right: 20px;
+}
+
 .header-text {
   color: white;
   font-size: 24px;

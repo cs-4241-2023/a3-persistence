@@ -22,8 +22,13 @@
 <body>
   <div class="main-header">
     <p class="header-text">Vehicle Service Log Book</p>
-    <img class="motor-sports-logo" src="https://logos-world.net/wp-content/uploads/2022/03/BMW-M-Emblem.png"
-      alt="BMW-M-Emblem">
+    <div class="row-header">
+      <img class="motor-sports-logo" src="https://logos-world.net/wp-content/uploads/2022/03/BMW-M-Emblem.png"
+        alt="BMW-M-Emblem">
+      <form action="/logout" method="POST">
+        <button id="logoutButton" type="submit">Logout</button>
+      </form>
+    </div>
   </div>
 
   <div class="main-container">
@@ -116,6 +121,7 @@
       </p>
     </div>
   </div> <!--End of main container tag-->
+  </script>
 </body>
 
 </html>

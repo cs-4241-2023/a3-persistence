@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login_register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <title>VSL Register</title>
+</head>
+
+<body>
+    <div class="center">
+        <div class="container">
+            <div class="text">
+                Register Form
+            </div>
+            <p class="error">
+                <% if (error) { %>
+                    <%= error %>
+                        <% } %>
+            </p>
+            <form class="regform" action="/register" method="post">
+                <div class="data">
+                    <label>Username</label>
+                    <input id="username" type="text" name="username" placeholder="Ex: JohnDoe123" required>
+                </div>
+                <div class="data">
+                    <label>Email</label>
+                    <input id="email" type="email" name="email" placeholder="Ex: jdoe@yahoo.com" required>
+                </div>
+                <div class="data">
+                    <label>Password</label>
+                    <input id="password" type="password" name="password" placeholder="Ex: password123" required>
+                </div>
+                <div class="forgot-pass">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <div class="btn">
+                    <div class="inner"></div>
+                    <button id="submitbutton" type="submit" onclick="ValidateEmail()">Sign Up</button>
+                </div>
+                <div class="signup-link">
+                    Already a member? <a href="/login">Login now</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function ValidateEmail() {
+            const email_input = document.getElementById("email");
+            const user_input = document.getElementById("username");
+            const pass_input = document.getElementById("password");
+            if (email_input.value !== "" && user_input.value !== "" && pass_input.value != "") {
+                var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                if (!email_input.value.match(mailformat)) {
+                    alert("Invalid email address!");
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

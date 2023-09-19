@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login_register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <title>VSL Login</title>
+</head>
+
+<body>
+    <div class="center">
+        <div class="container">
+            <div class="text">
+                Login Form
+            </div>
+            <p class="error">
+                <% if (error) { %>
+                    <%= error %>
+                        <% } %>
+            </p>
+            <form class="logform" action="/login" method="post">
+                <div class="data">
+                    <label>Email</label>
+                    <input name="email" type="email" required>
+                </div>
+                <div class="data">
+                    <label>Password</label>
+                    <input name="password" type="password" required>
+                </div>
+                <div class="forgot-pass">
+                    <a href="#">Forgot Password?</a>
+                </div>
+                <div class="btn">
+                    <button id="submitbutton" type="submit">login</button>
+                </div>
+                <div class="btn" id="git-login">
+                    <img class="test-img" src="https://cdn.jim-nielsen.com/macos/1024/github-desktop-2021-05-20.png"
+                        alt="github logo">
+                    <button type="button">login via Github</button>
+                </div>
+                <div class="signup-link">
+                    Not a member? <a href="/register">Signup now</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
