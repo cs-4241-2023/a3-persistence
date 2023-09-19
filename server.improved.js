@@ -1,6 +1,7 @@
-
+require('dotenv').config()
 // server (express code)
-const express = require('express'),
+const express = require("express"),
+      { MongoClient, ObjectId } = require("mongodb"),
       app = express(),
       appdata = [
         {'yourname': 'Justin', 'username': 'Sombero', 'email': 'jwonoski2@wpi.edu', 'position': 'DPS'},
@@ -46,13 +47,6 @@ const listener = app.listen( process.env.PORT || 3000 )
 
 //MongoDB Database Code:
 
-const express = require("express"),
-      { MongoClient, ObjectId } = require("mongodb"),
-      db = express()
-
-db.use(express.static("public") )
-db.use(express.json() )
-
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new MongoClient( uri )
 
@@ -60,17 +54,48 @@ let collection = null
 
 async function run() {
   await client.connect()
-  collection = await client.db("datatest").collection("test")
+  //Replace datatest and test with our own from MongoDB
+  collection = await client.db("Users").collection("users")
+
+  app.use( (req,res,next) => {
+    if( collection !== null ) {
+      next()
+    }else{
+      res.status( 503 ).send()
+    }
+  })
+
+  run()
+
 
   // route to get all docs
-  db.get("/docs", async (req, res) => {
-    if (collection !== null) {
+  app.get("/docs", async (req, res) => {
       const docs = await collection.find({}).toArray()
       res.json( docs )
-    }
   })
 }
 
-run()
+app.post( '/add', async (req,res) => {
+  const result = await collection.insertOne( req.body )
+  res.json( result )
+})
 
-db.listen(3000)
+// assumes req.body takes form { _id:5d91fb30f3f81b282d7be0dd } etc.
+app.post( '/remove', async (req,res) => {
+  const result = await collection.deleteOne({ 
+    _id:new ObjectId( req.body._id ) 
+  })
+  
+  res.json( result )
+})
+
+app.post( '/update', async (req,res) => {
+  const result = await collection.updateOne(
+    { _id: new ObjectId( req.body._id ) },
+    { $set:{ name:req.body.name } }
+  )
+
+  res.json( result )
+})
+
+app.listen(3000)
