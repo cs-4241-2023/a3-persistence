@@ -1,0 +1,8 @@
+.centered {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .rounded {
+    border-radius:50%;
+  }
