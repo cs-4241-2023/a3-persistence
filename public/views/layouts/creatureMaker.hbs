@@ -13,14 +13,14 @@
   <body>
     <div>
       <h1 id="formTitle">Create a Creature!!</h1>
-      <form id="creature" method="post">
+      <form id="creature" method="post" action="/creatureMaker">
         <div class="oddFormRow">
           <label>Name your creature</label>
-          <input type="text" id="name" maxlength="30" required>
+          <input type="text" name="name" maxlength="30" required>
         </div>
         <div class="evenFormRow">
           <label>Creature type</label>
-          <select id="type">
+          <select name="type">
             <option value="Chameleon">Chameleon</option>
             <option value="Gecko">Gecko</option>
             <option value="Frog">Frog</option>
@@ -33,13 +33,23 @@
         </div>
         <div class="oddFormRow">
           <label>Creature age</label>
-          <input type="number" id="age" min="0" required>
+          <input type="number" name="age" min="0" required>
         </div>
         <button id="submitButton">Create</button>
       </form>
     </div>
     <div id="resultsDiv">
       <h1 id="resultsTitle">Your Creatures</h1>
+      {{{allCreatures}}}
+      <ul class="creature_list">
+        {{#each e}}
+          <div class="row">
+            {{this.name}} the {{this.type}} is age {{this.age}}
+            your creature is {{this.status}}!!
+            <img src={{this.image}} width=100px height=100px>
+          </div>
+        {{/each}}
+      </ul>
     </div>
   </body>
 </html>

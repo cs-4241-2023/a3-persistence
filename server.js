@@ -17,6 +17,7 @@ app.use( cookie({
 const mongoose = require("mongoose");
 const { MongoClient } = require('mongodb');
 const uri = process.env.HOST;
+let currUser;
 //const client = new MongoClient(uri);
 //app.engine( 'handlebars',  hbs() )
 app.engine(
@@ -38,15 +39,6 @@ mongoose.connect(
   }
 );
 
-const creatureSchema = new mongoose.Schema({
-  name: {type: String, required: true},
-  type: {type: String, required: true},
-  age: {type: Number, required: true},
-  picture: String,
-  status: String
-});
-const Creature = mongoose.model('Creature', creatureSchema);
-
 const loginSchema = new mongoose.Schema({
   username: {type: String, min: 10, max: 30, required: true},
   password: {type: String, min: 5, max: 30, required: true}
@@ -54,11 +46,15 @@ const loginSchema = new mongoose.Schema({
 
 const Login = mongoose.model('Login', loginSchema);
 
-const userSchema = new mongoose.Schema({
-  username: {type: String, min: 10, max: 30, required: true},
+const creatureSchema = new mongoose.Schema({
+  name: {type: String, required: true},
+  type: {type: String, required: true},
+  age: {type: Number, required: true},
+  owner: {type: mongoose.Types.ObjectId, ref: 'Login'},
+  picture: String,
+  status: String
 });
-
-const Username = mongoose.model('Username', userSchema);
+const Creature = mongoose.model('Creature', creatureSchema);
 
 const avgAges = {"Chameleon": 7, "Gecko": 7,
                  "Frog": 10, "Snake": 15,
@@ -103,8 +99,10 @@ app.post('/submit', (req, res, next) => {
       password: req.body.pass}
 
     console.log(json)
-    Login.findOne({username: json.username, password: json.password}).then (function (result, err) {
+    Login.findOne({username: json.username, password: json.password}, {}).then (function (result, err) {
       if(result){
+        currUser = this.username;
+        req.session.login = true;
         console.log(result)
         console.log('success')
         //res.render('layouts/creatureMaker.handlebars')
@@ -136,19 +134,19 @@ app.post('/saveAcc', (req, res) => {
     username: req.body.user,
     password: req.body.pass
   })
-  Username.findOne({username: acc.username}).then(function (result, err) {
+  Login.findOne({username: acc.username}).then(function (result, err) {
     if(result){
       //username is taken
       console.log('username in use')
-      res.render('views/layouts/createAccount.hbs', {msg: 'username is taken :('})
+      res.render('views/layouts/createAccount.hbs', {msg: 'Username is taken :('})
     }else{
       //successfully created account
       console.log('creating new account...')
+      console.log(acc.username)
+      console.log(acc.password)
       const newUser = new Login ({username: acc.username, password: acc.password})
       newUser.save()
-      const saveUsername = new Username ({username: acc.username})
-      saveUsername.save()
-      res.render('views/layouts/createAccount.hbs', {msg: 'account created successfully!'})
+      res.render('views/layouts/createAccount.hbs', {msg: 'Account created successfully!'})
     }
   })
 
@@ -162,24 +160,32 @@ app.post('/saveAcc', (req, res) => {
     console.log(err);
     res.send("an error occured")
   }).catch(err => console.log("error occured, "+ err));
-});
+}); */
 
 app.post('/creatureMaker', (req, res) => {
   const newCreature = new Creature({
     name: req.body.name,
     type: req.body.type,
     age: req.body.age,
+    owner: currUser, //todo
     picture: creaturePics[req.body.type],
     status: calcStatus(req.body.age, req.body.type)
   })
   Creature.findOne(newCreature).then(function (result, err) {
     if(result){
+      console.log('duplicate creature')
       //creature already exists
     }else{
+      console.log('saving creature...')
       newCreature.save()
+      Creature.find({owner: currUser}).then(function (docs, err){
+        res.render('views/layouts/creatureMaker.hbs', {e: docs})
+        console.log(docs)
+      })
+      //res.render('views/layouts/creatureMaker.hbs')
     }
   })
-}) */
+}) 
 
 const calcStatus = (age, type) =>{
   if(age <= avgAges[type] / 2){
