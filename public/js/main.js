@@ -22,7 +22,7 @@ function loadTasks(taskList) {
   taskList.forEach(t => {
     let item = document.createElement('li');
     item.className = 'task-item'
-    item.id = t.taskId;
+    item._id = t._id;
 
     let taskLabel = document.createElement('label');
     taskLabel.innerHTML = t.taskName;
@@ -43,22 +43,15 @@ function loadTasks(taskList) {
     let deleteButton = document.createElement('button');
     deleteButton.innerText = "x";
     deleteButton.addEventListener('click', async function() {
-      const json = {id: item.id};
+      const json = {_id: item._id};
       const body = JSON.stringify(json);
 
       const postResponse = await fetch('/deleteTask', {
         method: 'POST',
         body
-      })
-    
-      const getResponse = await fetch('/getTasks', {
-        method: 'GET',
-      })
-    
-      const text = await getResponse.text();
-      const tasks = JSON.parse(text);
+      });
 
-      updateTasks(tasks);
+      this.parentElement.remove();
     });
 
     item.appendChild(taskLabel);

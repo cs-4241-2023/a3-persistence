@@ -1,14 +1,34 @@
+require('dotenv').config();
+
 const express = require('express'),
+      { MongoClient, ObjectId } = require("mongodb"),
       app = express();
 
-let taskList = [];
-let taskId = 0;
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`;
+const client = new MongoClient( uri )
+
+let collection = null
+
+async function run() {
+  await client.connect()
+  collection = await client.db("todo_db").collection("tasks")
+}
 
 app.use(express.static('public'));
 
-app.get('/getTasks', (req, res) => {
+app.use( (req,res,next) => {
+  if( collection !== null ) {
+    next()
+  }else{
+    res.status( 503 ).send()
+  }
+})
+
+app.get('/getTasks', async (req, res) => {
+  const tasks = await collection.find({}).toArray();
+
   res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify(taskList));
+  res.end(JSON.stringify(tasks));
 }); 
 
 app.post('/submitTasks', (req, res) => {
@@ -18,7 +38,7 @@ app.post('/submitTasks', (req, res) => {
     dataString += data;
   });
 
-  req.on('end', function() {
+  req.on('end', async function() {
     let info = JSON.parse(dataString);
 
     const currentDate = new Date();
@@ -32,11 +52,9 @@ app.post('/submitTasks', (req, res) => {
     else {
       info.daysRemaining = "Overdue";
     }
-    info.taskId = taskId;
-    taskId = taskId + 1;
 
+    const result = await collection.insertOne(info);
     console.log(info);
-    taskList.push(info);
 
     res.writeHead(200, "OK", {'Content-Type': 'text/plain' });
     res.end('Submit Success');
@@ -51,18 +69,16 @@ app.post('/deleteTask', (req, res) => {
       dataString += data;
   })
 
-  req.on('end', function() {
+  req.on('end', async function() {
     let info = JSON.parse(dataString);
-    for (let i = 0; i < taskList.length; i++) {
-      if (parseInt(info.id) === taskList[i].taskId) {
-        taskList.splice(i, 1);
-        break;
-      }
-    }
+    const result = await collection.deleteOne({
+      _id: new ObjectId(info._id)
+    });
 
     res.writeHead(200, "OK", {'Content-Type': 'text/plain' });
     res.end('Delete Success');
   })
 });
 
+run();
 app.listen(process.env.PORT || 3000);
