@@ -37,57 +37,71 @@ app.use((req, res, next) => {
 })
 
 // POST works to add rank in mongodb
+// app.post('/submit', express.json(), async (req, res) => {
+//   try {
+//     // Add new player to the database
+//     await collection.insertOne(req.body);
+
+//     // Retrieve all players from the database and sort them by score in descending order
+//     const players = await collection.find({}).sort({ score: -1 }).toArray();
+
+//     // Assign ranks to players based on their position in the sorted list
+//     players.forEach((player, index) => {
+//       player.rank = index + 1;
+//     });
+
+//     // Update the rank for each player in the database (optional)
+//     players.forEach(async (player) => {
+//       await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
+//     });
+
+//     // Respond to the client with a JSON string of players
+//     res.status(200).json(players);
+//   } catch (error) {
+//     // Handle error
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
+
+// CLEANER ATTEMPT POST 
 app.post('/submit', express.json(), async (req, res) => {
-  try {
-    // Add new player to the database
-    await collection.insertOne(req.body);
-
-    // Retrieve all players from the database and sort them by score in descending order
-    const players = await collection.find({}).sort({ score: -1 }).toArray();
-
-    // Assign ranks to players based on their position in the sorted list
-    players.forEach((player, index) => {
-      player.rank = index + 1;
-    });
-
-    // Update the rank for each player in the database (optional)
-    players.forEach(async (player) => {
-      await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
-    });
-
-    // Respond to the client with a JSON string of players
-    res.status(200).json(players);
-  } catch (error) {
-    // Handle error
-    res.status(500).json({ error: 'Internal server error' });
-  }
+    await collection.insertOne(req.body); // Add new player to the database
+    await updatePlayersAndRespond(res);
 });
 
 // DELETE
-app.delete('/delete', express.json(), async (req, res) => {
-  try {
-    const playerName = req.body.name;
+// app.delete('/delete', express.json(), async (req, res) => {
+//   try {
+//     const playerName = req.body.name;
 
+//     // Use MongoDB's deleteOne method to remove the player by name
+//     await collection.deleteOne({ name: playerName });
+
+//     // Retrieve all players from the database and sort them by score in descending order
+//     const players = await collection.find({}).sort({ score: -1 }).toArray();
+
+//     // Assign ranks to players based on their position in the sorted list
+//     players.forEach((player, index) => {
+//       player.rank = index + 1;
+//     });
+
+//     // Update the rank for each player in the database 
+//     players.forEach(async (player) => {
+//       await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
+//     });
+//     res.status(200).json(players);
+//   } catch (error) {
+//     // Handle error
+//     res.status(500).json({ error: 'Internal server error' });
+//   }
+// });
+
+// DELETE CLEAN ATTEMPT
+app.delete('/delete', express.json(), async (req, res) => {
+    const playerName = req.body.name;
     // Use MongoDB's deleteOne method to remove the player by name
     await collection.deleteOne({ name: playerName });
-
-    // Retrieve all players from the database and sort them by score in descending order
-    const players = await collection.find({}).sort({ score: -1 }).toArray();
-
-    // Assign ranks to players based on their position in the sorted list
-    players.forEach((player, index) => {
-      player.rank = index + 1;
-    });
-
-    // Update the rank for each player in the database 
-    players.forEach(async (player) => {
-      await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
-    });
-    res.status(200).json(players);
-  } catch (error) {
-    // Handle error
-    res.status(500).json({ error: 'Internal server error' });
-  }
+    await updatePlayersAndRespond(res);
 });
 
 
@@ -120,3 +134,28 @@ app.put('/edit', express.json(), async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
+
+async function updatePlayersAndRespond(res) {
+  try {
+    // Retrieve all players from the database and sort them by score in descending order
+    const players = await collection.find({}).sort({ score: -1 }).toArray();
+
+    // Assign ranks to players based on their position in the sorted list
+    players.forEach((player, index) => {
+      player.rank = index + 1;
+    });
+
+    // Update the rank for each player in the database (optional)
+    const updatePromises = players.map(async (player) => {
+      await collection.updateOne({ _id: player._id }, { $set: { rank: player.rank } });
+    });
+
+    await Promise.all(updatePromises);
+
+    // Respond to the client with a JSON string of players
+    res.status(200).json(players);
+  } catch (error) {
+    // Handle error
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
