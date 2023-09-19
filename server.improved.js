@@ -1,5 +1,8 @@
+require('dotenv').config();
+
 const { MongoClient, ServerApiVersion } = require('mongodb'),
       express = require( 'express' ),
+      cookie = require ('cookie-session'),
       app = express(),
       port = 3000,
       mongouser = process.env.MONGO_USERNAME,
@@ -7,8 +10,15 @@ const { MongoClient, ServerApiVersion } = require('mongodb'),
       
 const uri = "mongodb+srv://" + mongouser + ":" + mongopass + "@cs4241.mwubspm.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp";
 
+//console.log("user: %s, password: %s", mongouser, mongopass);
 
-let scores = []
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
 
 app.use(express.static('public'));
 app.use(express.static('views'));
@@ -17,27 +27,40 @@ app.use(express.json());
 app.post('/submit', handleManualScore);
 app.post('/refresh', refresh);
 
-function newScore(name, score) {
+async function newScore(name, score) {
   const dateSub = new Date()
   const newsc = {'name': name, 'score': score, 'date': dateSub};
   //console.log(newsc)
-  scores.push(newsc)
+  //scores.push(newsc)
+
+  try {
+    await client.connect();
+
+    const database = client.db("cs4241"),
+          collection = database.collection("subway-scores");
+
+    await collection.insertOne(newsc);
+
+  } finally {
+    client.close();
+  }
 }
 
-function refresh(request, response) {
-  //console.log(scores)
+async function refresh(request, response) {
   response.writeHeader(200, {'Content-Type': 'text/plain'})
-  response.end(JSON.stringify(scores))
+  const jsonStr = JSON.stringify(await getAllScores());
+  //console.log(jsonStr)
+  response.end(jsonStr)
 }
 
 function handleManualScore(request, response) {
-  let dataString = ''
+  let dataString = '';
   request.on( 'data', function( data ) {
-    dataString += data 
+    dataString += data ;
     //console.log(data)
   })
 
-  request.on( 'end', function() {
+  request.on( 'end', async function() {
     //console.log(dataString)
     let req =  JSON.parse( dataString )
     //console.log(req)
@@ -50,27 +73,96 @@ function handleManualScore(request, response) {
       return;
     }
 
-    let updated = false;
+    const user = await findUser(req.yourname);
 
-    for (let i = 0; i < scores.length; i++) {
-      if (scores[i].name === req.yourname) {
-        updated = true;
-        if (currscore >= 0) {
-          scores[i].score = currscore;
-        } else {
-          scores.splice(i,1);
-        }
-        break;
-      }
-    }
-    if (!updated) {
-      newScore(req.yourname, req.score)
+    if (user === null) {
+      await newScore(req.yourname, req.score);
+    } else if (currscore >= 0) {
+      await updateScore(req.yourname, currscore);
+    } else {
+      await deleteScore(req.yourname);
     }
 
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
     response.end('test')
   })
 
+}
+
+async function findUser(name) {
+  try {
+    await client.connect();
+
+    const database = client.db("cs4241"),
+          collection = database.collection("subway-scores");
+    
+    const query = {'name': name};
+
+    try {
+      const cursor = await collection.findOne(query);
+      //console.log(cursor);
+
+      return cursor;
+    } catch (err) {
+      throw "he angy";
+    }
+
+  } finally {
+    client.close();
+  }
+}
+
+async function getAllScores() {
+  console.log("getting all scores")
+  try {
+    await client.connect();
+    console.log("connected")
+
+    const database = client.db("cs4241"),
+          collection = database.collection("subway-scores");
+
+    const cursor = collection.find();
+    const val = await cursor.toArray();
+    console.log(val);
+    return val;
+
+  } finally {
+    console.log("closing")
+    client.close();
+  }
+}
+
+async function updateScore(name, newScore) {
+  try {
+    await client.connect();
+
+    const database = client.db("cs4241"),
+          collection = database.collection("subway-scores");
+    
+    await collection.updateOne(
+      { 'name': name },
+      { $set: { 'score': newScore } }
+    );
+
+  } finally {
+    client.close();
+  }
+}
+
+async function deleteScore(name) {
+  try {
+    await client.connect();
+
+    const database = client.db("cs4241"),
+          collection = database.collection("subway-scores");
+    
+    await collection.deleteOne(
+      {'name': name}
+    );
+
+  } finally {
+    client.close();
+  }
 }
 
 app.listen( process.env.PORT || port )
