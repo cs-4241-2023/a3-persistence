@@ -44,3 +44,33 @@ app.put( '/edit', express.json(),( req, res ) => {
 
 const listener = app.listen( process.env.PORT || 3000 )
 
+//MongoDB Database Code:
+
+const express = require("express"),
+      { MongoClient, ObjectId } = require("mongodb"),
+      db = express()
+
+db.use(express.static("public") )
+db.use(express.json() )
+
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
+const client = new MongoClient( uri )
+
+let collection = null
+
+async function run() {
+  await client.connect()
+  collection = await client.db("datatest").collection("test")
+
+  // route to get all docs
+  db.get("/docs", async (req, res) => {
+    if (collection !== null) {
+      const docs = await collection.find({}).toArray()
+      res.json( docs )
+    }
+  })
+}
+
+run()
+
+db.listen(3000)
