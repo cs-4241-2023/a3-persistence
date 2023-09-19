@@ -44,9 +44,12 @@
       <ul class="creature_list">
         {{#each e}}
           <div class="row">
-            {{this.name}} the {{this.type}} is age {{this.age}}
-            your creature is {{this.status}}!!
-            <img src={{this.image}} width=100px height=100px>
+            <form id="deleteItem" method="POST" action="/delItem/{{_id}}">
+              <span>{{this.name}} the {{this.type}} is age {{this.age}}</span>
+              <span>your creature is {{this.status}}!!</span>
+              <img src={{this.picture}} width=100px height=100px>
+              <button id={{_id}} >X</button>
+            </form>
           </div>
         {{/each}}
       </ul>

@@ -101,7 +101,8 @@ app.post('/submit', (req, res, next) => {
     console.log(json)
     Login.findOne({username: json.username, password: json.password}, {}).then (function (result, err) {
       if(result){
-        currUser = this.username;
+        currUser = result._id;
+        console.log(currUser)
         req.session.login = true;
         console.log(result)
         console.log('success')
@@ -118,16 +119,10 @@ app.post('/submit', (req, res, next) => {
     //next();
 });
 
-app.get('/creatureMaker', (req, res) => {
-  res.render('views/layouts/creatureMaker.hbs')
-})
-
 app.get('/createAccount', (req, res) => {
   console.log('get create account')
   res.render('views/layouts/createAccount.hbs', req.body)
 })
-
- 
 
 app.post('/saveAcc', (req, res) => {
   const acc = new Login({
@@ -152,15 +147,14 @@ app.post('/saveAcc', (req, res) => {
 
 })
 
-/* app.get('/creatureMaker', (req, res) => {
-  Creature.find({}).then(function (result, err) {
-    if (!err) {
-      res.send(result);
-    }
-    console.log(err);
-    res.send("an error occured")
-  }).catch(err => console.log("error occured, "+ err));
-}); */
+app.get('/creatureMaker', (req, res) => {
+  console.log('get creature maker')
+  console.log(currUser)
+  Creature.find({owner: currUser}).lean().then(function (docs, err){
+    res.render('views/layouts/creatureMaker.hbs', {e: docs})
+    //console.log(docs)
+  })
+})
 
 app.post('/creatureMaker', (req, res) => {
   const newCreature = new Creature({
@@ -178,14 +172,24 @@ app.post('/creatureMaker', (req, res) => {
     }else{
       console.log('saving creature...')
       newCreature.save()
-      Creature.find({owner: currUser}).then(function (docs, err){
+      Creature.find({owner: currUser}).lean().then(function (docs, err){
         res.render('views/layouts/creatureMaker.hbs', {e: docs})
-        console.log(docs)
+        console.log('hi')
+        //console.log(docs)
+        console.log('bye')
       })
       //res.render('views/layouts/creatureMaker.hbs')
     }
   })
 }) 
+
+app.post('/delItem/:id', (req, res) => {
+  Creature.findByIdAndRemove({_id: req.params.id}).then(function (result, err){
+    console.log('creature removed...')
+    console.log(result._id)
+    res.redirect('/creatureMaker')
+  })
+})
 
 const calcStatus = (age, type) =>{
   if(age <= avgAges[type] / 2){
