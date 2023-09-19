@@ -42,18 +42,11 @@ function createPlaylist(data) {
       pop.innerHTML = `Delete`;
       pop.onclick = async function (event) {
         event.preventDefault();
-        const removeJson = {
-            season: d.season,
-            title: d.title,
-            artist: d.artist,
-            length: d.length,
-          },
-          removeBody = JSON.stringify(removeJson);
-
+        
         const removeResponse = await fetch("/remove", {
           method: "POST",
           headers: { 'Content-Type': 'application/json' },
-          body: removeBody,
+          body: JSON.stringify({ id: d._id })
         });
 
         const responseData = await removeResponse.json();
@@ -89,10 +82,6 @@ window.onload = async function () {
   const current_season = document.getElementById("season").value;
   const addButton = document.getElementById("add");
   addButton.onclick = add;
-
-  const doesNothing = await fetch("/nothing", {
-    method: "POST",
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({}),
-  });
 };
+
+

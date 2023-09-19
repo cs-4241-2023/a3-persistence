@@ -1,6 +1,6 @@
-
 // server
 const express = require("express"),
+  { MongoClient, ObjectId } = require("mongodb"),
   app = express(),
   playlists = [
     { season: "fall", title: "1901", artist: "Phoenix", length: "2:00" },
@@ -10,23 +10,30 @@ app.use(express.static("public"));
 app.use(express.static("views"));
 app.use(express.json());
 
-app.post("/remove", (req, res) => {
-  for (let i = 0; i < playlists.length; i++) {
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@cluster0.il1hxgz.mongodb.net/?retryWrites=true&w=majority`;
 
-    if (
-      playlists[i].title === req.body.title &&
-      playlists[i].artist === req.body.artist &&
-      playlists[i].length === req.body.length &&
-      playlists[i].season === req.body.season
-    ) {
-      playlists.splice(i, 1);
-    }
+const client = new MongoClient(uri);
+
+let collection = null;
+
+async function run() {
+  //debugger;
+  await client.connect();
+  collection = await client.db("a3-database").collection("playlists");
+}
+
+app.use((req, res, next) => {
+  if (collection !== null) {
+    next();
+  } else {
+    res.status(503).send();
   }
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify(playlists));
 });
 
-app.post("/submit", (req, res) => {
+//calling run
+run();
+
+app.post( '/submit', async (req,res) => {
   const length = req.body.length;
   const minutes = Math.floor(length / 60).toString();
 
@@ -41,14 +48,27 @@ app.post("/submit", (req, res) => {
   }
 
   req.body.length = finalTime;
+  const result = await collection.insertOne( req.body )
 
-  playlists.push(req.body);
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify(playlists));
-});
-
-app.post("/nothing", (req, res) => {
-  //do nothing
+  const playlistData = await client.db("a3-database").collection("playlists").find().toArray();
+  
+  res.status(200).json(playlistData);
+  
 })
+
+
+app.post("/remove", async (req, res) => {
+  
+  const { id } = req.body
+  const query = { _id: new ObjectId(id) }
+
+  const collection = client.db("a3-database").collection("playlists");
+  let result = await collection.deleteOne(query);
+  
+  const playlistData = await client.db("a3-database").collection("playlists").find().toArray();
+  
+  res.status(200).json(playlistData);
+  
+});
 
 app.listen(process.env.PORT);
