@@ -22,6 +22,19 @@ footer {
 
 /* 
 =====================================
+  Water.css overrides               |
+=====================================
+ */
+#save {
+  background-color: #5e738c;
+}
+
+#save:hover {
+  background-color: #51657b;
+}
+
+/* 
+=====================================
   Form Styling                      |
 =====================================
 */
@@ -79,16 +92,16 @@ textarea {
 .tasks-list--sidebar {
   background-color: #202b38;
   width: 215px;
-  /* padding-top: 20px; */
   overflow-y: auto;
+  border-right: 10px solid #978e7e;
 }
 
 .tasks-list--container {
+  max-height: 50%;
   width: 215px;
   overflow-y: auto;
   float: left;
   position: relative;
-  /* scrollbar-color: white black; */
 }
 
 .tasks-list--task {  
