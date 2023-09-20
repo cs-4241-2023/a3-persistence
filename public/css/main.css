@@ -105,11 +105,16 @@ textarea {
 
 .tasks-list--task:hover {
   cursor: pointer;
+  background-color: cornflowerblue;
+}
+
+.tasks-list--task:focus {
+  background-color: #202b38;
 }
 
 .tasks-list--task.selected {
-  background-color: white;
-  color: black;
+  background-color: #0c151c;
+  color: white;
   border: 1px solid black;
 }
 
