@@ -23,12 +23,22 @@ const dbClient = new MongoClient(dbURL);
 let assignmentCollection = null;
 let loginCredentialCollection = null;
 
-app.use(async (request, response, next) => {
+const initDatabase = async () => {
     await dbClient.connect();
     assignmentCollection = await dbClient.db("Database0").collection("Collection0");
     loginCredentialCollection = await dbClient.db("Database0").collection("Collection1");
+}
+initDatabase().then(() => {
+    console.log("Connecting to database...");
+    if(assignmentCollection !== null && loginCredentialCollection !== null) {
+        console.log("Connected to database!");
+    } else {
+        console.error("Database connection not found");
+    }
+});
 
-   if(assignmentCollection !== null && loginCredentialCollection !== null) {
+app.use(async (request, response, next) => {
+    if(assignmentCollection !== null && loginCredentialCollection !== null) {
        next();
    } else {
        response.sendStatus(503);
