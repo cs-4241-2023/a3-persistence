@@ -1,15 +1,56 @@
 const express = require('express'),
+      cookie = require("cookie-session"),
       app = express(),
       port = 3000
+const {response} = require("express");
 
 const appdata = [
   {id: 100000 , className: "CS 4241", assignmentName: "Assignment 2", dueDate:"2023-09-11", difficulty: 5, priority: "Medium"},
   {id: 200000 , className: "CS 3013", assignmentName: "Homework 1", dueDate:"2023-09-05", difficulty: 3, priority: "Low"}
 ];
+const username = "username";
+const password = "password";
 
-app.use(express.static("public"));
-app.use(express.static("public/views"));
+
 app.use(express.json());
+app.use(express.urlencoded({ extended:true }))
+app.use(cookie({
+    name: "session",
+    keys: ["key1", "key2"]
+}));
+
+app.get("/", (request, response) => {
+    if(request.session.loginStatus === true) {
+        response.sendFile(__dirname + "/public/app.html");
+    } else {
+        response.sendFile(__dirname + "/public/index.html");
+    }
+});
+
+app.get("/app.html", (request, response) => {
+    if(request.session.loginStatus === false || request.session.loginStatus === undefined) {
+        response.sendFile(__dirname + "/public/index.html");
+    } else {
+        response.sendFile(__dirname + "/public/app.html");
+    }
+});
+
+app.get("/auth", (request, response) => {
+    response.writeHead(200, "OK", {'Content-Type': 'text/json'});
+    response.end(JSON.stringify({status: request.session.loginStatus}));
+});
+
+app.use(express.static(__dirname + "/public"));
+
+app.post("/login", (request, response) => {
+    if(request.body.username === username && request.body.password === password) {
+        request.session.loginStatus = true;
+        response.redirect("app.html")
+    } else {
+        request.session.loginStatus = false;
+        response.redirect("/")
+    }
+});
 
 app.get("/assignment-data", (request, response) => {
   response.writeHead(200, "OK", {'Content-Type': 'text/json'});

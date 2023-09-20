@@ -3,13 +3,17 @@
  * Set up on-click event listeners once the window loads
  */
 window.onload = async function() {
-  if(window.location.pathname === "/") {
-    document.querySelector("#login-button").onclick = () => {
-      window.location.replace("app.html");
-    }
-  } else if(window.location.pathname === "/app.html") {
-      await getAllData();
-      document.querySelector("#submit-button").onclick = submitAssignment;
+
+  let authResponse = await fetch("/auth", {
+    method: "GET",
+    headers: {'Content-Type': 'application/json'},
+  });
+
+  let authStatus = await authResponse.json();
+
+  if(authStatus.status === true) {
+    await getAllData();
+    document.querySelector("#submit-button").onclick = submitAssignment;
   }
 }
 
