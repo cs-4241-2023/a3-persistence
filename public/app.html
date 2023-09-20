@@ -20,7 +20,7 @@
           assignment based on the difficulty and due date of the inputted assignment.</p>
       </div>
 
-      <div id="edit-window">
+      <form id="edit-window" autocomplete="off">
         <h3 id="edit-header">Edit Assignment Information:</h3>
         <input type="text" id="class-name-edit" placeholder="Class Name">
         <input type="text" id="assignment-name-edit" placeholder="Assignment Name">
@@ -28,9 +28,9 @@
         <input type="number" id="difficulty-edit" placeholder="Difficulty (1 to 10)">
         <button id="cancel-edit-button">Cancel</button>
         <button type="submit" id="submit-button-edit">Submit</button>
-      </div>
+      </form>
 
-      <form id="assignment-form">
+      <form id="assignment-form" autocomplete="off">
         <input type="text" id="class-name" placeholder="Class Name">
         <input type="text" id="assignment-name" placeholder="Assignment Name">
         <input type="date" id="due-date">
