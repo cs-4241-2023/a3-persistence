@@ -1,5 +1,19 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 /**
+ * Set up on-click event listeners once the window loads
+ */
+window.onload = async function() {
+  if(window.location.pathname === "/") {
+    document.querySelector("#login-button").onclick = () => {
+      window.location.replace("app.html");
+    }
+  } else if(window.location.pathname === "/app.html") {
+      await getAllData();
+      document.querySelector("#submit-button").onclick = submitAssignment;
+  }
+}
+
+/**
  * Submits assignment to the server as JSON
  * @param event mouse click event
  * @returns {Promise<void>}
@@ -199,13 +213,4 @@ const editAssignment = async function(assignmentId) {
   document.querySelector("#submission-message").style.visibility = "visible"
   document.querySelector("#assignment-form").style.display = "block";
   document.querySelector("#edit-window").style.display = "none";
-}
-
-/**
- * Set up on-click event listeners once the window loads
- */
-window.onload = function() {
-  getAllData().then(() =>
-      document.querySelector("#submit-button").onclick = submitAssignment
-  );
 }
