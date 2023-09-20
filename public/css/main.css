@@ -1,5 +1,5 @@
 body {
-  background-color: black;
+  background-color: #d2cfca;
   display: flex;
   margin: 0;
   max-width: 100%;
@@ -79,21 +79,19 @@ textarea {
 .tasks-list--sidebar {
   background-color: #202b38;
   width: 215px;
+  /* padding-top: 20px; */
   overflow-y: auto;
 }
 
 .tasks-list--container {
   width: 215px;
   overflow-y: auto;
-
   float: left;
   position: relative;
   /* scrollbar-color: white black; */
 }
 
 .tasks-list--task {  
-  /* background-color: #0336FF; */
-  /* color: white; */
   padding: 10px;
   margin: 10px;
   overflow-x: hidden;
@@ -101,9 +99,10 @@ textarea {
   text-overflow: ellipsis;
   max-height: 22px;
   word-wrap: normal;
+  background-color: #161f27;
 }
 
-.tasks-list--task:hover {
+.tasks-list--task:hover, .tasks-list--new:hover {
   cursor: pointer;
   background-color: cornflowerblue;
 }
@@ -115,18 +114,12 @@ textarea {
 .tasks-list--task.selected {
   background-color: #0c151c;
   color: white;
-  border: 1px solid black;
 }
 
 .tasks-list--new {
-  /* background-color: white; */
+  background-color: #161f27;
   padding: 10px;
   margin: 10px;
-  border: 1px solid black;
-}
-
-.tasks-list--new:hover {
-  cursor: pointer;
 }
 
 form, .tasks-list--container {
