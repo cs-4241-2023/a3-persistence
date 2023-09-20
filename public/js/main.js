@@ -1,5 +1,5 @@
 // Collects the data in form inputs and sends it to the server to create a new task
-const submit = async (event, id = null) => {
+const submit = async (event, _id) => {
   event.preventDefault();
 
   let taskInput = document.getElementById("task");
@@ -13,12 +13,12 @@ const submit = async (event, id = null) => {
   let dueDate = new Date(
     document.getElementById("dueDate").value
   ).toLocaleDateString("en-US");
+  let id = _id;
 
   const json = { id, task, desc, dueDate };
   const body = JSON.stringify(json);
 
   const submitButton = document.getElementById("submitButton");
-
   if (submitButton.textContent == "Submit Task") {
     try {
       const response = await fetch("/tasks", {
@@ -41,9 +41,9 @@ const submit = async (event, id = null) => {
     }
   } else if (submitButton.textContent == "Edit Task") {
     try {
-      const response = await fetch(`/tasks/${id}`, {
+      const response = await fetch(`/tasks/${_id}`, {
         method: "PUT",
-        body: body,
+        body,
         headers: {
           "Content-Type": "application/json",
         },
@@ -91,40 +91,39 @@ const priorityCalculator = dueDate => {
   return priority;
 };
 
-const deleteTask = async task => {
-  const jsonString = JSON.stringify(task);
-
+const deleteTask = async _id => {
   try {
-    const deleteResponse = await fetch(`/tasks/${task.id}`, {
+    const deleteResponse = await fetch(`/tasks/${_id}`, {
       method: "DELETE",
-      body: jsonString,
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    if (deleteResponse.status === 200) {
+    if (deleteResponse.ok) {
       fetchTasks();
+    } else if (deleteResponse.status === 404) {
+      console.error("Task not found");
     } else {
-      throw new Error("Failed to delete task");
+      console.error("Failed to delete task");
     }
   } catch (error) {
     console.error("Error deleting task:", error);
   }
 };
 
-const editTask = async task => {
+const editTask = async taskObject => {
   const taskInput = document.getElementById("task");
   const descInput = document.getElementById("description");
   const dateInput = document.getElementById("dueDate");
   const button = document.getElementById("submitButton");
-  taskInput.value = task.task;
-  descInput.value = task.desc;
-  dateInput.value = task.date;
+  taskInput.value = taskObject.task;
+  descInput.value = taskObject.desc;
+  dateInput.value = taskObject.date;
   button.textContent = "Edit Task";
 
   const submitWithId = e => {
-    submit(e, task.id);
+    submit(e, taskObject._id);
     button.textContent = "Submit Task";
   };
 
@@ -153,43 +152,43 @@ const createHeaderRow = () => {
   return header;
 };
 
-const createButtons = task => {
+const createButtons = taskObject => {
   const cell = document.createElement("td");
-  cell.style.width = "200px";
 
   const editButton = document.createElement("button");
-  editButton.className = "taskButton";
+  editButton.classList.add("mr-2", "taskButton", "btn", "btn-dark");
   editButton.textContent = "Edit";
   editButton.onclick = () => {
-    editTask(task);
+    editTask(taskObject);
   };
 
   const deleteButton = document.createElement("button");
-  deleteButton.className = "taskButton";
+  deleteButton.classList.add("taskButton", "btn", "btn-dark");
   deleteButton.textContent = "Delete";
   deleteButton.onclick = () => {
-    deleteTask(task);
+    deleteTask(taskObject._id);
   };
 
   cell.append(editButton, deleteButton);
   return cell;
 };
 
-const createRow = (id, task, desc, dueDate, priority, index) => {
+const createRow = (_id, task, desc, dueDate, priority, taskObject) => {
   let row = document.createElement("tr");
 
-  row.append(createCell(id));
+  row.append(createCell(_id));
   row.append(createCell(task));
   row.append(createCell(desc));
   row.append(createCell(dueDate));
   row.append(createCell(priority));
-  row.append(createButtons(index));
+  row.append(createButtons(taskObject));
 
   return row;
 };
 
 const createCell = data => {
   const cell = document.createElement("td");
+  cell.classList.add("align-middle");
   cell.textContent = data;
   return cell;
 };
@@ -199,14 +198,14 @@ const getTasks = data => {
   const table = document.querySelector("table");
   table.replaceChildren();
   table.append(createHeaderRow());
-  data.forEach((task, index) => {
+  data.forEach(taskObject => {
     let row = createRow(
-      task.id,
-      task.task,
-      task.desc,
-      task.dueDate,
-      priorityCalculator(task.dueDate),
-      task
+      taskObject._id,
+      taskObject.task,
+      taskObject.desc,
+      taskObject.dueDate,
+      priorityCalculator(taskObject.dueDate),
+      taskObject
     );
     table.append(row);
   });
@@ -216,8 +215,13 @@ const getTasks = data => {
 const fetchTasks = async () => {
   try {
     const fetchResponse = await fetch("/tasks", { method: "GET" });
-    const data = await fetchResponse.json();
-    getTasks(data);
+
+    if (fetchResponse.ok) {
+      const data = await fetchResponse.json();
+      getTasks(data);
+    } else {
+      throw new Error("Fetch request failed");
+    }
   } catch (error) {
     console.error("Error fetching tasks:", error);
   }
@@ -225,7 +229,11 @@ const fetchTasks = async () => {
 
 window.onload = async function () {
   const button = document.getElementById("submitButton");
-  button.onclick = submit;
+  const submitWithId = e => {
+    submit(e, null);
+  };
+
+  button.onclick = submitWithId;
 
   fetchTasks();
 };
