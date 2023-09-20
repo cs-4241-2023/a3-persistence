@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <script defer src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <form id="myForm">
+      <label for="task">Task:</label>
+      <input type="text" id="task" name="task" value="">
+
+      <label for="hours">Hours it will take:</label>
+      <input type="number" id="hours" name="hours" step="0.01" min="0" placeholder="Enter hours">
+
+      <label for="dueDate">Due Date:</label>
+      <input type="date" id="dueDate" name="dueDate">
+      <button type="submit">submit</button>
+    </form>
+
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Hours</th>
+          <th>Due Date</th>
+          <th>Time Left</th>
+          <th>Priority</th>
+          <th class="no-header"></th>
+          <th class="no-header"></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </body>
+</html>
