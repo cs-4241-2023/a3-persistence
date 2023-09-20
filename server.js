@@ -1,26 +1,51 @@
 import express, { json } from "express";
 import { nanoid } from "nanoid";
+import { MongoClient, ServerApiVersion } from "mongodb";
 import "dotenv/config";
 
 const app = express();
-let taskData = [
-  {
-    title: "Assignment 1",
-    date: "2023-09-15",
-    priority: "Medium",
-    description: "Webware assignment 1",
-    dueDate: "2023-09-18",
-    id: nanoid(),
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}`
+
+// let taskData = [
+//   {
+//     title: "Assignment 1",
+//     date: "2023-09-15",
+//     priority: "Medium",
+//     description: "Webware assignment 1",
+//     dueDate: "2023-09-18",
+//     id: nanoid(),
+//   },
+//   {
+//     title: "Assignment 2",
+//     date: "2023-09-16",
+//     priority: "High",
+//     dueDate: "2023-09-18",
+//     description: "Webware assignment 2",
+//     id: nanoid(),
+//   },
+// ];
+
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
   },
-  {
-    title: "Assignment 2",
-    date: "2023-09-16",
-    priority: "High",
-    dueDate: "2023-09-18",
-    description: "Webware assignment 2",
-    id: nanoid(),
-  },
-];
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
 
 app.use(express.static("public"));
 app.use(express.static("views"));
@@ -32,9 +57,9 @@ app.get("/init", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   res.writeHead(200, { "Content-Type": "application/json" });
-})
+});
 
 app.post("/submit", (req, res) => {
   let newTask = req.body;
