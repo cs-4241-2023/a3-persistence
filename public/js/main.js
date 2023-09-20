@@ -4,6 +4,11 @@
  */
 window.onload = async function() {
 
+  // disable the back button so non-authenticated users cannot navigate to app
+  history.pushState(null, null, window.location.href);
+  history.back();
+  window.onpopstate = () => history.forward();
+
   let authResponse = await fetch("/auth", {
     method: "GET",
     headers: {'Content-Type': 'application/json'},
