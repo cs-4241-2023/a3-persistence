@@ -107,7 +107,10 @@ app.post("/login", async (request, response) => {
 app.post("/account-lookup", async (request, response) => {
     let accountsFound = await loginCredentialCollection.find(request.body).toArray();
     let resultJSON = null;
-    if(accountsFound.length === 0) {
+
+    if(request.body.username === "" || request.body.password === ""){
+        resultJSON = JSON.stringify({status: "Username or Password Cannot Be Empty."})
+    } else if(accountsFound.length === 0) {
         await loginCredentialCollection.insertOne(request.body);
         resultJSON = JSON.stringify({status: "Account Created. Please Log In."})
     } else if(accountsFound.length === 1) {
