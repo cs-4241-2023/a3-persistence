@@ -35,11 +35,6 @@ app.use(async (request, response, next) => {
    }
 });
 
-app.get("/docs", async (request, response) => {
-    const docs = await collection.find({}).toArray();
-    response.json(docs)
-});
-
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }))
 app.use(cookie({
