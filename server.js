@@ -2,12 +2,14 @@
 const express = require('express');
 const app = express();
 const { MongoClient } = require("mongodb");
+// Akim
 const PORT = process.env.PORT || 3000;
 
 require('dotenv').config()
 
 app.use(express.static('public')) // Static files from public directory
 app.use(express.json()) // For parsing application/json
+
 
 const uri = `mongodb+srv://${process.env.TESTER}:${process.env.PASS}@${process.env.HOST}`
 
