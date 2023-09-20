@@ -1,4 +1,5 @@
 const express = require("express"),
+      { MongoClient, ObjectId } = require("mongodb"),
       cookie = require("cookie-session"),
       app = express(),
       ejs = require("ejs"),
@@ -9,6 +10,37 @@ const appdata = [
   {id: 100000 , className: "CS 4241", assignmentName: "Assignment 2", dueDate:"2023-09-11", difficulty: 5, priority: "Medium"},
   {id: 200000 , className: "CS 3013", assignmentName: "Homework 1", dueDate:"2023-09-05", difficulty: 3, priority: "Low"}
 ];
+
+const dbURL =
+    "mongodb+srv://" +
+    process.env.DB_USERNAME +
+    ":" +
+    process.env.DB_PASSWORD +
+    "@" +
+    process.env.DB_HOST;
+
+const dbClient = new MongoClient(dbURL);
+let assignmentCollection = null;
+let loginCredentialCollection = null;
+
+app.use(async (request, response, next) => {
+    await dbClient.connect();
+    assignmentCollection = await dbClient.db("Database0").collection("Collection0");
+    loginCredentialCollection = await dbClient.db("Database0").collection("Collection1");
+
+   if(assignmentCollection !== null && loginCredentialCollection !== null) {
+       next();
+   } else {
+       response.sendStatus(503);
+   }
+});
+
+app.get("/docs", async (request, response) => {
+    const docs = await collection.find({}).toArray();
+    response.json(docs)
+});
+
+
 
 const username = process.env.USERNAME_LOGIN;
 const password = process.env.PASSWORD_LOGIN;
