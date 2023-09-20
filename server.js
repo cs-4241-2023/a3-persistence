@@ -3,7 +3,6 @@ const express = require("express"),
       app = express(),
       ejs = require("ejs"),
       port = 3000;
-const {response} = require("express");
 
 const appdata = [
   {id: 100000 , className: "CS 4241", assignmentName: "Assignment 2", dueDate:"2023-09-11", difficulty: 5, priority: "Medium"},
@@ -21,13 +20,15 @@ app.use(cookie({
 
 app.engine("html", ejs.renderFile);
 
-app.get("/", (request, response) => {
+const initialFileServe = (request, response) => {
     if(request.session.loginStatus === true) {
         response.sendFile(__dirname + "/public/app.html");
     } else {
         response.sendFile(__dirname + "/public/index.html");
     }
-});
+}
+app.get("/", (request, response) => initialFileServe(request, response));
+app.get("/index.html", (request, response) => initialFileServe(request, response));
 
 app.get("/index.html", (request, response) => {
     if(request.session.loginStatus === true) {
