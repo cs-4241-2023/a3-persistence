@@ -40,11 +40,6 @@ app.get("/docs", async (request, response) => {
     response.json(docs)
 });
 
-
-
-const username = process.env.USERNAME_LOGIN;
-const password = process.env.PASSWORD_LOGIN;
-
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }))
 app.use(cookie({
@@ -91,13 +86,21 @@ app.get("/logout", (request, response) => {
 
 app.use(express.static(__dirname + "/public"));
 
-app.post("/login", (request, response) => {
-    if(request.body.username === username && request.body.password === password) {
+app.post("/login", async (request, response) => {
+
+    let loginRequestJSON = {
+        username: request.body.username,
+        password: request.body.password
+    };
+
+    let loginResult = await loginCredentialCollection.find(loginRequestJSON).toArray();
+
+    if (loginResult.length === 1){
         request.session.loginStatus = true;
         response.redirect("app.html")
     } else {
         request.session.loginStatus = false;
-        response.render(__dirname + "/public/index.html", {status:"Username or Password was Incorrect"});
+        response.render(__dirname + "/public/index.html", {status: "Username or Password was Incorrect"});
     }
 });
 
