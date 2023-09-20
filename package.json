@@ -1,7 +1,7 @@
 {
-  "name": "a2-sl-wu",
+  "name": "a3-sl-wu",
   "version": "1.0.0",
-  "description": "WPI CS 4241 second assignment",
+  "description": "WPI CS 4241 third assignment",
   "author": "Sharon Wu",
   "scripts": {
     "start": "node server.improved.js"
