@@ -2,14 +2,16 @@ const express = require("express"),
       cookie = require("cookie-session"),
       app = express(),
       ejs = require("ejs"),
+      env = require("dotenv").config(),
       port = 3000;
 
 const appdata = [
   {id: 100000 , className: "CS 4241", assignmentName: "Assignment 2", dueDate:"2023-09-11", difficulty: 5, priority: "Medium"},
   {id: 200000 , className: "CS 3013", assignmentName: "Homework 1", dueDate:"2023-09-05", difficulty: 3, priority: "Low"}
 ];
-const username = "username";
-const password = "password";
+
+const username = process.env.USERNAME_LOGIN;
+const password = process.env.PASSWORD_LOGIN;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }))
