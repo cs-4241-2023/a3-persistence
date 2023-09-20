@@ -1,11 +1,10 @@
-* {
-  font-family: 'Roboto', sans-serif;
-}
-
 body {
-  background: black;
-  /* Remove default margin that comes with html */
-  margin: 0 auto;
+  background-color: black;
+  display: flex;
+  margin: 0;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 main {
@@ -13,7 +12,6 @@ main {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  gap: 10px;
 }
 
 footer {
@@ -22,16 +20,13 @@ footer {
   justify-content: center;
 }
 
-table {
-  background-color: white;
-}
 /* 
 =====================================
   Form Styling                      |
 =====================================
 */
 form {
-  background: white;
+  background-color: #202b38;
   width: 85vh;
   display: flex;
   justify-content: center;
@@ -40,6 +35,7 @@ form {
   padding: 50px;
   box-sizing: border-box;
   gap: 20px;
+  max-width: none;
 }
 
 input, label {
@@ -70,10 +66,6 @@ textarea {
   height: 50%;
 }
 
-textarea#task-body {
-  padding: 0;
-}
-
 .input-buttons {
   display:flex;
   gap: 10px;
@@ -85,7 +77,7 @@ textarea#task-body {
 =====================================
 */
 .tasks-list--sidebar {
-  background: white;
+  background-color: #202b38;
   width: 215px;
   overflow-y: auto;
 }
@@ -93,19 +85,22 @@ textarea#task-body {
 .tasks-list--container {
   width: 215px;
   overflow-y: auto;
+
   float: left;
   position: relative;
   /* scrollbar-color: white black; */
 }
 
 .tasks-list--task {  
-  background-color: #0336FF;
-  color: white;
+  /* background-color: #0336FF; */
+  /* color: white; */
   padding: 10px;
   margin: 10px;
   overflow-x: hidden;
+  overflow-y: hidden;
   text-overflow: ellipsis;
-  max-height: 20px;
+  max-height: 22px;
+  word-wrap: normal;
 }
 
 .tasks-list--task:hover {
@@ -119,7 +114,7 @@ textarea#task-body {
 }
 
 .tasks-list--new {
-  background-color: white;
+  /* background-color: white; */
   padding: 10px;
   margin: 10px;
   border: 1px solid black;
