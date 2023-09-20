@@ -31,6 +31,11 @@ app.get("/init", (req, res) => {
   res.send(JSON.stringify(taskData));
 });
 
+app.post("/login", (req, res) => {
+  console.log(req.body.username)
+  res.writeHead(200, { "Content-Type": "application/json" });
+})
+
 app.post("/submit", (req, res) => {
   let newTask = req.body;
 
