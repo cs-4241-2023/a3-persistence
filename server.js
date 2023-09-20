@@ -104,6 +104,19 @@ app.post("/login", async (request, response) => {
     }
 });
 
+app.post("/account-lookup", async (request, response) => {
+    let accountsFound = await loginCredentialCollection.find(request.body).toArray();
+    let resultJSON = null;
+    if(accountsFound.length === 0) {
+        await loginCredentialCollection.insertOne(request.body);
+        resultJSON = JSON.stringify({status: "Account Created. Please Log In."})
+    } else if(accountsFound.length === 1) {
+        resultJSON = JSON.stringify({status: "Account Already Exists!"})
+    }
+    response.writeHead(200,{ "Content-Type" : "application/json" });
+    response.end(resultJSON);
+})
+
 app.get("/assignment-data", (request, response) => {
   response.writeHead(200, "OK", {'Content-Type': 'text/json'});
   response.end(JSON.stringify(appdata));

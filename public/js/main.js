@@ -3,11 +3,29 @@
  * Set up on-click event listeners once the window loads
  */
 window.onload = async function() {
+
   // disable the back button so non-authenticated users cannot navigate to app
   history.pushState(null, null, window.location.href);
   history.back();
   window.onpopstate = () => history.forward();
 
+  let signUpButton = document.querySelector("#sign-up-button")
+
+  if(signUpButton !== null) {
+    document.querySelector("#sign-up-button").onclick = async () => {
+      let newAccountJSON = JSON.stringify({
+        username: document.querySelector("#username-input")?.value,
+        password: document.querySelector("#password-input")?.value
+      });
+
+      let createAccountResponse = await (await fetch("/account-lookup", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: newAccountJSON
+      })).json();
+      document.querySelector("#login-status").textContent = createAccountResponse.status;
+    }
+  }
 
   let loginStatus = document.querySelector("#login-status");
 
