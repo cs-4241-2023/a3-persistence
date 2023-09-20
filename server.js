@@ -1,8 +1,7 @@
-const express = require('express'),
+const express = require("express"),
       cookie = require("cookie-session"),
       app = express(),
-      port = 3000
-const {response} = require("express");
+      port = 3000;
 
 const appdata = [
   {id: 100000 , className: "CS 4241", assignmentName: "Assignment 2", dueDate:"2023-09-11", difficulty: 5, priority: "Medium"},
@@ -10,7 +9,6 @@ const appdata = [
 ];
 const username = "username";
 const password = "password";
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }))
@@ -38,6 +36,11 @@ app.get("/app.html", (request, response) => {
 app.get("/auth", (request, response) => {
     response.writeHead(200, "OK", {'Content-Type': 'text/json'});
     response.end(JSON.stringify({status: request.session.loginStatus}));
+});
+
+app.get("/logout", (request, response) => {
+    request.session.loginStatus = false;
+    response.redirect("/");
 });
 
 app.use(express.static(__dirname + "/public"));

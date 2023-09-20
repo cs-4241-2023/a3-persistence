@@ -10,8 +10,8 @@
 }
 
 /* Position the header and description text using grid */
-
 #website-header {
+    margin-top: 5px;
     display: block;
     text-align: center;
 }
