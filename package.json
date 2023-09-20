@@ -1,12 +1,16 @@
 {
-  "name": "CS4241 Assignment 3",
-  "version": "1.0",
-  "description": "",
-  "author": "Colin Mettler",
+  "name": "a3_colinm1215",
+  "version": "1.0.0",
+  "description": "Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template\r ===",
+  "main": "server.js",
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "mime": "^2.4.4"
+    "express": "^4.18.2",
+    "mime": "^2.6.0"
   }
 }
