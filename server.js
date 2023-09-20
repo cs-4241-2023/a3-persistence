@@ -12,15 +12,9 @@ const express = require('express'), //Express.js is a Node.js framework
 //Serves all GET requests for files located in public and views folder
 app.use(express.static(__dirname + '/public/js/music'))
 app.use(express.static(__dirname + '/views/html')) //HTML files served last
-
-app.get('/', (req, res) => {
-  res.render('index')
-})
-
 app.use(express.json()) //Body-parser middleware for all incoming requests that will only take action if data sent to the server is passed with a Content-Type header of application/json
 
-//Need to setup and ocnfigure the app engine to use handlebars below:
-
+//Need to setup and ocnfigure the express app engine to use handlebars below:
 //use express.urlencoded({extended: true}) to get data sent by defaut form actions or GET requests
 app.use(express.urlencoded({extended: true}))
 app.engine('handlebars',
@@ -32,6 +26,10 @@ app.engine('handlebars',
 )
 app.set('view engine', 'handlebars')
 app.set('views', './views/html')
+
+app.get('/', (req, res) => { //Express cannot handle '/' using the middleware above since index.handlebars does not use the HTML file extension. So we need to specify another middleware here to intercept "/" and redirect the browser to index, which the express app engine recognizes.
+  res.render('index')
+})
 
 //Cookie middleware; the keys are used for encrypting the username and password submitted in login and user creation forms
 app.use(cookie({
