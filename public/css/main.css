@@ -4,9 +4,14 @@
     text-align: center;
 }
 
-#username-input, #password-input, #login-button {
+#login-form {
+    margin-bottom: 0;
+}
+
+#username-input, #password-input, #login-button, #sign-up-button {
     display: block;
-    margin: 20px auto;
+    margin: 15px auto;
+    width: 25%
 }
 
 /* Position the header and description text using grid */
