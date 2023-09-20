@@ -32,7 +32,7 @@ app.get("/init", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  console.log(req.body.username)
+  console.log(req.body)
   res.writeHead(200, { "Content-Type": "application/json" });
 })
 

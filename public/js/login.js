@@ -4,10 +4,12 @@ const submit = async function (event) {
   const form = document.querySelector("form")
   const body = parseForm(form)
 
+  console.log(body)
+
   fetch("/login", {
     method: 'POST',
     headers: {"Content-Type": "application/json"},
-    body: body,
+    body: JSON.stringify(body),
   })
 }
 
