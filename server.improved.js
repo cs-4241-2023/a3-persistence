@@ -2,32 +2,35 @@ const {MongoClient} = require('mongodb');
 const express = require( 'express'),
 app = express()
 const dotenv = require('dotenv')
+const cookie = require('cookie-session')
 dotenv.config();
 
 const http = require( 'http' ),
       fs   = require( 'fs' ),
-      // IMPORTANT: you must run `npm install` in the directory for this assignment
-      // to install the mime library if you're testing this on your local machine.
-      // However, Glitch will install it automatically by looking in your package.json
-      // file.
       mime = require( 'mime' ),
       dir  = 'public/',
       port = 3000,
       uri = process.env.DB_CONNECTION
 
-let appdata = [];
-let newappdata = {};
+let appdata = {};
+
+// cookie middleware! The keys are used for encryption and should be
+// changed
+app.use( cookie({
+  name: 'session',
+  keys: ['key1', 'key2']
+}))
 
 const addAcctList = function(acctName){
-  if(!newappdata[acctName]){
-    newappdata[acctName] = [];
+  if(!appdata[acctName]){
+    appdata[acctName] = [];
+    console.log("Acct list " + acctName + " created")
   }
 }
 
 
-
 const client = new MongoClient(uri);
-let users = [];
+let users = [{"username": "Admin", "password": "pass123"}];
 
 
 async function insertDB(artist){
@@ -57,7 +60,7 @@ async function deleteDB(artist){ // Fix the issue where I cannot delete the last
     const db = client.db('webwareProjects');
     const collection = db.collection('a3-tRaymodn')
 
-    const filter = {Artist: artist.Artist};
+    const filter = {Artist: artist.Artist, Account: artist.Account};
     const result = await collection.deleteOne(filter);
 
     console.log("result: " + result);
@@ -84,20 +87,56 @@ const handleReq = (req, res, next) =>{
 
 app.use(handleReq);
 
-const handleGet = function( request, response ) {
-  let filename = dir + request.url.slice( 1 )
-  const urlSplit = filename.split("?");
-  filename = urlSplit[0];
+const handleGet = function(request, response) {
+  
+  let filename = dir + request.url.slice(1);
 
-  if( request.url === '/' ) { // login starts here
-    sendFile( response, 'public/login.html' )
-  }
-  else if(request.url === '/artists') {
+  if (request.url === '/') {
+    sendFile(response, 'public/login.html');
+  } 
+  else if (request.url.startsWith('/artists')) {
+    loadDBData()
+    const acct = request.session.username
+    addAcctList(acct) // Create a new list for an account if there is not one already maybe don't need because of the one in loadDBData
+    console.log("acct:" + acct);
+    console.log("appdata[admin]: " + appdata[acct]);
     response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
-    response.end(JSON.stringify(appdata));
-  }    
-  else{
-    sendFile( response, filename )
+    response.end(JSON.stringify(appdata[acct]));
+  } 
+  else if(request.url === "/users"){
+    const body = JSON.stringify(users)
+    response.writeHead(200, "OK")
+    response.end(body);
+  }
+  else {
+    let file = filename.split("?")[0];
+    sendFile(response, file);
+  }
+}
+
+const loadDBData = async function(){
+  await client.connect();
+
+  const db = client.db('webwareProjects');
+  const collection = db.collection('a3-tRaymodn')
+
+  const result = await collection.find({}).toArray();
+
+  console.log("result: " + result)
+
+  for(let i = 0; i < result.length; i++){
+    addAcctList(result[i].Account)
+    let inList = false
+    console.log(result[i].Account)
+    for(let j = 0; j < appdata[result[i].Account].length; j++){ //TODO this line is the problem, I think it has something to do with the result being async and the for loop tries to use it before the promise resolves
+      console.log(JSON.stringify(result[i].Artist), JSON.stringify(appdata[result[i].Account][j].Artist))
+      if(result[i].Artist === appdata[result[i].Account][j].Artist && result[i].Genre === appdata[result[i].Account][j].Genre){
+        inList = true
+      }
+    }
+    if(!inList){
+      appdata[result[i].Account].push(result[i])
+    }
   }
 }
 
@@ -107,61 +146,80 @@ const handleGet = function( request, response ) {
  * @param {Promise<Response>} response 
  */
 const handlePost = function( request, response ) {
+  console.log("session: " + JSON.stringify(request.headers?.cookie))
   let dataString = ''
+
+const acct = request.session.username
+
+  console.log("acct: " + acct)
 
   request.on( 'data', function( data ) {
       dataString += data 
   })
 
   request.on( 'end', function() {
-    if(request.url === '/remove'){ // when an artist is deleted using the delete form
+    if(request.url.startsWith("/remove")){ // when an artist is deleted using the delete form
       let removed;
-      for(let i = 0; i < appdata.length; i++){
-        if(dataString.toLowerCase() === appdata[i].Artist.toLowerCase()){
-          removed = appdata[i];
-          deleteDB(appdata[i]);
-          appdata.splice(i, 1);
+      for(let i = 0; i < appdata[acct].length; i++){
+        if(dataString.toLowerCase() === appdata[acct][i].Artist.toLowerCase()){
+          removed = appdata[acct][i];
+          deleteDB(appdata[acct][i]);
+          appdata[acct].splice(i, 1);
         }
       }
       if(removed === undefined){
         response.writeHead(400, "OK", {'Content-Type': 'text/plain'})
-        response.end(JSON.stringify(appdata));
+        response.end(JSON.stringify(appdata[acct]));
       }
       else{
-        updateRankings();
+        updateRankings(acct);
         response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-        response.end(JSON.stringify(appdata));
+        response.end(JSON.stringify(appdata[acct]));
       }
      
     }
-  else if(request.url === '/submit'){ // when a new artist is submitted using the submit form
+  else if(request.url.startsWith("/submit")){ // when a new artist is submitted using the submit form
     console.log("Parsed data input: " + JSON.parse( dataString ) )
 
     const jsonData = JSON.parse( dataString ); // JSON output from client
-    addRanking(jsonData);
-    for(let i = 0; i < appdata.length; i++){
-      console.log("appdata: " + JSON.stringify(appdata[i]));
+    addRanking(jsonData, request);
+    console.log(appdata)
+    for(let i = 0; i < appdata[acct].length; i++){
+      console.log("appdata[acct]: " + JSON.stringify(appdata[acct][i]));
     }
 
     response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-    response.end(JSON.stringify(appdata));
+    response.end(JSON.stringify(appdata[acct]));
   }
   else if(request.url === '/login'){ // handle login request
+     
     data = JSON.parse(dataString);
-    validateLogin(data, response);
+    validateLogin(data, response, request);
   }
   else if(request.url === '/newacct'){ // 
     let account = JSON.parse(dataString);
-    users.push(account);
-    console.log("new user array: " + JSON.stringify(users));
+    if(checkAccounts(account)){
+      users.push(account);
+      response.writeHead(200, "OK");
+      response.end(JSON.stringify(account));
+    }
+    else{
+      response.writeHead(400);
+      response.end("Account with that username already exists");
+    }
+    
 
-    response.writeHead(200, "OK");
-    response.end(JSON.stringify(account));
   }
-
-
-
   })
+}
+
+const checkAccounts = function(account){
+  for(let user of users){
+    if(user.username === account.username){
+      return false;
+    }
+  }
+  return true;
 }
 
 const sendFile = function( response, filename ) {
@@ -186,51 +244,53 @@ const sendFile = function( response, filename ) {
    })
 }
 
-function addRanking(artist) {
-  let artistRating = Number(artist.Rating);
-  //let newRanking = fixRatings(artistRating);
-  let newRanking = appdata.length
+function addRanking(artist, request) {
+  const acct = request.session.username
+  let newRanking = appdata[acct].length
   newArtist = {
     Artist: artist.Artist,
     Genre: artist.Genre,
     Rating: artist.Rating,
     Ranking: newRanking,
-    Account: artist.Account
+    Account: acct
   };
   let flag = false;
-  for(let i = 0; i < appdata.length; i++){
-    if(newArtist.Artist === appdata[i].Artist && newArtist.Genre === appdata[i].Genre){
-      appdata[i] = newArtist;
+  for(let i = 0; i < appdata[acct].length; i++){
+    if(newArtist.Artist === appdata[acct][i].Artist && newArtist.Genre === appdata[acct][i].Genre){
+      appdata[acct][i] = newArtist;
       flag = true;
     }
   }
-  if(!flag){
-    appdata.push(newArtist);
+  if(!flag){ // If the artist name and genre are not the same
+    appdata[acct].push(newArtist);
     insertDB(newArtist);
   }
-  updateRankings();
-}
-
-
-function updateRankings(){
-  appdata.sort((a,b) => b.Rating - a.Rating);
-  for(let i = 0; i < appdata.length; i++){
-    appdata[i].Ranking = i+1;
+  else{ // artist is already replaced in the array here, so we just need to delete the entry from the database and add in the new one.
+    deleteDB(newArtist)
+    insertDB(newArtist)
   }
-  updateDBRankings();
+  updateRankings(acct);
 }
 
-async function updateDBRankings(){
+
+function updateRankings(acct){
+  appdata[acct].sort((a,b) => b.Rating - a.Rating);
+  for(let i = 0; i < appdata[acct].length; i++){
+    appdata[acct][i].Ranking = i+1;
+  }
+  updateDBRankings(acct);
+}
+
+async function updateDBRankings(acct){
   await client.connect();
 
   const db = client.db('webwareProjects');
   const collection = db.collection('a3-tRaymodn')
-  console.log("collection: " + collection);
   let filter;
   let update;
-  for(let i = 0; i < appdata.length; i++){
-    filter = {Artist: appdata[i].Artist, Genre: appdata[i].Genre};
-    update = { $set: {Ranking: appdata[i].Ranking}};
+  for(let i = 0; i < appdata[acct].length; i++){
+    filter = {Artist: appdata[acct][i].Artist, Genre: appdata[acct][i].Genre};
+    update = { $set: {Ranking: appdata[acct][i].Ranking}};
     const result = await collection.updateOne(filter, update);
   }
   
@@ -238,12 +298,16 @@ async function updateDBRankings(){
 }
 
 // Validate Login credentials
-const validateLogin = function(user, response){
+const validateLogin = function(user, response, request){
   if(user.username === process.env.BASE_USER && user.password === process.env.BASE_PASS){
+    request.session.username = process.env.BASE_USER
+    request.session.username = process.env.BASE_PASS
     response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
     response.end("Admin");
   }
   else if(findAccountMatch(user, users)){
+    request.session.username = user.username
+    request.session.password = user.password
     response.writeHead(200, "OK", {"Content-Type": "text/plain"});
     response.end(user.username);
   }

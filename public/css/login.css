@@ -1,6 +1,10 @@
-.logindivs{
+#logindiv{
     text-align:center;
-    margin-bottom: 10%;
+    margin-bottom: 4%;
+}
+
+#newuserdiv{
+    text-align:center;
 }
 
 #mainheader{
@@ -33,4 +37,13 @@
 
 #errortext{
     text-align: center;
+}
+
+#acctlist{
+    list-style-type:none;
+}
+
+#acctlistdiv{
+    text-align:center;
+    padding-bottom:2%;
 }

@@ -2,9 +2,11 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Favorite Artists Database Login Page"/>
         <link rel="stylesheet" href="css/login.css"/>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.6.0.min.css"/>
-        <title>MyArtists</title>
+        <title>MyArtists Database Login</title>
     </head>
     <body>
         <div id="bodyshell">
@@ -12,7 +14,7 @@
                 <h1 id="mainheader">MyArtists Database Login</h1>
             </div>
             <div id="logincontainer">
-                <div class="logindivs">
+                <div id="logindiv">
                     <img src="images/key.png" alt="Key clip art" class="icon">
                     <p class="logindivheader">Enter Login Information</p>
                     <form id="loginform">
@@ -21,8 +23,8 @@
                         <button id="loginbutton">Login</button>
                     </form> 
                 </div>
-                <p id="errortext"></p>
-                <div class="logindivs">
+                <p id="errortext">Create a user or login with Admin</p>
+                <div id="newuserdiv">
                     <img src="images/usericon.jpg" alt="User Account Icon" class="icon">
                     <p class="logindivheader">Create New Account</p>
                     <form id="newacctform">
@@ -30,6 +32,10 @@
                         <input type="password" placeholder="New Account Password" id="newpassword">
                         <button id="newacctbutton">Create</button>
                     </form>
+                </div>
+                <div id="acctlistdiv">
+                    <p>Current Accounts:</p>
+                    <ul id="acctlist"></ul>
                 </div>
             </div>  
         </div>

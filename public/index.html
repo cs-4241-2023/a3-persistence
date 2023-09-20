@@ -1,10 +1,12 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>CS4241 Assignment 2</title>
+    <title>MyArtists Database</title>
     <meta charset="utf-8">
-    <script src="js/main.js"></script>
-    <link rel="stylesheet" href="css/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Favorite Artists Database Website"/>
+    <script src="js/main.js" defer></script>
+    <link rel="stylesheet" href="css/main.css"/>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.6.0.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Amatic+SC:wght@700&family=Chakra+Petch:wght@500&family=Cinzel:wght@600&family=Gruppo&family=Handjet:wght@600&family=Poiret+One&family=Rye&display=swap" rel="stylesheet">
     <!-- get rid of favicon error -->
@@ -12,9 +14,14 @@
   </head>
   <body>
     <div id="head">
-      <h1>Favorite Artists Database</h1>
+      <div id="titlediv">
+        <h1>Favorite Artists Database</h1>
+      </div>
+      <button id="signout">Sign Out</button>
       <p style="text-align: center">This is a place where you can input your favorite artists and see how they stack up against one another based on your ratings!</p>
-      <p style="text-align: center">You can also edit existing entries by retyping their name and the updated information in the provided fields!</p>
+      <div style="text-align:center">
+          <span>Edit existing entries by retyping their name, genre, and updated rating in the provided fields!</span>
+      </div>
     </div>
     <form id="createform">
       <p style="text-align: center">Submit artist to the database here!</p>
@@ -41,7 +48,10 @@
         <div class="divheader" id="rankdivheader">
           <span class="secondheader">Ranking Leaderboard</span>
         </div>
-        <ol id="artistList"></ol>
+        <div id="listDiv">
+          <ol id="artistList"></ol>
+        </div>
+        
       </div>
       <div id="favshowcase">
         <div class="divheader" id="favdivheader">

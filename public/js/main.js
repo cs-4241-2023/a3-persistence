@@ -1,6 +1,4 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
-const urlParams = new URLSearchParams(window.location.search)
-const acct = urlParams.get("account");
 
 const submit = async function( event ) {
   // stop form submission from trying to load
@@ -12,7 +10,7 @@ const submit = async function( event ) {
   const name = document.querySelector( '#artistname' ),
         genre = document.querySelector('#genre'),
         rating = document.querySelector('#rating'),
-        json = { Artist: name.value, Genre: genre.value, Rating: rating.value, Account: acct},
+        json = { Artist: name.value, Genre: genre.value, Rating: rating.value},
         body = JSON.stringify( json )
   
 
@@ -22,7 +20,7 @@ const submit = async function( event ) {
     console.log("rating was invalid");
   }
   else{
-    const response = await fetch( '/submit', {
+    const response = await fetch( "/submit", {
     method:'POST',
     headers: {'Content-Type': 'application/json'},
     body 
@@ -49,7 +47,7 @@ function updateArtists(artistList){
   }
   for(let i = 0; i < artistList.length; i++){
     console.log("artistList[i]: " + artistList[i])
-    if(artistList[i] !== undefined && artistList[i].Account === acct){
+    if(artistList[i] !== undefined){
       let listElement = document.createElement('li');
       listElement.innerHTML = `Artist: <b>${artistList[i].Artist}</b><br> Genre: ${artistList[i].Genre}<br> Rating: ${artistList[i].Rating}<br> Leaderboard Ranking: ${artistList[i].Ranking}<br>`;
       listElement.id = `list${artistList[i].id}`; // don't know if I need this
@@ -87,7 +85,7 @@ function updateFavoriteArtist(artist){
 
 const remove = async function(artist, event){
   event.preventDefault();
-  const response = await fetch('/remove', {
+  const response = await fetch("/remove", {
     method: 'POST',
     headers: { 'Content-Type': 'application/json'},
     body: artist
@@ -104,7 +102,7 @@ const remove = async function(artist, event){
 }
 
 async function getData(){
-  const response = await fetch('/artists', {
+  const response = await fetch("/artists", {
     method: 'GET'
   })
   let data = await response.json();
@@ -120,6 +118,13 @@ window.onload = function() {
     remove(document.getElementById("delArtist").value, event);
   }
 
+  const signoutbutton = document.getElementById("signout");
+  signoutbutton.onclick = function(event){
+    window.location.replace("/login.html")
+  }
+
   getData();
+
+  console.log("cookies: " + document.headers?.cookie)
 }
 

@@ -1,13 +1,6 @@
-body {
-  background:white;
-  color:black;
-  font-family: 'Chakra Petch', sans-serif;
-}
-
 input::placeholder {
   color: gray;
   font-style: italic; 
-  font-family: 'Chakra Petch', sans-serif;
 }
 
 .grayed-out-input::placeholder {
@@ -43,16 +36,17 @@ input::placeholder {
 
 #deleteaside{
   float: right;
-  width:30%;
+  width:33%;
   text-align: center;
   height: 100%;
   padding-left: 4%;
 }
 
-h1{
+#titlediv{
+  border-bottom: solid black 3px;
+  border-top: solid white 1px;
+  align-items: center;
   text-align: center;
-  border-style: solid;
-  border-radius: 2px;
 }
 
 ol li{
@@ -66,31 +60,40 @@ main{
   justify-content: flex-start;
   align-items: flex-start;
   text-align: center;
-  background-color:rgb(165, 162, 162);
+  background-color:lightgrey;
+  background-image: url('../images/grey-wallpaper.jpg');
+  background-color:snow;
+  background-blend-mode:difference;
+  background-size: cover;
+  background-clip: padding-box;
 }
 
 #leaderboard{
   padding-left: 4%;
   padding-right: 4%;
-  width:30%;
+  width:33%;
+  height:300px;
 }
 
-button{
-  font-family: 'Chakra Petch', sans-serif;
-}
-
-input[type=text] {   
-  font-family: 'Chakra Petch', sans-serif;
+#listdiv{
+  position: relative;
+  min-height: 100%;
+  overflow-y:scroll;
 }
 
 #head{
-  background-color:rgb(165, 165, 165);
+  background-color:lightgrey;
+  background-image: url('../images/grey-wallpaper.jpg');
+  background-color:snow;
+  background-blend-mode:difference;
+  background-size: cover;
+  background-clip: padding-box;
 }
 
 #favshowcase{
   align-items: center;
   padding-right: 4%;
-  width:30%;
+  width:33%;
 }
 
 .secondheader{
@@ -103,19 +106,20 @@ input[type=text] {
 .divheader{
   width:100%;
   background-color: black;
+  margin-top: 20px;
 }
 
 #deldivheader{
-  color:rgb(223, 92, 92);
-  border:solid red 1px;
+  color:rgb(255, 103, 103);
+  border:solid rgb(255, 103, 103) 1px;
 }
 
 #favdivheader{
-  color:yellow;
-  border:solid yellow 1px;
+  color:rgb(225, 225, 0);
+  border:solid rgb(225, 225, 0) 1px;
 }
 
 #rankdivheader{
-  color:green;
-  border:solid green 1px;
+  color:rgb(48, 202, 48);
+  border:solid rgb(48, 202, 48) 1px;
 }

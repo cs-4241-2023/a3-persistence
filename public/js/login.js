@@ -8,8 +8,6 @@ let newAcctBtn = document.getElementById('newacctbutton');
 let newUsername = document.getElementById('newusername');
 let newPassword = document.getElementById('newpassword')
 
-let users = []
-
 btn.onclick = async function(event) {
     event.preventDefault();
 
@@ -42,7 +40,6 @@ btn.onclick = async function(event) {
         }
     }
     
-    //Verify login in this function. Maybe connect to a different collection that contains login information, or some other way to deal with having to save and have data persist.
 }
 
 newAcctBtn.onclick = async function(event){
@@ -64,12 +61,41 @@ newAcctBtn.onclick = async function(event){
             body
         })
         console.log("status code: " + req.status);
-        let acct = await req.json();
-        console.log("new account: " + acct);
-        errorZone.innerText = `New account ${acct.username} created`
+        if(req.status !== 200){
+            errorZone.innerText = `Account ${document.getElementById('newusername').value} already exists`
+        }
+        else{
+            let acct = await req.json();
+            console.log("new account: " + acct);
+            errorZone.innerText = `New account ${acct.username} created` 
+            addToAcctList(acct) 
+        }
     }
-
     document.getElementById('newusername').value = "";
     document.getElementById('newpassword').value = ""; 
+}
+
+const addToAcctList = function(account){
+    let element = document.createElement("li")
+    element.innerHTML = `${account.username}`
+    document.getElementById("acctlist").appendChild(element)
+}
+
+const getUsers = async function(){
+    const response = await fetch("/users", {
+        method:"GET"
+    })
+    const data = await response.json();
+    console.log("data: " + data)
+    return data
+}
+
+window.onload = async function(){
+    const users = await getUsers()
+    console.log(users)
+    for(let i = 0; i < users.length; i++){
+        console.log("users: " + users[i])
+        addToAcctList(users[i])
+    }
 }
 
