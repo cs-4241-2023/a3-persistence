@@ -4,7 +4,7 @@ const app = express();
 const { MongoClient } = require("mongodb");
 const PORT = process.env.PORT || 3000;
 const passport = require('passport');
-const session = require('express-session')
+const session = require('express-session') // store session data in cookies
 
 require('dotenv').config()
 
@@ -63,10 +63,10 @@ passport.use(new GitHubStrategy({
     // });
     console.log(profile);
     callback(null, profile);
-
   }
 ));
 
+// Middleware to check if user is authenticated
 const isAuth = (req, res, next) => {
   if (req.user) {
     next()
@@ -75,11 +75,13 @@ const isAuth = (req, res, next) => {
   }
 }
 
+// Serves dashboard.html if user is authenticated
 app.get('/',  isAuth, (req, res) => {
   console.log(req.user);
   res.sendFile(__dirname + '/public/dashboard.html')
 })
 
+// Serves login.html if user is not authenticated
 app.get('/login', (req, res) => {
   if(req.user) { 
     return res.redirect('/');
@@ -87,9 +89,17 @@ app.get('/login', (req, res) => {
   res.sendFile(__dirname + '/public/login.html')
 })
 
+// Logout route
+app.get('/logout', (req, res) => {
+  req.logOut(() => {
+    res.redirect('/login');
+  });
+})
+
 // Middleware to check if user is authenticated
 app.get('/auth/github',passport.authenticate('github'));
 
+// Callback route after GitHub authentication
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
