@@ -3,6 +3,8 @@ const express = require('express');
 const app = express();
 const { MongoClient } = require("mongodb");
 const PORT = process.env.PORT || 3000;
+const passport = require('passport');
+const session = require('express-session')
 
 require('dotenv').config()
 
@@ -10,27 +12,80 @@ require('dotenv').config()
 app.use(express.static('public', { index: false })) // don't give index.html by default
 app.use(express.json()) // For parsing application/json
 
-
-const uri = `mongodb+srv://${process.env.TESTER}:${process.env.PASS}@${process.env.HOST}`
-
-const client = new MongoClient(uri);
-let collection = undefined;
-
+// MongoDB connection
+// const uri = `mongodb+srv://${process.env.TESTER}:${process.env.PASS}@${process.env.HOST}`
+// const client = new MongoClient(uri);
+// let collection = undefined;
 // Set collection global value with database
-async function run() {
-  await client.connect()
-  collection = client.db("testA3").collection("testList")
-}
-run();
+// async function run() {
+//   await client.connect()
+//   collection = client.db("testA3").collection("testList")
+// }
+// run();
+
+// From video passport tutorial
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false, // we set to false
+  cookie: { httpOnly: true,
+  secure: false, // set secure to true when not using localhost
+  maxAge: 24 * 60 * 60 * 1000} // 24 hours
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Take user object and returns an id
+passport.serializeUser(function(user, callback) {
+  callback(null, user.id);
+});
+
+// Take id and returns user object
+passport.deserializeUser(function(id, callback) {
+  callback(null, id);
+});
+
+
+const GitHubStrategy = require('passport-github').Strategy;
+passport.use(new GitHubStrategy({
+    clientID: 'c4ec932eca4d8d964e17', // Client ID from GitHub OAuth app
+    clientSecret: 'b0e3033db1e1d4f34e8d19cd73e5e77df7611e0d', // Client Secret from GitHub OAuth app
+    callbackURL: "http://localhost:3000/auth/github/callback" // Callback URL from GitHub OAuth app
+  },
+  // Here is where we get the user profile (GitHub account) to be used in database
+  function(accessToken, refreshToken, profile, callback) {
+
+    // See if the user exists already in the database
+    // User.findOrCreate({ githubId: profile.id }, function (err, user) {
+    //   return cb(err, user);
+    // });
+    console.log(profile);
+    callback(null, profile);
+
+  }
+));
 
 
 app.get('/',  (req, res) => {
+  console.log(req.user);
   res.sendFile(__dirname + '/public/dashboard.html')
 })
 
 app.get('/login', (req, res) => {
   res.sendFile(__dirname + '/public/login.html')
 })
+
+// Middleware to check if user is authenticated
+app.get('/auth/github',passport.authenticate('github'));
+
+app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  });
+
 
 // Start server
 app.listen(PORT, () => {
