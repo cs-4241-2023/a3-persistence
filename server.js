@@ -1,7 +1,9 @@
 const express = require("express"),
       cookie = require("cookie-session"),
       app = express(),
+      ejs = require("ejs"),
       port = 3000;
+const {response} = require("express");
 
 const appdata = [
   {id: 100000 , className: "CS 4241", assignmentName: "Assignment 2", dueDate:"2023-09-11", difficulty: 5, priority: "Medium"},
@@ -17,7 +19,17 @@ app.use(cookie({
     keys: ["key1", "key2"]
 }));
 
+app.engine("html", ejs.renderFile);
+
 app.get("/", (request, response) => {
+    if(request.session.loginStatus === true) {
+        response.sendFile(__dirname + "/public/app.html");
+    } else {
+        response.sendFile(__dirname + "/public/index.html");
+    }
+});
+
+app.get("/index.html", (request, response) => {
     if(request.session.loginStatus === true) {
         response.sendFile(__dirname + "/public/app.html");
     } else {
@@ -32,7 +44,6 @@ app.get("/app.html", (request, response) => {
         response.sendFile(__dirname + "/public/app.html");
     }
 });
-
 app.get("/auth", (request, response) => {
     response.writeHead(200, "OK", {'Content-Type': 'text/json'});
     response.end(JSON.stringify({status: request.session.loginStatus}));
@@ -51,7 +62,7 @@ app.post("/login", (request, response) => {
         response.redirect("app.html")
     } else {
         request.session.loginStatus = false;
-        response.redirect("/")
+        response.render(__dirname + "/public/index.html", {status:"Username or Password was Incorrect"});
     }
 });
 

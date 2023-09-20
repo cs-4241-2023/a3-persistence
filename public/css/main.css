@@ -9,6 +9,10 @@
     margin: 20px auto;
 }
 
+#login-status {
+    color: red;
+}
+
 /* Position the header and description text using grid */
 #website-header {
     margin-top: 5px;

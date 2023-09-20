@@ -3,11 +3,17 @@
  * Set up on-click event listeners once the window loads
  */
 window.onload = async function() {
-
   // disable the back button so non-authenticated users cannot navigate to app
   history.pushState(null, null, window.location.href);
   history.back();
   window.onpopstate = () => history.forward();
+
+
+  let loginStatus = document.querySelector("#login-status");
+
+  if(loginStatus !== null && loginStatus.innerText === "<%= status %>") {
+    loginStatus.innerText = "";
+  }
 
   let authResponse = await fetch("/auth", {
     method: "GET",
