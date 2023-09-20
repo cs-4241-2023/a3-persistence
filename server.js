@@ -4,14 +4,40 @@
 require('dotenv').config()
 
 const express = require('express'), //Express.js is a Node.js framework
-{MongoClient} = require('mongodb'),
-app = express()
+      cookie = require('cookie-session'),
+      hbs = require('express-handlebars').engine,
+      {MongoClient} = require('mongodb'),
+      app = express()
 //Express will fully qualify (create the full paths) all paths to JS, CSS, and HTML files using the below middleware.
 //Serves all GET requests for files located in public and views folder
-app.use(express.static(__dirname + '/public/js/account')) //JS files must be served first. CSS files must be served second if there are any
 app.use(express.static(__dirname + '/public/js/music'))
 app.use(express.static(__dirname + '/views/html')) //HTML files served last
+
+app.get('/', (req, res) => {
+  res.render('index')
+})
+
 app.use(express.json()) //Body-parser middleware for all incoming requests that will only take action if data sent to the server is passed with a Content-Type header of application/json
+
+//Need to setup and ocnfigure the app engine to use handlebars below:
+
+//use express.urlencoded({extended: true}) to get data sent by defaut form actions or GET requests
+app.use(express.urlencoded({extended: true}))
+app.engine('handlebars',
+  hbs({ //hbs configuration for app.engine
+    extname: "hbs",
+    defaultLayout: false,
+    layoutsDir: "views/html/layouts/"
+  })
+)
+app.set('view engine', 'handlebars')
+app.set('views', './views/html')
+
+//Cookie middleware; the keys are used for encrypting the username and password submitted in login and user creation forms
+app.use(cookie({
+  name: 'session',
+  keys: ['username', 'password', 'newusername', 'newuserpasword']
+}))
 
 //Server Data structure:
 //Const defines a constant reference to an array
@@ -59,6 +85,28 @@ app.use((req, res, next) => { //
 
 //User data operations and helper functions:
 
+//Server-side form validation for username and password
+
+function userInputHasMissingField(un, pw) {
+  if(un.trim().length === 0 || pw.trim().length === 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function getFirstIndexOfWhiteSpaceInString(inputString) { //The indexOf() method returns the position of the first occurrence of a value in a string.
+  return inputString.indexOf(' ')
+}
+
+function userInputHasWhiteSpace(un, pw) {
+  if(getFirstIndexOfWhiteSpaceInString(un) >= 0 || getFirstIndexOfWhiteSpaceInString(pw) >= 0) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function verifyUniqueUsername(newUsername, users) { //
   
   let duplicateUsernameCounter = 0
@@ -80,51 +128,67 @@ function verifyUniqueUsername(newUsername, users) { //
   return duplicateUsernameCounter
 }
 
+//Express HTTP Middleware
+
 app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a technical achievement for 5 points //
        
   const allUsers = await collection.find({}, {usern: 1, _id: 0}).toArray() 
   
-  if(verifyUniqueUsername(req.body.username, allUsers) === 0) {
+  if(userInputHasMissingField(req.body.newusername, req.body.newuserpassword)) {
+    return res.render('index', {accountCreationMessage: `<strong>The new account information you submitted cannot be saved</strong>: Missing information in at least one input field.`, layout: false})
+  }
+  else if(userInputHasWhiteSpace(req.body.newusername, req.body.newuserpassword)) {
+    return res.render('index', {accountCreationMessage:  `<strong>The new account information you submitted cannot be saved</strong>: Both the username and password cannot contain any whitespace.`, layout: false})
+  }
+  else if(verifyUniqueUsername(req.body.newusername, allUsers) === 0) {
     try {
       const salt = await bcrypt.genSalt(10) //A salt is a random data that is used as an additional input to a one-way function that hashes data
-      const hashedPassword = await bcrypt.hash(req.body.password, salt)
+      const hashedPassword = await bcrypt.hash(req.body.newuserpassword, salt)
       
       console.log(salt)
       console.log(hashedPassword)
       
-      await collection.insertOne({usern: req.body.username, passw: hashedPassword, musiclisteninglist: []})
+      await collection.insertOne({usern: req.body.newusername, passw: hashedPassword, musiclisteninglist: []})
       
-      return res.status(201).end(JSON.stringify("SuccessfulUserCreation"))
+      return res.status(201).render('index', {accountCreationMessage: `<strong>Your account has been successfully created</strong>. Now login with your new username and password to access Music Listening Builder features.`, layout: false})
     } catch {
-      return res.status(500).end(JSON.stringify("ErrorCreatingNewUser"))
+      return res.status(500).render('index', {accountCreationMessage: `<strong>There was a server error that prevented the creation of a new account for you</strong>.`, layout: false})
     }
   } else {
-      return res.end(JSON.stringify("UsernameTakenByPreviousUserCreation"))
+      return res.render('index', {accountCreationMessage: `<strong>Your account could not be created as there is already a Music Listening Builder user with the same username as the one you entered. Choose a different username</strong>.`, layout: false})
   }
 
 })
 
 app.post('/userLogin', async (req, res) => { //
   
-  userData = await collection.find({usern: req.body.username}).toArray()
-
-  if(typeof userData !== undefined && userData.length === 0) {
-    return res.status(400).end(JSON.stringify("UserNotFound")) //send function just sends the HTTP response.
+  if(userInputHasMissingField(req.body.username, req.body.password)) {
+    return res.render('index', {loginStatusMessage: `<strong>The new account information you submitted cannot be saved</strong>: Missing information in at least one input field.`, layout: false})
   }
+  else if(userInputHasWhiteSpace(req.body.username, req.body.password)) {
+    return res.render('index', {loginStatusMessage:  `<strong>The new account information you submitted cannot be saved</strong>: Both the username and password cannot contain any whitespace.`, layout: false})
+  } else {
+    userData = await collection.find({usern: req.body.username}).toArray()
 
-  try {
-    if(await bcrypt.compare(req.body.password, userData[0].passw)) { //prevents timing attacks
-      return res.end(JSON.stringify("SuccessfulLogin"))
-    } else {
-      return res.end(JSON.stringify("NoPasswordMatch")) //Convert value into JSON String
+    if(typeof userData !== undefined && userData.length === 0) {
+      return res.status(404).render('index', {loginStatusMessage: `<strong>User not found</strong>.`, layout: false})
     }
-  } catch {
-    return res.status(500).end(JSON.stringify("InternalServerError")) //500 status indicates an internal server error
+
+    try {
+      if(await bcrypt.compare(req.body.password, userData[0].passw)) { //prevents timing attacks
+        req.session.login = true
+        return res.redirect('build_music_listening_list.html')
+      } else {
+        req.session.login = false
+        return res.render('index', {loginStatusMessage: `<strong>Incorrect password entered for user </strong> ${req.body.username}.`, layout: false})
+      }
+    } catch {
+      return res.status(500).render('index', {loginStatusMessage: `<strong>There was an internal server error that prevented successful login</strong>.`, layout: false}) //500 status indicates an internal server error
+    }
   }
-  
 })
 
-//Music data CRUD operations
+//Music data CRUD operations and helper functions
 
 app.get('/getMusicData', (req, res) => { //
   res.writeHead(200, {'Content-Type': 'application/json'})

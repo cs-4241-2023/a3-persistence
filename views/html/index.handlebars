@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 3</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <header>
+      <h1>Music Listening Builder</h1>
+    </header>
+    <main>
+      <section>
+        <h2>Login</h2>
+        <form action = '/userLogin' method = "POST">
+          <label>Username:</label>
+          <input type="text" name="username">
+          <label>Password:</label>
+          <input type="text" name="password">
+          <button>Login</button>
+        </form>
+        {{{loginStatusMessage}}}
+      </section>
+      <section>
+        <h2>Create New Account</h2>
+        <form action = '/createNewUser' method = "POST">
+          <label>Username:</label>
+          <input type="text" name="newusername">
+          <label>Password:</label>
+          <input type="text" name="newuserpassword">
+          <button>Create Account</button>
+        </form>
+        {{{accountCreationMessage}}}
+      </section>
+    </main>
+      <footer>
+        Music Listening Builder created by Matthew McAlarney
+      </footer>
+  </body>
+</html>
