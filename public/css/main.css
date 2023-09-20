@@ -103,6 +103,9 @@ textarea#task-body {
   color: white;
   padding: 10px;
   margin: 10px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  max-height: 20px;
 }
 
 .tasks-list--task:hover {

@@ -117,7 +117,7 @@ function loadTasks() {
     // Add the task to the sidebar
     sidebar.appendChild(newTask);
 
-    generateTable();
+    // generateTable();
   });
 
   // Finally add the add task button to the sidebar
