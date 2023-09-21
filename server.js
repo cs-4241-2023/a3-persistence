@@ -163,7 +163,6 @@ app.delete("/assignment-delete", async (request, response) => {
 app.listen(process.env.PORT || port) // set up server to listen on port 3000
 
 const handleAssignmentData = async function (sentData) {
-    let id = sentData.id;
     let className = sentData.className;
     let assignmentName = sentData.assignmentName;
     let dueDate = sentData.dueDate;
@@ -180,7 +179,6 @@ const handleAssignmentData = async function (sentData) {
 
         await assignmentCollection.insertOne(
             {
-                id: id,
                 className: className,
                 assignmentName: assignmentName,
                 dueDate: dueDate,
