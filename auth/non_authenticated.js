@@ -67,11 +67,19 @@ router.get("/", (req, res) => {
 });
 
 router.get("/home", (req, res) => {
-    res.render("index.ejs");
+    if (req.session.login === true) {
+        res.render("index.ejs");
+    } else {
+        res.redirect("/login")
+    }
 })
 
-router.get("/login", (_, res) => {
-    res.render("login.ejs", { error: "" });
+router.get("/login", (req, res) => {
+    if (req.session.login === undefined || req.session.login === false) {
+        res.render("login.ejs", { error: "" });
+    } else {
+        res.redirect("/home")
+    }
 });
 
 router.post("/login", async (req, res) => {

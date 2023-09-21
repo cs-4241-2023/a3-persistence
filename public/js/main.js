@@ -134,21 +134,21 @@ const build_table = async function () {
             let modifyButton = modifyBtnCell.appendChild(document.createElement("button"));
 
             removeButton.className = 'rm-table-btn';
-            removeButton.id = server_data[i].uuid;
+            // removeButton.id = server_data[i].uuid;
 
             modifyButton.className = 'md-table-btn';
-            modifyButton.id = server_data[i].uuid;
+            // modifyButton.id = server_data[i].uuid;
 
             removeButton.innerHTML = "Remove"; // name of delete button
             removeButton.onclick = function () {
-              removeEntry(removeButton.id);
+              removeEntry(server_data[i].uuid);
             };
 
             modifyButton.innerHTML = "Modify";
             modifyButton.onclick = function () {
               let form_data = user_form_data();
               if (form_data !== "") {
-                modifyEntry(modifyButton.id, form_data);
+                modifyEntry(server_data[i].uuid, form_data);
               } else {
                 handleValidationError();
               }

@@ -29,10 +29,6 @@ router.get('/', (req, res) => {
     }
 });
 
-router.get("/login", (_, res) => {
-    res.render("login.ejs", { error: "" });
-});
-
 router.get("/home", (req, res) => {
     res.render("index.ejs");
 })

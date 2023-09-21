@@ -199,22 +199,6 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transform: scale(1);
   transition: transform 0.3s ease;
-
-  /* display: flex;
-  flex-direction: column;
-  color: #333;
-  background-color: #f7f7f7; */
-  /* Light gray background color */
-  /* width: 450px;
-  text-align: left; */
-  /* Align text to the left for better readability */
-  /* justify-content: space-around;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transform: scale(1);
-  transition: transform 0.3s ease; */
-
 }
 
 .instruction-info:hover {
@@ -222,13 +206,6 @@ body {
 }
 
 .instruction-info p {
-  /* background-color: #1e8379;
-  color: white;
-  font-size: 1.2rem;
-  padding: 10px;
-  margin: 0;
-  border-radius: 5px; */
-
   background-color: #0077b6;
   color: white;
   font-size: 1.2rem;
@@ -359,11 +336,8 @@ body {
 
 .rm-table-btn:hover {
   background-color: #ff5733;
-  /* Red background color */
   box-shadow: 0 0 8px 0 rgba(255, 87, 51, 0.7);
-  /* Red shadow with some transparency */
   transform: scale(1.125);
-  /* Slightly larger on hover */
 }
 
 .rm-table-btn:active {
@@ -372,11 +346,8 @@ body {
 
 .md-table-btn:hover {
   background-color: #2ecc71;
-  /* Green background color */
   box-shadow: 0 0 8px 0 rgba(46, 204, 113, 0.7);
-  /* Green shadow with some transparency */
   transform: scale(1.125);
-  /* Slightly larger on hover */
 }
 
 .md-table-btn:active {
@@ -390,4 +361,35 @@ body {
   margin-bottom: 20px;
   font-family: Rubik;
   font-size: larger;
+}
+
+#logoutButton {
+  background-color: #0d4a94;
+  border-radius: 4px;
+  border: 0;
+  box-shadow: rgba(1, 60, 136, .5) 0 -1px 3px 0 inset, rgba(0, 44, 97, .1) 0 3px 6px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inherit;
+  width: 150px;
+  height: 35px;
+  font-family: "Space Grotesk", -apple-system, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 0;
+  margin-right: 20px;
+  position: relative;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  transition: all .2s cubic-bezier(.22, .61, .36, 1);
+}
+
+#logoutButton:hover {
+  background-color: #aa3333;
+  transform: translateY(-2px);
 }

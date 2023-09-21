@@ -4,8 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css"
+        integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
     <link rel="stylesheet" href="css/login_register.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <meta name="description" content="Vehicle Service Log Tracker Register">
     <title>VSL Register</title>
 </head>
 
@@ -21,7 +23,7 @@
                         <% } %>
             </p>
             <form class="regform" action="/register" method="post">
-                <div class="data">
+                <div class="data" id="username-container">
                     <label>Username</label>
                     <input id="username" type="text" name="username" placeholder="Ex: JohnDoe123">
                 </div>
@@ -41,7 +43,7 @@
                     <button id="submitbutton" type="submit" onclick="return ValidateEmail()">Sign Up</button>
                 </div>
                 <div class="signup-link">
-                    <p style="margin-right: 10px;">Already a member?</p> <a href="/login">Login now</a>
+                    <p style=" margin-right: 10px;">Already a member?</p> <a href="/login">Login now</a>
                 </div>
             </form>
         </div>
