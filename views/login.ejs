@@ -13,15 +13,16 @@
     <div class="center">
         <div class="container">
             <div class="text">
-                Login Form
+                Vehicle Service Log Tracker
             </div>
             <p class="error">
                 <% if (error) { %>
                     <%= error %>
                         <% } %>
             </p>
-            <form class="logform" action="/login" method="post">
-                <div class="data">
+
+            <form action="/login" method="post">
+                <div class="data" id="email-container">
                     <label>Email</label>
                     <input name="email" type="email" required>
                 </div>
@@ -35,17 +36,23 @@
                 <div class="btn">
                     <button id="submitbutton" type="submit">login</button>
                 </div>
-                <div class="btn" id="git-login">
+            </form>
+
+            <div class="container-two">
+                <div class="img-container">
                     <img class="test-img" src="https://cdn.jim-nielsen.com/macos/1024/github-desktop-2021-05-20.png"
                         alt="github logo">
-                    <button type="button">login via Github</button>
                 </div>
-                <div class="signup-link">
-                    Not a member? <a href="/register">Signup now</a>
-                </div>
-            </form>
+                <form action="/auth/github" , method="get">
+                    <button id="github-button" type="submit">login via
+                        Github</button>
+                </form>
+            </div>
+
+            <div class="signup-link">
+                <p style="margin-right: 10px;"> Not a member? </p> <a href="/register"> Signup now</a>
+            </div>
         </div>
-    </div>
 </body>
 
 </html>

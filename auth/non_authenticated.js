@@ -1,28 +1,62 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@vehicleservicelogcluste.no66rrt.mongodb.net/VSL-DB?retryWrites=true&w=majority`;
 const UserModel = require('../models/user');
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
-
-// Connect to DB 
-client.connect().then(() => {
-    console.log("Successfully connected to the DB");
-})
+const { client } = require('../mongoDB/mongodb');
+const GitHubStrategy = require('passport-github2').Strategy;
+const passport = require('passport');
 
 // create db from client
 const usersDB = client.db("Users");
+
+passport.serializeUser(function (user, done) {
+    done(null, user);
+});
+
+passport.deserializeUser(function (obj, done) {
+    done(null, obj);
+});
+
+passport.use(
+    new GitHubStrategy({
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: process.env.GITHUB_CALLBACK_URL
+    },
+        // look up git user in db
+        async (_accessToken, _refreshToken, profile, done) => {
+            const user = await usersDB.collection('data').findOne({
+                username: profile.id,
+            });
+
+            if (!user) {
+                console.log("Adding new github user to the database");
+                // create the user here
+                const gitUser = new UserModel({
+                    username: profile.id,
+                    email: profile.username,
+                    password: "null: github user",
+                });
+                // save the user to the db
+                usersDB.collection("data").insertOne(gitUser);
+                return done(null, profile);
+            } else {
+                console.log("Git user already exists in the DB");
+                return done(null, profile);
+            }
+        }
+    ));
+
+router.get('/auth/github/',
+    passport.authenticate('github', { scope: ['user:email'] }));
+
+router.get('/auth/github/callback',
+    passport.authenticate('github', { failureRedirect: '/login' }),
+    function (req, res) {
+        req.session.login = true;
+        req.session.user = "Github: " + req.user.username;
+        res.redirect('/');
+    });
 
 router.get("/", (req, res) => {
     if (req.session.login === true) {
@@ -67,11 +101,12 @@ router.post("/login", async (req, res) => {
             if (result) {
                 req.session.login = true;
                 req.session.user = findUser['email'].toLowerCase();
-                res.redirect("/");
+                res.redirect("/home");
             } else {
                 res.render("login.ejs", {
                     error: "Incorrect username or password",
                 });
+                console.log("Incorrect username or password");
             }
         });
 
@@ -96,8 +131,6 @@ router.post("/register", async (req, res) => {
         password: hashedPassword,
     })
 
-    // potentially render invalid email address error here
-
     // Only add user if a they don't exist
     const findUser = await usersDB.collection('data').findOne({ email: req.body.email });
 
@@ -109,9 +142,8 @@ router.post("/register", async (req, res) => {
         usersDB.collection("data").insertOne(formUser);
         req.session.user = formUser['email'].toLowerCase();
         console.log("User has been added")
-        res.redirect("/");
+        res.redirect("/login");
     }
-
 })
 
 module.exports = router;

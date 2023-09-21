@@ -13,7 +13,7 @@
     <div class="center">
         <div class="container">
             <div class="text">
-                Register Form
+                Vehicle Service Log Tracker
             </div>
             <p class="error">
                 <% if (error) { %>
@@ -23,25 +23,25 @@
             <form class="regform" action="/register" method="post">
                 <div class="data">
                     <label>Username</label>
-                    <input id="username" type="text" name="username" placeholder="Ex: JohnDoe123" required>
+                    <input id="username" type="text" name="username" placeholder="Ex: JohnDoe123">
                 </div>
                 <div class="data">
                     <label>Email</label>
-                    <input id="email" type="email" name="email" placeholder="Ex: jdoe@yahoo.com" required>
+                    <input id="email" type="email" name="email" placeholder="Ex: jdoe@yahoo.com">
                 </div>
                 <div class="data">
                     <label>Password</label>
-                    <input id="password" type="password" name="password" placeholder="Ex: password123" required>
+                    <input id="password" type="password" name="password" placeholder="Ex: password123">
                 </div>
                 <div class="forgot-pass">
                     <a href="#">Forgot Password?</a>
                 </div>
                 <div class="btn">
                     <div class="inner"></div>
-                    <button id="submitbutton" type="submit" onclick="ValidateEmail()">Sign Up</button>
+                    <button id="submitbutton" type="submit" onclick="return ValidateEmail()">Sign Up</button>
                 </div>
                 <div class="signup-link">
-                    Already a member? <a href="/login">Login now</a>
+                    <p style="margin-right: 10px;">Already a member?</p> <a href="/login">Login now</a>
                 </div>
             </form>
         </div>
@@ -51,12 +51,32 @@
             const email_input = document.getElementById("email");
             const user_input = document.getElementById("username");
             const pass_input = document.getElementById("password");
-            if (email_input.value !== "" && user_input.value !== "" && pass_input.value != "") {
-                var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-                if (!email_input.value.match(mailformat)) {
-                    alert("Invalid email address!");
-                }
+
+            if (user_input.value === "") {
+                alert("Please enter a username");
+                return false;
             }
+
+            if (email_input.value === "") {
+                alert("Please enter an email address");
+                return false;
+            }
+
+            if (pass_input.value === "") {
+                alert("Please enter a password");
+                return false;
+            }
+
+            // validate email and pass before submission 
+
+            var mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+            if (!email_input.value.match(mailformat)) {
+                alert("Error: Invalid email address!");
+                return false;
+            } else {
+                return true;
+            }
+
         }
     </script>
 </body>

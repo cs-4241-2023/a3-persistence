@@ -11,7 +11,8 @@
 body {
     height: 100vh;
     width: 100%;
-    background-image: linear-gradient(to right, #ffefba, #ffffff);
+    background-image: linear-gradient(to right, #3498db, #0077b6);
+
 }
 
 .container {
@@ -19,17 +20,20 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-input[type="checkbox"] {
-    display: none;
-}
-
-.container {
     background: #fff;
     width: 410px;
     padding: 30px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    /* Added shadow */
+    border-radius: 10px;
+    /* Added border radius */
+    display: flex;
+    flex-direction: column;
+}
+
+
+input[type="checkbox"] {
+    display: none;
 }
 
 .container .text {
@@ -38,14 +42,14 @@ input[type="checkbox"] {
     text-align: center;
 }
 
-.container form {
-    margin-top: -20px;
-}
-
 .container form .data {
     height: 45px;
     width: 100%;
     margin: 40px 0;
+}
+
+#email-container {
+    margin-top: 0px;
 }
 
 form .data label {
@@ -85,24 +89,8 @@ form .btn {
     text-align: center;
     position: relative;
     overflow: hidden;
-}
-
-form .btn {
     background: #0077b6;
 }
-
-form #git-login {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    background: rgb(144, 66, 222);
-}
-
-#git-login:hover {
-    background: rgb(192, 108, 240);
-}
-
 
 form .btn:hover {
     background-color: #35abeb;
@@ -129,26 +117,66 @@ form .btn button {
     padding: 8px 13px 6px;
 }
 
-form .signup-link {
-    text-align: center;
+.signup-link {
+
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    justify-content: end;
 }
 
-form .signup-link a {
+.signup-link a {
     color: #3498db;
     text-decoration: none;
 }
 
-form .signup-link a:hover {
+.signup-link a:hover {
     text-decoration: underline;
 }
 
-form img {
+img {
     width: 40px;
-    margin-right: 15px;
+}
+
+#github-button {
+    background: rgb(144, 66, 222);
+    font-size: 18px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: white;
+    cursor: pointer;
+    border: none;
+    width: 300px;
+    height: 45px;
+}
+
+#github-button:hover {
+    background: rgb(192, 108, 240);
 }
 
 .error {
     text-align: center;
     color: red;
     margin-top: 15px;
+}
+
+.img-container {
+    width: 40px;
+    height: 45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.container-two {
+    margin-top: -20px;
+    width: 100%;
+    height: 75px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
 }

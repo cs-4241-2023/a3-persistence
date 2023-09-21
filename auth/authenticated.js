@@ -1,23 +1,8 @@
 const express = require("express");
 const router = express.Router();
 crypto = require('crypto');
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const Vsl = require('../models/vsl');
-const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@vehicleservicelogcluste.no66rrt.mongodb.net/VSL-DB?retryWrites=true&w=majority`;
-
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-});
-
-// Connect to DB then run server
-client.connect();
+const { client } = require('../mongoDB/mongodb');
 
 // create db from client
 const vehicleServiceLogs = client.db("SLogs");
@@ -53,6 +38,7 @@ router.get("/home", (req, res) => {
 })
 
 router.get('/req-server-data', async (request, response) => {
+    console.log("User session:")
     console.log(request.session.user)
     const appdata_frm_db = await vehicleServiceLogs.collection(request.session.user).find({}).toArray();
 
@@ -136,10 +122,8 @@ function addNewDataField(json_data) {
 }
 
 router.post("/logout", (req, res) => {
-    req.session = null;
+    req.session.destroy()
     res.redirect("/");
 });
-
-
 
 module.exports = router;
