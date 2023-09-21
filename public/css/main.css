@@ -1,0 +1,54 @@
+
+
+body {
+  background-color: #282c34; /* Darker background */
+  font-family: 'Roboto', sans-serif; /* Changing the font to Roboto */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: #f0f0f0; /* Lighter font color for better contrast */
+}
+
+#app-header {
+  font-weight: 600; /* Semi-bold header */
+  font-size: 1.5em; /* Larger font size for the header */
+  margin-bottom: 20px; /* Add some margin for better spacing */
+  border-bottom: 2px solid #f0f0f0; /* A bottom border for separation */
+  padding-bottom: 10px; /* Padding to space out from border */
+}
+
+#delete-button {
+  display: inline-block;
+  background-color: #e74c3c; /* A red-ish background for delete */
+  color: #ffffff; /* White color text on the button */
+  padding: 8px 12px; /* Padding for the button */
+  border: none;
+  border-radius: 4px; /* Rounded corners for the button */
+  cursor: pointer; /* Cursor change to indicate clickable */
+  transition: background-color 0.2s; /* Smooth transition for hover effect */
+}
+
+#delete-button:hover {
+  background-color: #c0392b; /* A darker shade on hover */
+}
+
+#todo-table {
+  border: none; /* Remove border */
+  background-color: #333843; /* Darker shade table background */
+  margin: 20px 0;
+  width: 90%; /* Reduced width for better appearance */
+  border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for a lifted appearance */
+}
+
+.table-head {
+  font-weight: 600; /* Semi-bold table head */
+  background-color: #24282d; /* A darker background for table head */
+  color: #ffffff; /* White color for headers */
+}
+
+#table-body {
+  text-align: center;
+  font-weight: 400; /* Regular font weight */
+}

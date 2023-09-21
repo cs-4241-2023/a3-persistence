@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif&display=swap" rel="stylesheet">
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <h1 id="app-header">TODO List App</h1>
+    <form>
+      <input type="text" id="todo-name" placeholder="Enter task name">
+      <input type="date" id="due-date">
+      <!-- <input type="text" id="description" placeholder="Enter description"> -->
+      <button type="submit" id="create-button">Create task</button>
+    </form>
+    <ul id="todo-list">
+    </ul>
+    <table id="todo-table">
+      <thead class="table-head">
+        <tr>
+          <th>⠀</th>
+          <th>Task Name</th>
+          <th>Due Date</th>
+          <!-- <th>Description</th> -->
+          <!-- <th>Priority</th> -->
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+    </table>
+    <button id="delete-button">Delete task</button>
+  </body>
+</html>
