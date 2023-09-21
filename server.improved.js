@@ -193,7 +193,7 @@ const acct = request.session.username
   }
   else if(request.url === '/login'){ // handle login request
      
-    data = JSON.parse(dataString);
+    let data = JSON.parse(dataString);
     validateLogin(data, response, request);
   }
   else if(request.url === '/newacct'){ // 
@@ -247,7 +247,7 @@ const sendFile = function( response, filename ) {
 function addRanking(artist, request) {
   const acct = request.session.username
   let newRanking = appdata[acct].length
-  newArtist = {
+  let newArtist = {
     Artist: artist.Artist,
     Genre: artist.Genre,
     Rating: artist.Rating,
