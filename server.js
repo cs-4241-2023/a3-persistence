@@ -133,19 +133,22 @@ app.post("/submit", async (request, response) => {
     response.end(result);
 });
 
-app.put("/assignment-edit", (request, response) => {
-    let editedData = request.body;
-    let found = false;
-    appdata.forEach(assignment => {
-        if(assignment.id === editedData.id && !found) {
-            found = true;
-            editedData.priority = calculatePriority(editedData.dueDate, editedData.difficulty);
-            appdata[appdata.indexOf(assignment)] = editedData;
+app.put("/assignment-edit", async (request, response) => {
+    let result = await assignmentCollection.updateOne(
+        {_id: new ObjectId(request.body._id)},
+        {
+            $set: {
+                className: request.body.className,
+                assignmentName: request.body.assignmentName,
+                dueDate: request.body.dueDate,
+                difficulty: request.body.difficulty,
+                priority: calculatePriority(request.body.dueDate, request.body.difficulty)
+            }
         }
-    });
-    const resultJSON = found ? JSON.stringify({result: "success", message: ""}) : JSON.stringify({result: "failure", message: `ID ${editedData.id} not found.`});
-    response.writeHead(200,{ "Content-Type" : "application/json" });
-    response.end(resultJSON);
+    );
+    console.log(result);
+    response.writeHead(200, {"Content-Type": "application/json"});
+    response.end(JSON.stringify({result: "success", message: ""}));
 });
 
 app.delete("/assignment-delete", async (request, response) => {
