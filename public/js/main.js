@@ -60,7 +60,6 @@ const submitAssignment = async function(event) {
 
   // get information from input text boxes and parse into a JSON
   const inputJSON = JSON.stringify({
-    id: Date.now(), // timestamp id
     className: document.querySelector("#class-name").value,
     assignmentName: document.querySelector("#assignment-name").value,
     dueDate: document.querySelector("#due-date").value,
@@ -223,7 +222,7 @@ const editAssignment = async function(event, assignmentId) {
 
   // generate new assignment JSON with the same original ID
   const editedJSON = JSON.stringify({
-    _id: assignmentId, // timestamp id
+    _id: assignmentId, // database generated ID
     className: document.querySelector("#class-name-edit").value,
     assignmentName: document.querySelector("#assignment-name-edit").value,
     dueDate: document.querySelector("#due-date-edit").value,
