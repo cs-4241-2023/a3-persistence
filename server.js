@@ -25,9 +25,11 @@ app.engine(
   hbs({
     extname: "hbs",
     defaultLayout: false,
-    layoutsDir: "views/layouts/"
+    layoutsDir: "views/layouts/",
+    helpers: { json: function(context) {return JSON.stringify(context)}}
   })
 );
+
 app.set(    'view engine', 'handlebars' )
 app.set(    'views',       './public' )
 
@@ -52,6 +54,7 @@ const creatureSchema = new mongoose.Schema({
   age: {type: Number, required: true},
   owner: {type: mongoose.Types.ObjectId, ref: 'Login'},
   picture: String,
+  altText: String,
   status: String
 });
 const Creature = mongoose.model('Creature', creatureSchema);
@@ -72,6 +75,14 @@ const creaturePics = {"Chameleon": 'https://lafeber.com/vet/wp-content/uploads/V
                       "Dog": 'https://i.natgeofe.com/n/4f5aaece-3300-41a4-b2a8-ed2708a0a27c/domestic-dog_thumb_square.jpg',
                       "Rat": 'https://images.squarespace-cdn.com/content/v1/55801f1be4b0bd4b73b60d65/1449930415127-EU3SDWQQMOO6LV0Y0QJF/rat+square.jpg', 
                       "Capybara": 'https://gvzoo.com/cms-data/gallery/blog/animals/capybara/banner-capybara-sq.jpg',}
+const picAltText = {"Chameleon": '"photo of a chameleon"', 
+                    "Gecko": 'photo of a leopard gecko',
+                    "Frog": 'photo of a red eye tree frog', 
+                    "Snake": 'photo of a western hog nose snake',
+                    "Cat": 'Photo of my sphynx cat, Winnie', 
+                    "Dog": 'photo of a cute puppy',
+                    "Rat": 'photo of a rat', 
+                    "Capybara": 'photo of a capybara',}
 
 app.use((req, res, next) => {
   console.log('Time: ', Date.now());
@@ -163,6 +174,7 @@ app.post('/creatureMaker', (req, res) => {
     age: req.body.age,
     owner: currUser, //todo
     picture: creaturePics[req.body.type],
+    altText: picAltText[req.body.type],
     status: calcStatus(req.body.age, req.body.type)
   })
   Creature.findOne(newCreature).then(function (result, err) {
@@ -190,6 +202,7 @@ app.post('/delItem/:id', (req, res) => {
     res.redirect('/creatureMaker')
   })
 })
+
 
 const calcStatus = (age, type) =>{
   if(age <= avgAges[type] / 2){
