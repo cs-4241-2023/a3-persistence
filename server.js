@@ -6,10 +6,10 @@ const express = require("express"),
       env = require("dotenv").config(),
       port = 3000;
 
-const appdata = [
-  {id: 100000 , className: "CS 4241", assignmentName: "Assignment 2", dueDate:"2023-09-11", difficulty: 5, priority: "Medium"},
-  {id: 200000 , className: "CS 3013", assignmentName: "Homework 1", dueDate:"2023-09-05", difficulty: 3, priority: "Low"}
-];
+// const appdata = [
+//   {id: 100000 , className: "CS 4241", assignmentName: "Assignment 2", dueDate:"2023-09-11", difficulty: 5, priority: "Medium"},
+//   {id: 200000 , className: "CS 3013", assignmentName: "Homework 1", dueDate:"2023-09-05", difficulty: 3, priority: "Low"}
+// ];
 
 const dbURL =
     "mongodb+srv://" +
@@ -125,15 +125,16 @@ app.post("/account-lookup", async (request, response) => {
     response.end(resultJSON);
 })
 
-app.get("/assignment-data", (request, response) => {
-  response.writeHead(200, "OK", {'Content-Type': 'text/json'});
-  response.end(JSON.stringify(appdata));
+app.get("/assignment-data", async (request, response) => {
+    let assignmentData = await assignmentCollection.find({}).toArray(); // TODO: This should probably be looked up by account
+    response.writeHead(200, "OK", {'Content-Type': 'text/json'});
+    response.end(JSON.stringify(assignmentData));
 });
 
-app.post("/submit", (request, response) => {
+app.post("/submit", async (request, response) => {
     let sentData = request.body;
-    let result = handleAssignmentData(sentData);
-    response.writeHead(200,{ "Content-Type" : "application/json" });
+    let result = await handleAssignmentData(sentData);
+    response.writeHead(200, {"Content-Type": "application/json"});
     response.end(result);
 });
 
@@ -165,26 +166,34 @@ app.delete("/assignment-delete", (request, response) => {
 
 app.listen(process.env.PORT || port) // set up server to listen on port 3000
 
-const handleAssignmentData = function(sentData) {
-  let id = sentData.id;
-  let className = sentData.className;
-  let assignmentName = sentData.assignmentName;
-  let dueDate = sentData.dueDate;
-  let difficulty = sentData.difficulty;
-  let difficultyNum = parseInt(difficulty);
+const handleAssignmentData = async function (sentData) {
+    let id = sentData.id;
+    let className = sentData.className;
+    let assignmentName = sentData.assignmentName;
+    let dueDate = sentData.dueDate;
+    let difficulty = sentData.difficulty;
+    let difficultyNum = parseInt(difficulty);
 
-  // send failure if any of the fields are empty
-  if(className === "" || assignmentName === "" || dueDate === "") {
-      return JSON.stringify({ result: "failure", message: "One or more fields are empty!" });
-  } else if(difficulty === "" || isNaN(difficultyNum) || difficultyNum < 0 || difficultyNum > 10) {
-      return JSON.stringify({ result: "failure", message:"Difficulty must be an integer between 1 and 10!" });
-  } else {
-      let priority = calculatePriority(dueDate, difficulty); // calculate derived field
-      appdata.push(
-          {id: id, className: className, assignmentName: assignmentName, dueDate: dueDate, difficulty: difficulty, priority: priority }
-      );
-      return JSON.stringify({ result: "success", message: ""});
-  }
+    // send failure if any of the fields are empty
+    if (className === "" || assignmentName === "" || dueDate === "") {
+        return JSON.stringify({result: "failure", message: "One or more fields are empty!"});
+    } else if (difficulty === "" || isNaN(difficultyNum) || difficultyNum < 0 || difficultyNum > 10) {
+        return JSON.stringify({result: "failure", message: "Difficulty must be an integer between 1 and 10!"});
+    } else {
+        let priority = calculatePriority(dueDate, difficulty); // calculate derived field
+
+        await assignmentCollection.insertOne(
+            {
+                id: id,
+                className: className,
+                assignmentName: assignmentName,
+                dueDate: dueDate,
+                difficulty: difficulty,
+                priority: priority
+            }
+        );
+        return JSON.stringify({result: "success", message: ""});
+    }
 }
 
 const calculatePriority = function (dueDate, difficulty) {
