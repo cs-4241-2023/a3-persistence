@@ -80,15 +80,15 @@ const updateTable = async function() {
 // Function to populate/update the table with received data
 const populateTable = function(data) {
   const tableBody = document.querySelector('#table-body');
-  tableBody.innerHTML = ''; // Clear existing table rows [May delete this line]
+  tableBody.innerHTML = ''; // Clear existing table rows
 
 
-
-  data.forEach(function(player,index){
+  data.forEach(function(player){
     const row = document.createElement('tr');
+    //Separate
     row.innerHTML = `
-      <td> <input type="button" id=${index} onclick="editPlayer(${index})" value="Edit"></td>
-      <td> <input type="button" id=${index} onclick="deletePlayer(${index})" value="Delete"></td>
+      <td> <input type="button" id=${player._id} onclick="editPlayer('${player._id}')" value="Edit"></td>
+      <td> <input type="button" id=${player._id} onclick="deletePlayer('${player._id}')" value="Delete"></td>
       <td>${player.yourname}</td>
       <td>${player.username}</td>
       <td>${player.email}</td>
