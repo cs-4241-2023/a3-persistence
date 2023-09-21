@@ -61,18 +61,22 @@ li {
 }
 
 .list-label {
-  width: 24%;
+  width: 23.5%;
   text-align: center;
 }
 
 li button {
-  width: 4%;
+  width: 3%;
   background: transparent;
   border: none;
   outline: none;
 }
 
-li button:hover {
+.modifier:hover {
+  background-color: #77DD77;
+}
+
+.deleter:hover {
   background-color: #FF6961;
 }
 

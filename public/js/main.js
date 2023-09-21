@@ -1,6 +1,7 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
 let form, taskInput, dateInput, submitButton;
+let update_id = "";
 
 function checkValidity() {
   if (taskInput.validity.valid && dateInput.validity.valid) {
@@ -40,8 +41,25 @@ function loadTasks(taskList) {
     priorityLabel.innerHTML = t.priority;
     priorityLabel.className = 'list-label';
 
+    let modifyButton = document.createElement('button');
+    modifyButton.innerText = "+";
+    modifyButton.className = 'modifier';
+    modifyButton.addEventListener('click', async function() {
+      let taskInput = document.querySelector("#taskName");
+      let dateInput = document.querySelector("#dueDate");
+      let priorityInput = document.querySelector("#priorityFlag");
+      let addButton = document.querySelector("#addTaskButton");
+
+      taskInput.value = t.taskName;
+      dateInput.value = t.dueDate;
+      priorityInput.value = t.priority;
+      addButton.innerText = "Update";
+      update_id = t._id;
+    });
+
     let deleteButton = document.createElement('button');
     deleteButton.innerText = "x";
+    deleteButton.className = 'deleter';
     deleteButton.addEventListener('click', async function() {
       const json = {_id: item._id};
       const body = JSON.stringify(json);
@@ -58,46 +76,42 @@ function loadTasks(taskList) {
     item.appendChild(dateLabel);
     item.appendChild(daysRemainingLabel);
     item.appendChild(priorityLabel);
+    item.appendChild(modifyButton);
     item.appendChild(deleteButton);
     list.appendChild(item);
   });
-}
-
-function updateTasks(taskList) {
-  let currentTasks = document.querySelectorAll('.task-item');
-  let previousList = Array.from(currentTasks);
-
-  let ids = [];
-  taskList.forEach(t => { ids.push(t.taskId) });
-
-  for (let i = 0; i < previousList.length; i++) {
-    if (!ids.includes(parseInt(previousList[i].id))) {
-      previousList[i].remove();
-      break;
-    }
-  }
 }
 
 const submit = async function( event ) {
   event.preventDefault()
 
   const taskInput = document.querySelector('#taskName').value,
-        dateInput = document.querySelector('#dueDate').value,
-        priorityInput = document.querySelector('#priorityFlag').value;
-
-  console.log(document.querySelector('#priorityFlag'));
+  dateInput = document.querySelector('#dueDate').value,
+  priorityInput = document.querySelector('#priorityFlag').value;
 
   const json = { taskName: taskInput, dueDate: dateInput, priority: priorityInput};
-  const body = JSON.stringify(json);
 
-  const postResponse = await fetch( '/submitTasks', {
+  if (this.innerText === "Add") {
+    const body = JSON.stringify(json);
+    const postResponse = await fetch( '/submitTasks', {
     method:'POST',
     body 
-  })
+    });
+  }
+  else if (this.innerText === "Update") {
+    json._id = update_id;
+    const body = JSON.stringify(json);
+    const postResponse = await fetch( '/updateTask', {
+      method:'POST',
+      body 
+    });
+
+    this.innerText = "Add";
+  }
 
   const getResponse = await fetch('/getTasks', {
     method: 'GET',
-  })
+  });
 
   const text = await getResponse.text();
   const tasks = JSON.parse(text);

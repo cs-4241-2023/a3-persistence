@@ -80,5 +80,37 @@ app.post('/deleteTask', (req, res) => {
   })
 });
 
+app.post('/updateTask', (req, res) => {
+  let dataString = "";
+
+  req.on('data', function(data) {
+    dataString += data;
+  });
+
+  req.on('end', async function() {
+    let info = JSON.parse(dataString);
+
+    const currentDate = new Date();
+    const objDate = new Date(info.dueDate);
+    if (currentDate <= objDate) {
+      const timeDifferenceInMilliseconds = objDate - currentDate;
+      const daysDifference = Math.ceil(timeDifferenceInMilliseconds / (1000 * 60 * 60 * 24));
+
+      info.daysRemaining = daysDifference > 1 ? `${daysDifference} days` : "1 day";
+    }
+    else {
+      info.daysRemaining = "Overdue";
+    }
+
+    const result = await collection.updateOne(
+      { _id: new ObjectId(info._id) },
+      { $set: { taskName: info.taskName, dueDate: info.dueDate, priority: info.priority, daysRemaining: info.daysRemaining }}
+    );
+
+    res.writeHead(200, "OK", {'Content-Type': 'text/plain' });
+    res.end('Update Success');
+  });
+});
+
 run();
 app.listen(process.env.PORT || 3000);
