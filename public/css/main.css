@@ -383,13 +383,6 @@ body {
   transform: scale(1.025);
 }
 
-.img-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
 .empty-table-text {
   text-align: center;
   color: black;
