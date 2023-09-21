@@ -76,7 +76,7 @@ app.get("/app.html", (request, response) => {
 });
 app.get("/auth", (request, response) => {
     response.writeHead(200, "OK", {'Content-Type': 'text/json'});
-    response.end(JSON.stringify({status: request.session.loginStatus}));
+    response.end(JSON.stringify({status: request.session.loginStatus, currentUser:request.session.currentUser}));
 });
 
 app.get("/logout", (request, response) => {
@@ -97,9 +97,11 @@ app.post("/login", async (request, response) => {
 
     if (loginResult.length === 1){
         request.session.loginStatus = true;
+        request.session.currentUser = request.body.username;
         response.redirect("app.html")
     } else {
         request.session.loginStatus = false;
+        request.session.currentUser = "";
         response.render(__dirname + "/public/index.html", {status: "Username or Password was Incorrect"});
     }
 });

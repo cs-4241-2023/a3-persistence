@@ -38,10 +38,11 @@ window.onload = async function() {
     headers: {'Content-Type': 'application/json'},
   });
 
-  let authStatus = await authResponse.json();
+  let auth = await authResponse.json();
 
-  if(authStatus.status === true) {
+  if(auth.status === true) {
     await getAllData();
+    document.querySelector("#current-username").textContent = "Current User: " + auth.currentUser;
     document.querySelector("#submit-button").onclick = (event) => {
       submitAssignment(event);
     }

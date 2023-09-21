@@ -14,7 +14,14 @@
     width: 25%
 }
 
-/* Position the header and description text using grid */
+#current-username {
+    margin-bottom: 15px;
+}
+
+#logout-button {
+    margin: 0;
+}
+
 #website-header {
     margin-top: 5px;
     display: block;
