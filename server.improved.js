@@ -35,10 +35,10 @@ app.post( '/submit', express.json(), async( req, res ) => {
 
 app.delete( '/delete', express.json(), async( req, res ) => {
   const data = req.body
-  const id = data._id
+  const id = data.index
   console.log('Server received this user ID to delete',id)
   const result = await collection.deleteOne({ 
-    _id:new ObjectId(req.body._id) 
+    _id:new ObjectId(id) 
   })
   
   res.json( result )
@@ -55,8 +55,10 @@ app.delete( '/delete', express.json(), async( req, res ) => {
 // })
 
 app.put( '/edit', express.json(), async( req, res ) => {
+  const data = req.body
+  const id = data.index
   const result = await collection.updateOne(
-    { _id: new ObjectId( req.body._id ) },
+    { _id: new ObjectId( id ) },
     { $set:{ name:req.body.name } }
   )
   console.log(req.body._id)
