@@ -85,6 +85,8 @@ const submit = async function( event ) {
         dateInput = document.querySelector('#dueDate').value,
         priorityInput = document.querySelector('#priorityFlag').value;
 
+  console.log(document.querySelector('#priorityFlag'));
+
   const json = { taskName: taskInput, dueDate: dateInput, priority: priorityInput};
   const body = JSON.stringify(json);
 

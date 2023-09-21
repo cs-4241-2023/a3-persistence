@@ -1,9 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>CS4241 Assignment 2</title>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="js/main.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="css/main.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +16,7 @@
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   </head>
   <body>
-    <header>
+    <!-- <header>
       <form class="inputs">
         <div id="taskInput" class="input-type">
           <label for="taskName">Task:</label>
@@ -39,6 +41,79 @@
         <button id="addTaskButton" disabled>Add</button>
       </form>
       <p id="logo">TO-DO APP</p>
+    </header> -->
+    <header class="container is-fluid p-0">
+      <form class="box" id="inputs">
+        <div class="columns is-flex">
+          <div class="field is-grouped">
+
+            <div class="column is-one-third">
+              <div class="field">
+                <label class="label">Task:</label>
+                <div class="control">
+                  <input class="input" type="text" placeholder="Enter task..." id="taskName" required>
+                </div>
+              </div>
+            </div>
+  
+            <div class="column is-one-third">
+              <div class="field">
+                <label class="label">Due Date:</label>
+                <div class="control">
+                  <input class="input" type="date" id="dueDate" required>
+                </div>
+              </div>
+            </div>
+  
+            <div class="column is-one-fifth">
+              <div class="field">
+                <label class="label">Priority:</label>
+                <div class="control">
+                  <div class="select">
+                    <select id="priorityFlag">
+                      <option value="none">None</option>
+                      <option value="high">High</option>
+                      <option value="medium">Medium</option>
+                      <option value="low">Low</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+            <div class="column is-one-quarter">
+              <div class="field">
+                <label class="label">&nbsp;</label>
+                <div class="control">
+                  <button class="button is-primary" id="addTaskButton" disabled>Add</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="column is-one-fifth">
+              <div class="columns is-flex">
+                <div class="column">
+                  <div class="field">
+                    <label class="label">&nbsp;</label>
+                    <div class="control">
+                      <button class="button">Sign Up</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="column">
+                  <div class="field">
+                    <label class="label">&nbsp;</label>
+                    <div class="control">
+                      <button class="button">Log In</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </form>
     </header>
     <section class="results">
       <section id="listBox">
