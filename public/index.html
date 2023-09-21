@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <meta name="description" content="Author: Bright Lin, Class: CS4241, Professor: Charles Roberts">
+
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+
+      <h1>Leaderboard</h1>
+
+      <form id="submission">
+        <input type="text" id="yourName" placeholder="Name">
+        <input type="number" id="yourKills" placeholder="Kills" min="0" step="1">
+        <input type="number" id="yourDeaths" placeholder="Deaths" min="0" step="1">
+        <input type="number" id="yourAssists" placeholder="Assists" min="0" step="1">
+        <button>Submit</button>
+      </form>
+
+      <table>
+        <tr> <!-- Defines a Row -->
+          <th>Name</th> <!-- Header Cells -->
+          <th>Kills</th>
+          <th>Deaths</th>
+          <th>Assists</th>
+          <th>KDA</th> <!-- KDA = (kills + assists)/ deaths -->
+          <th>Delete</th>
+          <th>Modify</th>
+        </tr>
+      </table>
+
+      <form id="modify" hidden>
+        <input type="text" id="modifyName" placeholder="Name">
+        <input type="number" id="modifyKills" placeholder="Kills" min="0" step="1">
+        <input type="number" id="modifyDeaths" placeholder="Deaths" min="0" step="1">
+        <input type="number" id="modifyAssists" placeholder="Assists" min="0" step="1">
+        <button>Save Modify</button>
+        <button type="button" id="cancelButton">Cancel</button>
+      </form>
+
+  </body>
+</html>
