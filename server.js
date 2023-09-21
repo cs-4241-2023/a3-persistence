@@ -146,7 +146,6 @@ app.put("/assignment-edit", async (request, response) => {
             }
         }
     );
-    console.log(result);
     response.writeHead(200, {"Content-Type": "application/json"});
     response.end(JSON.stringify({result: "success", message: ""}));
 });

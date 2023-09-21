@@ -193,7 +193,9 @@ const editPopUp = function (assignment) {
   document.querySelector("#difficulty-edit").value = assignment.difficulty;
 
   // set on-click listener for edit submission
-  document.querySelector("#submit-button-edit").onclick = () => editAssignment(assignment.id);
+  document.querySelector("#submit-button-edit").onclick = async (event) => {
+    await editAssignment(event, assignment._id)
+  }
 
   // close pop-up window and show original form if cancel is clicked
   document.querySelector("#cancel-edit-button").onclick = () => {
@@ -205,14 +207,16 @@ const editPopUp = function (assignment) {
 
 /**
  * Edits a given assignment on the Node.js server
+ * @param event mouse event
  * @param assignmentId the assignmentID of the original assignment
  * @returns {Promise<void>}
  */
-const editAssignment = async function(assignmentId) {
+const editAssignment = async function(event, assignmentId) {
+  event.preventDefault();
 
   // generate new assignment JSON with the same original ID
   const editedJSON = JSON.stringify({
-    id: assignmentId, // timestamp id
+    _id: assignmentId, // timestamp id
     className: document.querySelector("#class-name-edit").value,
     assignmentName: document.querySelector("#assignment-name-edit").value,
     dueDate: document.querySelector("#due-date-edit").value,
@@ -234,16 +238,13 @@ const editAssignment = async function(assignmentId) {
     document.querySelector("#submission-message").style.color = "green";
     document.querySelector("#submission-message").textContent = "Edit Successful!";
 
+    // close window
+    document.querySelector("#submission-message").style.visibility = "visible"
+    document.querySelector("#assignment-form").style.display = "block";
+    document.querySelector("#edit-window").style.display = "none";
+
     // update data table with new data
     await getAllData();
   }
-  else
-  {
-    // show failure message
-    document.querySelector("#submission-message").style.color = "red";
-    document.querySelector("#submission-message").textContent = "Edit Failure:  " + dataResponse.message;
-  }
-  document.querySelector("#submission-message").style.visibility = "visible"
-  document.querySelector("#assignment-form").style.display = "block";
-  document.querySelector("#edit-window").style.display = "none";
+
 }
