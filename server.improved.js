@@ -59,11 +59,11 @@ app.put( '/edit', express.json(), async( req, res ) => {
   const id = data.index
   const result = await collection.updateOne(
     { _id: new ObjectId( id ) },
-    { $set:{ name:req.body.name } }
+    { $set:{yourname: data.playerdata.yourname, username: data.playerdata.username, email: data.playerdata.email, position: data.playerdata.position} }
   )
-  console.log(req.body._id)
+  console.log('This is Edit ID:', id)
+  console.log('This is Edit Name:', data.playerdata.yourname)
   res.json( result )
-  res.status( 200 ).json(appdata)
   })
 
 // app.put( '/edit', express.json(),( req, res ) => {

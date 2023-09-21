@@ -120,6 +120,7 @@ const editPlayer = async function(index) {
         json = {yourname: name, username: username, email: email, position: position}
 
   console.log('Editing player with index:', index);
+  console.log('Player name:',json.yourname)
   const response = await fetch('/edit', {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
