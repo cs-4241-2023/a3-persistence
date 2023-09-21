@@ -1,16 +1,20 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 /**
- * Set up on-click event listeners once the window loads
+ * On load script that accomplishes the following:
+ *  - disable back button such that un-authenticated users cannot go back after logging out
+ *  - handle user sign-up by attempting to POST new credentials to the Node.js server
+ *  - format login status message on login page
+ *  - checks if a given user is authorized and loads in necessary data from server if true
+ * @returns {Promise<void>}
  */
-window.onload = async function() {
-
+window.onload = async () =>  {
   // disable the back button so non-authenticated users cannot navigate to app
   history.pushState(null, null, window.location.href);
   history.back();
   window.onpopstate = () => history.forward();
 
+  // handle user sign-up on index.html
   let signUpButton = document.querySelector("#sign-up-button")
-
   if(signUpButton !== null) {
     document.querySelector("#sign-up-button").onclick = async () => {
       let newAccountJSON = JSON.stringify({
@@ -27,20 +31,20 @@ window.onload = async function() {
     }
   }
 
+  // remove placeholder from login status <p> tag
   let loginStatus = document.querySelector("#login-status");
-
   if(loginStatus !== null && loginStatus.innerText === "<%= status %>") {
     loginStatus.innerText = "";
   }
 
-  let authResponse = await fetch("/auth", {
+  // check if authorized user
+  let auth = await (await fetch("/auth", {
     method: "GET",
     headers: {'Content-Type': 'application/json'},
-  });
+  })).json();
 
-  let auth = await authResponse.json();
-
-  if(auth.status === true) {
+  // if authorized then load in data from database
+  if(auth.status) {
     await getAllData();
     document.querySelector("#current-username").textContent = "Current User: " + auth.currentUser;
     document.querySelector("#submit-button").onclick = (event) => {
@@ -50,7 +54,8 @@ window.onload = async function() {
 }
 
 /**
- * Submits assignment to the server as JSON
+ * POSTs an assignment created from HTML form to Node.js server.
+ * Displays success message if the data was successfully inserted, displays failure otherwise.
  * @param event mouse click event
  * @returns {Promise<void>}
  */
@@ -59,67 +64,49 @@ const submitAssignment = async function(event) {
   event.preventDefault();
 
   // get information from input text boxes and parse into a JSON
-  const inputJSON = JSON.stringify({
+  const inputJSON = {
     className: document.querySelector("#class-name").value,
     assignmentName: document.querySelector("#assignment-name").value,
     dueDate: document.querySelector("#due-date").value,
     difficulty: document.querySelector("#difficulty").value,
     priority: "" // priority is empty until we derive it in the server
-  });
+  };
 
-  // post JSON to server
-  const response = await fetch( '/submit', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: inputJSON
-  });
-
-  // await response from server, the server is sending some example data back
-  const dataResponse = await response.json();
+  // post JSON to Node.js server and get returned JSON
+  const dataResponse = await (await fetch("/submit", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(inputJSON)
+  })).json();
 
   // status message element
   let message = document.querySelector("#submission-message");
 
-  if(dataResponse.result === "success")
-  {
+  if(dataResponse.result === "success") {
     // show success message
     message.style.color = "green";
     message.textContent = "Success";
-    clearTextBoxes();
+
+    // clear text boxes
+    document.querySelector("#class-name").value = "";
+    document.querySelector("#assignment-name").value = "";
+    document.querySelector("#due-date").value = "";
+    document.querySelector("#difficulty").value = "";
 
     // update data table with new data
     await getAllData();
-  }
-  else
-  {
+
+  } else {
     // show failure message
     message.style.color = "red";
     message.textContent = "Failure: " + dataResponse.message;
   }
-  // un-hide element
+  // show message
   message.style.visibility = "visible"
 }
 
 /**
- * Clears all text boxes
- */
-const clearTextBoxes = function() {
-  // array of selectors that specify the text boxes
-  let selectors = [
-    "#class-name",
-    "#assignment-name",
-    "#due-date",
-    "#difficulty"
-  ];
-
-  // set the value of each to the empty string
-  selectors.forEach((selector) => {
-    document.querySelector(selector).value = "";
-  });
-}
-
-/**
- * Get all app data from the Node.js server and populate a table with the information
+ * Gets all assignment data from the Node.js server and populates an HTML table with the returned information
  * @returns {Promise<void>}
  */
 const getAllData = async function () {
@@ -129,15 +116,14 @@ const getAllData = async function () {
   }
 
   // get app data from server as JSON
-  const appResponse = await fetch('/assignment-data', {method: 'GET'});
-  const appDataJSON = await appResponse.json();
+  const assignmentData = await (await fetch('/assignment-data', {method: 'GET'})).json();
 
   // create table element in HTML
   const table = document.createElement("table");
   table.innerHTML = "<th>Class</th> <th>Name</th> <th>Due Date</th> <th>Difficulty</th> <th>Priority</th>";
 
   // add assignment information to corresponding row
-  appDataJSON.forEach((assignment) => {
+  assignmentData.forEach((assignment) => {
     const row = document.createElement("tr");
     row.innerHTML = `<td>${assignment.className}</td> 
                      <td>${assignment.assignmentName}</td>
@@ -147,26 +133,29 @@ const getAllData = async function () {
                      `
     // create delete button for table row
     const deleteButton = document.createElement("button");
-    const editButton = document.createElement("button");
     deleteButton.textContent = "Delete";
-    editButton.textContent = "Edit";
-    editButton.style.marginLeft = "25px"
-
     deleteButton.style.fontWeight = "normal";
-    editButton.style.fontWeight = "normal";
 
     deleteButton.onclick = (event) => {
       deleteAssignment(event, assignment);
     }
 
+    // create edit button for table row
+    const editButton = document.createElement("button");
+    editButton.textContent = "Edit";
+    editButton.style.fontWeight = "normal";
+    editButton.style.marginLeft = "25px"
+
     editButton.onclick = (event) => {
       editPopUp(event, assignment);
     }
 
+    // append elements together
     row.appendChild(editButton)
     row.appendChild(deleteButton);
     table.appendChild(row);
   });
+  // append table to HTML body
   document.querySelector("body").appendChild(table);
 }
 
@@ -177,18 +166,28 @@ const getAllData = async function () {
  * @returns {Promise<void>}
  */
 const deleteAssignment = async function(event, assignment) {
+  // prevent html page reload on click
   event.preventDefault();
 
+  // send DELETE request to Node.js server
   await fetch("/assignment-delete" ,{
     method: "DELETE",
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(assignment)});
 
+  // repopulate table
   await getAllData();
 }
+/**
+ * Displays edit pop-up window when a given assignment's edit button is pressed.
+ * @param event mouse event
+ * @param assignment the assignment that the edit button was clicked for
+ */
 const editPopUp = function (event, assignment) {
+  // prevent html page reload on click
   event.preventDefault();
-  // hide original form and show pop-up
+
+  // hide original assignment form and show edit pop-up form
   document.querySelector("#assignment-form").style.display = "none"
   document.querySelector("#edit-window").style.display = "block";
 
@@ -200,7 +199,7 @@ const editPopUp = function (event, assignment) {
 
   // set on-click listener for edit submission
   document.querySelector("#submit-button-edit").onclick = async (event) => {
-    await editAssignment(event, assignment._id)
+    await editAssignment(event, assignment._id);
   }
 
   // close pop-up window and show original form if cancel is clicked
@@ -218,33 +217,32 @@ const editPopUp = function (event, assignment) {
  * @returns {Promise<void>}
  */
 const editAssignment = async function(event, assignmentId) {
+  // prevent html page reload on click
   event.preventDefault();
 
-  // generate new assignment JSON with the same original ID
-  const editedJSON = JSON.stringify({
+  // generate new assignment JSON with the same original database ID
+  const editedJSON = {
     _id: assignmentId, // database generated ID
     className: document.querySelector("#class-name-edit").value,
     assignmentName: document.querySelector("#assignment-name-edit").value,
     dueDate: document.querySelector("#due-date-edit").value,
     difficulty: document.querySelector("#difficulty-edit").value,
     priority: "" // priority will be re-calculated on the server
-  });
+  };
 
-  const response = await fetch("/assignment-edit" ,{
+  // send edit request to server
+  const response = await (await fetch("/assignment-edit", {
     method: "PUT",
-    headers: { 'Content-Type': 'application/json' },
-    body: editedJSON
-  });
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(editedJSON)
+  })).json();
 
-  const dataResponse = await response.json();
-
-  if(dataResponse.result === "success")
-  {
+  if(response.result === "success") {
     // show success message
     document.querySelector("#submission-message").style.color = "green";
     document.querySelector("#submission-message").textContent = "Edit Successful!";
 
-    // close window
+    // close edit pop-up form
     document.querySelector("#submission-message").style.visibility = "visible"
     document.querySelector("#assignment-form").style.display = "block";
     document.querySelector("#edit-window").style.display = "none";
