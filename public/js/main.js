@@ -1,6 +1,6 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 let taskData = [];
-let currentNote = 0;
+let currentNote = null;
 let counter = 0;
 
 const submit = async function (event) {
@@ -18,7 +18,7 @@ const submit = async function (event) {
     return;
   }
 
-  let edit = { ...body, id: currentNote };
+  let edit = { ...body, _id: currentNote };
 
   await fetch("/submit", {
     method: "POST",
@@ -40,6 +40,8 @@ window.onload = async function () {
   })
     .then((response) => response.json())
     .then((json) => (taskData = json));
+
+  console.log("INIT", taskData)
 
   loadTasks();
 };
@@ -76,12 +78,12 @@ function loadTasks() {
   taskData.forEach((task) => {
     // Create a new div object
     let newTask = document.createElement("div");
-
+    console.log(task)
     // If program was just initialized/we are changing task, as we iterate keep the same task highlighted
-    if (currentNote === 0 || task.id === currentNote) {
+    if (currentNote === null || task._id === currentNote) {
       // When we get to the currently selected task, populate form with the data of the task
       newTask.className = "tasks-list--task selected";
-      currentNote = task.id;
+      currentNote = task._id;
       title.value = task.title;
       date.value = task.date;
       dueDate.value = task.due;
@@ -93,7 +95,7 @@ function loadTasks() {
     }
     // Add title and id to the html-object (definitely not the best way of doing this)
     newTask.innerText = task.title;
-    newTask.id = task.id;
+    newTask.id = task._id;
 
     // Add an event listener to swap notes
     newTask.addEventListener("click", async (event) => {
@@ -101,10 +103,11 @@ function loadTasks() {
       document.getElementById(currentNote).className = "tasks-list--task";
 
       // Make the form fields match the values of the task in the database
-      currentNote = event.target.id;
+      currentNote = event.target._id;
 
       // Make the new selected task look selected
       event.target.className = "tasks-list--task selected";
+      console.log("CURRENT NOTE", currentNote)
       const taskID = await findTask(currentNote);
 
       title.value = taskID.title;
@@ -136,7 +139,8 @@ function loadTasks() {
       .then((json) => (taskData = json));
 
     // Set the current note to the new note
-    currentNote = taskData.slice(-1)[0].id;
+    // TODO ping the mongodb to get the new id of the server or use nanoid and put that into the server
+    currentNote = taskData.slice(-1)[0]._id;
 
     form.reset();
     loadTasks();
@@ -164,8 +168,10 @@ async function deleteTask() {
 // Function to find a note within the array given an id
 async function findTask(id) {
   let returnTask = null;
+  console.log(id)
   taskData.forEach((task) => {
-    if (task.id === id) {
+    console.log(task)
+    if (task._id === id) {
       returnTask = task;
     }
   });
@@ -185,7 +191,7 @@ function generateTable() {
     let descriptionCell = newRow.insertCell(5);
     Object.keys(taskData[taskKey]).forEach((key, index) => {
       switch (key) {
-        case "id":
+        case "_id":
           idCell.innerHTML = taskData[taskKey][key];
           break;
         case "title":
