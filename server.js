@@ -6,11 +6,6 @@ const express = require("express"),
       env = require("dotenv").config(),
       port = 3000;
 
-// const appdata = [
-//   {id: 100000 , className: "CS 4241", assignmentName: "Assignment 2", dueDate:"2023-09-11", difficulty: 5, priority: "Medium"},
-//   {id: 200000 , className: "CS 3013", assignmentName: "Homework 1", dueDate:"2023-09-05", difficulty: 3, priority: "Low"}
-// ];
-
 const dbURL =
     "mongodb+srv://" +
     process.env.DB_USERNAME +
@@ -153,15 +148,12 @@ app.put("/assignment-edit", (request, response) => {
     response.end(resultJSON);
 });
 
-app.delete("/assignment-delete", (request, response) => {
-    let dataToDelete = request.body;
-    appdata.forEach(assignment => {
-        if(assignment.id === dataToDelete.id) {
-            appdata.splice(appdata.indexOf(assignment), 1);
-            response.writeHead(200,{ "Content-Type" : "application/json" });
-            response.end(JSON.stringify({result: "success", message: ""}));
-        }
-    })
+app.delete("/assignment-delete", async (request, response) => {
+    await assignmentCollection.deleteOne({
+        _id: new ObjectId(request.body._id)
+    });
+    response.writeHead(200,{ "Content-Type" : "application/json" });
+    response.end(JSON.stringify({result: "success", message: ""}));
 });
 
 app.listen(process.env.PORT || port) // set up server to listen on port 3000
