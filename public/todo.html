@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title>To-do List</title>
+    <title>CS4241 Assignment 2</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -19,13 +19,30 @@
 
       <div class="row justify-content-center mt-4">
         <div class="col-md-6">
-          <form id="login-form" class="bg-light p-4 rounded border">
-            <a
-              id="loginButton"
-              href="/auth/github"
-              class="btn btn-secondary btn-block"
-              >Login with GitHub</a
-            >
+          <form id="task-form" class="bg-light p-4 rounded border">
+            <div class="form-group">
+              <label for="task">Task</label>
+              <input
+                type="text"
+                id="task"
+                class="form-control"
+                placeholder="Task name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="dueDate">Due Date</label>
+              <input type="date" id="dueDate" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input
+                type="text"
+                id="description"
+                class="form-control"
+                placeholder="Describe your task"
+              />
+            </div>
+            <button id="submitButton" class="btn btn-dark">Submit Task</button>
           </form>
         </div>
       </div>
@@ -42,5 +59,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
   </body>
 </html>

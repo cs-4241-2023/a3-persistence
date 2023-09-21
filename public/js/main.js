@@ -227,13 +227,43 @@ const fetchTasks = async () => {
   }
 };
 
+const fetchLogin = async () => {
+  try {
+    const fetchResponse = await fetch("/", { method: "GET" });
+
+    if (fetchResponse.ok) {
+      //const data = await fetchResponse.json();
+      //getTasks(data);
+    } else {
+      throw new Error("Fetch request failed");
+    }
+  } catch (error) {
+    console.error("Error fetching tasks:", error);
+  }
+};
+
 window.onload = async function () {
-  const button = document.getElementById("submitButton");
-  const submitWithId = e => {
-    submit(e, null);
-  };
+  // const button = document.getElementById("submitButton");
+  // const submitWithId = e => {
+  //   submit(e, null);
+  // };
 
-  button.onclick = submitWithId;
+  const submitButton = document.getElementById("submitButton");
+  const loginButton = document.getElementById("loginButton");
 
-  fetchTasks();
+  if (submitButton) {
+    const submitWithId = e => {
+      submit(e, null);
+    };
+
+    submitButton.onclick = submitWithId;
+    fetchTasks();
+  } else if (loginButton) {
+    const submitWithId = e => {
+      submit(e, null);
+    };
+
+    loginButton.onclick = submitWithId;
+    fetchLogin();
+  }
 };

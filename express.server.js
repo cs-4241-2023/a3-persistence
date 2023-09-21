@@ -1,4 +1,7 @@
 const express = require("express");
+const session = require("express-session");
+const passport = require("./public/js/passport");
+
 const { MongoClient, ObjectId } = require("mongodb");
 
 const app = express();
@@ -15,29 +18,71 @@ async function connectToDatabase() {
     await client.connect();
     console.log("Connected to MongoDB!");
 
-    const db = client.db("todoListApp");
-    tasksCollection = db.collection("tasks");
-
-    // Log the number of documents in the tasks collection for debugging
-    const taskCount = await tasksCollection.countDocuments();
-    console.log(`Number of documents in 'tasks' collection: ${taskCount}`);
+    tasksCollection = client.db("todoListApp").collection("tasks");
   } catch (error) {
     console.error("Error connecting to MongoDB:", error);
   }
 }
 
+app.use(
+  session({
+    secret: "4b9068da33a1cc5e769568f7e8524edf1cd3130d",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.json());
 
 // Middleware to handle static files
 app.use(express.static("public"));
 
-// Handle GET requests
+// Add authentication routes
+app.get(
+  "/auth/github",
+  passport.authenticate("github", { scope: ["user:email"] })
+);
+
+app.get(
+  "/auth/github/callback",
+  passport.authenticate("github", { failureRedirect: "/" }),
+  function (req, res) {
+    // Successful authentication, redirect to the todo list or user profile page
+    // Set a session variable to indicate the user is authenticated
+    req.session.userAuthenticated = true;
+    console.log("tseting");
+
+    res.redirect("/"); // Redirect to the todo list or any other authenticated page
+  }
+);
+
+// Handle GET request to load HTML pages
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
+  // Check if the user is authenticated (you can implement your own logic)
+  if (req.session.userAuthenticated) {
+    res.sendFile(__dirname + "/public/todo.html");
+  } else {
+    res.sendFile(__dirname + "/public/index.html");
+  }
 });
 
+app.get("/todo", ensureAuthenticated, (req, res) => {
+  if (req.session.userAuthenticated) {
+    res.sendFile(__dirname + "/public/todo.html");
+  }
+});
+
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  res.redirect("/");
+}
+
 // Handle GET requests for tasks
-app.get("/tasks", async (req, res) => {
+app.get("/tasks", ensureAuthenticated, async (req, res) => {
   try {
     // Fetch all tasks from the MongoDB collection
     const tasks = await tasksCollection.find().toArray();
