@@ -4,55 +4,30 @@ import { MongoClient, ServerApiVersion } from "mongodb";
 import "dotenv/config";
 
 const app = express();
-const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}`
 
-// let taskData = [
-//   {
-//     title: "Assignment 1",
-//     date: "2023-09-15",
-//     priority: "Medium",
-//     description: "Webware assignment 1",
-//     dueDate: "2023-09-18",
-//     id: nanoid(),
-//   },
-//   {
-//     title: "Assignment 2",
-//     date: "2023-09-16",
-//     priority: "High",
-//     dueDate: "2023-09-18",
-//     description: "Webware assignment 2",
-//     id: nanoid(),
-//   },
-// ];
-
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
-
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
+let taskData = [];
 
 app.use(express.static("public"));
 app.use(express.static("views"));
 app.use(express.json());
 
-app.get("/init", (req, res) => {
-  res.header({ "Content-Type": "application/json" });
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}`;
+const client = new MongoClient(uri);
+
+let collection = null;
+
+async function run() {
+  await client.connect();
+  collection = await client.db("whatToDo").collection("dev");
+}
+run();
+
+app.get("/init", async (req, res) => {
+  if (collection !== null) {
+    const docs = await collection.find({}).toArray()
+    res.json( docs )
+    console.log(res)
+  }
   res.send(JSON.stringify(taskData));
 });
 
