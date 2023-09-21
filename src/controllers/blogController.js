@@ -1,45 +1,16 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const app = express();
-const port = 3000;
-require('dotenv').config();
+const BlogPost = require('../models/BlogPost');
 
-app.use(express.json()); // Parse JSON request bodies
-app.use(express.static('public'));
-
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
-
-const blogPostSchema = new mongoose.Schema({
-    _id: { type: mongoose.Schema.Types.ObjectId, auto: true, primary: true },
-    title: String,
-    content: String,
-    readingTime: Number,
-});
-
-const BlogPost = mongoose.model('BlogPost', blogPostSchema);
-
-
-function calculateReadingTime(content) {
-    const wordsPerMinute = 200;
-    const wordCount = content.split(/\s+/).length;
-    return Math.ceil(wordCount / wordsPerMinute);
-}
-
-
-app.get('/blogs', async (req, res) => {
+// Controller functions
+exports.getAllBlogPosts = async (req, res) => {
     try {
         const blogPosts = await BlogPost.find();
         res.status(200).json(blogPosts);
     } catch (error) {
         res.status(500).send('Internal Server Error');
     }
-});
+};
 
-
-app.post('/blogs', async (req, res) => {
+exports.createBlogPost = async (req, res) => {
     const blogPostData = req.body;
     blogPostData.readingTime = calculateReadingTime(blogPostData.content);
 
@@ -50,10 +21,9 @@ app.post('/blogs', async (req, res) => {
     } catch (error) {
         res.status(500).send('Internal Server Error');
     }
-});
+};
 
-
-app.put('/blogs/:id', async (req, res) => {
+exports.updateBlogPost = async (req, res) => {
     const postId = req.params.id;
     const updatedBlogPostData = req.body;
 
@@ -72,10 +42,9 @@ app.put('/blogs/:id', async (req, res) => {
     } catch (error) {
         res.status(500).send('Internal Server Error');
     }
-});
+};
 
-
-app.delete('/blogs/:id', async (req, res) => {
+exports.deleteBlogPost = async (req, res) => {
     const postId = req.params.id;
 
     try {
@@ -84,9 +53,10 @@ app.delete('/blogs/:id', async (req, res) => {
     } catch (error) {
         res.status(404).send('Blog post not found');
     }
-});
+};
 
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+function calculateReadingTime(content) {
+    const wordsPerMinute = 200;
+    const wordCount = content.split(/\s+/).length;
+    return Math.ceil(wordCount / wordsPerMinute);
+}

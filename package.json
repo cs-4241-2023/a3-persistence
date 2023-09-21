@@ -1,10 +1,10 @@
 {
     "name": "a3-blog",
     "version": "1.0.0",
-    "description": "blog app for a2",
+    "description": "blog app for a3",
     "author": "huangrandy",
     "scripts": {
-        "start": "nodemon server.js",
+        "start": "nodemon app.js",
         "build": "",
         "build-css": "npx tailwindcss -i ./public/styles.css -o ./public/output.css --watch"
     },
