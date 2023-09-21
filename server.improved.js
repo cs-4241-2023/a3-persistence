@@ -7,7 +7,8 @@ app.use(express.json());
 app.use(express.static("public"));
 
 
-const url= `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.HOST}`
+const url= `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}/retryWrites=true&w=majority&appName=AtlasApp`
+
 const dbconnect= new MongoClient(url)
 
 let collection = null;
@@ -15,7 +16,7 @@ let users = null;
 
 
 async function run() {
- dbconnect.connect()
+ await dbconnect.connect().then(()=>console.log("DB works"))
   collection = await dbconnect.db("a3-Persistence").collection("a3");
   users = await dbconnect.db("a3-Persistence").collection("users");  
 }
