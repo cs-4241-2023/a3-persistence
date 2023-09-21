@@ -26,14 +26,17 @@ const client = new MongoClient(uri);
 
 let collection = null;
 
+let loginCollection = null;
+
 async function run() {
   //debugger;
   await client.connect();
   collection = await client.db("a3-database").collection("playlists");
+  loginCollection = await client.db("a3-database").collection("information")
 }
 
 app.use((req, res, next) => {
-  if (collection !== null) {
+  if (collection !== null && loginCollection !==null) {
     next();
   } else {
     res.status(503).send();
@@ -81,7 +84,7 @@ app.post("/remove", async (req, res) => {
   
 });
 
-app.post( '/login', (req,res)=> {
+app.post( '/login', async (req,res)=> {
   console.log( req.body )
   
   // below is *just a simple authentication example* 
@@ -98,6 +101,9 @@ app.post( '/login', (req,res)=> {
     // password incorrect, send back to login page
     res.render('index', { msg:'login failed: incorrect password', layout:false })
   }
+  
+  const result = await loginCollection.insertOne( req.body );
+  
 })
 
 app.get( '/', (req,res) => {
@@ -114,6 +120,10 @@ app.use( function( req,res,next) {
 
 app.get( '/main.html', ( req, res) => {
     res.render( 'main', { msg:'success you have logged in', layout:false })
+})
+
+app.post('/create', (req, res) => {
+  
 })
 
 
