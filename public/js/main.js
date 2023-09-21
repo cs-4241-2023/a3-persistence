@@ -42,7 +42,9 @@ window.onload = async function() {
 
   if(authStatus.status === true) {
     await getAllData();
-    document.querySelector("#submit-button").onclick = submitAssignment;
+    document.querySelector("#submit-button").onclick = (event) => {
+      submitAssignment(event);
+    }
   }
 }
 
@@ -153,12 +155,12 @@ const getAllData = async function () {
     deleteButton.style.fontWeight = "normal";
     editButton.style.fontWeight = "normal";
 
-    deleteButton.onclick = () => {
-      deleteAssignment(assignment);
+    deleteButton.onclick = (event) => {
+      deleteAssignment(event, assignment);
     }
 
-    editButton.onclick = () => {
-      editPopUp(assignment);
+    editButton.onclick = (event) => {
+      editPopUp(event, assignment);
     }
 
     row.appendChild(editButton)
@@ -170,10 +172,13 @@ const getAllData = async function () {
 
 /**
  * Deletes a given assignment from the Node.js server
+ * @param event mouse event
  * @param assignment the assignment to be deleted
  * @returns {Promise<void>}
  */
-const deleteAssignment = async function(assignment) {
+const deleteAssignment = async function(event, assignment) {
+  event.preventDefault();
+
   await fetch("/assignment-delete" ,{
     method: "DELETE",
     headers: { 'Content-Type': 'application/json' },
@@ -181,7 +186,8 @@ const deleteAssignment = async function(assignment) {
 
   await getAllData();
 }
-const editPopUp = function (assignment) {
+const editPopUp = function (event, assignment) {
+  event.preventDefault();
   // hide original form and show pop-up
   document.querySelector("#assignment-form").style.display = "none"
   document.querySelector("#edit-window").style.display = "block";
@@ -246,5 +252,4 @@ const editAssignment = async function(event, assignmentId) {
     // update data table with new data
     await getAllData();
   }
-
 }
