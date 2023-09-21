@@ -18,7 +18,7 @@ app.set("views", "./views");
 app.use(
   cookie({
     name: "session",
-    keys: ["key1", "key2"],
+    keys: ["username", "password"],
   })
 );
 
@@ -47,8 +47,45 @@ app.use((req, res, next) => {
 //calling run
 run();
 
+app.post("/create", async (req, res) => {
+  const result = await loginCollection.insertOne(req.body);
+   req.session.username = req.body.username;
+  res.redirect("main.html");
+});
+
+app.post("/login", async (req, res, next) => {
+  const accounts = await client
+    .db("a3-database")
+    .collection("information")
+    .find()
+    .toArray();
+
+  accounts.forEach((e) => {
+    if (req.body.password === e.password && req.body.username === e.username) {
+      req.session.login = true;
+      req.session.username = req.body.username;
+      // define a variable that we can check in other middleware
+      // the session object is added to our requests by the cookie-session middleware
+      res.redirect("main.html");
+    }
+  });
+
+  // cancel session login in case it was previously set to true
+  req.session.login = false;
+  // password incorrect, send back to login page
+  res.render("index", {
+    msg: "login failed: incorrect password",
+    layout: false,
+  });
+});
+
+app.get("/", (req, res, next) => {
+  res.render("index", { msg: "", layout: false });
+});
+
 app.post("/submit", async (req, res) => {
   const length = req.body.length;
+  let current_user = req.session.username;
   const minutes = Math.floor(length / 60).toString();
 
   const seconds = (length % 60).toString();
@@ -62,6 +99,8 @@ app.post("/submit", async (req, res) => {
   }
 
   req.body.length = finalTime;
+  req.body.user = current_user;
+
   const result = await collection.insertOne(req.body);
 
   const playlistData = await client
@@ -69,8 +108,18 @@ app.post("/submit", async (req, res) => {
     .collection("playlists")
     .find()
     .toArray();
+  
+  const newPlaylist = [{}];
 
-  res.status(200).json(playlistData);
+  for (let i = 0; i < playlistData.length; i++) {
+    if (playlistData[i].user === current_user) {
+      newPlaylist.push(playlistData[i]);
+    }
+  }
+  
+  console.log(newPlaylist);
+
+  res.status(200).json(newPlaylist);
 });
 
 app.post("/remove", async (req, res) => {
@@ -87,47 +136,6 @@ app.post("/remove", async (req, res) => {
     .toArray();
 
   res.status(200).json(playlistData);
-});
-
-app.post("/create", async (req, res) => {
-  const result = await loginCollection.insertOne(req.body);
-  res.redirect("main.html");
-});
-
-
-app.post("/login", async (req, res) => {
-  
-  const accounts = await client
-    .db("a3-database")
-    .collection("information")
-    .find()
-    .toArray();
-  
-   accounts.forEach((e) => {
-        
-    if (
-      req.body.password === e.password &&
-      req.body.username === e.username
-    ) {
-      req.session.login = true;
-
-      // define a variable that we can check in other middleware
-      // the session object is added to our requests by the cookie-session middleware
-      res.redirect("main.html");
-    }
-  });
-
-  // cancel session login in case it was previously set to true
-  req.session.login = false;
-  // password incorrect, send back to login page
-  res.render("index", {
-    msg: "login failed: incorrect password",
-    layout: false,
-  });
-});
-
-app.get("/", (req, res) => {
-  res.render("index", { msg: "", layout: false });
 });
 
 // add some middleware that always sends unauthenicaetd users to the login page

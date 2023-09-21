@@ -28,6 +28,8 @@ const add = async function (event) {
 function createPlaylist(data) {
   const list = document.getElementById("output");
   const header = document.getElementById("header");
+  
+  console.log(data);
 
   list.innerHTML = "";
   data.forEach((d) => {
@@ -35,7 +37,7 @@ function createPlaylist(data) {
     const item = document.createElement("p1");
     const pop = document.createElement("button");
     pop.style.cssText = "margin:0 auto 0 25%;display:grid;";
-    if (current_season === d.season) {
+    if (current_season === d.season){
       item.innerHTML = `${d.title} by ${d.artist}: ${d.length}`;
       list.appendChild(item);
 
