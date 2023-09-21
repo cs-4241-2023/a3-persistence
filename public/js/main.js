@@ -27,7 +27,6 @@ const submit = async function (event) {
   })
     .then((response) => response.json())
     .then((json) => (taskData = json));
-
   loadTasks();
 };
 
@@ -40,9 +39,6 @@ window.onload = async function () {
   })
     .then((response) => response.json())
     .then((json) => (taskData = json));
-
-  console.log("INIT", taskData)
-
   loadTasks();
 };
 
@@ -78,7 +74,6 @@ function loadTasks() {
   taskData.forEach((task) => {
     // Create a new div object
     let newTask = document.createElement("div");
-    console.log(task)
     // If program was just initialized/we are changing task, as we iterate keep the same task highlighted
     if (currentNote === null || task._id === currentNote) {
       // When we get to the currently selected task, populate form with the data of the task
@@ -86,7 +81,7 @@ function loadTasks() {
       currentNote = task._id;
       title.value = task.title;
       date.value = task.date;
-      dueDate.value = task.due;
+      dueDate.value = task.dueDate;
       priority.value = task.priority;
       description.value = task.description;
     } else {
@@ -103,11 +98,11 @@ function loadTasks() {
       document.getElementById(currentNote).className = "tasks-list--task";
 
       // Make the form fields match the values of the task in the database
-      currentNote = event.target._id;
+      currentNote = event.target.id;
 
       // Make the new selected task look selected
       event.target.className = "tasks-list--task selected";
-      console.log("CURRENT NOTE", currentNote)
+
       const taskID = await findTask(currentNote);
 
       title.value = taskID.title;
@@ -160,7 +155,7 @@ async function deleteTask() {
     .then((json) => (taskData = json));
 
   // Need to now default to 0 since the current note is now gone (can default to something else but lazy)
-  currentNote = 0;
+  currentNote = null;
 
   loadTasks();
 }
@@ -168,9 +163,7 @@ async function deleteTask() {
 // Function to find a note within the array given an id
 async function findTask(id) {
   let returnTask = null;
-  console.log(id)
   taskData.forEach((task) => {
-    console.log(task)
     if (task._id === id) {
       returnTask = task;
     }
