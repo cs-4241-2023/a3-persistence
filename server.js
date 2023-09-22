@@ -4,8 +4,6 @@ import "dotenv/config";
 
 const app = express();
 
-let taskData = [];
-
 app.use(express.static("public"));
 app.use(express.static("views"));
 app.use(express.json());
@@ -39,8 +37,6 @@ app.post("/submit", async (req, res) => {
         break;
     }
   }
-  let index = taskData.findIndex((task) => task._id === newTask._id);
-  taskData[index] = newTask;
 
   const cloneNewTask = { ...newTask };
 
