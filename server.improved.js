@@ -57,8 +57,16 @@ app.post('/login', (req, res) => {
   });
 });
 
-app.get('/getTasks', async (req, res) => {
-  const tasks = await task_collection.find({}).toArray();
+app.get('/getTasks/', async (req, res) => {
+  const tasks = await task_collection.find({ user: "" }).toArray();
+
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(tasks));
+}); 
+
+app.get('/getTasks/:userId', async (req, res) => {
+  const userId = req.params.userId;
+  const tasks = await task_collection.find({ user: userId }).toArray();
 
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(tasks));

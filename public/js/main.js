@@ -101,7 +101,7 @@ const submit = async function( event ) {
   dateInput = document.querySelector('#dueDate').value,
   priorityInput = document.querySelector('#priorityFlag').value;
 
-  const json = { taskName: taskInput, dueDate: dateInput, priority: priorityInput};
+  const json = { taskName: taskInput, dueDate: dateInput, priority: priorityInput, user: user};
 
   if (this.innerText === "Add") {
     const body = JSON.stringify(json);
@@ -121,7 +121,7 @@ const submit = async function( event ) {
     this.innerText = "Add";
   }
 
-  const getResponse = await fetch('/getTasks', {
+  const getResponse = await fetch(`/getTasks/${user}`, {
     method: 'GET',
   });
 
@@ -162,7 +162,7 @@ const login = async function(event) {
     modal.style.display = "none";
     loginButton.innerText = user;
 
-    const getResponse = await fetch('/getTasks', {
+    const getResponse = await fetch(`/getTasks/${user}`, {
       method: 'GET',
     });
   
