@@ -18,7 +18,7 @@ let appdata = {};
 // changed
 app.use( cookie({
   name: 'session',
-  keys: ['key1', 'key2']
+  keys: ['ARU16WbGlq6ODG9b51uapdQ55mP1MmB2ZTHiU5d/D5uayFmKwOw8QX7W1cVF6u7G', 'ad7V3IFA9Io2Cq4LVkvD6PkvEgEL0ycldt8Yo77VX4Va3wUAXI4XOl2cMlqouDCpj']
 }))
 
 const addAcctList = function(acctName){
@@ -75,7 +75,7 @@ async function deleteDB(artist){ // Fix the issue where I cannot delete the last
 }
 
 // Replacement for http.createServer
-const handleReq = (req, res, next) =>{
+const handleReq = (req, res) =>{
   console.log("url: " + req.url);
   if(req.method === 'GET'){
     handleGet(req, res);
@@ -196,7 +196,7 @@ const acct = request.session.username
     let data = JSON.parse(dataString);
     validateLogin(data, response, request);
   }
-  else if(request.url === '/newacct'){ // 
+  else if(request.url === '/newacct'){ // when creating new account
     let account = JSON.parse(dataString);
     if(checkAccounts(account)){
       users.push(account);
@@ -301,7 +301,7 @@ async function updateDBRankings(acct){
 const validateLogin = function(user, response, request){
   if(user.username === process.env.BASE_USER && user.password === process.env.BASE_PASS){
     request.session.username = process.env.BASE_USER
-    request.session.username = process.env.BASE_PASS
+    request.session.password = process.env.BASE_PASS
     response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
     response.end("Admin");
   }
