@@ -1,4 +1,26 @@
-// FRONT-END (CLIENT) JAVASCRIPT HERE
+const login = async function( event ) {
+  // stop form submission from trying to load
+  // a new .html page for displaying results...
+  // this was the original browser behavior and still
+  // remains to this day
+  event.preventDefault()
+  
+  const username = document.getElementById( 'usernameField' ).value,
+        password = document.getElementById( 'passwordField' ).value,
+        json =  { username,
+          password },
+        body = JSON.stringify( json )
+
+  const response = await fetch( '/login', {
+    method:'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body
+  })
+
+  // response.redirected()
+}
 
 const submit = async function( event ) {
   // stop form submission from trying to load
@@ -26,7 +48,6 @@ const submit = async function( event ) {
 
   const responseJSON = await response.json()
 
-  // console.log( 'submit - received:', JSON.stringify(responseJSON) )
   if('errors' in responseJSON) { // there has been an error
     // show warning messages
     for (const [key, val] of Object.entries(responseJSON)) {
@@ -50,15 +71,12 @@ const submit = async function( event ) {
 }
 
 const getAll = async function getAll( ) {
-  // event.preventDefault(); // TODO: check if we always need this? not sure what this does
 
   const response = await fetch( '/getAll', {
     method:'POST'
   })
 
   const data = await response.json();
-
-  // console.log( 'getAll - received:', data )
 
   displaySchedule(data)
 
@@ -141,8 +159,6 @@ const modify = async function( event ) {
   }
 
   getAll()
-
-  getAll()
 }
 
 const getDays = (id) => {
@@ -166,12 +182,13 @@ const getDays = (id) => {
 
 const addClassesTo = async function ( dropdown ) {
   const response = await fetch( '/getAll', {
-    method:'POST'
+    method:'POST',
+    headers: {
+      'Accept': 'application/json'
+    }
   })
 
   const data = await response.json()
-
-  // console.log('getAll - received: ', data)
   
   dropdown.textContent = '' // clears the dropdown
 
@@ -225,14 +242,20 @@ const loadClass = function ( ) {
 }
 
 window.onload = function() {
-  document.getElementById("submitAdd").onclick = submit;
-  document.getElementById("submitRemove").onclick = remove;
-  document.getElementById("submitModify").onclick = modify;
-  const removeDropdown = document.getElementById("classSelect")
-  const modifyDropdown = document.getElementById("classModifySelect")
-  addClassesTo(removeDropdown)
-  removeDropdown.onchange = showClass
-  addClassesTo(modifyDropdown)
-  modifyDropdown.onchange = loadClass
-  getAll();
+  var fileName = location.href.split("/").slice(-1); 
+  console.log("file is: " + fileName + " " + `${fileName.toString()==="login"}`)  
+  if (fileName.toString() === "" || fileName.toString() === "login") { // login screen
+    document.getElementById("submitLogin").onclick = login;
+  } else { // main page
+    document.getElementById("submitAdd").onclick = submit;
+    document.getElementById("submitRemove").onclick = remove;
+    document.getElementById("submitModify").onclick = modify;
+    const removeDropdown = document.getElementById("classSelect")
+    const modifyDropdown = document.getElementById("classModifySelect")
+    addClassesTo(removeDropdown)
+    removeDropdown.onchange = showClass
+    addClassesTo(modifyDropdown)
+    modifyDropdown.onchange = loadClass
+    getAll();
+  }
 }

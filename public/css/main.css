@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap");
+/* @import url("https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap"); */
+
 body {
   margin: 0;
   font-family: "Courier Prime", monospace;
@@ -81,10 +82,10 @@ td {
 }
 
 tr:nth-child(odd) {
-  background-color: #40567a;
+  background-color: #1b2d9f;
 }
 tr:nth-child(even) {
-  background-color: #4C8BF5;
+  background-color: #2f4dcb;
 }
 
 fieldset label {
@@ -92,14 +93,14 @@ fieldset label {
 }
 
 .warning {
-  color: red;
+  color: #9d3249;
 }
 
 .classDisplay h2 {
   font-size: larger;
 }
 
-.classDisplay h3 {
+.classDisplay .bigger {
   font-size: large;
 }
 

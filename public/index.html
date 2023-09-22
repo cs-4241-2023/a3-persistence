@@ -1,166 +1,35 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <title>CS4241 Assignment 2</title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/sanitize.css">
+    <link rel="stylesheet" type="text/css" href="./css/main.css">
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap" rel="stylesheet">    
-    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap">     -->
     <script src="js/display.js"></script>
-    
+    <script src="js/main.js"></script>
+
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-  </head>
-  <body>
+</head>
+<body>
 
     <header>
-      <h1>College Schedule Maker</h1>
+    <h1>Login</h1>
     </header>
 
     <main>
-      <div class="grid-row">
-        <div id="leftContent" class="column">
-          <div class="classForm" id="addClass">
-            <h3>Enter New Class</h3>
-            <form>
-              <div class="grid-container">
-                <div class="grid-item">
-                  <div class="left">
-                    <label for="className">Class Name</label>
-                    <input type="text" id="className" placeholder="ex: Webware" required="required">
-                    <p id="classNameWarning" class="warning"></p>
-                  </div>
-                  <div class="right">
-                    <label for="classCode">Class Code</label>
-                    <input type="text" id="classCode" placeholder="ex: CS4241">
-                    <p id="classCodeWarning" class="warning"></p>
-                  </div>
-                </div>
-                <div class="grid-item">
-                  <div class="left">
-                    <label for="startTime">Start Time</label>
-                    <input type="time" id="startTime" value="13:00" required="required">
-                    <p id="startTimeWarning" class="warning"></p>
-                  </div>
-                  <div class="right">
-                    <label for="startTime">End Time</label>
-                    <input type="time" id="endTime" value="14:00" required="required">
-                    <p id="endTimeWarning" class="warning"></p>
-                  </div>
-                </div>
-                <div class="grid-item">
-                  <fieldset>
-                    <legend>Days of the Week</legend>
-                    <label for="monday">Monday</label>
-                    <input type="checkbox" id="monday" value="M">
-                    <label for="tuesday">Tuesday</label>
-                    <input type="checkbox" id="tuesday" value="T">
-                    <label for="wednesday">Wednesday</label>
-                    <input type="checkbox" id="wednesday" value="W">
-                    <label for="thursday">Thursday</label>
-                    <input type="checkbox" id="thursday" value="Th">
-                    <label for="friday">Friday</label>
-                    <input type="checkbox" id="friday" value="F">
-                    <label for="saturday">Saturday</label>
-                    <input type="checkbox" id="saturday" value="Sa">
-                    <label for="sunday">Sunday</label>
-                    <input type="checkbox" id="sunday" value="Su">
-                  </fieldset>
-                  <p id="daysWarning" class="warning"></p>
-                </div>
-              </div>
-    
-              <button id="submitAdd">submit</button>
+        <div class="grid-row">
+            <form method="POST" action="/login">
+              <input type='text' id="usernameField" name='usernameField'>
+              <input type='password' id="passwordField" name='passwordField'>
+              <input type='submit' id="submitLogin">
             </form>
-          </div>
-        </div>
-        <div id="middleContent" class="column">
-          <div class="classForm" id="removeClass">
-            <h3>Remove A Class</h3>
-            <form>
-              <div class="grid-container">
-                <div class="grid-item">
-                  Choose Class to Remove
-                  <br>
-                  <select id="classSelect"></select>
-                </div>
-                <div class="grid-item">
-                  <fieldset  id="singleClassDisplay">
-                  </fieldset>
-                </div>
-              </div>
-              <button id="submitRemove">remove</button>
-            </form>
-          </div>
-        </div>
-        <div id="rightContent" class="column">
-          <div class="classForm" id="modifyClass">
-            <h3>Modify a Class</h3>
-            <form>
-              <div class="grid-container">
-                <div class="grid-item">
-                  Choose Class to Modify
-                  <br>
-                  <select id="classModifySelect"></select>
-                  <p id="classModifySelect2Warning" class="warning"></p>
-                </div>
-                <div class="grid-item selectHide">
-                  <div class="left">
-                    <label for="className2">Class Name</label>
-                    <input type="text" id="className2" placeholder="ex: Webware" required="required">
-                    <p id="className2Warning" class="warning"></p>
-                  </div>
-                  <div class="right">
-                    <label for="classCode2">Class Code</label>
-                    <input type="text" id="classCode2" placeholder="ex: CS4241">
-                    <p id="classCode2Warning" class="warning"></p>
-                  </div>
-                </div>
-                <div class="grid-item">
-                  <div class="left">
-                    <label for="startTime2">Start Time</label>
-                    <input type="time" id="startTime2" value="13:00" required="required">
-                    <p id="startTime2Warning" class="warning"></p>
-                  </div>
-                  <div class="right">
-                    <label for="startTime2">End Time</label>
-                    <input type="time" id="endTime2" value="14:00" required="required">
-                    <p id="endTime2Warning" class="warning"></p>
-                  </div>
-                </div>
-                <div class="grid-item">
-                  <fieldset>
-                    <legend>Days of the Week</legend>
-                    <label for="monday2">Monday</label>
-                    <input type="checkbox" id="monday2" value="M">
-                    <label for="tuesday2">Tuesday</label>
-                    <input type="checkbox" id="tuesday2" value="T">
-                    <label for="wednesday2">Wednesday</label>
-                    <input type="checkbox" id="wednesday2" value="W">
-                    <label for="thursday2">Thursday</label>
-                    <input type="checkbox" id="thursday2" value="Th">
-                    <label for="friday2">Friday</label>
-                    <input type="checkbox" id="friday2" value="F">
-                    <label for="saturday2">Saturday</label>
-                    <input type="checkbox" id="saturday2" value="Sa">
-                    <label for="sunday2">Sunday</label>
-                    <input type="checkbox" id="sunday2" value="Su">
-                  </fieldset>
-                  <p id="days2Warning" class="warning"></p>
-                </div>
-              </div>
-    
-              <button id="submitModify">modify</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="grid-row">
-        <h2>Current Schedule</h2>
-        <table id="dataView" class="column"></table>
-      </div>
+          </div>        
     </main>
 
-  </body>
+</body>
 </html>
+  
