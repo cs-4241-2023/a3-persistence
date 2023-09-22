@@ -106,6 +106,37 @@ app.get("/getTasks", (req, res) => {
   res.end(JSON.stringify(tasksData));
 });
 
+app.delete("/deleteTask", (req, res) => {
+  let dataString = "";
+  req.on("data", (data) => {
+    dataString += data;
+  });
+
+  req.on("end", () => {
+    console.log(JSON.parse(dataString));
+    const id = JSON.parse(dataString).id;
+    // console.log("delete id: ", id);
+
+    // filter out the task with the given id
+    tasksData = tasksData.filter((task) => task.id !== id);
+
+    // calculating derived fields
+    for (let i = 0; i < tasksData.length; i++) {
+      tasksData[i].timeRemaining = duration(
+        new Date(),
+        new Date(tasksData[i].taskDeadline)
+      );
+      tasksData[i].totalTime = duration(
+        new Date(tasksData[i].taskCreated),
+        new Date(tasksData[i].taskDeadline)
+      );
+    }
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(tasksData));
+  });
+});
+
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on http://localhost:3000`);
 });
