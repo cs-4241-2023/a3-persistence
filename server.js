@@ -203,6 +203,26 @@ app.post('/delItem/:id', (req, res) => {
   })
 })
 
+app.post('/updateItem/:id', (req, res) => {
+
+  console.log(req.body["name"+req.params.id])
+  console.log(req.body["type"+req.params.id])
+  console.log(req.body["age"+req.params.id])
+  const newCreature = {
+    name: req.body["name"+req.params.id],
+    type: req.body["type"+req.params.id],
+    age: req.body["age"+req.params.id],
+    owner: currUser,
+    picture: creaturePics[req.body["type"+req.params.id]],
+    altText: picAltText[req.body["type"+req.params.id]],
+    status: calcStatus(req.body["age"+req.params.id], req.body["type"+req.params.id])
+  }
+  Creature.findOneAndUpdate({_id: req.params.id}, newCreature).then(function (result, err){
+    console.log('updating entry...')
+    console.log(result)
+    res.redirect('/creatureMaker')
+  })
+})
 
 const calcStatus = (age, type) =>{
   if(age <= avgAges[type] / 2){
