@@ -1,0 +1,6 @@
+body {
+	height:100vh;
+	display: flex;
+	box-sizing: border-box;
+	margin: 0;
+}

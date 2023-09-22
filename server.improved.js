@@ -1,5 +1,6 @@
 const express = require('express'),
   { MongoClient, ObjectId } = require("mongodb"),
+  cookie  = require( 'cookie-session' ),
   app = express()
 
 require('dotenv').config()
@@ -9,20 +10,54 @@ let last_updated = Date.now()
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new MongoClient( uri )
 
-let collection = null
+let data_collection = null
+let user_collection = null
 
 async function run() {
   await client.connect()
-  collection = client.db("a3_persistence").collection("inventory")
+  data_collection = client.db("a3_persistence").collection("inventory")
+  user_collection = client.db("a3_persistence").collection("users")
 }
 run()
 
+app.use( (req,res,next) => {console.log(`${req.method} : ${req.url}`);next()} )
+app.use( express.json() )
+app.use( express.urlencoded({ extended:true }) )
+
+app.use( cookie({
+  name: 'session',
+  keys: ['secure_key1', 'secure_key2']
+}))
+
+app.post( '/login', async (req, res) => {
+  console.log( req.body )
+  const result = await user_collection.find(req.body).toArray()
+  console.log(result)
+
+  if(result.length > 0) {
+    req.session.login = true
+    req.session.user = req.body.username;
+    res.redirect( 'main.html' )
+  } else {
+    res.sendFile( __dirname + '/public/index.html' )
+  }
+})
+
+app.use( function( req,res,next) {
+  let contain_index = req.url.includes('index')
+  let contain_css = req.url.includes('css')
+  let contain_js = req.url.includes('js')
+  if( req.session.login !== true && !contain_index && !contain_css && !contain_js ) {
+    res.redirect( '/index.html' )
+  } else {
+    next()
+  }
+})
 
 app.use( express.static( 'public' ) )
-app.use( express.json() )
 
 app.use( (req,res,next) => {
-  if( collection !== null ) {
+  if( data_collection !== null ) {
     next()
   }else{
     res.status( 503 ).send()
@@ -34,14 +69,14 @@ app.get( '/last_updated', (req, res) => {
 })
 
 app.get( '/data', async (req, res) => {
-  const docs = await collection.find({}).toArray()
+  const docs = await data_collection.find({username: req.session.user}).toArray()
   res.json( docs )
 })
 
 app.post( '/add', async (req, res) => {
   const data = req.body
   data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
-  await collection.insertOne( data )
+  await data_collection.insertOne( data )
   data['_id'] = data['_id']
 
   console.log('ADD:', data)
@@ -52,7 +87,7 @@ app.post( '/add', async (req, res) => {
 
 app.post( '/delete', async (req, res) => {
   const data = req.body
-  const response = await collection.deleteOne( { _id: new ObjectId(data['_id']) } )
+  const response = await data_collection.deleteOne( { _id: new ObjectId(data['_id']) } )
 
   if(response.deletedCount == 1) {
     res.status( 200 ).send()
@@ -69,7 +104,7 @@ app.post( '/modify', async (req, res) => {
   data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
   data['_id'] = new ObjectId(data['_id'])
   
-  const response = await collection.replaceOne( { _id: data['_id'] }, data )
+  const response = await data_collection.replaceOne( { _id: data['_id'] }, data )
   
   if(response.modifiedCount == 1) {
     res.json( data )

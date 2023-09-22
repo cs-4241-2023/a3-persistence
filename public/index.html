@@ -7,18 +7,12 @@
     <meta name="description" content="Author: Nelson Diaz, Assignment: a3-persistence,
       Class: CS4241 Webware, Instructor: Charlie Roberts">
 
-    <script src="js/main.js"></script>
-    <script src="js/button_events.js" async></script>
-
     <!--PureCSS-->
-    <!--
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
-    -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/tables-min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/forms-nr-min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/buttons-min.css">
     <link rel="stylesheet" href="css/custom.css">
-
+    <link rel="stylesheet" href="css/index.css">
+  
     <!-- get rid of favicon error -->
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
@@ -33,40 +27,18 @@
   </head>
 
   <body>
-    <div id="formDiv">
-      <form id="inputForm" autocomplete="off" class="pure-form pure-form-aligned">
-        <fieldset>
-          <div class="pure-control-group">
-            <label for="itemInput">Item:</label>
-            <input type="text" id="itemInput" name="item" placeholder="e.g. Baseball" required>
-          </div>
-          
-          <div class="pure-control-group">
-            <label for="amountInput">Amount:</label>
-            <input type="number" id="amountInput" name="amount" min="0" max="999999999999" placeholder="25" required>
-          </div>
+    <form action='/login' method='POST' autocomplete="off" class="pure-form pure-form-aligned">
+      <div class="pure-control-group">
+        <label for="username">Username:</label>
+        <input id="username" name="username" type="text" required>
+      </div>
 
-          <div class="pure-control-group">
-            <label for="valueInput">Unit Value:</label>
-            <input type="number" id="valueInput" name="unit_value" min="0" max="999999999" step="0.01" placeholder="2.10" required>
-          </div>
+      <div class="pure-control-group">
+        <label for="password">Password:</label>
+        <input id="password" name="password" type="password" required>
+      </div>
 
-          <button type="submit" id="submitButton" class="button-submit pure-button">Add Item</button>
-        </fieldset>
-      </form>
-    </div>
-
-    <h1>Inventory</h1>
-    <table id="dataTable" class="pure-table pure-table-bordered pure-table-striped">
-      <thead>
-        <tr>
-          <th>Item</th>
-          <th>Amount</th>
-          <th>Unit Value</th>
-          <th>Total Value</th>
-          <th colspan="2">Edit Data</th>
-        </tr>
-      </thead>
-    </table>
+      <button type="submit" class="button-submit pure-button">Sign-in</button>
+    </form>
   </body>
 </html>
