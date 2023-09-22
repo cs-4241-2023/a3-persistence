@@ -100,7 +100,9 @@
       <table id="myTable" class="vehicle-table">
         <caption
           style="border-radius: 20px; border: 1px solid black; margin-top: 20px; margin-bottom: 20px; padding: 5px;">
-          Vehicle Appointments
+          <% if (user) { %>
+            <%= user %>
+              <% } %> Vehicle Appointments
         </caption>
         <tr>
           <th>Year</th>

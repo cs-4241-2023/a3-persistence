@@ -30,8 +30,14 @@ router.get('/', (req, res) => {
 });
 
 router.get("/home", (req, res) => {
-    res.render("index.ejs");
+    const userValue = req.session.username + "'s";
+    res.render("index.ejs", { user: userValue });
 })
+
+router.post("/logout", (req, res) => {
+    req.session.destroy()
+    res.redirect("/");
+});
 
 router.get('/req-server-data', async (request, response) => {
     console.log("User session:")
@@ -116,10 +122,5 @@ function addNewDataField(json_data) {
         return 0;
     }
 }
-
-router.post("/logout", (req, res) => {
-    req.session.destroy()
-    res.redirect("/");
-});
 
 module.exports = router;

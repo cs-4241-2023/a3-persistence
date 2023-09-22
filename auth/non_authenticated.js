@@ -68,90 +68,93 @@ router.get("/", (req, res) => {
 
 router.get("/home", (req, res) => {
     if (req.session.login === true) {
-        res.render("index.ejs");
+        const userValue = req.session.username + "'s";
+        res.render("index.ejs", { user: userValue });
     } else {
         res.redirect("/login")
     }
 })
 
-router.get("/login", (req, res) => {
-    if (req.session.login === undefined || req.session.login === false) {
-        res.render("login.ejs", { error: "" });
-    } else {
-        res.redirect("/home")
-    }
-});
-
-router.post("/login", async (req, res) => {
-    const userEmail = req.body.email;
-
-    const findUser = await usersDB.collection('data').findOne({ email: userEmail });
-
-    console.log("User found");
-    console.log(findUser);
-
-    if (findUser !== null) {
-        // grab user hash pass and match it with req.body.pass
-        const inputtedPass = req.body.password;
-
-        console.log("Inputted pass");
-        console.log(inputtedPass);
-
-        const passOnDb = findUser['password'];
-
-        console.log("pass on db");
-        console.log(passOnDb);
-
-        bcrypt.compare(inputtedPass, passOnDb, (err, result) => {
-            if (err) {
-                throw err;
-            }
-            if (result) {
-                req.session.login = true;
-                req.session.user = findUser['email'].toLowerCase();
-                res.redirect("/home");
-            } else {
-                res.render("login.ejs", {
-                    error: "Incorrect username or password",
-                });
-                console.log("Incorrect username or password");
-            }
-        });
-
-    } else {
-        res.render("login.ejs", { error: "Incorrect username or password" });
-    }
-
-});
-
-router.get("/register", (_, res) => {
-    res.render("register.ejs", { error: "" });
-});
-
-router.post("/register", async (req, res) => {
-
-    const saltRounds = 10;
-    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
-
-    const formUser = new UserModel({
-        username: req.body.username,
-        email: req.body.email,
-        password: hashedPassword,
+router.route("/login")
+    .get((req, res) => {
+        if (req.session.login === undefined || req.session.login === false) {
+            res.render("login.ejs", { error: "" });
+        } else {
+            res.redirect("/home")
+        }
     })
+    .post(async (req, res) => {
+        const userEmail = req.body.email;
 
-    // Only add user if a they don't exist
-    const findUser = await usersDB.collection('data').findOne({ email: req.body.email });
+        const findUser = await usersDB.collection('data').findOne({ email: userEmail });
 
-    if (findUser !== null) {
-        res.render("register.ejs", { error: "Account with email entered is already registered! Please use a different email address." });
-    } else {
-        console.log("Registering the following user");
+        console.log("User found");
+        console.log(findUser);
 
-        usersDB.collection("data").insertOne(formUser);
-        req.session.user = formUser['email'].toLowerCase();
-        console.log("User has been added")
-        res.redirect("/login");
-    }
-})
+        if (findUser !== null) {
+            // grab user hash pass and match it with req.body.pass
+            const inputtedPass = req.body.password;
+
+            console.log("Inputted pass");
+            console.log(inputtedPass);
+
+            const passOnDb = findUser['password'];
+
+            console.log("pass on db");
+            console.log(passOnDb);
+
+            bcrypt.compare(inputtedPass, passOnDb, (err, result) => {
+                if (err) {
+                    throw err;
+                }
+                if (result) {
+                    req.session.login = true;
+                    req.session.user = findUser['email'].toLowerCase();
+                    req.session.username = findUser['username'].toUpperCase();
+                    res.redirect("/home");
+                } else {
+                    res.render("login.ejs", {
+                        error: "Incorrect username or password",
+                    });
+                    console.log("Incorrect username or password");
+                }
+            });
+
+        } else {
+            res.render("login.ejs", { error: "Incorrect username or password" });
+        }
+
+    });
+
+router.route("/register")
+    .get((_, res) => {
+        res.render("register.ejs", { error: "" });
+    })
+    .post(async (req, res) => {
+
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+        const formUser = new UserModel({
+            username: req.body.username,
+            email: req.body.email,
+            password: hashedPassword,
+        })
+
+        // Only add user if a they don't exist
+        const findUser = await usersDB.collection('data').findOne({ email: req.body.email });
+
+        if (findUser !== null) {
+            res.render("register.ejs", { error: "Account with email entered is already registered! Please use a different email address." });
+        } else {
+            console.log("Registering the following user");
+
+            usersDB.collection("data").insertOne(formUser);
+            req.session.user = formUser['email'].toLowerCase();
+            req.session.username = formUser['username'].toUpperCase();
+            console.log("User has been added")
+            res.redirect("/login");
+        }
+    })
 
 module.exports = router;
