@@ -30,7 +30,7 @@ app.use( cookie({
 }))
 
 app.post( '/login', async (req, res) => {
-  console.log( req.body )
+  console.log('Login Attempt:', req.body)
   const result = await user_collection.find(req.body).toArray()
   console.log(result)
 
@@ -76,6 +76,7 @@ app.get( '/data', async (req, res) => {
 app.post( '/add', async (req, res) => {
   const data = req.body
   data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
+  data['username'] = req.session.user
   await data_collection.insertOne( data )
   data['_id'] = data['_id']
 
@@ -102,6 +103,7 @@ app.post( '/delete', async (req, res) => {
 app.post( '/modify', async (req, res) => {
   const data = req.body
   data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
+  data['username'] = req.session.user
   data['_id'] = new ObjectId(data['_id'])
   
   const response = await data_collection.replaceOne( { _id: data['_id'] }, data )

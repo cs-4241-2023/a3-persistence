@@ -38,7 +38,7 @@ const addData = async function(event) {
     headers: { 'Content-Type': 'application/json' },
     body 
   })
-  last_updated = Date.now()
+  last_updated = (await (await fetch( '/last_updated' )).json())['last_updated']
 
   const responseJson = await response.json()
 
@@ -65,7 +65,7 @@ const deleteData = async function(event) {
     headers: { 'Content-Type': 'application/json' },
     body
   })
-  last_updated = Date.now()
+  last_updated = (await (await fetch( '/last_updated' )).json())['last_updated']
 
   if(response.ok) {
     tableRow.remove()
@@ -156,7 +156,7 @@ const saveData = async function(event) {
     headers: { 'Content-Type': 'application/json' },
     body 
   })
-  last_updated = Date.now()
+  last_updated = (await (await fetch( '/last_updated' )).json())['last_updated']
 
   const responseJson = await response.json()
 
