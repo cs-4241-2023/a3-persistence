@@ -33,8 +33,8 @@ app.get('/', (req, res) => { //Express cannot handle '/' using the middleware ab
 
 //Cookie middleware; the keys are used for encrypting the username and password submitted in login and user creation forms
 app.use(cookie({
-  name: 'session',
-  keys: ['username', 'password', 'newusername', 'newuserpasword']
+  name: 'session', //the name of the cookie to set
+  keys: ['key1', 'key2', 'key3', 'key4'] //The list of keys to use to sign & verify cookie values. Set cookies are always signed with keys[0], while the other keys are valid for verification, allowing for key rotation.
 }))
 
 //Server Data structure:
@@ -184,6 +184,14 @@ app.post('/userLogin', async (req, res) => { //
       return res.status(500).render('index', {loginStatusMessage: `<strong>There was an internal server error that prevented successful login</strong>.`, layout: false}) //500 status indicates an internal server error
     }
   }
+})
+
+//Send unauthenticated users back to login page.
+app.use(function(req, res, next) {
+  if(req.session.login === true)
+    next()
+  else
+    res.redirect('index')
 })
 
 //Music data CRUD operations and helper functions

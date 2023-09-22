@@ -7,42 +7,42 @@
   </head>
   <body>
     <header>
-      <h1 class = "title is-1 has-text-success-dark has-text-weight-bold has-text-centered">Music Listening Builder</h1>
+      <h1 class = "title is-1 is-family-primary has-text-success-dark has-text-weight-bold has-text-centered">Music Listening Builder</h1>
     </header>
     <main>
       <section class = "section">
-        <h2 class = "subtitle is-2 has-text-warning-dark has-text-left">Login</h2>
+        <h2 class = "subtitle is-2 is-family-sans-serif has-text-warning-dark has-text-left">Login</h2>
         <form action = "/userLogin" method = "POST">
           <div class = "field">
-            <label class = "label is-medium">Username</label>
+            <label class = "label is-family-code is-medium">Username</label>
             <input class = "input is-info is-medium" type="text" name="username">
           </div>
           <div class = "field">
-            <label class = "label is-medium">Password</label>
-            <input class = "input is-info is-medium" type="text" name="password">
+            <label class = "label is-family-code is-medium">Password</label>
+            <input class = "input is-info is-medium" type="password" name="password">
           </div>
-          <button class = "button is-link is-size-5">Login</button>
+          <button class = "button is-family-monospace is-link is-medium">Login</button>
         </form>
-        <p class = "mt-3">
+        <div class = "mt-3">
           {{{loginStatusMessage}}}
-        </p>
+        </div>
       </section>
       <section class = "section">
-        <h2 class = "subtitle is-2 has-text-warning-dark has-text-left">Create New Account</h2>
+        <h2 class = "subtitle is-2 is-family-sans-serif has-text-warning-dark has-text-left">Create New Account</h2>
         <form action = "/createNewUser" method = "POST">
           <div class = "field">
-            <label class = "label is-medium">Username</label>
+            <label class = "label is-family-code is-medium">Username</label>
             <input class = "input is-info is-medium" type="text" name="newusername">
           </div>
           <div class = "field">
-            <label class = "label is-medium">Password</label>
-            <input class = "input is-info is-medium" type="text" name="newuserpassword">
+            <label class = "label is-family-code is-medium">Password</label>
+            <input class = "input is-info is-medium" type="password" name="newuserpassword">
           </div>
-          <button class = "button is-link is-size-5">Create Account</button>
+          <button class = "button is-family-monospace is-link is-medium">Create Account</button>
         </form>
-        <p class = "mt-3">
+        <div class = "mt-3">
           {{{accountCreationMessage}}}
-        </p>
+        </div>
       </section>
     </main>
       <footer class = "footer">

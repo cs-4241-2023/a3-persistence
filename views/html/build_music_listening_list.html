@@ -5,65 +5,91 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"></link>
   </head>
-  <body>
-    <nav>
-      <a href = "/">Logout</a>
-      <a href = "build_music_listening_list.html">Build Music Listening List</a>
+  <body class = "has-navbar-fixed-top">
+    <nav class = "navbar is-fixed-top has-background-white" role = "navigation" aria-label = "main navigation">
+      <a class = "navbar-item" href = "/">Logout</a>
+      <a class = "navbar-item" href = "build_music_listening_list.html">Build Music Listening List</a>
     </nav>
     <header>
-      <h1>Build Music Listening List</h1>
+      <h1 class = "title is-2 is-family-primary has-text-success-dark has-text-weight-bold has-text-centered">Build Music Listening List</h1>
     </header>
-    <main>
-      <section>
-        <h2>View Music Listening List</h2>
-        <button id = "getMusic">Get Music Listening List</button>
-        <div id = "musicList"></div>
-      </section>
-      <section>
-        <h2>Submit New Music</h2>
-          <form>
-            <label for="bandname">Band Name:</label>
-            <input type="text" id="bandname">
-            <label for="albumname">Album Name:</label>
-            <input type="text" id="albumname">
-            <label for="releaseyear">Release Year:</label>
-            <input type ="number" id="releaseyear">
-            <button id = "submitMusic">Submit Music</button>
-          </form>
-          <div id = "submissionInfo"></div>
-      </section>
-      <section>
-        <h2>Delete Existing Music</h2>
-          <form>
-            <label for="deletebandname">Band Name:</label>
-            <input type="text" id="deletebandname">
-            <label for="deletealbumname">Album Name:</label>
-            <input type="text" id="deletealbumname">
-            <label for="deletereleaseyear">Release Year:</label>
-            <input type ="number" id="deletereleaseyear">
-            <button id = "submitMusicForDeletion">Delete Music</button>
-          </form>
-          <div id = "submissionForDeletionInfo"></div>
-      </section>
-      <section>
-        <h2>Modify Existing Music</h2>
-        <p>To modify existing music using the form below, enter a Music Listening List ID shown on the left corresponding to the list item you would like to modify. Then, also enter a band name, album name, and release year for that list item in the form below. You can choose to update any number of those three fields with new data. Be sure to enter data for all three fields. After submitting the form below, click the Get Music Listening List button to refresh and view the new list of music data. This new list will include the modification for the list item with the ID you specified in the form below.</p>
-        <form>
-          <label for="enterlistID">ID:</label>
-          <input type="number" id="enterlistID">
-          <label for="modifybandname">Band Name:</label>
-          <input type="text" id="modifybandname">
-          <label for="modifyalbumname">Album Name:</label>
-          <input type="text" id="modifyalbumname">
-          <label for="modifyreleaseyear">Release Year:</label>
-          <input type ="number" id="modifyreleaseyear">
-          <button id = "submitMusicForModification">Modify Music</button>
-        </form>
-        <div id = "submissionForModifyInfo"></div>
-      </section>
+    <main class = "mt-2">
+      <div class = "columns">
+        <div class = "column is-half">
+          <div class = "block ml-2">
+            <h2 class = "subtitle is-3 is-family-sans-serif has-text-warning-dark">Submit New Music</h2>
+              <form>
+                <div class = "field">
+                  <label class = "label is-family-code is-small" for="bandname">Band Name:</label>
+                  <input class = "input is-info is-small" type="text" id="bandname">
+                </div>
+                <div class = "field">
+                  <label class = "label is-family-code is-small" for="albumname">Album Name:</label>
+                  <input class = "input is-info is-small" type="text" id="albumname">
+                </div>
+                <div class = "field">
+                  <label class = "label is-family-code is-small" for="releaseyear">Release Year:</label>
+                  <input class = "input is-info is-small" type ="number" id="releaseyear">
+                </div>
+                <button class = "button is-family-monospace is-link is-small" id = "submitMusic">Submit Music</button>
+              </form>
+              <div class = "mt-3 mb-3" id = "submissionInfo"></div>
+          </div>
+          <div class = "block ml-2">
+            <h2 class = "subtitle is-3 is-family-sans-serif has-text-warning-dark">Delete Existing Music</h2>
+              <form>
+                <div class = "field">
+                  <label class = "label is-family-code is-small" for="deletebandname">Band Name:</label>
+                  <input class = "input is-info is-small" type="text" id="deletebandname">
+                </div>
+                <div class = "field">
+                  <label class = "label is-family-code is-small" for="deletealbumname">Album Name:</label>
+                  <input class = "input is-info is-small" type="text" id="deletealbumname">
+                </div>
+                <div class = "field">
+                  <label class = "label is-family-code is-small" for="deletereleaseyear">Release Year:</label>
+                  <input class = "input is-info is-small" type ="number" id="deletereleaseyear">
+                </div>
+                <button class = "button is-family-monospace is-link is-small" id = "submitMusicForDeletion">Delete Music</button>
+              </form>
+              <div class = "mt-3 mb-3" id = "submissionForDeletionInfo"></div>
+          </div>
+          <div class = "block ml-2">
+            <h2 class = "subtitle is-3 is-family-sans-serif has-text-warning-dark">Modify Existing Music</h2>
+            <p class = "is-family-sans-serif mb-2">To modify existing music using the form below, enter a Music Listening List ID shown on the left corresponding to the list item you would like to modify. Then, also enter a band name, album name, and release year for that list item in the form below. You can choose to update any number of those three fields with new data. Be sure to enter data for all three fields. After submitting the form below, click the Get Music Listening List button to refresh and view the new list of music data. This new list will include the modification for the list item with the ID you specified in the form below.</p>
+            <form>
+              <div class = "field">
+                <label class = "label is-family-code is-small" for="enterlistID">ID:</label>
+                <input class = "input is-info is-small" type="number" id="enterlistID">
+              </div>
+              <div class = "field">
+                <label class = "label is-family-code is-small" for="modifybandname">Band Name:</label>
+                <input class = "input is-info is-small" type="text" id="modifybandname">
+              </div>
+              <div class = "field">
+                <label class = "label is-family-code is-small" for="modifyalbumname">Album Name:</label>
+                <input class = "input is-info is-small" type="text" id="modifyalbumname">
+              </div>
+              <div class = "field">
+                <label class = "label is-family-code is-small" for="modifyreleaseyear">Release Year:</label>
+                <input class = "input is-info is-small" type ="number" id="modifyreleaseyear">
+              </div>
+              <button class = "button is-family-monospace is-link is-small" id = "submitMusicForModification">Modify Music</button>
+            </form>
+            <div class = "mt-3 mb-3" id = "submissionForModifyInfo"></div>
+          </div>
+        </div>
+        <div class = "column is-half">
+          <h2 class = "subtitle is-3 is-family-sans-serif has-text-warning-dark ml-2 mr-2">View Music Listening List</h2>
+          <button class = "button is-family-monospace is-link is-medium ml-2 mr-2" id = "getMusic">Get Music Listening List</button>
+          <div class = "ml-2 mr-2 mt-3" id = "musicList"></div>
+        </div>
+      </div>
     </main>
-    <footer>
-      Music Listening Builder created by Matthew McAlarney
+    <footer class = "footer">
+      <div class = "content has-text-centered">
+        Music Listening Builder created by Matthew McAlarney
+      </div>
     </footer>
     <script src = "/show_music_listening_list.js"></script>
     <script src = "/new_music_submission.js"></script>
