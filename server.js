@@ -125,7 +125,12 @@ app.post("/account-lookup", async (request, response) => {
 })
 
 app.get("/assignment-data", async (request, response) => {
-    let assignmentData = await assignmentCollection.find({}).toArray(); // TODO: This should probably be looked up by account
+    // get assignments associated with current account
+    let assignmentData = await assignmentCollection.find({
+        accountID: request.session.accountID
+    }).toArray();
+
+    // send data as response
     response.writeHead(200, "OK", {'Content-Type': 'text/json'});
     response.end(JSON.stringify(assignmentData));
 });
