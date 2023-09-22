@@ -59,6 +59,10 @@ const updateList = async function() {
     const selectButton = document.createElement('input')
     selectButton.setAttribute('type', 'checkbox')
     selectButton.setAttribute('id', row.id)
+    const selectLabel = document.createElement('label')
+    selectLabel.setAttribute('for', row.id)
+    selectLabel.innerHTML = '⠀' // blank character to get 100% accessibility
+    selectCell.appendChild(selectLabel)
     selectCell.appendChild(selectButton)
     const taskCell = newRow.insertCell(1)
     taskCell.innerHTML = row.task
