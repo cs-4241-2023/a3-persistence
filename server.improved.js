@@ -7,25 +7,58 @@ const express = require('express'),
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`;
 const client = new MongoClient( uri )
 
-let collection = null
+let task_collection = null;
+let account_collection = null;
 
 async function run() {
-  await client.connect()
-  collection = await client.db("todo_db").collection("tasks")
+  await client.connect();
+  task_collection = await client.db("todo_db").collection("tasks");
+  account_collection = await client.db("todo_db").collection("accounts");
 }
 
 app.use(express.static('public'));
 
 app.use( (req,res,next) => {
-  if( collection !== null ) {
+  if(task_collection !== null && account_collection !== null) {
     next()
   }else{
     res.status( 503 ).send()
   }
-})
+});
+
+app.post('/login', (req, res) => {
+  let dataString = "";
+
+  req.on('data', function(data) {
+    dataString += data;
+  });
+
+  req.on('end', async function() {
+    let info = JSON.parse(dataString);
+
+    const account = await account_collection.find({ username: info.username, password: info.password }).toArray();
+
+    if (account.length !== 1) {
+      const accountExists = await account_collection.find({ username: info.username }).toArray();
+      if (accountExists.length !== 0) {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end("Username already exists")
+      }
+      else {
+        const result = await account_collection.insertOne(info);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ username: info.username }));
+      }
+    }
+    else {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ username: info.username }));
+    }
+  });
+});
 
 app.get('/getTasks', async (req, res) => {
-  const tasks = await collection.find({}).toArray();
+  const tasks = await task_collection.find({}).toArray();
 
   res.writeHead(200, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify(tasks));
@@ -53,7 +86,7 @@ app.post('/submitTasks', (req, res) => {
       info.daysRemaining = "Overdue";
     }
 
-    const result = await collection.insertOne(info);
+    const result = await task_collection.insertOne(info);
     console.log(info);
 
     res.writeHead(200, "OK", {'Content-Type': 'text/plain' });
@@ -71,7 +104,7 @@ app.post('/deleteTask', (req, res) => {
 
   req.on('end', async function() {
     let info = JSON.parse(dataString);
-    const result = await collection.deleteOne({
+    const result = await task_collection.deleteOne({
       _id: new ObjectId(info._id)
     });
 
@@ -102,7 +135,7 @@ app.post('/updateTask', (req, res) => {
       info.daysRemaining = "Overdue";
     }
 
-    const result = await collection.updateOne(
+    const result = await task_collection.updateOne(
       { _id: new ObjectId(info._id) },
       { $set: { taskName: info.taskName, dueDate: info.dueDate, priority: info.priority, daysRemaining: info.daysRemaining }}
     );

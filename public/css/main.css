@@ -127,6 +127,10 @@ li button {
   cursor: pointer;
 }
 
+#errorMessage {
+  color: #FF6961;
+}
+
 hr {
   background-color: lightgrey;
 }
