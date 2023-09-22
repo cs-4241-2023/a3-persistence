@@ -3,9 +3,10 @@
   <head>
     <title>CS4241 Assignment 3</title>
     <meta charset="utf-8">
+    <meta name="description" content="Main Page for Creature Creator">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="https://cdn.discordapp.com/attachments/1149381126847201290/1149381185739432047/poryittobig.jpg" type="image/x-icon"> 
+    <link rel="icon" href="https://cdn.discordapp.com/attachments/1149381126847201290/1149381185739432047/poryittobig.jpg" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/turretcss/dist/turretcss.min.css" crossorigin="anonymous">
     <script>
       function editEvent(event){
@@ -30,17 +31,17 @@
       }
     </script>
   </head>
-  <body>
+  <body class="margin-l">
     <div>
       <h1 id="formTitle">Create a Creature!!</h1>
       <form id="creature" method="post" action="/creatureMaker">
-        <div class="oddFormRow">
-          <label>Name your creature</label>
-          <input type="text" aria-label="creature name" alt="enter creature name" name="name" maxlength="30" required>
+        <div class="padding-vertical-s">
+          <label class="font-size-m" >Name your creature</label>
+          <input class="max-width-xs" type="text" aria-label="creature name" alt="enter creature name" name="name" maxlength="30" required>
         </div>
-        <div class="evenFormRow">
-          <label>Creature type</label>
-          <select name="type">
+        <div class="padding-vertical-s">
+          <label class="font-size-m" >Creature type</label>
+          <select class="max-width-xs" name="type">
             <option value="Chameleon">Chameleon</option>
             <option value="Gecko">Gecko</option>
             <option value="Frog">Frog</option>
@@ -51,15 +52,15 @@
             <option value="Capybara">Capybara</option>
           </select>
         </div>
-        <div class="oddFormRow">
-          <label>Creature age</label>
-          <input type="number" aria-label="creature age" alt="enter creature age" name="age" min="0" required>
+        <div class="padding-vertical-s">
+          <label class="font-size-m" >Creature age</label>
+          <input class="max-width-xs" type="number" aria-label="creature age" alt="enter creature age" name="age" min="0" required>
         </div>
         <button id="submitButton" alt="submit your creature">Create</button>
       </form>
     </div>
-    <div id="resultsDiv">
-      <h1 id="resultsTitle">Your Creatures</h1>
+    <div id="resultsDiv" >
+      <h1 id="resultsTitle" class="padding-top-m" >Your Creatures</h1>
       {{{allCreatures}}}
       <ul class="creature_list">
         {{#each e}}
@@ -67,9 +68,8 @@
             <span>{{this.name}} the {{this.type}} is age {{this.age}}</span>
             <span>your creature is {{this.status}}!!</span>
             <img src={{this.picture}} alt={{this.altText}} width=100px height=100px>
-            <button onclick='editEvent({{json this}})' id={{_id}} name="edit" >Edit</button>
-            
-            <form id="deleteItem" method="POST" action="/delItem/{{_id}}">
+            <button onclick='editEvent({{json this}})' id="edit{{_id}}" name="edit" >Edit</button>
+            <form class="display-inline-block" id="deleteItem" method="POST" action="/delItem/{{_id}}">
               <button id={{_id}} name="delete" >X</button>
             </form>
           </li>

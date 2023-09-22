@@ -3,17 +3,18 @@
   <head>
     <title>Create Account</title>
     <meta charset="utf-8">
+    <meta name="description" content="Account Creator for Creature Creator">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <script src="js/createAccount.js"></script>
-    <link rel="icon" href="https://cdn.discordapp.com/attachments/1149381126847201290/1149381185739432047/poryittobig.jpg" type="image/x-icon"> 
+    <link rel="icon" href="https://cdn.discordapp.com/attachments/1149381126847201290/1149381185739432047/poryittobig.jpg" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/turretcss/dist/turretcss.min.css" crossorigin="anonymous">
   </head>
-  <body>
+  <body class="margin-l">
     <h1>Create Your Account</h1>
     <form method="post" action="/saveAcc">
-      <input type="text" aria-label="username" alt="username" name="user" maxlength="30" required>
-      <input type="text" aria-label="password" alt="password" name="pass" maxlength="30" required>
+      <input class="max-width-xs" type="text" aria-label="username" alt="username" name="user" maxlength="30" required>
+      <input class="max-width-xs" type="text" aria-label="password" alt="password" name="pass" maxlength="30" required>
       
       <button id="createAccount">Create Account</button>
     </form>
