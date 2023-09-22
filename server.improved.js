@@ -53,6 +53,7 @@ const middleware_post = (req, res, next) => {
   });
 
   req.on("end", () => {
+    console.log(JSON.parse(dataString));
     newTask = JSON.parse(dataString);
     newTask.id = currentId;
     currentId++;
@@ -79,19 +80,31 @@ const middleware_post = (req, res, next) => {
   });
 };
 
-app.use(middleware_post);
-app.post("/submit", (req, res) => {
+app.use(logger);
+app.use(express.static("public"));
+app.use(express.json());
+// app.use(middleware_post);
+app.post("/submit", middleware_post, (req, res) => {
   // our request object now has a 'json' field in it from our previous middleware
   res.writeHead(200, { "Content-Type": "application/json" });
   res.end(req.json);
 });
 
-app.use(logger);
-app.use(express.static("public"));
-
-app.get("/", (req, res) => res.send("Hello World!"));
-
-// app.use(express.static("public"));
+app.get("/getTasks", (req, res) => {
+  // calculating derived fields
+  for (let i = 0; i < tasksData.length; i++) {
+    tasksData[i].timeRemaining = duration(
+      new Date(),
+      new Date(tasksData[i].taskDeadline)
+    );
+    tasksData[i].totalTime = duration(
+      new Date(tasksData[i].taskCreated),
+      new Date(tasksData[i].taskDeadline)
+    );
+  }
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(JSON.stringify(tasksData));
+});
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on http://localhost:3000`);
