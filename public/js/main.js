@@ -1,4 +1,18 @@
+function formatDate(fullDate) {
+  return fullDate.split("T")[0];
+}
+
 const populateTable = async () => {
+  fetch('/getName')
+    .then(response => response.text())
+    .then(username => {
+      console.log(username);  // Should print: "This is the string I want to send."
+      document.getElementById("Welcome-Header").innerText = "Welcome " + username + "!";
+    })
+    .catch(error => {
+      console.error('There was an error fetching the string:', error);
+    });
+
   const tableBody = document.querySelector("#data-table tbody");
 
   tableBody.innerHTML = "";
@@ -6,6 +20,7 @@ const populateTable = async () => {
   try {
     const response = await fetch("/getData");
     const data = await response.json();
+
 
     data.forEach((item, index) => {
       const row = document.createElement("tr");
@@ -23,8 +38,7 @@ const populateTable = async () => {
 
       const dueDateInput = document.createElement("input");
       dueDateInput.type = "date";
-      dueDateInput.value = item.dueDate;
-      console.log("wowowo", item.dueDate);
+      dueDateInput.value = formatDate(item.dueDate);
       const dueDateCell = document.createElement("td");
       dueDateCell.appendChild(dueDateInput);
 
@@ -49,7 +63,7 @@ const populateTable = async () => {
       modifyButton.textContent = "Modify";
       modifyButton.addEventListener("click", () =>
         modifyData(
-          index,
+          item._id,
           taskInput,
           hoursInput,
           dueDateInput,
@@ -86,8 +100,8 @@ const modifyData = async (
     task: taskInput.value,
     hours: hoursInput.value,
     dueDate: dueDateInput.value,
-    timeLeft: timeLeftInput.value, 
-    priority: priorityInput.value, 
+    timeLeft: timeLeftInput.value,
+    priority: priorityInput.value,
   };
 
   try {
@@ -101,24 +115,27 @@ const modifyData = async (
 
     const result = await response.text();
     console.log("Server response:", result);
+    populateTable();
   } catch (error) {
     console.error("Error modifying data:", error);
   }
 };
 
 const deleteData = async (task) => {
-  const body = JSON.stringify({ task });
-
   try {
-    const response = await fetch("/submit", {
-      method: "DELETE",
-      body,
+    const response = await fetch('/data', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ task }),
     });
 
     if (response.ok) {
+      console.log(await response.text());
       await populateTable();
     } else {
-      console.error("Error deleting data:", response.statusText);
+      console.error("Error deleting data:", await response.text());
     }
   } catch (err) {
     console.error("Error:", err);
@@ -143,10 +160,13 @@ const submit = async function (event) {
   try {
     const response = await fetch("/submit", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body,
     });
 
-    const text = await response.text(); 
+    const text = await response.text();
 
     if (!response.ok) {
       window.alert(`Error: ${text}`);
@@ -160,9 +180,39 @@ const submit = async function (event) {
   }
 };
 
-window.onload = function () {
-  const button = document.querySelector("button");
-  button.onclick = submit;
+const signOut = async function (event) {
+  fetch('/logout', {
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = '/login.html';  // Redirect to login page or wherever you'd like after logging out
+      } else {
+        console.error('Failed to log out');
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
 
-  populateTable();
+
+window.onload = function () {
+  const button = document.getElementById("submitButton");
+  if (button != null) {
+    button.onclick = submit;
+  }
+  const secondButton = document.getElementById("signOutButton");
+  console.log("try");
+  if (secondButton != null) {
+    console.log("Adding");
+    secondButton.addEventListener('click', signOut);
+  }
+
+
+  if (window.location.pathname === '/index.html') populateTable();
 };

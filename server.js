@@ -1,162 +1,263 @@
-const http = require("http"),
-  fs = require("fs"),
-  // IMPORTANT: you must run `npm install` in the directory for this assignment
-  // to install the mime library if you're testing this on your local machine.
-  // However, Glitch will install it automatically by looking in your package.json
-  // file.
-  mime = require("mime"),
-  dir = "public/",
-  port = 3000;
+require('dotenv').config();
+const mongoose = require('mongoose');
+const express = require('express');
+const fs = require('fs');
+const mime = require('mime');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const passport = require('passport');
+const GitHubStrategy = require('passport-github').Strategy;
+const app = express();
+const port = 3000;
 
-const appdata = [];
+const uri = "mongodb+srv://Jack_1224:Herbie121501@assignment3.bycjnqa.mongodb.net/";
 
-const server = http.createServer(function (request, response) {
-  if (request.method === "GET") {
-    handleGet(request, response);
-  } else if (request.method === "POST") {
-    if (request.url.startsWith("/modifyData/")) {
-      handleModify(request, response);
-    } else {
-      handlePost(request, response);
-    }
-  } else if (request.method === "DELETE") {
-    handleDelete(request, response);
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+
+const taskSchema = new mongoose.Schema({
+  task: String,
+  hours: Number,
+  dueDate: Date,
+  timeLeft: String,
+  priority: String,
+  userId: String
+});
+
+const Task = mongoose.model('Task', taskSchema);
+
+app.use(bodyParser.json());
+
+app.use(session({
+  secret: process.env.SESSION_SECRET, // This should be a secret and stored in an environment variable
+  resave: false,
+  saveUninitialized: false,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
+passport.use(new GitHubStrategy({
+  clientID: '46eed9c0b0d5d6d2692d',
+  clientSecret: 'ff3757c5d09b21eb079a2b2e6b3036cd2d8dbee6',
+  callbackURL: "http://localhost:3000/auth/github/callback"
+},
+  function (accessToken, refreshToken, profile, cb) {
+    // Here you could potentially store the profile data in your database.
+    return cb(null, profile);
+  }
+));
+
+app.use(function (req, res, next) {
+  if (req.user || req.path === '/login.html' || req.path === '/auth/github' || req.path === '/auth/github/callback') {
+    next();
+  }
+  else {
+    res.sendFile(__dirname + '/public/login.html');
   }
 });
 
-const handleModify = (request, response) => {
-  let dataString = "";
+app.use(express.static('public')); // Serve static files from the public directory
 
-  request.on("data", (data) => {
-    dataString += data;
+// Authentication routes
+app.get('/auth/github', passport.authenticate('github'));
+
+app.get('/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/' }),
+  function (req, res) {
+    // Successful authentication.
+    res.redirect('/index.html');
   });
 
-  request.on("end", () => {
-    const updatedData = JSON.parse(dataString);
-
-    const index = parseInt(request.url.split("/").pop());
-
-    if (appdata[index]) {
-      appdata[index] = updatedData;
-      response.writeHead(200, "OK", { "Content-Type": "text/plain" });
-      response.end("Data modified successfully");
-    } else {
-      response.writeHead(400, "Invalid index", {
-        "Content-Type": "text/plain",
-      });
-      response.end("Invalid index");
+// Logout route
+app.get('/logout', (req, res) => {
+  req.logout((err) => {
+    if (err) {
+      return res.status(500).send('Error during logout.');
     }
-  });
-};
-
-const handleGet = function (request, response) {
-  if (request.url === "/") {
-    sendFile(response, "public/index.html");
-  } else if (request.url === "/getData") {
-    response.writeHead(200, { "Content-Type": "application/json" });
-    response.end(JSON.stringify(appdata));
-  } else {
-    const filename = dir + request.url.slice(1);
-    sendFile(response, filename);
-  }
-};
-
-const handlePost = function (request, response) {
-  let dataString = "";
-
-  request.on("data", function (data) {
-    dataString += data;
-  });
-
-  request.on("end", function () {
-    const receivedData = JSON.parse(dataString);
-
-    const task = receivedData.task;
-    if (!task || task.trim() === "") {
-      response.writeHead(400, "Bad Request", { "Content-Type": "text/plain" });
-      response.end("A task description is required");
-      return;
-    }
-
-    const hours = parseFloat(receivedData.hours);
-    if (isNaN(hours) || hours <= 0) {
-      response.writeHead(400, { "Content-Type": "text/plain" });
-      response.end("Invalid hours. Please enter a number greater than 0.");
-      return;
-    }
-
-    const dueDate = new Date(receivedData.dueDate);
-    if (isNaN(dueDate)) {
-      response.writeHead(400, "Bad Request", { "Content-Type": "text/plain" });
-      response.end("Invalid Due Date provided.");
-      return;
-    }
-
-    const now = new Date();
-    const timeLeft = Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
-
-    let priority;
-    const timeRatio = (timeLeft * 24.0) / hours;
-    console.log(timeRatio);
-
-    if (timeRatio >= 3) {
-      priority = "low";
-    } else if (timeRatio >= 1.5) {
-      priority = "medium";
-    } else {
-      priority = "high";
-    }
-
-    appdata.push({
-      task: receivedData.task,
-      hours: parseFloat(receivedData.hours),
-      dueDate: receivedData.dueDate,
-      timeLeft: timeLeft > 0 ? `${timeLeft} days` : "Past due",
-      priority: priority,
+    req.session.destroy((err) => {
+      if (err) {
+        return res.status(500).send('Error destroying session.');
+      }
+      return res.redirect('/login.html');
     });
-
-    console.log(appdata);
-
-    response.writeHead(200, "OK", { "Content-Type": "text/plain" });
-    response.end("Data received and added to the dataset");
   });
-};
+});
 
-const handleDelete = function (request, response) {
-  let dataString = "";
+app.get('/getName', async (req, res) => {
+  try {
+    console.log(req.user.username);
+    res.send(req.user.username);
+  } catch (err) {
+    res.status(500).send('Error fetching data from database.');
+  }
+});
 
-  request.on("data", function (data) {
-    dataString += data;
+app.get('/getData', async (req, res) => {
+  console.log(req.user.id);
+  try {
+    const tasks = await Task.find({ userId: req.user.id });
+
+    res.json(tasks);
+  } catch (err) {
+    res.status(500).send('Error fetching data from database.');
+  }
+});
+
+app.post('/submit', async (req, res) => {
+
+  console.log(req.body);
+  const receivedData = req.body;
+  console.log(receivedData);
+
+  const task = receivedData.task;
+  if (!task || task.trim() === "") {
+    res.status(400).send("Bad Request : A task description is required");
+    return;
+  }
+
+  const hours = parseFloat(receivedData.hours);
+  if (isNaN(hours) || hours <= 0) {
+    res.status(400).send("Bad Request : Invalid hours. Please enter a number greater than 0.");
+    return;
+  }
+
+  const dueDate = new Date(receivedData.dueDate);
+  if (isNaN(dueDate)) {
+    res.status(400).send("Bad Request : Invalid Due Date provided.");
+    return;
+  }
+
+  const now = new Date();
+  const timeLeft = Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
+
+  let priority;
+  const timeRatio = (timeLeft * 24.0) / hours;
+
+  if (timeRatio >= 3) {
+    priority = "low";
+  } else if (timeRatio >= 1.5) {
+    priority = "medium";
+  } else {
+    priority = "high";
+  }
+
+  const newTask = new Task({
+    task: receivedData.task,
+    hours: parseFloat(receivedData.hours),
+    dueDate: receivedData.dueDate,
+    timeLeft: timeLeft > 0 ? `${timeLeft} days` : "Past due",
+    priority: priority,
+    userId: req.user.id
   });
 
-  request.on("end", function () {
-    const receivedData = JSON.parse(dataString);
+  console.log(newTask);
 
-    const index = appdata.findIndex((item) => item.task === receivedData.task);
+  try {
+    await newTask.save();
+    res.status(200).send("OK : Data received and added to the database");
+  } catch (err) {
+    res.status(500).send('Error saving to database.');
+  }
+});
 
-    if (index !== -1) {
-      appdata.splice(index, 1);
-      response.writeHead(200, "OK", { "Content-Type": "text/plain" });
-      response.end("Data deleted successfully");
+app.post('/modifyData/:id', async (req, res) => {
+  console.log(req.body);
+  const receivedData = req.body;
+
+  const task = receivedData.task;
+  if (!task || task.trim() === "") {
+    res.status(400).send("Bad Request : A task description is required");
+    return;
+  }
+
+  const hours = parseFloat(receivedData.hours);
+  if (isNaN(hours) || hours <= 0) {
+    res.status(400).send("Bad Request : Invalid hours. Please enter a number greater than 0.");
+    return;
+  }
+
+  const dueDate = new Date(receivedData.dueDate);
+  if (isNaN(dueDate)) {
+    res.status(400).send("Bad Request : Invalid Due Date provided.");
+    return;
+  }
+
+  const now = new Date();
+  const timeLeft = Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
+
+  let priority;
+  const timeRatio = (timeLeft * 24.0) / hours;
+
+  if (timeRatio >= 3) {
+    priority = "low";
+  } else if (timeRatio >= 1.5) {
+    priority = "medium";
+  } else {
+    priority = "high";
+  }
+
+  const updatedData = {
+    task: receivedData.task,
+    hours: parseFloat(receivedData.hours),
+    dueDate: receivedData.dueDate,
+    timeLeft: timeLeft > 0 ? `${timeLeft} days` : "Past due",
+    priority: priority,
+    userId: req.user.id
+  };
+  console.log(updatedData);
+
+  try {
+    await Task.findOneAndUpdate({ task: receivedData.task }, updatedData);
+    res.status(200).send("Data modified successfully");
+  } catch (err) {
+    res.status(400).send("Error updating data in database.");
+  }
+});
+
+app.delete('/data', async (req, res) => {
+  const taskToDelete = req.body.task;
+
+  try {
+    const result = await Task.findOneAndDelete({ task: taskToDelete });
+
+    if (result) {
+      res.status(200).send('Data deleted successfully');
     } else {
-      response.writeHead(400, "Bad Request", { "Content-Type": "text/plain" });
-      response.end("Data not found");
+      res.status(404).send('Data not found');
     }
-  });
-};
+  } catch (err) {
+    res.status(500).send('Error deleting data from database.');
+  }
+});
 
-const sendFile = function (response, filename) {
+
+
+// Catch-all for other routes - serves files or sends 404 if file doesn't exist
+app.get('*', (req, res) => {
+  const filename = __dirname + '/public' + req.url;
   const type = mime.getType(filename);
 
-  fs.readFile(filename, function (err, content) {
-    if (err === null) {
-      response.writeHeader(200, { "Content-Type": type });
-      response.end(content);
+  fs.readFile(filename, (err, content) => {
+    if (err) {
+      res.status(404).send('404 Error: File Not Found');
     } else {
-      response.writeHeader(404);
-      response.end("404 Error: File Not Found");
+      res.set('Content-Type', type);
+      res.send(content);
     }
   });
-};
+});
 
-server.listen(process.env.PORT || port);
+app.listen(process.env.PORT || port, () => {
+  console.log(`Server is running on http://localhost:${port}`);
+});
