@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <title>Login Page</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Description" content="CS4241 Assignment 3">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    </head>
+
+    <body>
+        <h1>Login</h1>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+
+</html>
+
+<script>
+    const loginForm = document.getElementById('login-form');
+
+    loginForm.addEventListener('submit', function (e) {
+        e.preventDefault()
+        // Get values from the form
+        const username = document.getElementById('username').value
+        const password = document.getElementById('password').value
+        login(username, password)
+    });
+
+    const login = async function(username, password) {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({username: username, password: password})
+        });
+        const data = await response.json();
+        if (data) {
+            data.success ? alert('Login successful!') : alert('Created new user!')
+            // set local storage
+            localStorage.setItem('loggedIn', true)
+            localStorage.setItem('user', username)
+            // Redirect to index.html
+            window.location.href = 'index.html';
+        }
+        else {
+            alert('Login failed. Please check your credentials.');
+        }
+    }
+</script>
