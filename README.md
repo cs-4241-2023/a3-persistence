@@ -1,5 +1,7 @@
 ## Music Listening Builder
 
+Matthew McAlarney
+
 Link to Glitch Project: https://a3-maccode7110.glitch.me/ 
 
 Music Listening Builder is an improved version of my a2 web application named Music Listening Tracker. Music Listening Builder allows a user to create an account, login, and perform CRUD operations on an individualized music listening list associated with their account. Through the CRUD operations, a user can submit new music to be added to their music listening list (creation), submit existing music to be deleted from their music listening list (deletion), and submit a modification for existing music in their music listening list (Update). Every user who creates an account on Music Listening Builder is assigned their own music listening list, which ensures that individuals only view the music that they add, delete, and modify. 
