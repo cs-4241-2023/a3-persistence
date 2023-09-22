@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/public/js/music'))
 app.use(express.static(__dirname + '/views/html')) //HTML files served last
 app.use(express.json()) //Body-parser middleware for all incoming requests that will only take action if data sent to the server is passed with a Content-Type header of application/json
 
-//Need to setup and ocnfigure the express app engine to use handlebars below:
+//Need to setup and configure the express app engine to use handlebars below:
 //use express.urlencoded({extended: true}) to get data sent by defaut form actions or GET requests
 app.use(express.urlencoded({extended: true}))
 app.engine('handlebars',
@@ -161,10 +161,10 @@ app.post('/createNewUser', async (req, res) => { //Can put use of bcrypt as a te
 app.post('/userLogin', async (req, res) => { //
   
   if(userInputHasMissingField(req.body.username, req.body.password)) {
-    return res.render('index', {loginStatusMessage: `<strong>The new account information you submitted cannot be saved</strong>: Missing information in at least one input field.`, layout: false})
+    return res.render('index', {loginStatusMessage: `<strong>The login information you submitted cannot be saved</strong>: Missing information in at least one input field.`, layout: false})
   }
   else if(userInputHasWhiteSpace(req.body.username, req.body.password)) {
-    return res.render('index', {loginStatusMessage:  `<strong>The new account information you submitted cannot be saved</strong>: Both the username and password cannot contain any whitespace.`, layout: false})
+    return res.render('index', {loginStatusMessage:  `<strong>The login information you submitted cannot be saved</strong>: Both the username and password cannot contain any whitespace.`, layout: false})
   } else {
     userData = await collection.find({usern: req.body.username}).toArray()
 
