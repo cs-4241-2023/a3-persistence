@@ -2,6 +2,8 @@ const express = require('express'),
   { MongoClient, ObjectId } = require("mongodb"),
   cookie  = require( 'cookie-session' ),
   app = express()
+  passport = require('passport'),
+  LocalStrategy = require('passport-local')
 
 require('dotenv').config()
 let last_updated = Date.now()
@@ -20,7 +22,24 @@ async function run() {
 }
 run()
 
-app.use( (req,res,next) => {console.log(`${req.method} : ${req.url}`);next()} )
+passport.serializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser(function(user, done) {
+  done(null, user);
+});
+
+passport.use(new LocalStrategy(async function verify(username, password, cb) {
+  const result = await user_collection.find({username, password}).toArray()
+
+  if(result.length > 0) {
+    return cb(null, result[0]);
+  } else {
+    return cb(null, false, { message: 'Incorrect username or password.' })
+  }
+}))
+
 app.use( express.json() )
 app.use( express.urlencoded({ extended:true }) )
 
@@ -29,25 +48,20 @@ app.use( cookie({
   keys: ['secure_key1', 'secure_key2']
 }))
 
-app.post( '/login', async (req, res) => {
-  console.log('Login Attempt:', req.body)
-  const result = await user_collection.find(req.body).toArray()
-  console.log(result)
-
-  if(result.length > 0) {
+app.post( '/login', passport.authenticate('local', { failureRedirect: '/index.html', failureMessage: true }),
+  function(req, res) {
     req.session.login = true
     req.session.user = req.body.username;
     res.redirect( 'main.html' )
-  } else {
-    res.sendFile( __dirname + '/public/index.html' )
   }
-})
+)
 
 app.use( function( req,res,next) {
   let contain_index = req.url.includes('index')
   let contain_css = req.url.includes('css')
   let contain_js = req.url.includes('js')
-  if( req.session.login !== true && !contain_index && !contain_css && !contain_js ) {
+  let contain_robot = req.url.includes('robots.txt') // avoids failing SEO tests in lighthouse
+  if( req.session.login !== true && !contain_index && !contain_css && !contain_js && !contain_robot ) {
     res.redirect( '/index.html' )
   } else {
     next()
