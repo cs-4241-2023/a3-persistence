@@ -3,7 +3,8 @@
     "node": "16.x"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "web": "node server.js"
   },
   "dependencies": {
     "cookie-session": "^2.0.0",
