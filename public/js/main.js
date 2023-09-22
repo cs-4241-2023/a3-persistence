@@ -135,3 +135,20 @@ window.onload = function() {
   button.onclick = submit;
   updateTable();
 }
+
+// For Login Page  DEV NOTE: Not sure if I have to indicate what html. I think it's implied.
+
+const login = async function( event ) {
+  const 
+        username = document.querySelector('#login').value,
+        password = document.querySelector('#password').value,
+        json = {username: username, password: password},
+      
+        body = JSON.stringify( json )
+
+  const response = await fetch( '/login', {
+    method:'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: body
+  });
+}
