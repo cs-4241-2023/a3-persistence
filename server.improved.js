@@ -1,10 +1,90 @@
 const express = require("express");
 const app = express();
 
+let currentId = 3;
+let tasksData = [
+  {
+    id: 0,
+    taskName: "Clean the garage",
+    taskDescription:
+      "Throw away old junk in the trash. Reorganize items to clear up more floor space.",
+    taskDeadline: "2023-09-22",
+    taskPriority: "Medium",
+    taskCreated: "2023-09-05",
+  },
+  {
+    id: 1,
+    taskName: "Wash the dishes",
+    taskDescription:
+      "Wash the dishes in the sink. Put them away in the cabinets.",
+    taskDeadline: "2023-09-10",
+    taskPriority: "High",
+    taskCreated: "2023-09-03",
+  },
+  {
+    id: 2,
+    taskName: "Do the laundry",
+    taskDescription:
+      "Wash the clothes in the washing machine. Dry them in the dryer. Fold them and put them away.",
+    taskDeadline: "2023-09-20",
+    taskPriority: "Low",
+    taskCreated: "2023-09-02",
+  },
+];
+
+// calculate the duration between two dates
+function duration(date1, date2) {
+  const diffTime = date2 - date1;
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  return diffDays;
+}
+
+// logging middleware
 const logger = (req, res, next) => {
   console.log("request url:", req.url);
   next();
 };
+
+// tasks posts middleware
+const middleware_post = (req, res, next) => {
+  let dataString = "";
+  req.on("data", (data) => {
+    dataString += data;
+  });
+
+  req.on("end", () => {
+    newTask = JSON.parse(dataString);
+    newTask.id = currentId;
+    currentId++;
+    tasksData.push(newTask);
+
+    // calculating derived fields
+    for (let i = 0; i < tasksData.length; i++) {
+      tasksData[i].timeRemaining = duration(
+        new Date(),
+        new Date(tasksData[i].taskDeadline)
+      );
+      tasksData[i].totalTime = duration(
+        new Date(tasksData[i].taskCreated),
+        new Date(tasksData[i].taskDeadline)
+      );
+    }
+    // add a 'json' field to our request object
+    // this field will be available in any additional
+    // routes or middleware.
+    req.json = JSON.stringify(tasksData);
+
+    // advance to next middleware or route
+    next();
+  });
+};
+
+app.use(middleware_post);
+app.post("/submit", (req, res) => {
+  // our request object now has a 'json' field in it from our previous middleware
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(req.json);
+});
 
 app.use(logger);
 app.use(express.static("public"));
@@ -176,12 +256,5 @@ app.listen(process.env.PORT || 3000, () => {
 //     }
 //   });
 // };
-
-// // calculate the duration between two dates
-// function duration(date1, date2) {
-//   const diffTime = date2 - date1;
-//   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-//   return diffDays;
-// }
 
 // server.listen(process.env.PORT || port);
