@@ -121,9 +121,18 @@ const submit = async function( event ) {
   console.log('text:', text);
 }
 
+const login = async function(event) {
+  event.preventDefault();
+
+  
+}
+
 window.onload = function() {
   const button = document.querySelector("#addTaskButton");
   button.onclick = submit;
+
+  const signInButton = document.querySelector("#signInButton");
+  signInButton.onclick = login;
 
   form = document.querySelector('.inputs');
   taskInput = document.querySelector('#taskName');
@@ -132,4 +141,22 @@ window.onload = function() {
 
   taskInput.addEventListener('input', checkValidity);
   dateInput.addEventListener('input', checkValidity);
+
+  const modal = document.querySelector('#modal');
+
+  const loginButton = document.querySelector("#loginButton");
+  loginButton.onclick = function() {
+    modal.style.display = "block";
+  };
+
+  const closeButton = document.querySelector('.close');
+  closeButton.onclick = function() {
+    modal.style.display = "none";
+  };
+
+  window.onclick = function(event) {
+    if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  };
 }
