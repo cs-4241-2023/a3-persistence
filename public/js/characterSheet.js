@@ -1,6 +1,5 @@
 const addCharacter = async function (event) {
 
-
     event.preventDefault()
 
     const nameInput = document.querySelector('#characterName');
@@ -30,7 +29,7 @@ const addCharacter = async function (event) {
 
         document.getElementById("characterErrorMessage").style.display = "none";
 
-        const json = { name: nameInput.value, start: startInput.value, end: endInput.value, era: "" }, body = JSON.stringify(json)
+        const json = { name: nameInput.value, start: parseInt(startInput.value), end: parseInt(endInput.value), era: "" }, body = JSON.stringify(json)
 
         const response = await fetch('/characterData', {
             method: 'POST',
@@ -51,7 +50,7 @@ function CreateCharacterTable(data) {
     characterTable.innerHTML = "";
     characterTable.append(CreateHeaderRow());
     for (let i = 0; i < data.length; i++) {
-        characterTable.append(CreateRow(data[i].name, data[i].start, data[i].end, data[i].era, i));
+        characterTable.append(CreateRow(data[i], i));
     }
 }
 
@@ -77,13 +76,13 @@ function CreateCell(cellInfo) {
     return cell;
 }
 
-function CreateRow(name, start, end, era, id) {
+function CreateRow(value, id) {
     let row = document.createElement("tr");
-    row.append(CreateCell(name));
-    row.append(CreateCell(start));
-    row.append(CreateCell(end));
-    row.append(CreateCell(era));
-    row.append(CreateDeleteAndModifyButton(name,id));
+    row.append(CreateCell(value.name));
+    row.append(CreateCell(value.start));
+    row.append(CreateCell(value.end));
+    row.append(CreateCell(value.era));
+    row.append(CreateDeleteAndModifyButton(value,id));
     return row;
 }
 
@@ -100,7 +99,7 @@ async function DeleteRow(name) {
     CreateCharacterTable(output);
 }
 
-async function ModifyRow(id) {
+async function ModifyRow(identifier, id) {
 
     const nameInput = document.querySelector('#characterName');
     const startInput = document.querySelector('#characterStart');
@@ -120,7 +119,7 @@ async function ModifyRow(id) {
         nameArray.push(cell.textContent.trim());
     }
 
-    const location = nameArray.indexOf(nameArray[id]);
+    const location = nameArray.indexOf(nameInput.value);
     if (nameArray.includes(nameInput.value) && location != id) {
         errorMsg.textContent = "Name must be unique"
         errorMsg.style.display = "block";
@@ -132,7 +131,7 @@ async function ModifyRow(id) {
 
       
 
-        const json = { name: nameInput.value, start: startInput.value, end: endInput.value, era: "" }, body = id + " " + JSON.stringify(json)
+        const json = { _id: identifier, name: nameInput.value, start: parseInt(startInput.value), end: parseInt(endInput.value), era: "" }, body = JSON.stringify(json)
 
         
 
@@ -159,14 +158,14 @@ function CreateDeleteAndModifyButton(jsonString, id) {
     deleteButton.className = "delete-button" + id;
     deleteButton.innerHTML = '<p>X</p>';
     deleteButton.onclick = () => {
-        DeleteRow(jsonString);
+        DeleteRow(jsonString.name);
     }
 
     const modifyButton = document.createElement('button');
     modifyButton.className = "modify-button" + id;
     modifyButton.innerHTML = '<p>Modify</p>';
     modifyButton.onclick = () => {
-        ModifyRow(id);
+        ModifyRow(jsonString._id, id);
     }
 
     cell.append(deleteButton);
@@ -198,4 +197,5 @@ window.addEventListener('updateCharacters', async function handleUpdateCharacter
 
     const data = await response.json();
     CreateCharacterTable(data);
+    //window.location.reload();
 });

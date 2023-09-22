@@ -1,6 +1,34 @@
 const { time } = require('console')
 
 
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const uri = "mongodb+srv://ngheineman:assignment3@fictiontracker.wlfu0nv.mongodb.net/?retryWrites=true&w=majority";
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    
+  } finally {
+    // Ensures that the client will close when you finish/error
+    //await client.close();
+  }
+}
+run().catch(console.dir);
+
+
+
 const express = require("express");
 
 const app = express();
@@ -25,35 +53,98 @@ app.use(express.static('public'));
 
 //get functions
 
-app.get('/', (req, res) => {
-  console.log(req);
-  const filename = "public/index.html"
-  const options = {
-    root: path.join(__dirname)
-  };
-  res.sendFile(filename, options, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log('Sent:', filename);
-    }
-  });
-});
+// app.get('/', (req, res) => {
+//   console.log(req);
+//   const filename = "public/index.html"
+//   const options = {
+//     root: path.join(__dirname)
+//   };
+//   res.sendFile(filename, options, function (err) {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log('Sent:', filename);
+//     }
+//   });
+// });
 
-app.get('/timelineData', (req, res) => {
+ app.get('/timelineData', async (req, res) => {
+
+  const cursor = client.db('world_data').collection('timelineData').find().sort({date: 1});
+  const timelineData = await cursor.toArray()
+
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(timelineData));
 });
 
-app.get('/characterData', (req, res) => {
-  RecheckCharacters();
+app.get('/characterData', async (req, res) => {
+  await RecheckCharacters();
+
+  const cursor = client.db('world_data').collection('characterData').find().sort({start: 1});
+  const characterData = await cursor.toArray()
   res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(characterData));
 });
 
 
-//delete functions
+//add functions
 
+app.post('/timelineData', (request, response) => {
+  let dataString = ''
+
+  request.on('data', function (data) {
+    dataString += data
+  })
+
+  request.on('end', async function () {
+
+    let value = JSON.parse(dataString);
+
+    const x = await client.db('world_data').collection('timelineData').insertOne(value);
+    const cursor = client.db('world_data').collection('timelineData').find().sort({date : 1});
+
+
+    await RecheckCharacters()
+    const timelineData = await cursor.toArray()
+
+    response.writeHead(200, "OK", { 'Content-Type': 'text/json' })
+    response.end(JSON.stringify(timelineData))
+  })
+
+})
+
+app.post('/characterData', (request, response) => {
+  let dataString = ''
+
+  request.on('data', function (data) {
+    dataString += data
+  })
+
+  request.on('end', async function () {
+
+    let value = JSON.parse(dataString);
+
+    const x = await client.db('world_data').collection('characterData').insertOne(value);
+    await RecheckCharacters();
+
+    const cursor = client.db('world_data').collection('characterData').find().sort({start : 1});
+    const characterData = await cursor.toArray()
+
+    
+
+
+    response.writeHead(200, "OK", { 'Content-Type': 'text/json' })
+    response.end(JSON.stringify(characterData))
+  })
+
+})
+
+app.post('/', (request, response) =>{
+  response.writeHead(200, "OK", { 'Content-Type': 'text/plain' })
+  response.end('test')
+})
+
+//delete functions
 
 app.delete('/timelineData', (request, response) => {
   console.log("Handle Delete");
@@ -65,19 +156,15 @@ app.delete('/timelineData', (request, response) => {
 
   console.log(dataString);
 
-  request.on('end', function () {
+  request.on('end', async function () {
     let data = JSON.parse(dataString);
-    let index = -1;
 
+    const x = await client.db('world_data').collection('timelineData').deleteOne({era: data.era});
 
-    index = timelineData.findIndex(item =>
-      item.era === data.era && item.date === data.date && item.description === data.description
-    );
+    const cursor = client.db('world_data').collection('timelineData').find().sort({date : 1});
+    const timelineData = await cursor.toArray();
 
-    if (index > -1) {
-      timelineData.splice(index, 1);
-    }
-    RecheckCharacters();
+    await RecheckCharacters();
 
     response.setHeader('Content-Type', 'application/json');
     response.end(JSON.stringify(timelineData));
@@ -94,71 +181,17 @@ app.delete('/characterData', (request, response) => {
 
     console.log(dataString);
 
-    request.on('end', function () {
-      let data = dataString
+    request.on('end', async function () {
+      let data = dataString;
 
 
-      index = characterData.findIndex(item =>
-        item.name === data);
+      const x = await client.db('world_data').collection('characterData').deleteOne({name: data});
 
-      if (index > -1) {
-        characterData.splice(index, 1);
-      }
-      console.log(characterData);
+      const cursor = client.db('world_data').collection('characterData').find().sort({start : 1});
+      const characterData = await cursor.toArray();
       response.writeHead(200, "OK", { 'Content-Type': 'text/json' })
       response.end(JSON.stringify(characterData));
     })
-})
-
-
-//post functions
-
-app.post('/timelineData', (request, response) => {
-  let dataString = ''
-
-  request.on('data', function (data) {
-    dataString += data
-  })
-
-  request.on('end', function () {
-
-    let value = JSON.parse(dataString);
-    timelineData.push(value)
-    SortTimeline()
-
-    RecheckCharacters()
-
-    response.writeHead(200, "OK", { 'Content-Type': 'text/json' })
-    response.end(JSON.stringify(timelineData))
-  })
-
-})
-
-app.post('/characterData', (request, response) => {
-  let dataString = ''
-
-  request.on('data', function (data) {
-    dataString += data
-  })
-
-  request.on('end', function () {
-
-    let value = JSON.parse(dataString);
-
-    let character = AssignEra(value)
-    characterData.push(character);
-    RecheckCharacters();
-
-
-    response.writeHead(200, "OK", { 'Content-Type': 'text/json' })
-    response.end(JSON.stringify(characterData))
-  })
-
-})
-
-app.post('/', (request, response) =>{
-  response.writeHead(200, "OK", { 'Content-Type': 'text/plain' })
-  response.end('test')
 })
 
 //modify functions
@@ -171,19 +204,25 @@ app.post('/modifyTimelineData', (request, response) => {
     dataString += data
   })
 
-  request.on('end', function () {
+  request.on('end', async function () {
 
-    const firstSpaceIndex = dataString.indexOf(' ');
-    const index = dataString.slice(0, firstSpaceIndex);
-    const json = JSON.parse(dataString.slice(firstSpaceIndex + 1));
+    const json = JSON.parse(dataString);
+    const id = new ObjectId(json._id);
 
-    timelineData[index].era = json.era;
-    timelineData[index].date = json.date;
-    timelineData[index].description = json.description;
+    const modified = await client.db('world_data').collection('timelineData').updateOne(
+      {_id: id},
+      {$set: 
+        { era: json.era,
+          date: json.date,
+          description: json.description
+        }
+      }
+    );
 
-
-    SortTimeline()
-    RecheckCharacters()
+    await RecheckCharacters()
+    
+    const cursor = client.db('world_data').collection('timelineData').find().sort({date : 1});
+    const timelineData = await cursor.toArray();
 
     response.writeHead(200, "OK", { 'Content-Type': 'text/json' })
     response.end(JSON.stringify(timelineData))
@@ -198,17 +237,26 @@ app.post('/modifyCharacterData', (request, response) =>{
     dataString += data
   })
 
-  request.on('end', function () {
-    const firstSpaceIndex = dataString.indexOf(' ');
-    const index = dataString.slice(0, firstSpaceIndex);
-    const json = JSON.parse(dataString.slice(firstSpaceIndex + 1));
+  request.on('end', async function () {
+    const json = JSON.parse(dataString);
+    const id = new ObjectId(json._id);
 
-    characterData[index].name = json.name;
-    characterData[index].start = json.start;
-    characterData[index].end = json.end;
-    characterData[index].era = json.era;
+    const modified = await client.db('world_data').collection('characterData').updateOne(
+      {_id: id},
+      {$set: 
+        { name: json.name,
+          start: json.start,
+          end: json.end
+        }
+      }
+    );
 
-    RecheckCharacters()
+
+
+    await RecheckCharacters()
+
+    const cursor = client.db('world_data').collection('characterData').find().sort({start : 1});
+    const characterData = await cursor.toArray();
 
     response.writeHead(200, "OK", { 'Content-Type': 'text/json' })
     response.end(JSON.stringify(characterData))
@@ -224,13 +272,29 @@ app.post('/modifyCharacterData', (request, response) =>{
 
 //passed a json object with date and era, assigns era based on given timeline info, returns new json object
 
-function RecheckCharacters() {
+async function RecheckCharacters() {
+
+  const cursor = client.db('world_data').collection('characterData').find();
+  const characterData = await cursor.toArray();
+
+  const cursor2 = client.db('world_data').collection('timelineData').find().sort({date: 1});
+  const timelineData = await cursor2.toArray();
+
   for (let i = 0; i < characterData.length; i++) {
-    AssignEra(characterData[i]);
+    await client.db('world_data').collection('characterData').updateOne(
+      { name: characterData[i].name},
+      {$set: {era: AssignEra(timelineData, characterData[i])}})
+    
   }
+
+  const cursor3 = client.db('world_data').collection('characterData').find();
+  const characterData2 = await cursor3.toArray();
+  const c = 10;
+
 }
 
-function AssignEra(value) {
+//passed in timeline data in array form, and specific character value, returns a string which is the eras
+function AssignEra(timelineData, value) {
   value.era = "unknown"
 
   if (timelineData.length === 0) {
@@ -257,14 +321,9 @@ function AssignEra(value) {
       value.era += ", " + timelineData[timelineData.length - 1].era;
     }
   }
-  return value;
+  return value.era;
 }
 
-//sorts timeline by date
-function SortTimeline() {
-  timelineData.sort(function (a, b) {
-    return a.date - b.date;
-  })
-}
+
 
 app.listen(process.env.PORT || port, () => console.log("server running"));
