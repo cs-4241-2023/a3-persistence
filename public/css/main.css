@@ -1,6 +1,4 @@
 body {
-    background-color: #f5f5f5;
-    font-family: 'IBM Plex Serif', serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,7 +16,6 @@ body {
 #todo-table {
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #fff;
     margin: 20px 0;
     width: 100%;
     border-collapse: collapse;

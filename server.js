@@ -4,8 +4,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
-// require('dotenv').config();
-const uri = `mongodb+srv://dygobran:gWD2a9uiug8YQSo2@webware.q1f112x.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://dygobran:${process.env.PASSWORD}@webware.q1f112x.mongodb.net/?retryWrites=true&w=majority`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
