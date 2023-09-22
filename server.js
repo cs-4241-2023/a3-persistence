@@ -98,10 +98,12 @@ app.post("/login", async (request, response) => {
     if (loginResult.length === 1){
         request.session.loginStatus = true;
         request.session.currentUser = request.body.username;
+        request.session.accountID = loginResult[0]._id;
         response.redirect("app.html")
     } else {
         request.session.loginStatus = false;
         request.session.currentUser = "";
+        request.session.accountID = null;
         response.render(__dirname + "/public/index.html", {status: "Username or Password was Incorrect"});
     }
 });
@@ -130,9 +132,39 @@ app.get("/assignment-data", async (request, response) => {
 
 app.post("/submit", async (request, response) => {
     let sentData = request.body;
-    let result = await handleAssignmentData(sentData);
+
+    let className = sentData.className;
+    let assignmentName = sentData.assignmentName;
+    let dueDate = sentData.dueDate;
+    let difficulty = sentData.difficulty;
+    let difficultyNum = parseInt(difficulty);
+
+    let result = {result: "", message: ""};
+
+    // send failure if any of the fields are empty
+    if (className === "" || assignmentName === "" || dueDate === "") {
+        result = {result: "failure", message: "One or more fields are empty!"};
+    } else if (difficulty === "" || isNaN(difficultyNum) || difficultyNum < 0 || difficultyNum > 10) {
+        result = {result: "failure", message: "Difficulty must be an integer between 1 and 10!"};
+    } else {
+        let priority = calculatePriority(dueDate, difficulty); // calculate derived field
+
+        await assignmentCollection.insertOne(
+            {
+                accountID: request.session.accountID,
+                className: className,
+                assignmentName: assignmentName,
+                dueDate: dueDate,
+                difficulty: difficulty,
+                priority: priority
+            }
+        );
+        result = {result: "success", message: ""};
+    }
+
+    //let result = await handleAssignmentData(sentData);
     response.writeHead(200, {"Content-Type": "application/json"});
-    response.end(result);
+    response.end(JSON.stringify(result));
 });
 
 app.put("/assignment-edit", async (request, response) => {
