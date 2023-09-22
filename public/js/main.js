@@ -199,11 +199,13 @@ const editPopUp = function (event, assignment) {
 
   // set on-click listener for edit submission
   document.querySelector("#submit-button-edit").onclick = async (event) => {
-    await editAssignment(event, assignment._id);
+    event.preventDefault();
+    await editAssignment(assignment._id);
   }
 
   // close pop-up window and show original form if cancel is clicked
-  document.querySelector("#cancel-edit-button").onclick = () => {
+  document.querySelector("#cancel-edit-button").onclick = (event) => {
+    event.preventDefault();
     document.querySelector("#edit-window").style.display = "none";
     document.querySelector("#assignment-form").style.display = "block";
     document.querySelector("#submission-message").textContent = "";
@@ -217,9 +219,6 @@ const editPopUp = function (event, assignment) {
  * @returns {Promise<void>}
  */
 const editAssignment = async function(event, assignmentId) {
-  // prevent html page reload on click
-  event.preventDefault();
-
   // generate new assignment JSON with the same original database ID
   const editedJSON = {
     _id: assignmentId, // database generated ID
