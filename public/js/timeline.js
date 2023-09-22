@@ -60,11 +60,11 @@ function CreateTimeline(data) {
     const timelineItem = document.createElement("div");
     timelineItem.id = data[i]._id;
     const deleteButton = document.createElement("button");
-    deleteButton.id = "timelineDeleteButton";
+    deleteButton.id = "Timeline Delete Button " + data[i].era;
     deleteButton.innerHTML = "X";
 
     const modifyButton = document.createElement("button");
-    modifyButton.id = "timelineModifyButton";
+    modifyButton.id = "Timeline Modify Button " + data[i].era;
     modifyButton.innerHTML = "Modify"
 
     //edit button appearance
@@ -87,7 +87,6 @@ function CreateTimeline(data) {
 
     modifyButton.onclick = async () => {
 
-      //TODO: create error checking features
       let text = "timelineItem" + i;
 
       const eraInput = document.querySelector('#era');
@@ -103,7 +102,7 @@ function CreateTimeline(data) {
       }
 
       const location = eraArray.indexOf(eraInput.value);
-      if (eraArray.includes(eraInput.value) && location != id) {
+      if (eraArray.includes(eraInput.value) && location != i) {
         errorMsg.textContent = "Name must be unique"
         errorMsg.style.display = "block";
       }

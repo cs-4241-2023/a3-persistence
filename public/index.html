@@ -3,7 +3,10 @@
 
 <head>
   <title>Character Tracker</title>
+  
   <meta charset="utf-8">
+  <meta name="description" content="A website that allows for creation of a world timeline and characters in it">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="js/main.js"></script>
   <script src="js/timeline.js"></script>
   <script src="js/characterSheet.js"></script>
@@ -48,13 +51,13 @@
 
     <form>
       <div class="label-row">
-        <label for="label1">Name:</label>
+        <label for="characterName">Name:</label>
         <input type="text" id="characterName" name="name">
   
-        <label for="label2">Birth:</label>
+        <label for="characterStart">Birth:</label>
         <input type="text" id="characterStart" name="birth">
   
-        <label for="label3">Death:</label>
+        <label for="characterEnd">Death:</label>
         <input type="text" id="characterEnd" name="death">
 
         <button id="addCharacterButton">submit</button>
@@ -81,9 +84,9 @@
     <form>
       <table id="timelineSubmission">
         <tr>
-          <th>Era Name:</th>
-          <th>Starting Year:</th>
-          <th>Description:</th>
+          <th><label for="era">Era Name:</label></th>
+          <th><label for="date">Starting Year:</label></th>
+          <th><label for="description">Description:</label></th>
         </tr>
       </table>
       <input type="text" id="era" value="">
