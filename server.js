@@ -10,7 +10,7 @@ const GitHubStrategy = require('passport-github').Strategy;
 const app = express();
 const port = 3000;
 
-const uri = "mongodb+srv://doadmin:1tS5IbK24T678U3Q@db-mongodb-nyc3-73883-4aef1b0f.mongo.ondigitalocean.com/admin?authSource=admin&replicaSet=db-mongodb-nyc3-73883"
+const uri = "mongodb+srv://doadmin:1tS5IbK24T678U3Q@db-mongodb-nyc1-53233-0b371da4.mongo.ondigitalocean.com/admin?authSource=admin&replicaSet=db-mongodb-nyc1-53233&tls=true"
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
