@@ -15,7 +15,7 @@ app.use(cookie({
   keys: ['jn2398y43hn', 'nfjadkln2345']
 }))
 
-const uri = `mongodb+srv://tester:Misiu123@cluster0.sgrgh26.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new MongoClient(uri)
 
 let tableCollection = null
