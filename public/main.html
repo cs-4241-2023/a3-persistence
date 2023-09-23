@@ -25,29 +25,29 @@
         <div id="leftContent" class="column">
           <div class="classForm" id="addClass">
             <h2 class="bigger">Enter New Class</h2>
-            <form>
+            <form method="POST" action="/add">
               <div class="grid-container">
                 <div class="grid-item">
                   <div class="left">
                     <label for="className">Class Name</label>
-                    <input type="text" id="className" placeholder="ex: Webware" required="required">
+                    <input type="text" id="className" name="name" placeholder="ex: Webware" required="required">
                     <p id="classNameWarning" class="warning"></p>
                   </div>
                   <div class="right">
                     <label for="classCode">Class Code</label>
-                    <input type="text" id="classCode" placeholder="ex: CS4241">
+                    <input type="text" id="classCode" name="code" placeholder="ex: CS4241">
                     <p id="classCodeWarning" class="warning"></p>
                   </div>
                 </div>
                 <div class="grid-item">
                   <div class="left">
                     <label for="startTime">Start Time</label>
-                    <input type="time" id="startTime" value="13:00" required="required">
+                    <input type="time" id="startTime" name="start" value="13:00" required="required">
                     <p id="startTimeWarning" class="warning"></p>
                   </div>
                   <div class="right">
                     <label for="endTime">End Time</label>
-                    <input type="time" id="endTime" value="14:00" required="required">
+                    <input type="time" id="endTime" name="end" value="14:00" required="required">
                     <p id="endTimeWarning" class="warning"></p>
                   </div>
                 </div>
@@ -55,32 +55,32 @@
                   <fieldset>
                     <legend>Days of the Week</legend>
                     <label for="monday">Monday</label>
-                    <input type="checkbox" id="monday" value="M">
+                    <input type="checkbox" id="monday" name="monday" value="M">
                     <label for="tuesday">Tuesday</label>
-                    <input type="checkbox" id="tuesday" value="T">
+                    <input type="checkbox" id="tuesday" name="tuesday" value="T">
                     <label for="wednesday">Wednesday</label>
-                    <input type="checkbox" id="wednesday" value="W">
+                    <input type="checkbox" id="wednesday" name="wednesday" value="W">
                     <label for="thursday">Thursday</label>
-                    <input type="checkbox" id="thursday" value="Th">
+                    <input type="checkbox" id="thursday" name="thursday" value="Th">
                     <label for="friday">Friday</label>
-                    <input type="checkbox" id="friday" value="F">
+                    <input type="checkbox" id="friday" name="friday" value="F">
                     <label for="saturday">Saturday</label>
-                    <input type="checkbox" id="saturday" value="Sa">
+                    <input type="checkbox" id="saturday" name="saturday" value="Sa">
                     <label for="sunday">Sunday</label>
-                    <input type="checkbox" id="sunday" value="Su">
+                    <input type="checkbox" id="sunday" name="sunday" value="Su">
                   </fieldset>
                   <p id="daysWarning" class="warning"></p>
                 </div>
               </div>
     
-              <button id="submitAdd">submit</button>
+              <button type="submit" id="submitAdd">submit</button>
             </form>
           </div>
         </div>
         <div id="middleContent" class="column">
           <div class="classForm" id="removeClass">
             <h2 class="bigger">Remove A Class</h2>
-            <form>
+            <form method="POST" action="remove">
               <div class="grid-container">
                 <div class="grid-item">
                   <label for="classSelect">Choose Class to Remove</label>
@@ -99,7 +99,7 @@
         <div id="rightContent" class="column">
           <div class="classForm" id="modifyClass">
             <h2 class="bigger">Modify a Class</h2>
-            <form>
+            <form method="POST" action="modify">
               <div class="grid-container">
                 <div class="grid-item">
                   <label for="classModifySelect">Choose Class to Modify</label>
