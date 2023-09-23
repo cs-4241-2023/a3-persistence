@@ -103,8 +103,11 @@ const populateTable = function(data) {
   const tableBody = document.querySelector('#table-body');
   tableBody.innerHTML = ''; // Clear existing table rows
 
-
   data.forEach(function(player){
+  //If the data contains username and password then skip. We only do password since username is used.
+    if (player.password) {
+      return;
+    }
     const row = document.createElement('tr');
     //Separate
     row.innerHTML = `
