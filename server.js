@@ -55,7 +55,7 @@ passport.deserializeUser((obj, done) => {
 passport.use(new GitHubStrategy({
   clientID: '46eed9c0b0d5d6d2692d',
   clientSecret: 'ff3757c5d09b21eb079a2b2e6b3036cd2d8dbee6',
-  callbackURL: "http://localhost:3000/auth/github/callback"
+  callbackURL: "https://a3colinm1215-m9bh3.ondigitalocean.app/auth/github/callback"
 },
   function (accessToken, refreshToken, profile, cb) {
     // Here you could potentially store the profile data in your database.
@@ -268,5 +268,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(process.env.PORT || port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
+  console.log(`Server is running on ${port}`);
 });
