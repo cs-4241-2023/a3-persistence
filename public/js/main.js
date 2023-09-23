@@ -17,7 +17,7 @@ const add = async function (event) {
 
   const response = await fetch("/submit", {
     method: "POST",
-    headers: { 'Content-Type': 'application/json' },
+    headers: { "Content-Type": "application/json" },
     body,
   });
 
@@ -28,8 +28,6 @@ const add = async function (event) {
 function createPlaylist(data) {
   const list = document.getElementById("output");
   const header = document.getElementById("header");
-  
-  console.log(data);
 
   list.innerHTML = "";
   data.forEach((d) => {
@@ -37,18 +35,18 @@ function createPlaylist(data) {
     const item = document.createElement("p1");
     const pop = document.createElement("button");
     pop.style.cssText = "margin:0 auto 0 25%;display:grid;";
-    if (current_season === d.season){
+    if (current_season === d.season) {
       item.innerHTML = `${d.title} by ${d.artist}: ${d.length}`;
       list.appendChild(item);
 
       pop.innerHTML = `Delete`;
       pop.onclick = async function (event) {
         event.preventDefault();
-        
+
         const removeResponse = await fetch("/remove", {
           method: "POST",
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: d._id })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: d._id }),
         });
 
         const responseData = await removeResponse.json();
@@ -59,7 +57,12 @@ function createPlaylist(data) {
       document.getElementById("output").innerHTML = "";
     }
 
-    header.innerHTML = `${d.season} playlist`;
+    if (d.season != undefined) {
+      header.innerHTML = `${d.season} playlist`;
+    } else {
+      header.innerHTML = `No Songs Available`;
+    }
+
     changeHeaderColor(current_season);
   });
 
@@ -80,10 +83,23 @@ function changeHeaderColor(season) {
   }
 }
 
+const loadSongs = async function () {
+  const season = document.getElementById("season").value;
+
+  const response = await fetch("/load", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ season: season }),
+  });
+
+  const data = await response.json();
+
+  console.log(data);
+
+  createPlaylist(data);
+};
+
 window.onload = async function () {
-  const current_season = document.getElementById("season").value;
   const addButton = document.getElementById("add");
   addButton.onclick = add;
 };
-
-

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
     <title>CS4241 Assignment 2</title>
     <meta charset="utf-8" />
     <script src="js/main.js"></script>
@@ -23,7 +24,7 @@
         <div class="input-flex">
           <label for="season">Select a season!</label>
           <p></p>
-          <select name="season" id="season">
+          <select name="season" id="season" onchange="loadSongs()">
             <option value="fall">Fall</option>
             <option value="winter">Winter</option>
             <option value="spring">Spring</option>

@@ -1,11 +1,14 @@
 <html lang="en">
+  <head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
+  </head>
   <body>
     <h1>
       Log in here:
     </h1>
     <form action="/login" method="POST">
-      <input type="text" name="username" />
-      <input type="password" name="password" />
+      <input type="text" name="username" placeholder="username" />
+      <input type="password" name="password" placeholder="password"/>
       <input type="submit" value="login" />
       <p>
         Don't have an account? No prob Bob!
@@ -16,7 +19,7 @@
         value="click here to create an account"
       />
     </form>
-    <script type="text/javascript">
+     <script type="text/javascript">
       document.getElementById("redirectButton").onclick = function () {
       location.href = "https://a3-isabellapabon.glitch.me/create.html"; };
     </script>

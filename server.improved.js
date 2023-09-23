@@ -47,41 +47,6 @@ app.use((req, res, next) => {
 //calling run
 run();
 
-app.post("/create", async (req, res) => {
-  const result = await loginCollection.insertOne(req.body);
-   req.session.username = req.body.username;
-  res.redirect("main.html");
-});
-
-app.post("/login", async (req, res, next) => {
-  const accounts = await client
-    .db("a3-database")
-    .collection("information")
-    .find()
-    .toArray();
-
-  accounts.forEach((e) => {
-    if (req.body.password === e.password && req.body.username === e.username) {
-      req.session.login = true;
-      req.session.username = req.body.username;
-      // define a variable that we can check in other middleware
-      // the session object is added to our requests by the cookie-session middleware
-      res.redirect("main.html");
-    }
-  });
-
-  // cancel session login in case it was previously set to true
-  req.session.login = false;
-  // password incorrect, send back to login page
-  res.render("index", {
-    msg: "login failed: incorrect password",
-    layout: false,
-  });
-});
-
-app.get("/", (req, res, next) => {
-  res.render("index", { msg: "", layout: false });
-});
 
 app.post("/submit", async (req, res) => {
   const length = req.body.length;
@@ -109,6 +74,8 @@ app.post("/submit", async (req, res) => {
     .find()
     .toArray();
   
+  //console.log(playlistData);
+  
   const newPlaylist = [{}];
 
   for (let i = 0; i < playlistData.length; i++) {
@@ -116,8 +83,6 @@ app.post("/submit", async (req, res) => {
       newPlaylist.push(playlistData[i]);
     }
   }
-  
-  console.log(newPlaylist);
 
   res.status(200).json(newPlaylist);
 });
@@ -136,6 +101,73 @@ app.post("/remove", async (req, res) => {
     .toArray();
 
   res.status(200).json(playlistData);
+});
+
+
+app.post("/load", async (req, res) => {
+  
+  const season = req.body.season;
+  
+  let current_user = req.session.username;
+
+
+  const playlistData = await client
+    .db("a3-database")
+    .collection("playlists")
+    .find()
+    .toArray();
+  
+  console.log(season);
+  
+  const newPlaylist = [{}];
+
+  for (let i = 0; i < playlistData.length; i++) {
+    if (playlistData[i].user === current_user && playlistData[i].season === season) {
+      newPlaylist.push(playlistData[i]);
+    }
+  }
+
+  res.status(200).json(newPlaylist);
+});
+
+
+app.post("/create", async (req, res) => {
+  const result = await loginCollection.insertOne(req.body);
+   req.session.username = req.body.username;
+    res.redirect("main.html");
+});
+
+app.post("/login", async (req, res, next) => {
+  const accounts = await client
+    .db("a3-database")
+    .collection("information")
+    .find()
+    .toArray();
+
+  accounts.forEach((e) => {
+    if (req.body.password === e.password && req.body.username === e.username) {
+      req.session.login = true;
+      req.session.username = req.body.username;
+      // define a variable that we can check in other middleware
+      // the session object is added to our requests by the cookie-session middleware
+    }
+  });
+  
+  if(req.session.login){
+    res.redirect("main.html");
+  }
+
+  // cancel session login in case it was previously set to true
+  req.session.login = false;
+  // password incorrect, send back to login page
+  res.render("index", {
+    msg: "login failed: incorrect password",
+    layout: false,
+  });
+});
+
+app.get("/", (req, res, next) => {
+  res.render("index", { msg: "", layout: false });
 });
 
 // add some middleware that always sends unauthenicaetd users to the login page
