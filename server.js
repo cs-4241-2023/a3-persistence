@@ -64,6 +64,7 @@ passport.use(new GitHubStrategy({
 ));
 
 app.use(function (req, res, next) {
+  console.log("use");
   if (req.user || req.path === '/login.html' || req.path === '/auth/github' || req.path === '/auth/github/callback') {
     next();
   }
@@ -80,12 +81,14 @@ app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/' }),
   function (req, res) {
+    console.log("/auth/github/callback");
     // Successful authentication.
     res.redirect('/index.html');
   });
 
 // Logout route
 app.get('/logout', (req, res) => {
+  console.log("logout");
   req.logout((err) => {
     if (err) {
       return res.status(500).send('Error during logout.');
@@ -100,6 +103,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/getName', async (req, res) => {
+  console.log("getName");
   try {
     console.log(req.user.username);
     res.send(req.user.username);
