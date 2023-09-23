@@ -1,114 +1,96 @@
-Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
-===
+## Vehicle Service Log Tracker
 
-Due: September 22nd, by 11:59 AM.
+Web Application Link: https://a3-ngrozdani.glitch.me/
 
-This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), 
-a database (mongodb), and a CSS application framework / template of your choice (Boostrap, Material Design, Semantic UI, Pure etc.)
+[Insert image here]
 
-Baseline Requirements
----
+## Application Summary
 
-Your application is required to implement the following functionalities:
+The "Vehicle Service Log" web application is designed to assist users in managing and tracking their scheduled vehicle service appointments. Users can register an account, log in, or use GitHub OAuth for immediate access. They have the ability to add, modify, and delete service appointments.
 
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data associated with a logged in user (except passwords)
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account. 
-- Persistent data storage in between server sessions using [mongodb](https://www.mongodb.com/cloud/atlas) (you *must* use mongodb for this assignment).
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks). 
-This should do the bulk of your styling/CSS for you and be appropriate to your application. 
-For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
+## Authentication Strategy
 
-Your application is required to demonstrate the use of the following concepts:  
+For authentication, this application employs OAuth authentication via GitHub. This approach offers several advantages, including simplified user registration and login processes, enhanced security, and access to user information through the GitHub API. However, implementing GitHub OAuth posed certain challenges, such as handling authentication callbacks.
 
-HTML:  
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
+The effectiveness of GitHub OAuth lies in its seamless integration with GitHub accounts, reducing the need for users to create yet another set of credentials. It also provides a level of trust and familiarity for users who are already GitHub users. Challenges included managing the callback URL, verifying the authenticity of GitHub responses, and handling various authentication states.
 
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is 
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create 
-new user accounts upon login if none exist, however, you must alert your users to this fact.  
+## CSS Framework
 
-CSS:  
-- CSS styling should primarily be provided by your chosen template/framework. 
-Oftentimes a great deal of care has been put into designing CSS templates; 
-don't override their stylesheets unless you are extremely confident in your graphic design capabilities. 
-The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
+This application utilizes Pure CSS for styling. Pure CSS is chosen for its simplicity, efficiency, and adherence to web principles. It offers preset styles that make it easy to create a visually appealing and user-friendly interface. The framework also facilitates responsive design, ensuring that the application looks and functions well across different devices and screen sizes.
 
-JavaScript:  
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. 
-See the [previous assignment](https://github.com/cs-4241-23/shortstack) for reference.
+Custom CSS modifications were made to tailor the styling to the specific requirements and aesthetic preferences of the application. 
 
-Node.js:  
-- A server using Express and a persistent database (mongodb).
+1. Color Scheme Customization
 
-General:  
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests 
-using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment. 
+The default color scheme of Pure CSS was adjusted to reflect the branding and aesthetic preferences of the "Vehicle Service Log" application. Particular attention was given to color choices for buttons, headers, and elements such as form inputs to create a cohesive and visually pleasing user interface.
 
-Deliverables
----
+2. Small Alignment Tweaks
 
-Do the following to complete this assignment:
+To enhance the overall user experience, small alignment adjustments were made to various elements. This included refining the placement of navigation menus, buttons, and content sections to ensure an intuitive and user-friendly layout.
 
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. If you developed your project locally, deploy your project to Glitch (unless completing the alternative server technical acheivement described below), and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch (or an alternative server), it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
+These customizations allow for a unique and cohesive visual identity while still leveraging the advantages of the Pure CSS framework. 
 
-Acheivements
----
+## Middleware Packages
 
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the 
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%. 
-These are recommended acheivements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README, 
-why it was challenging, and how many points you think the achievement should be worth. 
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
+The following Express middleware packages were used in the development of this application, each serving a specific purpose:
 
-*Technical*
-- (10 points) Implement OAuth authentication, perhaps with a library like [passport.js](http://www.passportjs.org/). 
-*You must either use Github authenticaion or provide a username/password to access a dummy account*. 
-Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. 
-Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!  
-- (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
+1. Passport.js: Passport is used for authentication and integrates seamlessly with GitHub OAuth to handle user authentication and authorization.
+2. express.json(): This middleware parses incoming JSON requests, making it easier to work with JSON data within the application.
+3. authNavigator (Custom Middleware): Custom middleware responsible for navigating users to different parts of the application based on their authentication status. It redirects authenticated users to their dashboard and unauthenticated users to the login page.
+4. stringToJSONMiddleware (Custom Middleware): Custom middleware designed to parse incoming JSON-like strings into valid JSON objects. This aids in handling data from the GitHub OAuth callback, which arrives as a string.
+5. express-session: Express session management middleware is used to store user session data securely, allowing the application to maintain user authentication state throughout their session.
+6. express-static: Used to serve static files like HTML, CSS, and JavaScript, ensuring smooth frontend functionality.
+7. express.urlencoded(): Express.urlencoded() is another essential middleware for handling incoming data. It parses incoming URL-encoded data, enabling the application to process form submissions and other URL-encoded payloads effectively.
 
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
+## Challenges Faced:
+1. User Authorization: It was important to guarantee the authenticity of responses from GitHub to prevent unauthorized access. Striking the right balance between user-friendly login processes and robust security measures was a smooth task. Ensuring that users attempting to log in were legitimate GitHub users while maintaining a seamless user experience was a complex challenge.
 
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
+2. Authentication Callback Handling: Managing the intricacies of authentication callback handling proved to be one of the most demanding challenges. GitHub OAuth authentication relies on a callback mechanism, and ensuring its correct configuration and secure handling of incoming data was crucial. Dealing with the asynchronous nature of callbacks and redirecting users appropriately added an extra layer of complexity.
 
-## Your Web Application Title
-
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
-
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
-
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
+3. Middleware Integration: Integrating multiple middleware packages, including custom middleware, was necessary for the application's functionality. This process required careful consideration of the order of middleware execution, ensuring they worked seamlessly together, and managing potential conflicts or compatibility issues.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- Tech Achievement 1: Implemented GitHub OAuth authentication using Passport.js, providing users with a secure and streamlined login experience.
+- Tech Achievement 2: Achieved a perfect score of 100% in all four Lighthouse tests, ensuring exceptional performance, accessibility, best practices, and SEO optimization for the application.
 
-### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+## Design Achievements
+
+1. Accessibility Implementation
+
+To ensure accessibility for my "Vehicle Service Log" web application, I actively followed twelve tips provided by the W3C (World Wide Web Consortium). These tips spanned writing, designing, and development aspects of the site, contributing to a more inclusive user experience. 
+
+Here are some of the key tips I implemented:
+
+**Alternative Text for Images**: I made sure that every image used in the application includes descriptive alt text, making the content accessible to users with visual impairments.
+
+**Semantic HTML**: I used semantic HTML elements such as <nav>, <main>, and <footer> to structure the content logically, aiding screen readers in understanding the page's hierarchy.
+
+**Keyboard Navigation**: I ensured that all interactive elements, including forms and buttons, could be navigated and activated using only the keyboard, providing accessibility for users who rely on keyboard navigation.
+
+**Contrast Ratio**: I carefully chose the color palette to meet contrast ratio requirements, making text content readable for users with low vision.
+
+**Form Labels**: I made sure that all form fields have associated <label> elements, enhancing usability and accessibility for screen reader users.
+
+**Focus Styles**: I implemented custom focus styles to ensure that keyboard focus indicators were clearly visible, aiding users in identifying the selected element.
+
+**Semantic Headings**: I used properly structured headings throughout the site, helping screen reader users understand the content's organization and flow.
+
+**ARIA Roles and Attributes**: I applied ARIA roles and attributes where necessary to enhance the accessibility of dynamic elements, such as modal dialogs and dynamic content updates.
+
+**Error Messages**: The website provides concise and comprehensible instructions, as well as error messages that guide users through form completion and help them address any mistakes efficiently.
+
+**User Responsiveness**: The website employs responsive design techniques to seamlessly adjust its layout and content presentation, guaranteeing a uniform user experience across a range of screen sizes and zoom levels.
+
+**Testing with Screen Readers:** I conducted extensive testing with popular screen readers to identify and address any potential accessibility issues.
+
+2. CRAP Principles in Design
+
+My "Vehicle Service Log" web application incorporates the CRAP (Contrast, Repetition, Alignment, Proximity) design principles from the Non-Designer's Design Book readings to create a visually appealing and user-friendly interface.
+
+**Contrast**: I emphasized contrast through the careful selection of colors and font styles. High contrast between text and background ensures readability, with dark text on a light background for optimal legibility.
+
+**Repetition**: I maintained consistency throughout the site using repeated design elements. A consistent color palette, typography, and button styles create a cohesive visual identity.
+
+**Alignment**: I aligned elements such as headers, forms, and buttons to maintain a clean, consistent, and structured layout. I used left alignment predominantly for readability and a professional appearance. All of these choices played a crucial role in organizing information and enhancing contrast.
+
+**Proximity**: I used proximity to group related elements and organize visual information logically. For instance, I placed form fields and their labels closely together, and grouped navigation links together in the header, improving user comprehension and navigation efficiency.
