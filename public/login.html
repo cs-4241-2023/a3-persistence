@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang='en'>
+
+    <head>
+        <title>CS4241 Assignment 2</title>
+        <meta charset="utf-8">
+    <!-- <link rel="stylesheet" href="css/main.css"> -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Black+Ops+One&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+        <meta name="description" content="Author: Bright Lin, Class: CS4241, Professor: Charles Roberts">
+
+        <link rel="stylesheet" href="https://unpkg.com/@blaze/css@x.x.x/dist/blaze/blaze.css">
+
+
+        <!-- get rid of favicon error -->
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+
+  <body>
+    <form class="o-container o-container--xsmall c-card u-high" action='/login' method='POST'>
+        <header class="c-card__header">
+          <h2 class="c-heading">
+            Login
+          </h2>
+        </header>
+          <div class="c-card__body">
+            <div class="o-form-element">
+              <label class="c-label">
+                Username:
+                <input class="c-field c-field--label" type="text" name='username' />
+                <div role="tooltip" class="c-hint">
+                  Username for you account
+                </div>
+              </label>
+            </div>
+            <label class="o-form-element c-label">
+              Password:
+              <input class="c-field c-field--label" type="password" name="password" />
+            </label>
+          </div>
+          <footer class="c-card__footer">
+            <button type="submit" class="c-button c-button--info c-button--block">
+              Login
+            </button>
+          </footer>
+        </form>
+
+
+  </body>
+</html>

@@ -7,6 +7,12 @@
     "start": "node server.improved.js"
   },
   "dependencies": {
-    "express":"^4.16.4"
+    "cookie-session": "^2.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.16.4",
+    "mongodb": "^6.1.0"
+  },
+  "engines": {
+    "node": "16.x"
   }
 }

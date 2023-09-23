@@ -119,13 +119,14 @@ window.onload = async function() {
   for(let i=0; i < appData.length; i++){
     appending(appData[i])
   }
+  console.log(appData)
 
 
 }
 
 const appending = function(data) {
 
-  const table = document.querySelector("table")
+  const table = document.querySelector("#scoreData")
 
   const row = document.createElement('tr')
   table.appendChild(row)
@@ -133,46 +134,54 @@ const appending = function(data) {
   if(data.id > largestIdSoFar){
     largestIdSoFar = data.id
   }
+  row.className = "c-table__row"
 
   const column1 = document.createElement('td')
   row.appendChild(column1)
   column1.textContent = data.yourName
+  column1.className = "c-table__cell"
 
   const column2 = document.createElement('td')
   row.appendChild(column2)
   column2.className = "values"
   column2.textContent = data.yourKills
+  column2.className = "c-table__cell"
 
   const column3 = document.createElement('td')
   column3.className = "values"
   row.appendChild(column3)
   column3.textContent = data.yourDeaths
+  column3.className = "c-table__cell"
 
   const column4 = document.createElement('td')
   column4.className = "values"
   row.appendChild(column4)
   column4.textContent = data.yourAssists
+  column4.className = "c-table__cell"
 
   const column5 = document.createElement('td')
   column5.className = "values"
   row.appendChild(column5)
   column5.textContent = data.KDA
+  column5.className = "c-table__cell"
 
   const button = document.createElement('button')
   const buttonColumn = document.createElement('td')
   buttonColumn.appendChild(button)
   row.appendChild(buttonColumn)
-  buttonColumn.className = "deleteButton"
+  buttonColumn.className = "c-table__cell"
   button.textContent = "Delete"
   button.onclick = deleteEvent
+  button.className = "c-button"
 
   const button1 = document.createElement('button')
   const buttonColumn1 = document.createElement('td')
   buttonColumn1.appendChild(button1)
   row.appendChild(buttonColumn1)
-  buttonColumn1.className = "modifyButton"
+  buttonColumn1.className = "c-table__cell"
   button1.textContent = "Modify"
   button1.onclick = modifyEvent
+  button1.className = "c-button"
 
 
 
