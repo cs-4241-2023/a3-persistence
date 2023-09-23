@@ -2,7 +2,8 @@
 
 Web Application Link: https://a3-ngrozdani.glitch.me/
 
-[Insert image here]
+<img width="1369" alt="Screen Shot 2023-09-23 at 4 43 57 PM" src="https://github.com/ngrozdani/a3-persistence/assets/64702995/add407ca-dff9-4163-a712-6f0dd750b57f">
+
 
 ## Application Summary
 
@@ -20,11 +21,11 @@ This application utilizes Pure CSS for styling. Pure CSS is chosen for its simpl
 
 Custom CSS modifications were made to tailor the styling to the specific requirements and aesthetic preferences of the application. 
 
-1. Color Scheme Customization
+**1. Color Scheme Customization**
 
 The default color scheme of Pure CSS was adjusted to reflect the branding and aesthetic preferences of the "Vehicle Service Log" application. Particular attention was given to color choices for buttons, headers, and elements such as form inputs to create a cohesive and visually pleasing user interface.
 
-2. Small Alignment Tweaks
+**2. Small Alignment Tweaks**
 
 To enhance the overall user experience, small alignment adjustments were made to various elements. This included refining the placement of navigation menus, buttons, and content sections to ensure an intuitive and user-friendly layout.
 
@@ -43,11 +44,12 @@ The following Express middleware packages were used in the development of this a
 7. express.urlencoded(): Express.urlencoded() is another essential middleware for handling incoming data. It parses incoming URL-encoded data, enabling the application to process form submissions and other URL-encoded payloads effectively.
 
 ## Challenges Faced:
-1. User Authorization: It was important to guarantee the authenticity of responses from GitHub to prevent unauthorized access. Striking the right balance between user-friendly login processes and robust security measures was a smooth task. Ensuring that users attempting to log in were legitimate GitHub users while maintaining a seamless user experience was a complex challenge.
 
-2. Authentication Callback Handling: Managing the intricacies of authentication callback handling proved to be one of the most demanding challenges. GitHub OAuth authentication relies on a callback mechanism, and ensuring its correct configuration and secure handling of incoming data was crucial. Dealing with the asynchronous nature of callbacks and redirecting users appropriately added an extra layer of complexity.
+**1. User Authorization**: It was important to guarantee the authenticity of responses from GitHub to prevent unauthorized access. Striking the right balance between user-friendly login processes and robust security measures was a smooth task. Ensuring that users attempting to log in were legitimate GitHub users while maintaining a seamless user experience was a complex challenge.
 
-3. Middleware Integration: Integrating multiple middleware packages, including custom middleware, was necessary for the application's functionality. This process required careful consideration of the order of middleware execution, ensuring they worked seamlessly together, and managing potential conflicts or compatibility issues.
+**2. Authentication Callback Handling**: Managing the intricacies of authentication callback handling proved to be one of the most demanding challenges. GitHub OAuth authentication relies on a callback mechanism, and ensuring its correct configuration and secure handling of incoming data was crucial. Dealing with the asynchronous nature of callbacks and redirecting users appropriately added an extra layer of complexity.
+
+**3. Middleware Integration**: Integrating multiple middleware packages, including custom middleware, was necessary for the application's functionality. This process required careful consideration of the order of middleware execution, ensuring they worked seamlessly together, and managing potential conflicts or compatibility issues.
 
 ## Technical Achievements
 - Tech Achievement 1: Implemented GitHub OAuth authentication using Passport.js, providing users with a secure and streamlined login experience.
@@ -55,7 +57,7 @@ The following Express middleware packages were used in the development of this a
 
 ## Design Achievements
 
-1. Accessibility Implementation
+**1. Accessibility Implementation**
 
 To ensure accessibility for my "Vehicle Service Log" web application, I actively followed twelve tips provided by the W3C (World Wide Web Consortium). These tips spanned writing, designing, and development aspects of the site, contributing to a more inclusive user experience. 
 
@@ -83,7 +85,7 @@ Here are some of the key tips I implemented:
 
 **Testing with Screen Readers:** I conducted extensive testing with popular screen readers to identify and address any potential accessibility issues.
 
-2. CRAP Principles in Design
+**2. CRAP Principles in Design**
 
 My "Vehicle Service Log" web application incorporates the CRAP (Contrast, Repetition, Alignment, Proximity) design principles from the Non-Designer's Design Book readings to create a visually appealing and user-friendly interface.
 
