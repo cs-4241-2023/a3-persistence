@@ -65,13 +65,13 @@ Here are some of the key tips I implemented:
 
 **Alternative Text for Images**: I made sure that every image used in the application includes descriptive alt text, making the content accessible to users with visual impairments.
 
-**Semantic HTML**: I used semantic HTML elements such as <nav>, <main>, and <footer> to structure the content logically, aiding screen readers in understanding the page's hierarchy.
+**Semantic HTML**: I used semantic HTML elements such as nav, main, and footer to structure the content logically, aiding screen readers in understanding the page's hierarchy.
 
 **Keyboard Navigation**: I ensured that all interactive elements, including forms and buttons, could be navigated and activated using only the keyboard, providing accessibility for users who rely on keyboard navigation.
 
 **Contrast Ratio**: I carefully chose the color palette to meet contrast ratio requirements, making text content readable for users with low vision.
 
-**Form Labels**: I made sure that all form fields have associated <label> elements, enhancing usability and accessibility for screen reader users.
+**Form Labels**: I made sure that all form fields have associated label elements, enhancing usability and accessibility for screen reader users.
 
 **Focus Styles**: I implemented custom focus styles to ensure that keyboard focus indicators were clearly visible, aiding users in identifying the selected element.
 
