@@ -24,12 +24,11 @@ async function addTask(event) {
       taskData: taskData,
     };
 
-    const body = JSON.stringify(requestData);
-
-    const response = await fetch("/submit", {
-      method: "POST",
-      body,
-    });
+    const response = await fetch( '/submit', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify( requestData )
+    })
 
     const text = await response.text();
     console.log("text:", text);
@@ -61,12 +60,11 @@ async function removeTask(rowIndex) {
     deleteRow: rowIndex,
   };
 
-  const body = JSON.stringify(requestData);
-
-  const response = await fetch("/submit", {
-    method: "POST",
-    body,
-  });
+  const response = await fetch( '/submit', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify( requestData )
+  })
 
   updateTasks();
 }
@@ -89,12 +87,11 @@ async function updateTask(event, row, newTaskName, newDueDate, newPriority, newM
       row: row,
     };
 
-    const body = JSON.stringify(requestData);
-
-    const response = await fetch("/submit", {
-      method: "POST",
-      body,
-    });
+    const response = await fetch( '/submit', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify( requestData )
+    })
 
     const text = await response.text();
     console.log("text:", text);
@@ -105,7 +102,7 @@ async function updateTask(event, row, newTaskName, newDueDate, newPriority, newM
 
 //Update Task Table
 async function updateTasks() {
-  const response = await fetch("/appdata");
+  const response = await fetch('/appdata');
   const appData = await response.json();
   console.log("Fetched appData:", appData);
 
