@@ -68,7 +68,7 @@ body {
   text-align: center;
   margin-top: 95px;
   margin: 0 auto;
-  max-width: 1000px;
+  max-width: 1175px;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 10px;
@@ -87,6 +87,7 @@ body {
   flex-direction: column;
   padding: 15px 50px 15px 15px;
   border-radius: 10px;
+  width: 350px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -298,7 +299,9 @@ body {
 }
 
 .rm-table-btn,
-.md-table-btn {
+.md-table-btn,
+.cancel-table-btn,
+.save-table-btn {
   height: 75px;
   appearance: none;
   border-radius: 6px;
@@ -329,11 +332,6 @@ body {
   box-shadow: 0 0 8px rgba(231, 76, 60, 0.7);
 }
 
-.md-table-btn {
-  background-color: #14ae26;
-  box-shadow: 0 0 8px rgba(20, 174, 38, 0.7);
-}
-
 .rm-table-btn:hover {
   background-color: #ff5733;
   box-shadow: 0 0 8px 0 rgba(255, 87, 51, 0.7);
@@ -344,6 +342,11 @@ body {
   transform: scale(1.025);
 }
 
+.md-table-btn {
+  background-color: #14ae26;
+  box-shadow: 0 0 8px rgba(20, 174, 38, 0.7);
+}
+
 .md-table-btn:hover {
   background-color: #2ecc71;
   box-shadow: 0 0 8px 0 rgba(46, 204, 113, 0.7);
@@ -351,6 +354,32 @@ body {
 }
 
 .md-table-btn:active {
+  transform: scale(1.025);
+}
+
+.save-table-btn {
+  background-color: #6eae14;
+  box-shadow: 0 0 8px rgba(20, 174, 61, 0.7);
+}
+
+.cancel-table-btn {
+  background-color: #e74c3c;
+  box-shadow: 0 0 8px rgba(231, 76, 60, 0.7);
+}
+
+.save-table-btn:hover {
+  background-color: #58cc2e;
+  box-shadow: 0 0 8px 0 rgba(46, 204, 88, 0.7);
+  transform: scale(1.125);
+}
+
+.cancel-table-btn:hover {
+  background-color: #ff5733;
+  box-shadow: 0 0 8px 0 rgba(183, 88, 29, 0.7);
+  transform: scale(1.125);
+}
+
+.cancel-table-btn:active {
   transform: scale(1.025);
 }
 
@@ -392,4 +421,19 @@ body {
 #logoutButton:hover {
   background-color: #aa3333;
   transform: translateY(-2px);
+}
+
+.md-input-tags {
+  padding: 5px;
+  width: 95px;
+  text-align: center;
+  border: 1.5px solid #ccc;
+  font-weight: lighter;
+  border-radius: 5px;
+  font-size: 16px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.md-input-tags:hover {
+  border-color: #3498db;
 }
