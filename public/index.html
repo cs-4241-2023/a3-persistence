@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Todo List</h1>
+    </header>
+    <main>
+      <form id="task-form">
+        <input type="text" id="task-input" placeholder="Task Name" required />
+        <input
+          type="text"
+          id="task-description"
+          placeholder="Task Description"
+          required
+        />
+        <select id="priority">
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <input type="date" id="due-date" />
+        <button type="submit">Add</button>
+      </form>
+      <ul id="task-list">
+        <!-- Todo tasks will be added here dynamically -->
+        <li>
+          <div class="task-details">
+            <span>Task: Task Name</span>
+            <span>Description: Task Description</span>
+            <span>Due Date: 2023-09-10</span>
+            <span>Priority: Medium</span>
+            <button class="delete-button">Delete</button>
+          </div>
+        </li>
+      </ul>
+    </main>
+    <script src="js/main.js"></script>
+  </body>
+</html>
