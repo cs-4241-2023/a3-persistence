@@ -99,16 +99,16 @@ your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.m
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
+- The goal of this application is to have a database of your esports players (coming from the perspective of a esports captain.)
+- A lot, I had to rename stuff to gamertag, the database I had a hassle on envisioning how I'd set it up and how'd I would create a "relation". I struggled with a lot of small bugs... but I spent a few days googling and rewriting code to make sure things sailed smoothly. 
+- Currently at the moment, I use cookies as authorization and I didn't implement OAuth.
+- I used the water css framework because I love the simplistic blue tones that it gave my login page. It reminded me of my darker purple tones I had previously.
+  - The only modifications I made at this point was just some padding and flexbox adjustments. 
 - the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
 add a little more detail about what it does.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- **Tech Achievement 1**: I got a 100 on the lighthouse scores, can provide a screenshot if needed. 
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...

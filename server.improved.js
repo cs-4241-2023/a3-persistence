@@ -118,7 +118,7 @@ app.use( express.urlencoded({ extended:true }) )
 // changed
 app.use( cookie({
   name: 'session',
-  keys: ['key1', 'key2']
+  keys: ['OEF9GeGgAd0G', 'LQR7wKtsRx1y']
 }))
 
 //KEEP THESE UP HERE, I they're below Login it wont work until authenticated.
