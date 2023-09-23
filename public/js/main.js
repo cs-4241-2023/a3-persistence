@@ -34,12 +34,18 @@ function createPlaylist(data) {
     let current_season = document.getElementById("season").value;
     const item = document.createElement("p1");
     const pop = document.createElement("button");
+    const edit = document.createElement("button");
+
     pop.style.cssText = "margin:0 auto 0 25%;display:grid;";
+
+    edit.style.cssText = "margin:0 auto 0 25%;display:grid;";
+
     if (current_season === d.season) {
       item.innerHTML = `${d.title} by ${d.artist}: ${d.length}`;
       list.appendChild(item);
 
       pop.innerHTML = `Delete`;
+      edit.innerHTML = `Edit`;
       pop.onclick = async function (event) {
         event.preventDefault();
 
@@ -52,7 +58,43 @@ function createPlaylist(data) {
         const responseData = await removeResponse.json();
         createPlaylist(responseData);
       };
+
+      edit.onclick = async function () {
+        
+        const id = d._id;
+        
+        console.log(id);
+        
+        const inputNewTitle = document.createElement("input");
+
+        inputNewTitle.type = "text";
+        inputNewTitle.placeholder = "input the new name here!";
+        inputNewTitle.id = "title_input";
+        list.appendChild(inputNewTitle);
+
+        const inputButton = document.createElement("button");
+        inputButton.innerHTML = "Submit";
+        list.appendChild(inputButton);
+
+        inputButton.onclick = async function (event) {
+          event.preventDefault();
+
+          const newTitle = document.getElementById("title_input").value;
+        
+
+          const removeResponse = await fetch("/edit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({newTitle: newTitle, id: id}),
+          });
+
+          const editData = await removeResponse.json();
+          createPlaylist(editData);
+        };
+      };
+
       item.appendChild(pop);
+      item.appendChild(edit);
     } else {
       document.getElementById("output").innerHTML = "";
     }
@@ -98,6 +140,7 @@ const loadSongs = async function () {
 
   createPlaylist(data);
 };
+
 
 window.onload = async function () {
   const addButton = document.getElementById("add");

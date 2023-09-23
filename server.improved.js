@@ -47,7 +47,6 @@ app.use((req, res, next) => {
 //calling run
 run();
 
-
 app.post("/submit", async (req, res) => {
   const length = req.body.length;
   let current_user = req.session.username;
@@ -73,9 +72,9 @@ app.post("/submit", async (req, res) => {
     .collection("playlists")
     .find()
     .toArray();
-  
+
   //console.log(playlistData);
-  
+
   const newPlaylist = [{}];
 
   for (let i = 0; i < playlistData.length; i++) {
@@ -90,6 +89,7 @@ app.post("/submit", async (req, res) => {
 app.post("/remove", async (req, res) => {
   const { id } = req.body;
   const query = { _id: new ObjectId(id) };
+  let current_user = req.session.username;
 
   const collection = client.db("a3-database").collection("playlists");
   let result = await collection.deleteOne(query);
@@ -100,29 +100,35 @@ app.post("/remove", async (req, res) => {
     .find()
     .toArray();
 
+  const newPlaylist = [{}];
+
+  for (let i = 0; i < playlistData.length; i++) {
+    if (playlistData[i].user === current_user) {
+      newPlaylist.push(playlistData[i]);
+    }
+  }
+
   res.status(200).json(playlistData);
 });
 
-
 app.post("/load", async (req, res) => {
-  
   const season = req.body.season;
-  
-  let current_user = req.session.username;
 
+  let current_user = req.session.username;
 
   const playlistData = await client
     .db("a3-database")
     .collection("playlists")
     .find()
     .toArray();
-  
-  console.log(season);
-  
+
   const newPlaylist = [{}];
 
   for (let i = 0; i < playlistData.length; i++) {
-    if (playlistData[i].user === current_user && playlistData[i].season === season) {
+    if (
+      playlistData[i].user === current_user &&
+      playlistData[i].season === season
+    ) {
       newPlaylist.push(playlistData[i]);
     }
   }
@@ -130,11 +136,42 @@ app.post("/load", async (req, res) => {
   res.status(200).json(newPlaylist);
 });
 
+app.post("/edit", async (req, res) => {
+  
+  const { id, newTitle } = req.body;
+  
+  const query = { _id: new ObjectId(id) };
+  const newTitleObj = { "$set": { title: newTitle } };
+  
+  let current_user = req.session.username;
+
+  const collection = client.db("a3-database").collection("playlists");
+
+  let result = await collection.updateOne(query, newTitleObj);
+  
+  console.log(result);
+
+  const playlistData = await client
+    .db("a3-database")
+    .collection("playlists")
+    .find()
+    .toArray();
+
+  const newPlaylist = [{}];
+
+  for (let i = 0; i < playlistData.length; i++) {
+    if (playlistData[i].user === current_user) {
+      newPlaylist.push(playlistData[i]);
+    }
+  }
+
+  res.status(200).json(playlistData);
+});
 
 app.post("/create", async (req, res) => {
   const result = await loginCollection.insertOne(req.body);
-   req.session.username = req.body.username;
-    res.redirect("main.html");
+  req.session.username = req.body.username;
+  res.redirect("main.html");
 });
 
 app.post("/login", async (req, res, next) => {
@@ -152,8 +189,8 @@ app.post("/login", async (req, res, next) => {
       // the session object is added to our requests by the cookie-session middleware
     }
   });
-  
-  if(req.session.login){
+
+  if (req.session.login) {
     res.redirect("main.html");
   }
 
