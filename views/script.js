@@ -106,15 +106,19 @@ function LoadFromServer(data){
     let firstRow=CreateFirstRow();
 
     table.append(firstRow);
-    data.forEach(item => {
-        console.log(item);
-        let row=CreateRow(item["task"],
-            item["creationDate"],
-            item["deadline"],
-            JudgePriority(item["deadline"]),
-            item.toString());
-        table.append(row);
-    });
+    if(Array.isArray(data)){
+        data.forEach((input)=>{
+            let taskData=input.tasks;
+            taskData.forEach(item=>{
+                let row=CreateRow(item.task,
+                    item.creationDate,
+                    item.deadline,
+                    JudgePriority(item.deadline),
+                    item.toString());
+                table.append(row);
+            })
+        });
+    }
 
     let htmlTable=document.getElementById("task-table");
     htmlTable.replaceChildren();

@@ -85,7 +85,7 @@ const checkLoginInfo=async (req, res)=>{
         }else{
             //Account not found so make one
             console.log("Account not found, making one")
-            let acc = {'username': req.body.Username, 'password': req.body.Password, 'tasks':JSON.stringify([])};
+            let acc = {'username': req.body.Username, 'password': req.body.Password, 'tasks':JSON.stringify(appData)};
             return await collection.insertOne(acc);
         }
     }
@@ -120,6 +120,12 @@ app.get( './views/app.html', ( req, res) => {
 
 
 // Express dev
+
+app.post( '/addTask', express.json(), ( req, res ) =>{
+    appData.push( req.body.newData )
+    res.writeHead( 200, { 'Content-Type': 'application/json'})
+    res.end( JSON.stringify( appData ) )
+})
 
 app.post( '/signup', express.json(), ( req, res ) =>{
     appData.push( req.body.newData )
