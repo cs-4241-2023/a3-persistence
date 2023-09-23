@@ -38,19 +38,35 @@ app.post('/login', (req, res) => {
 
     const account = await account_collection.find({ username: info.username, password: info.password }).toArray();
 
-    if (account.length !== 1) {
-      const accountExists = await account_collection.find({ username: info.username }).toArray();
-      if (accountExists.length !== 0) {
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end("Username already exists")
-      }
-      else {
-        const result = await account_collection.insertOne(info);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ username: info.username }));
-      }
+    if (account.length < 1) {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end("Incorrect username or password");
     }
     else {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ username: info.username }));
+    }
+  });
+});
+
+app.post('/signup', (req, res) => {
+  let dataString = "";
+
+  req.on('data', function(data) {
+    dataString += data;
+  });
+
+  req.on('end', async function() {
+    let info = JSON.parse(dataString);
+
+    const account = await account_collection.find({ username: info.username }).toArray();
+
+    if (account.length >= 1) {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end("User already exists");
+    }
+    else {
+      const result = await account_collection.insertOne(info);
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ username: info.username }));
     }

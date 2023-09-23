@@ -136,9 +136,6 @@ const submit = async function( event ) {
 const login = async function(event) {
   event.preventDefault();
 
-  const modalErrorMessage = document.querySelector("#errorMessage");
-  modalErrorMessage.innerHTML = "";
-
   const usernameInput = document.querySelector("#usernameInput");
   const passwordInput = document.querySelector("#passwordInput");
 
@@ -171,6 +168,47 @@ const login = async function(event) {
   
     loadTasks(tasks);
   } catch (error) {
+    const modalErrorMessage = document.querySelector("#errorMessage");
+    modalErrorMessage.innerText = postText;
+  }
+}
+
+const signin = async function(event) {
+  event.preventDefault();
+
+  const usernameInput = document.querySelector("#usernameInput");
+  const passwordInput = document.querySelector("#passwordInput");
+
+  const json = { username: usernameInput.value, password: passwordInput.value.hashCode() };
+  const body = JSON.stringify(json);
+
+  const postResponse = await fetch('/signup', {
+    method: 'POST',
+    body
+  });
+
+  const postText = await postResponse.text();
+
+  try {
+    const accountUsername = JSON.parse(postText);
+    user = accountUsername.username;
+
+    const modal = document.querySelector('#modal');
+    const loginButton = document.querySelector('#loginButton');
+
+    modal.style.display = "none";
+    loginButton.innerText = user;
+
+    const getResponse = await fetch(`/getTasks/${user}`, {
+      method: 'GET',
+    });
+  
+    const text = await getResponse.text();
+    const tasks = JSON.parse(text);
+  
+    loadTasks(tasks);
+  } catch (error) {
+    const modalErrorMessage = document.querySelector("#errorMessage");
     modalErrorMessage.innerText = postText;
   }
 }
@@ -181,6 +219,9 @@ window.onload = function() {
 
   const signInButton = document.querySelector("#signInButton");
   signInButton.onclick = login;
+
+  const signUpButton = document.querySelector("#signUpButton");
+  signUpButton.onclick = signin;
 
   form = document.querySelector('.inputs');
   taskInput = document.querySelector('#taskName');
@@ -194,6 +235,9 @@ window.onload = function() {
 
   const loginButton = document.querySelector("#loginButton");
   loginButton.onclick = function() {
+    const modalErrorMessage = document.querySelector("#errorMessage");
+    modalErrorMessage.innerHTML = "";
+
     modal.style.display = "block";
   };
 

@@ -57,7 +57,7 @@
         <div class="field">
           <label class="label">&nbsp;</label>
           <div class="control">
-            <button class="button" id="loginButton">Log In</button>
+            <button class="button is-info" id="loginButton">Log In</button>
           </div>
         </div>
       </div>
@@ -77,25 +77,8 @@
     <section id="modal">
       <div class="modal-content">
         <label class="close">&times;</label>
-        <!-- <div class="field signup-content">
-          <p>Create Account</p>
-          <div class="field">
-            <label class="label">Username:</label>
-            <input class="input" type="text" placeholder="Username" required>
-          </div>
-          <div class="field">
-            <label class="label">Password:</label>
-            <input class="input" type="password" placeholder="Password" required>
-          </div>
-          <div class="field is-grouped is-grouped-centered">
-            <div class="control">
-              <button class="button is-primary">Create Account</button>
-            </div>
-          </div>
-        </div>
-        <hr> -->
         <div class="field login-content">
-          <p>Login</p>
+          <p>Account</p>
           <form>
             <div class="field">
               <label class="label">Username:</label>
@@ -109,10 +92,21 @@
               <div class="control">
                 <button class="button is-primary" id="signInButton">Sign In</button>
               </div>
+              <div class="control">
+                <button class="button is-primary" id="signUpButton">Sign Up</button>
+              </div>
             </div>
           </form>
           <div class="content is-small">
             <p id="errorMessage"></p>
+          </div>
+        </div>
+        <hr>
+        <div class="oauths">
+          <div class="field is-grouped is-grouped-centered">
+            <div class="control">
+              <button class="button is-dark" id="gitHubButton">Sign In with GitHub</button>
+            </div>
           </div>
         </div>
       </div>
