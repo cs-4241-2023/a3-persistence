@@ -1,5 +1,6 @@
 const express = require("express"),
      {mongodb, ObjectId,MongoClient} = require("mongodb"),
+       crypto = require('crypto'),
        cookie  = require( 'cookie-session' ),
       hbs     = require( 'express-handlebars' ).engine,
    app = express();
@@ -11,6 +12,8 @@ app.engine( 'handlebars', hbs() )
 app.set('view engine', 'handlebars' )
 app.set('views','./views' )
 
+const algo='sha256';
+const hash= crypto.createHash(algo);
 
 app.use(cookie({
   name: 'session',
@@ -38,7 +41,8 @@ async function run() {
 
 app.post("/login", async (req, res) => {
   const user = req.body.username;
-  const pass = req.body.password;
+  const pass = hash.update(req.body.password).digest('hex');
+  console.log(pass)
   let dis = await users.findOne({$and: [{ username: user }, { password: pass }]});
   console.log(dis)
   if (dis == null) {
@@ -48,12 +52,12 @@ app.post("/login", async (req, res) => {
     });
     req.session.login = false;
   } else {
-    if (dis != null) {
+    if ((dis != null)&&(dis.username == user)&&(dis.password==pass)) {
       req.session.login = true;
       res.redirect("index.html");
     } else {
       res.render("login", {
-        message: "username not found, login failed!",
+        message: "incorrect password, login failed!",
         layout: false,
       });
        req.session.login = false; 
