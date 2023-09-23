@@ -32,9 +32,17 @@ app.get("/", (req, res) => {
   res.render('login', { msg: '', layout: false });
 });
 
-app.get( '/get',express.json(), async ( req, res ) => {
-  const docs = await collection.find({}).toArray()
-  res.json( docs )
+app.get('/get', express.json(), async (req, res) => {
+  const username = req.query.username; // Retrieve the username from query parameter
+
+  if (!username) {
+    res.status(400).json({ error: 'Username is required' });
+    return;
+  }
+
+  const filter = { username: username };
+  const docs = await collection.find(filter).toArray();
+  res.json(docs);
 })
 
 app.post('/submit', express.json(), async (req, res) => {
@@ -47,7 +55,6 @@ app.post('/submit', express.json(), async (req, res) => {
     position: position,
     username: username // Insert the username into the database
   });
-
   res.json(result);
 });
 

@@ -1,5 +1,18 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
+function getCookie(name) {
+  const cookieValue = document.cookie
+    .split('; ')
+    .find((row) => row.startsWith(`${name}=`));
+
+  if (cookieValue) {
+    return cookieValue.split('=')[1];
+  } else {
+    return null; // Cookie not found
+  }
+}
+const usernameCookie = getCookie('username');
+
 const submit = async function( event ) {
   // stop form submission from trying to load
   // a new .html page for displaying results...
@@ -7,21 +20,7 @@ const submit = async function( event ) {
   // remains to this day
   event.preventDefault()
 
-
-
   // Function to get the value of a specific cookie by name
-  function getCookie(name) {
-    const cookieValue = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith(`${name}=`));
-
-    if (cookieValue) {
-      return cookieValue.split('=')[1];
-    } else {
-      return null; // Cookie not found
-    }
-  }
-  const usernameCookie = getCookie('username');
 
   if (!usernameCookie) {
     console.log('Username cookie not found.');
@@ -75,7 +74,7 @@ if (response.ok) {
   document.querySelector('#position').placeholder = 'What\'s your position?';
 
   // Refresh the table to display updated data
-  updateTable();
+  updateTable(usernameCookie);
 } else {
   console.error('Error submitting data to the server');
 }
@@ -84,8 +83,8 @@ if (response.ok) {
 
 
 // Function to update the table with data from the server
-const updateTable = async function() {
-  const response = await fetch('/get');
+const updateTable = async function(username) {
+  const response = await fetch(`/get?username=${username}`);
 
   if (response.ok) {
     const data = await response.json();
@@ -128,7 +127,7 @@ const deletePlayer = async function(index) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ index: index })
   })
-  updateTable();
+  updateTable(usernameCookie);
 };
 
 // Function to edit a player from the table
@@ -139,7 +138,8 @@ const editPlayer = async function(index) {
         gamertag = document.querySelector('#gamertag').value,
         email = document.querySelector('#email').value,
         position = document.querySelector('#position').value,
-        json = {yourname: name, gamertag: gamertag, email: email, position: position}
+        username = usernameCookie
+        json = {yourname: name, gamertag: gamertag, email: email, position: position username: username},
 
   console.log('Editing player with index:', index);
   console.log('Player name:',json.yourname)
@@ -148,14 +148,19 @@ const editPlayer = async function(index) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ index: index, playerdata: json})
   })
-  updateTable();
+  updateTable(usernameCookie);
 };
 
 
 window.onload = function() {
   const button = document.querySelector("button");
   button.onclick = submit;
-  updateTable();
+
+  // Get the username from the cookie
+  const usernameCookie = getCookie('username');
+  if (usernameCookie) {
+    updateTable(usernameCookie); // Pass the username to updateTable
+  }
 }
 
 // For Login Page  DEV NOTE: Not sure if I have to indicate what html. I think it's implied.
@@ -174,8 +179,3 @@ const login = async function( event ) {
     body: body
   });
 }
-
-
-
-
-
