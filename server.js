@@ -11,8 +11,8 @@ const session = require('express-session') // store session data in cookies
 
 require('dotenv').config()
 
-app.use(express.static('public')) // Static files from public directory
-// app.use(express.static('public', { index: false })) // don't give index.html by default
+// app.use(express.static('public')) // Static files from public directory
+app.use(express.static('public', { index: false })) // don't give index.html by default
 app.use(express.json()) // For parsing application/json
 
 // MongoDB connection
@@ -73,7 +73,7 @@ passport.use(new GitHubStrategy({
 const isAuth = (req, res, next) => {
   console.log('inside isAuth()');
   if (req.user) {
-    console.log('About to call next() and show menu');
+    console.log('About to call next()');
     next(); // Yes Auth + Yes Player Account
   } else {
     console.log('bad auth going back to login welcom page');
@@ -85,6 +85,13 @@ const isAuth = (req, res, next) => {
 app.get('/', isAuth, (req, res) => {
   console.log(`AMAZING about to show menu for: ${req.user.username}`);
   res.sendFile(__dirname + '/public/menu.html');
+})
+
+// redirect for /editPlayer
+app.get('/editPlayer', isAuth, (req, res) => {
+  const githubUsername = req.session.githubUsername; // Get the GitHub username from the session
+  console.log(`GitHub username from session (in editPlayer): ${githubUsername}`);
+  res.sendFile(__dirname + '/public/editPlayer.html')
 })
 
 
@@ -105,7 +112,29 @@ app.get('/logout', (req, res) => {
 // Middleware to check if user is authenticated
 app.get('/auth/github', passport.authenticate('github'));
 
-// Callback route after GitHub authentication
+// // Callback route after GitHub authentication
+// app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
+//   async function (req, res) {
+//     // Successful authentication
+//     console.log(`Good authentication: ${req.user.username}`);
+
+//     // No player account -> Serve editPlayer.html to create player account  
+//     const existingPlayer = await collection.findOne({ githubName: req.user.username });
+//     console.log(`Existing player: ${existingPlayer}`);
+//     if (!existingPlayer) {
+//       console.log(`No player account for: ${req.user.username}`);
+//       // Store the GitHub username in the session
+//       req.session.githubUsername = req.user.username;
+//       console.log(`GitHub username from session (first one in callback): ${req.session.githubUsername}`);
+//       res.redirect('/editPlayer')
+//     } else {
+//       // Yes player account
+//       console.log(`Redirecting to menu for: ${req.user.username}`);
+//       res.redirect('/');
+//     }
+//   });
+
+// CHAPPIE CALLBACK VERSIOn
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
   async function (req, res) {
     // Successful authentication
@@ -113,7 +142,6 @@ app.get('/auth/github/callback', passport.authenticate('github', { failureRedire
 
     // No player account -> Serve editPlayer.html to create player account  
     const existingPlayer = await collection.findOne({ githubName: req.user.username });
-    console.log(`Existing player: ${existingPlayer}`);
     if (!existingPlayer) {
       console.log(`No player account for: ${req.user.username}`);
       // Store the GitHub username in the session
@@ -122,21 +150,10 @@ app.get('/auth/github/callback', passport.authenticate('github', { failureRedire
       res.redirect('/editPlayer')
     } else {
       // Yes player account
-      console.log(`Redirecting to menu for: ${req.user.username}`);
+      console.log(`Redirecting to menu for: ${req.session.githubUsername}`);
       res.redirect('/');
     }
   });
-
-
-// redirect for /editPlayer
-app.get('/editPlayer', isAuth, (req, res) => {
-  const githubUsername = req.session.githubUsername; // Get the GitHub username from the session
-  console.log(`GitHub username from session (in editPlayer): ${githubUsername}`);
-  res.sendFile(__dirname + '/public/editPlayer.html')
-})
-
-
-
 // End of Passport Code --------------------------------------------------------------
 
 // Start server
