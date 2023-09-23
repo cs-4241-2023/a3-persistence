@@ -7,7 +7,7 @@ const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
 const session = require('express-session') // store session data in cookies
 
-let githubUsername = undefined; // global variable for github username
+// let githubUsername = undefined; // global variable for github username
 
 require('dotenv').config()
 
@@ -72,7 +72,7 @@ passport.use(new GitHubStrategy({
 // Middleware to check if user is authenticated with persistent session
 const isAuth = (req, res, next) => {
   console.log('inside isAuth()');
-  if (githubUsername) {
+  if (req.user) {
     console.log('About to call next() and show menu');
     next(); // Yes Auth + Yes Player Account
   } else {
@@ -111,14 +111,15 @@ app.get('/auth/github/callback', passport.authenticate('github', { failureRedire
     // Successful authentication
     console.log(`Good authentication: ${req.user.username}`);
 
-    // No player account -> Serve editPlayer.html to create player account
-     // Set global variable for github username
-     githubUsername = req.user.username;
+    // No player account -> Serve editPlayer.html to create player account  
     const existingPlayer = await collection.findOne({ githubName: req.user.username });
+    console.log(`Existing player: ${existingPlayer}`);
     if (!existingPlayer) {
       console.log(`No player account for: ${req.user.username}`);
+      // Store the GitHub username in the session
+      req.session.githubUsername = req.user.username;
+      console.log(`GitHub username from session (first one in callback): ${req.session.githubUsername}`);
       res.redirect('/editPlayer')
-      return;
     } else {
       // Yes player account
       console.log(`Redirecting to menu for: ${req.user.username}`);
@@ -129,7 +130,8 @@ app.get('/auth/github/callback', passport.authenticate('github', { failureRedire
 
 // redirect for /editPlayer
 app.get('/editPlayer', isAuth, (req, res) => {
-  console.log(`Edit player: ${githubUsername}`);
+  const githubUsername = req.session.githubUsername; // Get the GitHub username from the session
+  console.log(`GitHub username from session (in editPlayer): ${githubUsername}`);
   res.sendFile(__dirname + '/public/editPlayer.html')
 })
 
@@ -154,6 +156,8 @@ app.use((req, res, next) => {
 // POST 
 app.post('/submit', express.json(), async (req, res) => {
   // Add githubUsername to req.body
+  const githubUsername = req.session.githubUsername;
+  console.log(`GitHub username from session (in submit post): ${githubUsername}`);
   req.body.githubName = githubUsername // TODO: can this be done without global variable?
   await collection.insertOne(req.body); // Add new player to the database
   await updatePlayersAndRespond(res);
