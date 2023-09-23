@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+require('dotenv').config();
 const mime = require('mime');
 const fs = require('fs');
 const dir = 'public/';
@@ -8,8 +9,8 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
-// Configure MongoDB connection
-mongoose.connect('mongodb://localhost/your-database-name', {
+// Configure MongoDB connection using the MONGO_STRING environment variable
+mongoose.connect(process.env.MONGO_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
