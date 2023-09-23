@@ -2,7 +2,7 @@
 
 Web Application Link: https://a3-ngrozdani.glitch.me/
 
-Example Account Details [email;password]: [testuser@gmail.com;password]
+Example Account Details [Email ; Password]: [testuser@gmail.com ; password]
 
 <img width="1369" alt="Screen Shot 2023-09-23 at 4 43 57 PM" src="https://github.com/ngrozdani/a3-persistence/assets/64702995/add407ca-dff9-4163-a712-6f0dd750b57f">
 
