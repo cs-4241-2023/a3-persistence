@@ -14,7 +14,8 @@ const uri = "mongodb+srv://doapps-4ec1f246-ba4d-4013-aed9-b45e89750f81:l149ko35X
 
 mongoose.connect(uri, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  ssl: true
 })
 
 const taskSchema = new mongoose.Schema({
