@@ -38,6 +38,8 @@ Below is a detailed outline of the functionality of Music Listening Builder:
 
 Here are some sample user accounts that have already been created and can be used to test the application:
 
+-------------------
+
 Username | Password
 
 joe      | pw
@@ -47,6 +49,8 @@ luke     | pw
 matt     | qq
 
 james    | qwq
+
+-------------------
 
 Music Listening Builder Page (the application homepage):
 
