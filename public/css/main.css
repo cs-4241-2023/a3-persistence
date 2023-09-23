@@ -1,9 +1,9 @@
 /* Global Styles */
 
 body {
-    font-family: "Open Sans", sans-serif;
+    /* font-family: "Open Sans", sans-serif;
     background-color: #1D1A39;
-    color: #E8BCB9;
+    color: #E8BCB9; */
     list-style-type: inside;
     display: flex;
     flex-direction: column;
@@ -12,9 +12,9 @@ body {
   }
 
 #web-header{
-  font-family: "Open Sans", sans-serif;
+  /* font-family: "Open Sans", sans-serif;
   font-weight: bold;
-  color: #AE445A;
+  color: #AE445A; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -33,7 +33,7 @@ form{
 table, th, td {
   border:3px solid black;
   border-radius: 5px;
-  background-color: #451952;
+  /* background-color: #451952; */
   align-items: center;
 }
 

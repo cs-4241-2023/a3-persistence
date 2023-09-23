@@ -14,10 +14,7 @@ function getCookie(name) {
 const usernameCookie = getCookie('username');
 
 const submit = async function( event ) {
-  // stop form submission from trying to load
-  // a new .html page for displaying results...
-  // this was the original browser behavior and still
-  // remains to this day
+
   event.preventDefault()
 
   // Function to get the value of a specific cookie by name

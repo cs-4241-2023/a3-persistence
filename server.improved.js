@@ -8,14 +8,7 @@ const express = require("express"),
       { MongoClient, ObjectId } = require("mongodb"),
       hbs     = require("express-handlebars").create({ extname: ".handlebars" }),
       cookie = require('cookie-session'),
-      // path = require('path'),
       app = express()
-      // appdata = [
-      //   {'yourname': 'Justin', 'username': 'Sombero', 'email': 'jwonoski2@wpi.edu', 'position': 'DPS'},
-      //   {'yourname': 'Mason', 'username': 'Sneke', 'email': 'mSneke@wpi.edu', 'position': 'Support'},
-      //   {'yourname': 'Tim', 'username': 'Robo', 'email': 'tRobo@wpi.edu', 'position': 'Tank'} 
-      // ]
-
       app.use( express.static( 'public' ) )
       app.use( express.static( 'views'  ) )
       app.use( express.json() )      
@@ -187,15 +180,6 @@ app.post('/register', express.json(), async (req, res) => {
     res.render('register', { msg:'Error registering user', layout:false })
   }
 });
-
-
-// add some middleware that always sends unauthenicaetd users to the login page
-// app.use(function (req, res, next) {
-//   if (req.session.login === true)
-//     next();
-//   else
-//     res.redirect('views/login.handlebars');
-// });
 
 
 app.get('/index', ( req, res) => {
