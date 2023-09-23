@@ -41,8 +41,11 @@ Here are some sample user accounts that have already been created and can be use
 Username | Password
 
 joe      | pw
+
 luke     | pw
+
 matt     | qq
+
 james    | qwq
 
 Music Listening Builder Page (the application homepage):
