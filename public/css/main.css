@@ -1,0 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+body{
+  font-family: 'Roboto', sans-serif;
+  font-size: 22px;
+  padding: 70px;
+  flex-direction: column
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+
+th {
+  border: 5px solid black;
+  text-align: center;
+  padding: 10px;
+  border-color:#f96464;
+  background-color: #c9c9c8;
+}
+
+td {
+  border: 5px solid black;
+  text-align: center;
+  padding: 10px;
+  border-color:#ffb3b3;
+  background-color: #dddddd;
+
+}
+
+h1 {
+  outline-width: 10px;
+  color: rgb(179, 0, 0);
+
+  text-align: center;
+
+  border-width:3px;
+  border-style:solid;
+  border-color: #ff5353;
+}
+
+p {
+  text-align: center
+}
+
+#gradeList {
+  border-width:3px;
+  border-style:solid;
+  border-color: #575757;
+  text-align: center
+}
+
+.A{
+  border-width:3px;
+  border-style:solid;
+  border-color: #beffa6;
+  text-align: center
+}
+
+.B {
+  border-width:3px;
+  border-style:solid;
+  border-color: #e3ffa6;
+  text-align: center
+}
+
+.C {
+  border-width:3px;
+  border-style:solid;
+  border-color: #fbf3a3;
+  text-align: center
+}
+
+.NR {
+  border-width:3px;
+  border-style:solid;
+  border-color: #fbb7a3;
+  text-align: center
+}
+
+.termGoal {
+  border-width:3px;
+  border-style:solid;
+  border-color: #beffa6;
+  text-align: center
+}
+
+.border {
+  border-width:3px;
+  border-style:solid;
+  border-color: #d2d1fd;
+  text-align: center
+}
+
+.editGoalForm {
+  visibility: hidden;
+}
+
+.sideBySide {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+}
+
+.tableInputSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.enterInfo {
+  visibility: hidden;
+}
+
+.showEnterInfoButton {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
