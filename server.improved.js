@@ -27,7 +27,6 @@ app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 
-
 // Serve the login.html page at the root path ("/")
 app.get("/", (req, res) => {
   res.render('login', { msg: '', layout: false });
@@ -115,7 +114,14 @@ app.use( cookie({
   keys: ['key1', 'key2']
 }))
 
+//KEEP THESE UP HERE, I they're below Login it wont work until authenticated.
+app.get('/swap', (req, res) => {
+  res.render('register', { msg: '', layout: false });
+});
 
+app.get('/back', (req, res) => {
+  res.render('login', { layout: false });
+});
 
 app.post( '/login', express.json(), async(req,res)=> {
   debugger
@@ -142,12 +148,46 @@ app.post( '/login', express.json(), async(req,res)=> {
   }
 })
 
+app.post('/register', express.json(), async (req, res) => {
+  const { username, password} = req.body;
+
+  // Check if the username is already empty and or taken.
+
+  if (username === '' || password === '') {
+    res.status(400).json({ message: 'Username or password is empty' });
+    return;
+  }
+
+  const user = await collection.findOne({username: login});
+
+  if(user){
+    res.status(400).json({ message: 'Username already taken' });
+  }
+  else{
+  // If the username is available, insert the new user into your database
+  const newUser = {
+    username: username,
+    password: password, 
+  };
+
+  try {
+    const result = await collection.insertOne(newUser);
+    res.redirect( '/index.handlebars' )
+    console.log('User registered:', result.ops[0]);
+    res.status(201).json({ message: 'Registration successful' });
+  } catch (error) {
+    console.error('Error registering user:', error);
+    res.status(500).json({ message: 'Registration failed' });
+  }
+}});
+
+
 // add some middleware that always sends unauthenicaetd users to the login page
 app.use(function (req, res, next) {
   if (req.session.login === true)
     next();
   else
-    res.redirect('views/login.html');
+    res.redirect('views/login.handlebars');
 });
 
 

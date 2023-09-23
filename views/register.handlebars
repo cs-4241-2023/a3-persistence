@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-  <script src="js/login.js"></script>
+    <script src="js/login.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
   <link rel="stylesheet" href="css/login.css">
   <title>Login Page</title>
@@ -9,16 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>input { display:block }</style>
   </head>
-  <h1>Welcome!</h1>
+  <h1>Register as a User.</h1>
   <body>
     <form action="/login" method="POST">
      <label for="login">Username:<input type="text" name="login" required/></label>
     <label for="password">Password:<input type="password" name="password" value="password" required/></label>
-      <input id="submit_user" type="submit" value="Login" />
+      <input id="register_user" type="submit" value="Register" />
     </form>
-    <button id="swap" onclick="redirectToRegistration()">Go to Register</button>
-    
-    {{{msg}}}
+    <button id="swap" onclick="redirectToLogin()">Go to Login</button>
     
   </body>
 </html>

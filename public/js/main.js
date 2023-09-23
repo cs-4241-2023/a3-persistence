@@ -28,7 +28,6 @@ const submit = async function( event ) {
     return; // Exit the function if the username cookie is not found
   }
 
-  
   const 
         name = document.querySelector('#yourname').value,
         gamertag = document.querySelector('#gamertag').value,
@@ -175,3 +174,8 @@ const login = async function( event ) {
     body: body
   });
 }
+
+
+
+
+
