@@ -4,6 +4,7 @@
     <title>CS4241 Assignment 2</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A todo application that allows users to log tasks with a due date and priority. Users can log onto this app to view, add, modify, and delete their tasks.">
     <script src="js/main.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="css/main.css">
@@ -19,21 +20,21 @@
     <header>
       <form class="inputs">
         <div class="field">
-          <label class="label">Task:</label>
+          <label class="label" for="taskName">Task:</label>
           <div class="control">
             <input class="input" type="text" placeholder="Enter task..." id="taskName" required>
           </div>
         </div>
 
         <div class="field">
-          <label class="label">Due Date:</label>
+          <label class="label" for="dueDate">Due Date:</label>
           <div class="control">
             <input class="input" type="date" id="dueDate" required>
           </div>
         </div>
 
         <div class="field">
-          <label class="label">Priority:</label>
+          <label class="label" for="priorityFlag">Priority:</label>
           <div class="control">
             <div class="select">
               <select id="priorityFlag">
@@ -47,17 +48,17 @@
         </div>
 
         <div class="field">
-          <label class="label">&nbsp;</label>
+          <label class="label" for="addTaskButton">&nbsp;</label>
           <div class="control">
-            <button class="button is-primary" id="addTaskButton" disabled>Add</button>
+            <button class="button is-primary" id="addTaskButton" type="button" disabled>Add</button>
           </div>
         </div>
       </form>
       <div class="accounts">
         <div class="field">
-          <label class="label">&nbsp;</label>
+          <label class="label" for="loginButton">&nbsp;</label>
           <div class="control">
-            <button class="button is-info" id="loginButton">Log In</button>
+            <button class="button is-link" id="loginButton" type="button">Log In</button>
           </div>
         </div>
       </div>
@@ -76,24 +77,24 @@
     </section>
     <section id="modal">
       <div class="modal-content">
-        <label class="close">&times;</label>
+        <div class="close">&times;</div>
         <div class="field login-content">
           <p>Account</p>
           <form>
             <div class="field">
-              <label class="label">Username:</label>
+              <label class="label" for="usernameInput">Username:</label>
               <input id="usernameInput" class="input" type="text" placeholder="Username" required>
             </div>
             <div class="field">
-              <label class="label">Password:</label>
+              <label class="label" for="passwordInput">Password:</label>
               <input id="passwordInput" class="input" type="password" placeholder="Password" required>
             </div>
             <div class="field is-grouped is-grouped-centered">
               <div class="control">
-                <button class="button is-primary" id="signInButton">Sign In</button>
+                <button class="button is-primary" id="signInButton" type="button">Sign In</button>
               </div>
               <div class="control">
-                <button class="button is-primary" id="signUpButton">Sign Up</button>
+                <button class="button is-primary" id="signUpButton" type="button">Sign Up</button>
               </div>
             </div>
           </form>
@@ -101,14 +102,14 @@
             <p id="errorMessage"></p>
           </div>
         </div>
-        <hr>
+        <!-- <hr>
         <div class="oauths">
           <div class="field is-grouped is-grouped-centered">
             <div class="control">
               <button class="button is-dark" id="gitHubButton">Sign In with GitHub</button>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </section>
   </body>

@@ -60,6 +60,11 @@ ul li:nth-child(even) {
   height: 400px;
 }
 
+#headerItem {
+  font-weight: bolder;
+  color: black;
+}
+
 li {
   display: flex;
   align-items: center;
