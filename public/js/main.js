@@ -6,13 +6,36 @@ const submit = async function( event ) {
   // this was the original browser behavior and still
   // remains to this day
   event.preventDefault()
+
+
+
+  // Function to get the value of a specific cookie by name
+  function getCookie(name) {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith(`${name}=`));
+
+    if (cookieValue) {
+      return cookieValue.split('=')[1];
+    } else {
+      return null; // Cookie not found
+    }
+  }
+  const usernameCookie = getCookie('username');
+
+  if (!usernameCookie) {
+    console.log('Username cookie not found.');
+    return; // Exit the function if the username cookie is not found
+  }
+
   
   const 
         name = document.querySelector('#yourname').value,
-        username = document.querySelector('#username').value,
+        gamertag = document.querySelector('#gamertag').value,
         email = document.querySelector('#email').value,
         position = document.querySelector('#position').value,
-        json = {yourname: name, username: username, email: email, position: position},
+        username = usernameCookie
+        json = {yourname: name, gamertag: gamertag, email: email, position: position, username: username},
       
         body = JSON.stringify( json )
 
@@ -20,7 +43,7 @@ const submit = async function( event ) {
   
   function validate_input() {
     console.log("Validating input...");
-    if (name === "" || username === "" || email === "" || position === "") {
+    if (name === "" || gamertag === "" || email === "" || position === "") {
       return false;
     }
   return true;
@@ -48,7 +71,7 @@ if (response.ok) {
 
   // Clear form fields after submission
   document.querySelector('#yourname').placeholder = 'Your real name here.';
-  document.querySelector('#username').placeholder = 'Your gamertag here.';
+  document.querySelector('#gamertag').placeholder = 'Your gamertag here.';
   document.querySelector('#email').placeholder = 'Your email here.';
   document.querySelector('#position').placeholder = 'What\'s your position?';
 
@@ -90,7 +113,7 @@ const populateTable = function(data) {
       <td> <input type="button" id=${player._id} onclick="editPlayer('${player._id}')" value="Edit"></td>
       <td> <input type="button" id=${player._id} onclick="deletePlayer('${player._id}')" value="Delete"></td>
       <td>${player.yourname}</td>
-      <td>${player.username}</td>
+      <td>${player.gamertag}</td>
       <td>${player.email}</td>
       <td>${player.position}</td>
     `;
@@ -114,10 +137,10 @@ const editPlayer = async function(index) {
   //This is needed for playerData.
   const 
         name = document.querySelector('#yourname').value,
-        username = document.querySelector('#username').value,
+        gamertag = document.querySelector('#gamertag').value,
         email = document.querySelector('#email').value,
         position = document.querySelector('#position').value,
-        json = {yourname: name, username: username, email: email, position: position}
+        json = {yourname: name, gamertag: gamertag, email: email, position: position}
 
   console.log('Editing player with index:', index);
   console.log('Player name:',json.yourname)

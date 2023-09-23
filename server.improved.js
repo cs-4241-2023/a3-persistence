@@ -6,10 +6,10 @@ require('dotenv').config()
 // server (express code)
 const express = require("express"),
       { MongoClient, ObjectId } = require("mongodb"),
-      hbs     = require( 'express-handlebars' ).engine,
+      hbs     = require("express-handlebars").create({ extname: ".handlebars" }),
       cookie = require('cookie-session'),
       // path = require('path'),
-      app = express() 
+      app = express()
       // appdata = [
       //   {'yourname': 'Justin', 'username': 'Sombero', 'email': 'jwonoski2@wpi.edu', 'position': 'DPS'},
       //   {'yourname': 'Mason', 'username': 'Sneke', 'email': 'mSneke@wpi.edu', 'position': 'Support'},
@@ -22,9 +22,10 @@ const express = require("express"),
 
 
 // Middleware to use Handlebars as the view engine
+//Dev note: Change this to possibly fix view issue. 
+app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
-app.engine( 'handlebars', hbs( {} ) )
-app.set( 'views','views')
+
 
 
 // Serve the login.html page at the root path ("/")
@@ -37,11 +38,20 @@ app.get( '/get',express.json(), async ( req, res ) => {
   res.json( docs )
 })
 
-app.post( '/submit', express.json(), async( req, res ) => {
-  // our request object now has a 'json' field in it from our previous middleware
-    const result = await collection.insertOne( req.body )
-    res.json( result )
-  })
+app.post('/submit', express.json(), async (req, res) => {
+  const { yourname, gamertag, email, position, username } = req.body;
+
+  const result = await collection.insertOne({
+    yourname: yourname,
+    gamertag: gamertag,
+    email: email,
+    position: position,
+    username: username // Insert the username into the database
+  });
+
+  res.json(result);
+});
+
 
 
 app.delete( '/delete', express.json(), async( req, res ) => {
@@ -105,23 +115,25 @@ app.use( cookie({
   keys: ['key1', 'key2']
 }))
 
-app.post( '/login', (req,res)=> {
+
+
+app.post( '/login', express.json(), async(req,res)=> {
   debugger
-  // express.urlencoded will put your key value pairs 
-  // into an object, where the key is the name of each
-  // form field and the value is whatever the user entered
+  const { login, password } = req.body;
+  //This will find the inputted user and password in the database.
+  const user = await collection.findOne({username: login, password: password});
   console.log( req.body )
 
-  if( req.body.password === 'test' ) {
+  if(user) {
+    console.log('login successful')
     // define a variable that we can check in other middleware
     // the session object is added to our requests by the cookie-session middleware
     req.session.login = true
+    res.cookie('username', login)
     
     // since login was successful, send the user to the main content
     // use redirect to avoid authentication problems when refreshing
-    // the page or using the back button, for details see:
-    // https://stackoverflow.com/questions/10827242/understanding-the-post-redirect-get-pattern 
-    res.redirect( 'views/index.html' )
+    res.redirect( '/index' )
   }else{
     // cancel session login in case it was previously set to true
     req.session.login = false
@@ -139,9 +151,8 @@ app.use(function (req, res, next) {
 });
 
 
-app.get('index', ( req, res) => {
-    res.render( 'main', { msg:'success you have logged in', layout:false })
+app.get('/index', ( req, res) => {
+    res.render( 'index', { msg:'success you have logged in', layout:false })
 })
-
 
 const listener = app.listen( process.env.PORT || 3000 )
