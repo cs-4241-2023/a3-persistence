@@ -139,7 +139,7 @@ const editPlayer = async function(index) {
         email = document.querySelector('#email').value,
         position = document.querySelector('#position').value,
         username = usernameCookie
-        json = {yourname: name, gamertag: gamertag, email: email, position: position username: username},
+        json = {yourname: name, gamertag: gamertag, email: email, position: position, username: username},
 
   console.log('Editing player with index:', index);
   console.log('Player name:',json.yourname)
