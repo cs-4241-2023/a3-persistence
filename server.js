@@ -65,7 +65,7 @@ passport.use(new GitHubStrategy({
 
 app.use(function (req, res, next) {
   console.log("use");
-  if (req.user || req.path === '/login.html' || req.path === '/auth/github' || req.path.includes('/auth/github/callback')) {
+  if (req.user || req.path === '/login.html' || req.path === '/auth/github' || req.path.includes('/auth/github/callback') || req.path.includes('/robots.txt')) {
     next();
   }
   else {
