@@ -16,8 +16,7 @@ app.use( express.urlencoded({ extended:true }) )
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new mongodb.MongoClient( uri, { useNewUrlParser: true, useUnifiedTopology:true })
 let collection = null;
-let username=null;
-let password=null;
+let userID;
 const db=client.db( process.env.DB );
 
 client.connect()
@@ -31,7 +30,6 @@ client.connect()
         // blank query returns all documents
         return collection.find({ }).toArray()
     })
-    .then( console.log )
 
 // route to get all docs
 app.get( '/', (req,res) => {
@@ -54,68 +52,54 @@ app.post( '/login', async (req, res) => {
     // express.urlencoded will put your key value pairs
     // into an object, where the key is the name of each
     // form field and the value is whatever the user entered
-    console.log(req.body)
+    userID = await checkLoginInfo(req, res);
 
-
-    const result = await checkLoginInfo(req, res);
-
-    if(result !== null){
+    if(userID !== null){
         req.session.login = true;
-        res.redirect('app.html')
-        console.log("Login Success")
+        res.redirect('app.html');
     }else{
         console.log("Fail")
+        req.session.login = false;
     }
-
-
 })
-
-let Username;
 const checkLoginInfo=async (req, res)=>{
-    Username=req.body.Username;
     let password = req.body.Password;
     let invalidInput = req.body.Username === null && password === null;
     if(!invalidInput){
-        let userAcc = {'username': Username};
-        let info=await collection.findOne({'username': Username});
+        let info=await collection.findOne({'username': req.body.Username});
+
+        /*
+        for (let key in info){
+            console.log(key);
+        }*/
         if(info !== null){
             if(password===info.password){
+                for(let userTask in info.tasks){
+                    appData.push(userTask)
+                }
                 console.log("Successful Login");
+                return info._id;
             }else{
-                console.log("Incorrect password");
+                return null;
             }
         }else{
-            //Account not found
+            //Account not found so make one
+            console.log("Account not found, making one")
+            let acc = {'username': req.body.Username, 'password': req.body.Password, 'tasks':JSON.stringify([])};
+            return await collection.insertOne(acc);
         }
     }
 }
 
-
-
-app.post( '/signup', (req,res)=> {
-    let collection = client.db( process.env.DB ).collection(process.env.DB_USERS)
-    let acc = {'username': req.body.Username, 'password': req.body.Password};
-
-    db.collection(process.env.DB_USERS).findOne(acc).then( (data) => {
-        if( data !== null ) {
-            //TODO: Add encryption
-            collection.insertOne(acc).then(()=> {
-                res.redirect('app.html')
-            });
-        }else{
-            console.log("Fail")
-        }
-    })
-})
-
-
 //Load Table
-app.get('/loadTasks',(req,res)=>{
-    //If the collection isn't null, return the corresponding tasks
-    if(true){
-
+app.get('/loadTasks',async (req, res) => {
+    if (userID.toString() === process.env.ADMIN_ACCOUNT_ID) {
+        collection.find({ }).toArray().then( result => res.json( result ) )
+    }else{
+        collection.find({_id:userID}).toArray().then( result => res.json( result ) )
     }
 })
+
 
 app.get( '/', (req,res) => {
     res.render( 'index', { msg:'', layout:false })
@@ -137,49 +121,10 @@ app.get( './views/app.html', ( req, res) => {
 
 // Express dev
 
-// server
-const middleware_post = ( req, res, next ) => {
-    let dataString = ''
-
-    req.on( 'data', function( data ) {
-        dataString += data
-    })
-
-    req.on( 'end', function() {
-        const json = JSON.parse( dataString )
-        appData.push( json )
-
-        // add a 'json' field to our request object
-        // this field will be available in any additional
-        // routes or middleware.
-        req.json = JSON.stringify( appData )
-
-        // advance to next middleware or route
-        next()
-    })
-}
-
-app.use( middleware_post )
-
 app.post( '/signup', express.json(), ( req, res ) =>{
     appData.push( req.body.newData )
     res.writeHead( 200, { 'Content-Type': 'application/json'})
     res.end( JSON.stringify( appData ) )
 })
-
-app.use( (req,res,next) => {
-    if( collection !== null ) {
-        next()
-    }else{
-        res.status( 503 ).send()
-    }
-})
-
-const logger = (req,res,next) => {
-    console.log( 'url:', req.url )
-    next()
-}
-
-app.use( logger )
 
 app.listen( 3000 )
