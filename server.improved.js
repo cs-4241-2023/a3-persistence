@@ -27,7 +27,7 @@ app.engine("handlebars", hbs.engine);
 app.set("view engine", "handlebars");
 
 
-// Serve the login.html page at the root path ("/")
+// Serve the login page at the root path ("/")
 app.get("/", (req, res) => {
   res.render('login', { msg: '', layout: false });
 });
@@ -149,37 +149,37 @@ app.post( '/login', express.json(), async(req,res)=> {
 })
 
 app.post('/register', express.json(), async (req, res) => {
-  const { username, password} = req.body;
+  const { login, password} = req.body;
 
   // Check if the username is already empty and or taken.
 
-  if (username === '' || password === '') {
-    res.status(400).json({ message: 'Username or password is empty' });
+  if (login === '' || password === '') {
+    res.render('register', { msg:'Please fill out all fields', layout:false })
     return;
   }
-
+  console.log(login, password)
   const user = await collection.findOne({username: login});
 
   if(user){
-    res.status(400).json({ message: 'Username already taken' });
+    res.render('register', { msg:'Username already taken', layout:false })
+    return;
   }
-  else{
+
   // If the username is available, insert the new user into your database
   const newUser = {
-    username: username,
+    username: login,
     password: password, 
   };
 
   try {
     const result = await collection.insertOne(newUser);
-    res.redirect( '/index.handlebars' )
-    console.log('User registered:', result.ops[0]);
-    res.status(201).json({ message: 'Registration successful' });
+    console.log('User registered!')
+    res.redirect( 'index' )
   } catch (error) {
-    console.error('Error registering user:', error);
-    res.status(500).json({ message: 'Registration failed' });
+    console.error('Error registering user!!!!')
+    res.render('register', { msg:'Error registering user', layout:false })
   }
-}});
+});
 
 
 // add some middleware that always sends unauthenicaetd users to the login page

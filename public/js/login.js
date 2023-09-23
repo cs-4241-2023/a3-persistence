@@ -13,6 +13,7 @@ const redirectToLogin = async function() {
 // For Register Button
 const register = async function(event) {
     const username = document.querySelector('#login').value;
+    console.log(username)
     const password = document.querySelector('#password').value;
     const json = { username: username, password: password };
   
