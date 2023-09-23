@@ -148,7 +148,8 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
-async function run() {
+
+async function testDBConnection() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
@@ -162,7 +163,23 @@ async function run() {
     await client.close();
   }
 }
-run().catch(console.dir);
+// testDBConnection().catch(console.dir);
+
+let collection = null;
+async function basicConnection() {
+  await client.connect();
+  collection = await client.db("a3_todo_list_app").collection("tasks");
+
+  // route to get all docs
+  app.get("/docs", async (req, res) => {
+    if (collection !== null) {
+      const docs = await collection.find({}).toArray();
+      res.json(docs);
+    }
+  });
+}
+
+basicConnection().catch(console.dir);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on http://localhost:3000`);
