@@ -24,6 +24,8 @@ async function addTask(event) {
       taskData: taskData,
     };
 
+    console.log(requestData);
+
     const response = await fetch( '/submit', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -54,11 +56,13 @@ window.addEventListener("keydown", function (event) {
 });
 
 //Remove Task On The Server
-async function removeTask(rowIndex) {
+async function removeTask(id) {
   const requestData = {
     type: "deleteTask",
-    deleteRow: rowIndex,
+    deleteRow: id,
   };
+
+  console.log(requestData);
 
   const response = await fetch( '/submit', {
     method:  'POST',
@@ -70,7 +74,7 @@ async function removeTask(rowIndex) {
 }
 
 //Update Tasks On The Server
-async function updateTask(event, row, newTaskName, newDueDate, newPriority, newMyDay) {
+async function updateTask(event, id, newTaskName, newDueDate, newPriority, newMyDay) {
   event.preventDefault();
 
   if (newTaskName !== "") {
@@ -84,7 +88,7 @@ async function updateTask(event, row, newTaskName, newDueDate, newPriority, newM
     const requestData = {
       type: "updateTask",
       taskData: taskData,
-      row: row,
+      id: id,
     };
 
     const response = await fetch( '/submit', {
@@ -128,7 +132,7 @@ async function updateTasks() {
     doneButton.title = "Complete The Task";
 
     doneButton.addEventListener("click", () => {
-      removeTask(i);
+      removeTask(currentTask["_id"]);
     });
 
     //Create Task Text, Update It, And Make It Editable
@@ -153,15 +157,15 @@ async function updateTasks() {
     highPriority.title = "High Priority";
 
     lowPriority.addEventListener("click", () => {
-      updateTask(event, i, taskText.value, currentTask["DueDate"], 1, true);
+      updateTask(event, currentTask["_id"], taskText.value, currentTask["DueDate"], 1, true);
     });
 
     mediumPriority.addEventListener("click", () => {
-      updateTask(event, i, taskText.value, currentTask["DueDate"], 2, true);
+      updateTask(event, currentTask["_id"], taskText.value, currentTask["DueDate"], 2, true);
     });
 
     highPriority.addEventListener("click", () => {
-      updateTask(event, i, taskText.value, currentTask["DueDate"], 3, true);
+      updateTask(event, currentTask["_id"], taskText.value, currentTask["DueDate"], 3, true);
     });
 
     switch (currentTask["Priority"]) {
@@ -177,7 +181,7 @@ async function updateTasks() {
     }
 
     taskText.addEventListener("focusout", () =>
-        updateTask( event, i, event.target.value, currentTask["DueDate"], currentTask["Priority"], true)
+        updateTask( event, currentTask["_id"], event.target.value, currentTask["DueDate"], currentTask["Priority"], true)
     );
 
     // Create A My Day Button And Force It Active
@@ -218,7 +222,7 @@ async function updateTasks() {
       } else {
         previousDate = datepickerInput.value;
       }
-      updateTask( event, i, taskText.value, formatDate(datepickerInput.value), currentTask["Priority"], true);
+      updateTask( event, currentTask["_id"], taskText.value, formatDate(datepickerInput.value), currentTask["Priority"], true);
     });
 
     //Append All Of The Task Row Items Together Then To The Table
