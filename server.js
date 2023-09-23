@@ -64,33 +64,28 @@ passport.use(new GitHubStrategy({
     // User.findOrCreate({ githubId: profile.id }, function (err, user) {
     //   return cb(err, user);
     // });
-    console.log(profile);
+    // console.log(profile);
     callback(null, profile);
   }
 ));
 
 // Middleware to check if user is authenticated with persistent session
 const isAuth = (req, res, next) => {
-  console.log('inside isAuth()');
   if (req.user) {
-    console.log('About to call next()');
     next(); // Yes Auth + Yes Player Account
   } else {
-    console.log('bad auth going back to login welcom page');
     res.redirect('/login'); // No Auth 
   }
 }
 
 // Send to menu if user is already authenticated with cookie
 app.get('/', isAuth, (req, res) => {
-  console.log(`AMAZING about to show menu for: ${req.user.username}`);
   res.sendFile(__dirname + '/public/menu.html');
 })
 
 // redirect for /editPlayer
 app.get('/editPlayer', isAuth, (req, res) => {
   const githubUsername = req.session.githubUsername; // Get the GitHub username from the session
-  console.log(`GitHub username from session (in editPlayer): ${githubUsername}`);
   res.sendFile(__dirname + '/public/editPlayer.html')
 })
 
@@ -112,45 +107,17 @@ app.get('/logout', (req, res) => {
 // Middleware to check if user is authenticated
 app.get('/auth/github', passport.authenticate('github'));
 
-// // Callback route after GitHub authentication
-// app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
-//   async function (req, res) {
-//     // Successful authentication
-//     console.log(`Good authentication: ${req.user.username}`);
-
-//     // No player account -> Serve editPlayer.html to create player account  
-//     const existingPlayer = await collection.findOne({ githubName: req.user.username });
-//     console.log(`Existing player: ${existingPlayer}`);
-//     if (!existingPlayer) {
-//       console.log(`No player account for: ${req.user.username}`);
-//       // Store the GitHub username in the session
-//       req.session.githubUsername = req.user.username;
-//       console.log(`GitHub username from session (first one in callback): ${req.session.githubUsername}`);
-//       res.redirect('/editPlayer')
-//     } else {
-//       // Yes player account
-//       console.log(`Redirecting to menu for: ${req.user.username}`);
-//       res.redirect('/');
-//     }
-//   });
-
-// CHAPPIE CALLBACK VERSIOn
+// Callback after authentication
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
-  async function (req, res) {
-    // Successful authentication
-    console.log(`Good authentication: ${req.user.username}`);
-
+  async function (req, res) {    
     // No player account -> Serve editPlayer.html to create player account  
     const existingPlayer = await collection.findOne({ githubName: req.user.username });
     if (!existingPlayer) {
-      console.log(`No player account for: ${req.user.username}`);
       // Store the GitHub username in the session
       req.session.githubUsername = req.user.username;
-      console.log(`GitHub username from session (first one in callback): ${req.session.githubUsername}`);
       res.redirect('/editPlayer')
     } else {
       // Yes player account
-      console.log(`Redirecting to menu for: ${req.session.githubUsername}`);
       res.redirect('/');
     }
   });
