@@ -62,90 +62,70 @@ const handleAdd = async function(request, response) {
   response.redirect('/main.html')
 }
 
-const handleRemove = function(request, response) {
-
-    json = request.body
+const handleRemove = async function(request, response) {
       
-    // find the data to remove TODO
-    let i = 0;
-    const max = appdata.length
-    for(obj of appdata) {
-      if(JSON.stringify(obj) === json) {
-          const front = appdata.slice(0, i)
-          const back = appdata.slice(i+1)
-          const temp = front.concat(back)
-          while(appdata.length > 0) {
-              appdata.pop()
-          }
-          for(let j = 0; j < temp.length; j++) {
-              appdata.push(temp[j])
-          }
-          
-          response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-          response.end('success')
-          console.log('remove - success')
-          break
-      } else {
-          i++
-      }
-    }
+    // find the data to remove
+    
+    // get the user
+    const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
+      .then( async current_user => {    // remove the class from the user's schedule
+        const class_id = new ObjectId(JSON.parse(request.body.selected)._id)
+        const result2 = await collections.schedules.updateOne(  { _id : new ObjectId(current_user[0].schedules[0]) }, 
+                                                                {$pull: { classes: { $eq: class_id }}}) // remove the class from the schedule
+      })
 
-  if(i >= max) {
-      response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-      response.end('fail')
-      console.log('failed to remove')
-  }
+    // remove the class from classes
+    const result2 = await collections.classes.deleteOne({_id:  new ObjectId(request.body.selected._id)})
+
+    response.redirect('/main.html')
 }
 
-const handleModify = function(request, response) {
+const handleModify = async function(request, response) {
 
-  json = request.body
-    
-  prev = json.prev
-  data = json.new
+  prev = JSON.parse(request.body.previous)
+  data = request.body
+  delete data.previous
+
+  console.log('prev: ' + JSON.stringify(prev))
+  console.log('data: ' + JSON.stringify(data))
 
   if(prev === "") { // no classes to modify
     const error = {
       'errors': true,
       'classModifySelect': "No Classes To Modify",
     }
-    // console.log('modify - error: ' + JSON.stringify(error))
-    response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-    response.end( JSON.stringify(error) )
+    let result = await collections.errors.deleteOne( {} )
+    result = await collections.errors.insertOne(error)
   } else {
     // validate the new values
     const error = validate(data);
 
     if(error.errors === false) {
       // find the data to modify
-      let i = 0;
-      const max = appdata.length
-      for(obj of appdata) {
-          if(JSON.stringify(obj) === prev) {
 
-              obj.Name = data.Name
-              obj.Code = data.Code
-              obj.StartTime = data.StartTime
-              obj.EndTime = data.EndTime
-              obj.Length = calcDerivedLength(data.StartTime, data.EndTime)
-              
-              response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-              response.end(JSON.stringify({}))
-              console.log('modify - success')
-              break
-          } else {
-              i++
-          }
-      }
-      if(i >= max) {
-          response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-          response.end(JSON.stringify(error))
-          console.log('failed to modify')
-      }
+      // const schedule = await collections.users.find({'username': `${request.session.user}`}).toArray()
+      // .then(async current_user => {
+      //   // delete the old class from the schedule
+      //   const result2 = await collections.schedules.updateOne(  { _id : new ObjectId(current_user[0].schedules[0]) }, 
+      //                                                           {$pull: { classes: { $eq: prev._id }}}) // remove the class from the schedule
+      //   // delete the old class
+      //   const result3 = await collections.classes.deleteOne({_id:  new ObjectId(prev._id)})
+
+      //   // add the new class
+      //   data.duration = calcDerivedLength(data.start, data.end);
+      //   const newClass = await collections.classes.insertOne( data )
+
+      //   // add the new class to the schedule
+      //   const schedule2 = await collections.users.find({'username': `${request.session.user}`}).toArray()
+      //     .then(async current_user => {
+      //       const result4 = await collections.schedules.updateOne(
+      //         { _id: current_user[0].schedules[0]  }, 
+      //         { $push: {'classes': newClass.insertedId } }) // gets the first schedule every time
+      //     })
+      // })
     } else { // send back error message
-    //   console.log('modify - error: ' + JSON.stringify(error))
-      response.writeHead( 200, "OK", {'Content-Type': 'text/plain' })
-      response.end( JSON.stringify(error) )
+      let result = await collections.errors.deleteOne( {} )
+      result = await collections.errors.insertOne(error)
     }        
   }
 }
@@ -157,26 +137,26 @@ const handleGetAll = async function(request, response) {
     schedules: []
   }
 
-  console.log(request.session.user)
   data.username = request.session.user;
   const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
     .then( async current_user => {
       const result2 = await collections.schedules.find({ _id : new ObjectId(current_user[0].schedules[0]) }).toArray() // get the schedules of the user
         .then( async current_schedule => {
           const classes = []
-          current_schedule[0].classes.forEach(async class_id => {
-            const a_class = await collections.classes.find({'_id' : new ObjectId(class_id) }).toArray()
-              .then( async current_class classes.push(a_class[0])
-          })
-          console.log('classes: ' + JSON.stringify(classes))
-          return classes
+          let i;
+          for(i = 0; i < current_schedule[0].classes.length; i++) {
+            const a_class = await collections.classes.find({'_id' : new ObjectId(current_schedule[0].classes[i]) }).toArray()
+            .then( async a => {
+              return a[0]
+            })
+            classes.push(a_class)
+          } 
+          return classes;
         })
         return result2;
-    })
+      })
 
   data.schedules = result
-
-  console.log('sending: ' + JSON.stringify(data))
   response.json(data)
   
 }
@@ -334,13 +314,14 @@ app.use( function( request, response, next ) {
   if (request.session.login === true ) {
     next()
   } else {
+    console.log('session not logged in')
     response.sendFile(__dirname + '/public/index.html')
   }
 })
 
 app.post('/add', handleAdd)
-app.delete('/remove', handleRemove)
-app.post('/modify', handleModify)
+app.post('/remove', handleRemove)
+app.post('/update', handleModify)
 
 app.get('/data', handleGetAll);
 

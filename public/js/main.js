@@ -13,23 +13,24 @@ const loadClass = function ( ) {
     }
   } else {
     const data = JSON.parse(dropdown.value)
-    document.getElementById('className2').value = data.Name
-    document.getElementById('classCode2').value = data.Code
-    document.getElementById('startTime2').value = data.StartTime
-    document.getElementById('endTime2').value = data.EndTime
+    document.getElementById('className2').value = data.name
+    document.getElementById('classCode2').value = data.code
+    document.getElementById('startTime2').value = data.start
+    document.getElementById('endTime2').value = data.end
     const days = ['monday2', 'tuesday2', 'wednesday2', 'thursday2', 'friday2', 'saturday2', 'sunday2']
     for(day of days) {
       document.getElementById(day).checked = ""
     }
-    Object.values(data.Days).forEach( day => {
+    Object.keys(data).forEach( day => {
       switch(day) {
-        case 'M': document.getElementById('monday2').checked = "checked"; break;
-        case 'T': document.getElementById('tuesday2').checked = "checked"; break;
-        case 'W': document.getElementById('wednesday2').checked = "checked"; break;
-        case 'Th': document.getElementById('thursday2').checked = "checked"; break;
-        case 'F': document.getElementById('friday2').checked = "checked"; break;
-        case 'Sa': document.getElementById('saturday2').checked = "checked"; break;
-        case 'Su': document.getElementById('sunday2').checked = "checked"; break;
+        case 'monday': document.getElementById('monday2').checked = "checked"; break;
+        case 'tuesday': document.getElementById('tuesday2').checked = "checked"; break;
+        case 'wednesday': document.getElementById('wednesday2').checked = "checked"; break;
+        case 'thursday': document.getElementById('thursday2').checked = "checked"; break;
+        case 'Friday': document.getElementById('friday2').checked = "checked"; break;
+        case 'saturday': document.getElementById('saturday2').checked = "checked"; break;
+        case 'sunday': document.getElementById('sunday2').checked = "checked"; break;
+        default: break;
       }
     })
   }
@@ -43,7 +44,7 @@ const addClassesTo = async function ( dropdown , data) {
   for(c of data) {
     let opt = document.createElement('option')
     opt.value = JSON.stringify(c)
-    opt.innerHTML = c.Name
+    opt.innerHTML = c.name
     if(!selected) {
       opt.selected = "selected"
       selected = true
@@ -53,7 +54,6 @@ const addClassesTo = async function ( dropdown , data) {
 }
 
 window.onload = async function () {
-  let username = 'in progress'
 
   const response = await fetch( '/data', {
     method:'GET'
@@ -63,17 +63,19 @@ window.onload = async function () {
 
   console.log('data: ' + JSON.stringify(data));
 
+  const classes = data.schedules
+
   // display the schedule
-  // displaySchedule(data)
+  displaySchedule(classes)
 
   // set up dropdowns
-  // addClassesTo(document.getElementById("classSelect"), data).then(showClass)
-  // addClassesTo(document.getElementById("classModifySelect", data)).then(loadClass)
+  addClassesTo(document.getElementById("classSelect"), classes).then(showClass)
+  addClassesTo(document.getElementById("classModifySelect"), classes).then(loadClass)
 
-  // removeDropdown.onchange = showClass
-  // modifyDropdown.onchange = loadClass
+  document.getElementById("classSelect").onchange = showClass
+  document.getElementById("classModifySelect").onchange = loadClass
 
   // display the username
-  document.getElementById('usernameDisplay').innerHTML = username;
+  document.getElementById('usernameDisplay').innerHTML = data.username;
 }
 

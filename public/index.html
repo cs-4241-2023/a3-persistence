@@ -18,13 +18,23 @@
     <h1>Login</h1>
     </header>
 
-    <main>
+    <main class="login">
         <div class="grid-row">
+          <div id="middleContent" class="column">
             <form method="POST" action="/login">
-              <input type='text' name='username'>
-              <input type='password' name='password'>
-              <input type='submit' id="submitLogin">
+              <div class="grid-row">
+                <label for="username">Username: </label>
+                <input type='text' name='username' id="username">
+              </div>
+              <div class="grid-row">
+                <label for="password">Password: </label>
+                <input type='password' name='password' id="password">
+              </div>
+              <div class="grid-row">
+                <button type='submit' id="submitLogin">Login</button>
+              </div>
             </form>
+          </div>
           </div>        
     </main>
 

@@ -120,9 +120,10 @@ fieldset label {
   margin-right: 20px;
 }
 
-.h1 {
-  margin-right: -20px;
-}
+/* .h1 {
+  text-align: center;
+  padding-left: 20px
+} */
 
 /* Schedule Display */
 
@@ -134,3 +135,20 @@ fieldset label {
 #dataView th {
   padding: 5px 5px 10px 10px;
 }
+
+#dataView, #dataView th, #dataView td {
+  border: white solid 1px;
+}
+
+.login .grid-row {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.login button {
+  margin-top: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+

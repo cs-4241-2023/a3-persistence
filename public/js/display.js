@@ -1,13 +1,13 @@
 function displaySchedule(data) {
     // make the headers
     const daysOfWeek = {
-        Su: "Sunday",
-        M: "Monday",
-        T: "Tuesday",
-        W: "Wednesday",
-        Th: "Thursday",
-        F: "Friday",
-        Sa: "Saturday"
+        sunday: "Sunday",
+        monday: "Monday",
+        tuesday: "Tuesday",
+        wednesday: "Wednesday",
+        thursday: "Thursday",
+        friday: "Friday",
+        saturday: "Saturday"
     };
       
     var table = document.getElementById('dataView')
@@ -25,37 +25,50 @@ function displaySchedule(data) {
 
     // organize by day / time
     const schedule = {
-        Su: [],
-        M: [],
-        T: [],
-        W: [],
-        Th: [],
-        F: [],
-        Sa: []
+        sunday: [],
+        monday: [],
+        tuesday: [],
+        wednesday: [],
+        thursday: [],
+        friday: [],
+        saturday: []
       };
       
       
-      // organize the data by time and day
-    for(obj of data) {
-        Object.values(obj.Days).forEach( day => {
+    // organize the data by time and day
+    // get each class
+    for(obj of data) {      
+        // go through each field in a class
+        Object.keys(obj).forEach(key => {
+            // if key is a day
+            if(daysOfWeek.hasOwnProperty(key.toString())) {
+                // get the day
+                const day = key.toString();
 
-            // compare the times and then organize
-            let i = 0
-            const start1 = new Date('1970-01-01T' + obj.StartTime + ":00")
-            for(obj2 of schedule[day]) {
-                const start2 = new Date('1970-01-01T' + obj2.StartTime + ":00")
-                if(start1 - start2 < 0) {
-                    break;
+                // compare the times and then organize
+
+                // get the index the time should go
+                let i = 0;
+                const start1 = new Date('1970-01-01T' + obj.start + ":00")
+                for(obj2 of schedule[day]) {
+                    const start2 = new Date('1970-01-01T' + obj2.end + ":00")
+                    if(start1 - start2 < 0) {
+                        break;
+                    }
+                    i++
                 }
-                i++
+                
+                // add to the schedule at the proper index
+                const temp = schedule[day].slice(0, i)
+                temp.push(obj)
+                for(el of schedule[day].slice(i)) {
+                    temp.push(el)
+                }
+                schedule[day] = temp
+
             }
-            const temp = schedule[day].slice(0, i)
-            temp.push(obj)
-            for(el of schedule[day].slice(i)) {
-                temp.push(el)
-            }
-            schedule[day] = temp
-        });
+        })
+        // }
     }
 
     let day = 0
@@ -91,13 +104,28 @@ function classDisplay(classObj, showDay=false) {
         box.appendChild(el)
     }
     
-    add('h2', classObj.Name)
-    add('p', classObj.Code)
-    add('p', classObj.StartTime + " - " + classObj.EndTime)
+    add('h2', classObj.name)
+    add('p', classObj.code)
+    add('p', classObj.start + " - " + classObj.end)
     if(showDay) {
-        add('p', Object.values(classObj.Days).toString())
+        const daysOfWeekLower = {
+            Su: "sunday",
+            M: "monday",
+            T: "tuesday",
+            W: "wednesday",
+            Th: "thursday",
+            F: "friday",
+            Sa: "saturday"
+        };
+        const days = []
+        Object.keys(daysOfWeekLower).forEach(day => {
+            if(classObj.hasOwnProperty(daysOfWeekLower[day])) {
+                days.push(day.toString())
+            }
+        })
+        add('p', Object.values(days).toString())
     }
-    add('p', classObj.Length + ` hour${classObj.Length === 1 ? '' : 's'}`)
+    add('p', classObj.duration + ` hour${classObj.duration === 1 ? '' : 's'}`)
 
     return box
 }
