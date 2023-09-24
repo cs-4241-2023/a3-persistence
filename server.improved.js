@@ -3,7 +3,8 @@ const express = require('express'),
   cookie  = require( 'cookie-session' ),
   app = express()
   passport = require('passport'),
-  LocalStrategy = require('passport-local')
+  LocalStrategy = require('passport-local'),
+  GitHubStrategy = require('passport-github').Strategy
 
 require('dotenv').config()
 let last_updated = Date.now()
@@ -22,6 +23,11 @@ async function run() {
 }
 run()
 
+app.use( cookie({
+  name: 'session',
+  keys: ['secure_key1', 'secure_key2']
+}))
+
 passport.serializeUser(function(user, done) {
   done(null, user);
 });
@@ -34,34 +40,47 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
   const result = await user_collection.find({username, password}).toArray()
 
   if(result.length > 0) {
-    return cb(null, result[0]);
+    return cb(null, result[0].username)
   } else {
     return cb(null, false, { message: 'Incorrect username or password.' })
   }
 }))
 
+passport.use(new GitHubStrategy({
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/oauth2/github/redirect"
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    return cb(null, profile.username)
+  }
+))
+
 app.use( express.json() )
 app.use( express.urlencoded({ extended:true }) )
 
-app.use( cookie({
-  name: 'session',
-  keys: ['secure_key1', 'secure_key2']
-}))
-
-app.post( '/login', passport.authenticate('local', { failureRedirect: '/index.html', failureMessage: true }),
+app.post( '/login/local', passport.authenticate('local', { failureRedirect: '/index.html', failureMessage: true }),
   function(req, res) {
     req.session.login = true
-    req.session.user = req.body.username;
-    res.redirect( 'main.html' )
+    res.redirect( '/main.html' )
+  }
+)
+
+app.get('/login/github', passport.authenticate('github'))
+
+app.get('/oauth2/github/redirect', passport.authenticate('github', { failureRedirect: '/index.html' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    req.session.login = true
+    res.redirect('/main.html')
   }
 )
 
 app.use( function( req,res,next) {
+  let contain_html = req.url.includes('html')
   let contain_index = req.url.includes('index')
-  let contain_css = req.url.includes('css')
-  let contain_js = req.url.includes('js')
-  let contain_robot = req.url.includes('robots.txt') // avoids failing SEO tests in lighthouse
-  if( req.session.login !== true && !contain_index && !contain_css && !contain_js && !contain_robot ) {
+  
+  if( req.session.login !== true && contain_html && !contain_index ) {
     res.redirect( '/index.html' )
   } else {
     next()
@@ -83,7 +102,7 @@ app.get( '/last_updated', (req, res) => {
 })
 
 app.get( '/data', async (req, res) => {
-  const docs = await data_collection.find({username: req.session.user}).toArray()
+  const docs = await data_collection.find({username: req.session.passport.user}).toArray()
   res.json( docs )
 })
 
