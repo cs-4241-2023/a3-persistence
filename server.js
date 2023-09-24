@@ -10,16 +10,11 @@ const GitHubStrategy = require('passport-github').Strategy;
 const app = express();
 const port = 3000;
 
-const uri = "mongodb+srv://doapps-4ec1f246-ba4d-4013-aed9-b45e89750f81:l149ko35X086aHQj@db-mongodb-nyc1-53233-0b371da4.mongo.ondigitalocean.com/Tasks?authSource=admin&tls=true";
-
-mongoose.connect(uri, {
+const uri_tasks = "mongodb+srv://doapps-4ec1f246-ba4d-4013-aed9-b45e89750f81:l149ko35X086aHQj@db-mongodb-nyc1-53233-0b371da4.mongo.ondigitalocean.com/Tasks?authSource=admin&tls=true";
+var conn = mongoose.createConnection(uri_tasks, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   ssl: true
-}).then(() => {
-  console.log('Connected to MongoDB');
-}).catch(err => {
-  console.error('Failed to connect to MongoDB', err);
 });
 
 const taskSchema = new mongoose.Schema({
@@ -31,7 +26,7 @@ const taskSchema = new mongoose.Schema({
   userId: String
 });
 
-const Task = mongoose.model('Task', taskSchema);
+const Task = conn.model('Task', taskSchema);
 
 app.use(bodyParser.json());
 
