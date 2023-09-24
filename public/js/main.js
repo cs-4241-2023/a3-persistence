@@ -12,6 +12,7 @@ String.prototype.hashCode = function() {
 }
 
 let form, taskInput, dateInput, submitButton;
+let usernameInput, passwordInput, signInButton, signUpButton;
 let update_id = "";
 let user = "";
 
@@ -21,6 +22,17 @@ function checkValidity() {
   }
   else {
     submitButton.setAttribute('disabled', 'true');
+  }
+}
+
+function checkValidityLogin() {
+  if (usernameInput.validity.valid && passwordInput.validity.valid) {
+    signInButton.removeAttribute('disabled');
+    signUpButton.removeAttribute('disabled');
+  }
+  else {
+    signInButton.setAttribute('disabled', 'true');
+    signUpButton.setAttribute('disabled', 'true');
   }
 }
 
@@ -133,7 +145,7 @@ const submit = async function( event ) {
   console.log('text:', text);
 }
 
-const login = async function(event) {
+const signin = async function(event) {
   event.preventDefault();
 
   const usernameInput = document.querySelector("#usernameInput");
@@ -167,13 +179,16 @@ const login = async function(event) {
     const tasks = JSON.parse(text);
   
     loadTasks(tasks);
+
+    loginButton.classList.remove('is-link');
+    loginButton.classList.add('is-danger');
   } catch (error) {
     const modalErrorMessage = document.querySelector("#errorMessage");
     modalErrorMessage.innerText = postText;
   }
 }
 
-const signin = async function(event) {
+const signup = async function(event) {
   event.preventDefault();
 
   const usernameInput = document.querySelector("#usernameInput");
@@ -207,6 +222,9 @@ const signin = async function(event) {
     const tasks = JSON.parse(text);
   
     loadTasks(tasks);
+
+    loginButton.classList.remove('is-link');
+    loginButton.classList.add('is-danger');
   } catch (error) {
     const modalErrorMessage = document.querySelector("#errorMessage");
     modalErrorMessage.innerText = postText;
@@ -217,28 +235,53 @@ window.onload = function() {
   const button = document.querySelector("#addTaskButton");
   button.onclick = submit;
 
-  const signInButton = document.querySelector("#signInButton");
-  signInButton.onclick = login;
+  signInButton = document.querySelector("#signInButton");
+  signInButton.onclick = signin;
 
-  const signUpButton = document.querySelector("#signUpButton");
-  signUpButton.onclick = signin;
+  signUpButton = document.querySelector("#signUpButton");
+  signUpButton.onclick = signup;
 
   form = document.querySelector('.inputs');
   taskInput = document.querySelector('#taskName');
   dateInput = document.querySelector('#dueDate');
   submitButton = document.querySelector('#addTaskButton');
 
+  usernameInput = document.querySelector("#usernameInput");
+  passwordInput = document.querySelector("#passwordInput");
+
   taskInput.addEventListener('input', checkValidity);
   dateInput.addEventListener('input', checkValidity);
+
+  usernameInput.addEventListener('input', checkValidityLogin);
+  passwordInput.addEventListener('input', checkValidityLogin);
 
   const modal = document.querySelector('#modal');
 
   const loginButton = document.querySelector("#loginButton");
-  loginButton.onclick = function() {
-    const modalErrorMessage = document.querySelector("#errorMessage");
-    modalErrorMessage.innerHTML = "";
+  loginButton.onclick = async function() {
+    if (loginButton.innerText === "Log In") {
+      const modalErrorMessage = document.querySelector("#errorMessage");
+      modalErrorMessage.innerHTML = "";
+  
+      modal.style.display = "block";
+    }
+    else {
+      user = "";
 
-    modal.style.display = "block";
+      const getResponse = await fetch(`/getTasks/${user}`, {
+        method: 'GET',
+      });
+    
+      const text = await getResponse.text();
+      const tasks = JSON.parse(text);
+    
+      loadTasks(tasks);
+
+      loginButton.innerText = "Log In";
+
+      loginButton.classList.add('is-link');
+      loginButton.classList.remove('is-danger');
+    }
   };
 
   const closeButton = document.querySelector('.close');
