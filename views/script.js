@@ -74,6 +74,8 @@ function CreateFirstRow(){
     row.append(CreateHeaderCell("Creation Date"));
     row.append(CreateHeaderCell("Deadline"));
     row.append(CreateHeaderCell("Priority"));
+    row.append(CreateHeaderCell("Edit"));
+    row.append(CreateHeaderCell("Delete"));
     return row;
 }
 
@@ -83,12 +85,14 @@ function CreateHeaderCell(cellInfo){
     return cell;
 }
 
-function CreateRow(task,creationDate,deadline,priority){
+function CreateRow(taskID,task,creationDate,deadline,priority){
     let row=document.createElement("tr");
     row.append(CreateCell(task));
     row.append(CreateCell(creationDate));
     row.append(CreateCell(deadline));
     row.append(CreateCell(priority));
+    row.append(CreateEditButton(taskID));
+    row.append(CreateDeleteButton(taskID));
     return row;
 }
 
@@ -106,6 +110,59 @@ function CreateCell(cellInfo){
     return cell;
 }
 
+function CreateDeleteButton(taskID){
+    let id = JSON.stringify( taskID );
+    const cell = document.createElement('td');
+    cell.className="delete";
+
+    const button=document.createElement('button');
+    button.className="delete-button";
+    button.ariaLabel="Delete Task Button";
+    button.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+    button.onclick= (e) => {
+        deleteData(id);
+    }
+    cell.append(button);
+    return cell;
+}
+
+const deleteData = (taskID) => {
+    const body = taskID;
+
+    fetch( "/delete", {
+        body
+    }).then(() =>{
+        window.location.reload();
+    })
+}
+
+function CreateEditButton(taskID){
+    let id = JSON.stringify( taskID );
+    const cell = document.createElement('td');
+    cell.className="edit";
+
+    const button=document.createElement('button');
+    button.className="edit-button";
+    button.ariaLabel="Edit Task Button";
+    button.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
+    button.onclick= (e) => {
+        editData(id);
+    }
+    cell.append(button);
+    return cell;
+}
+
+const editData = (taskID, task, creationDate,deadline) => {
+    let data = {_id:taskID,task:task,creationDate:creationDate,deadline:deadline};
+
+    let body=JSON.stringify(data);
+    fetch( "/edit", {
+        body
+    }).then(() =>{
+        window.location.reload();
+    })
+}
+
 function LoadFromServer(data){
     console.log("Load from server")
     const table=document.createElement("table");
@@ -114,19 +171,14 @@ function LoadFromServer(data){
 
     table.append(firstRow);
     if(Array.isArray(data)){
-        console.log("Is Array")
-        console.log(data[0].toString())
         data.forEach((item)=>{
-            console.log(typeof input)
-            let row=CreateRow(item.task,
+            let row=CreateRow(item._id,item.task,
                 item.creationDate,
                 item.deadline,
                 JudgePriority(item.deadline),
                 item.toString());
             table.append(row);
         });
-    }else{
-        console.log("Not Array")
     }
 
     let htmlTable=document.getElementById("task-table");

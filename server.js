@@ -39,51 +39,64 @@ app.get( '/', (req,res) => {
 })
 // #endregion
 
-// Cookies
-app.use( cookie({
-    name: 'session',
-    keys: ['key1', 'key2']
-}))
 
 
 app.post( '/login', async (req, res) => {
     console.log("Login post");
-    // express.urlencoded will put your key value pairs
-    // into an object, where the key is the name of each
-    // form field and the value is whatever the user entered
     userID = await checkLoginInfo(req, res);
 
     if(userID !== null){
         req.session.login = true;
         res.redirect('app.html');
     }else{
-        console.log("Fail")
-        req.session.login = false;
+        console.log("User ID is null")
+        res.redirect('failedLogin.html');
     }
 })
+
+
+app.post( '/createAccount', async (req, res) => {
+    console.log("Create Account");
+    userID = await checkCreateAccount(req, res);
+
+    if(userID !== null && userID !== undefined){
+        req.session.login = true;
+        res.redirect('app.html');
+    }else{
+        console.log("User ID is null")
+    }
+})
+
+const checkCreateAccount=async (req,res)=>{
+    let userCollection=db.collection( process.env.DB_USERS );
+    let info=await userCollection.findOne({'username': req.body.Username});
+    if(info === null || info === undefined){
+        console.log("Account not found, making one")
+        let acc = {'username': req.body.Username, 'password': req.body.Password};
+        return await userCollection.insertOne(acc);
+    }else{
+        res.sendFile(__dirname+'/views/failedSignup.html');
+    }
+}
+
 const checkLoginInfo=async (req, res)=>{
     let collection=db.collection( process.env.DB_USERS );
     let password = req.body.Password;
     let invalidInput = req.body.Username === null && password === null;
     if(!invalidInput){
+        console.log(req.body.Username+" "+req.body.Password)
         let info=await collection.findOne({'username': req.body.Username});
-
-        /*
-        for (let key in info){
-            console.log(key);
-        }*/
         if(info !== null){
             if(password===info.password){
-                console.log("Successful Login");
                 return info._id;
             }else{
+                console.log("Incorrect Password");
+                res.sendFile(__dirname+'/views/createAccount.html');
                 return null;
             }
         }else{
-            //Account not found so make one
-            console.log("Account not found, making one")
-            let acc = {'username': req.body.Username, 'password': req.body.Password};
-            return await collection.insertOne(acc);
+            console.log("No Account Found");
+            return null;
         }
     }
 }
@@ -91,14 +104,17 @@ const checkLoginInfo=async (req, res)=>{
 //Load Table
 app.get('/loadTasks',async (req, res) => {
     let collection=db.collection( process.env.DB_TASKS );
-    if (userID.toString() === process.env.ADMIN_ACCOUNT_ID) {
-        collection.find({ }).toArray().then( result => {
-            res.json( result )
-        } )
-    }else{
-        collection.find({userID:userID}).toArray().then( result => {
-            res.json( result )
-        }  )
+    if(userID!==null) {
+        if (userID.toString() === process.env.ADMIN_ACCOUNT_ID) {
+            console.log("ADMIN")
+            collection.find().toArray().then( result => {
+                res.json( result )
+            } )
+        }else{
+            collection.find({userID:userID}).toArray().then( result => {
+                res.json( result )
+            }  )
+        }
     }
 })
 
@@ -130,6 +146,10 @@ app.post( '/submit', express.json(), async (req, res) => {
         )
     }
     res.end();
+})
+
+app.post('/update',express.json(),(req,res)=>{
+
 })
 
 app.listen( 3000 )
