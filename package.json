@@ -1,0 +1,19 @@
+{
+  "name": "Recipe Logger",
+  "version": "2.0",
+  "description": "An app to save recipe information and edit it to keep track of food recipes.",
+  "author": "Adelynn Martin",
+  "scripts": {
+    "start": "node server.improved.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mime": "^3.0.0",
+    "mongodb": "^5.9.0",
+    "bulma": "^0.9.4",
+    "bcrypt": "^5.1.1"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
