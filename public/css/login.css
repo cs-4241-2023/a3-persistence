@@ -1,10 +1,8 @@
 body {
 	height:100vh;
 	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
 	box-sizing: border-box;
-	margin: 0;
+	background-color: #e0e0e0;
 }
 
 body > * {
@@ -23,7 +21,7 @@ main {
 	padding: 2em;
 	border: 1px solid black;
 	border-radius: 50px;
-	filter: drop-shadow(3mm 3mm 3mm gray);
+	filter: drop-shadow(1mm 1mm 2mm gray);
 	background-color: white;
 }
 
