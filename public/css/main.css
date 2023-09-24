@@ -1,0 +1,82 @@
+body {
+  background:#FFFADD;
+  color: #22668D;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
+
+.flex-text {
+  display: flex;
+  font-family: "Trirong", serif;
+  justify-content: center;
+}
+
+table, th, td {
+  border: 1px solid;
+  background-color: #FFCC70;
+  padding: 8px;
+  border-collapse: collapse;
+  font-family: "Courier Prime", normal;
+}
+
+th {
+  height: 70px;
+}
+
+td {
+  text-align: center;
+}
+
+span {
+  width: 50px;
+  height: 50px;
+}
+
+.tablebutton {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.center-flex {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+header{
+  display: flex;
+  justify-content: center;
+  font-family: "Trirong", serif;
+}
+
+p {
+  font-family: "Trirong", serif;
+}
+
+select, input {
+  color: #FFFADD;
+  background-color: #6bafc0;
+  font-family: "Courier Prime", normal;
+  width: 100%;
+  font-size: 15px;
+}
+
+form {
+  width: 380px;
+}
+
+button {
+  color: #FFFADD;
+  background-color: #6bafc0;
+  font-family: "Courier Prime", normal;
+  font-size: 25px;
+  width: 100%;
+  font-style: oblique;
+}
+

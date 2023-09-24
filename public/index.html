@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Courier+Prime">
+
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <header>
+      <h1>User Database</h1>
+    </header>
+    <div class="flex-container">
+      <form method="post">
+        <ul>
+          <p>
+            Create New User:
+          </p>
+          <p>
+            <label for="name">First Name:</label>
+            <input type="text" id="name" name="user_name" />
+          </p>
+          <p>
+            <label for="email">Last Name:</label>
+            <input type="email" id="email" name="user_email" />
+          </p>
+          <p>
+            <label for="type">Type:</label>
+            <select name="text" id="type">
+              <option value="Undergrad Student">Undergrad Student</option>
+              <option value="Graduate Student">Graduate Student</option>
+              <option value="Professor"> Professor</option>
+            </select>         
+          </p>
+
+          <p>
+            <label for="department">Department:</label>
+            <select name="text" id="department">
+              <option value="CS">Computer Science</option>
+              <option value="IMGD">Interactive Media and Game Design</option>
+              <option value="CHE">Chemical Engineering</option>
+              <option value="ECE">Electrical and Computer Engineering</option>
+              <option value="RBE">Robotics Engineering</option>
+              <option value="CE">Civil Engineering</option>
+              <option value="ME">Mechanical Engineering</option>
+              <option value="CH">Chemistry</option>
+              <option value="PH">Physics</option>
+              <option value="MA">Math</option>
+              <option value="AR">Art</option>
+              <option value="HI">History</option>
+              <option value="MU">Music</option>
+            </select>          
+          </p>
+            <button id="submitButton">Create new user</button>
+        </ul>
+      </form>
+      <span></span>
+      <div class="center-flex">
+        <p class="flex-text">------------ REGISTERED USERS ------------</p>
+            <table id="usertable">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>User Type</th>
+                  <th>Dept.</th>
+                </tr>
+              </thead>
+              <tbody id="usertablebody">
+              </tbody>
+            </table>
+            <button class="tablebutton" id="clearTableButton">Clear all users</button>
+        </div>
+    </div>
+  </body>
+</html>
