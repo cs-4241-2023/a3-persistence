@@ -58,27 +58,77 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
-
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
-
 passport.use(new GitHubStrategy({
   clientID: '46eed9c0b0d5d6d2692d',
   clientSecret: 'ff3757c5d09b21eb079a2b2e6b3036cd2d8dbee6',
   callbackURL: "https://a3colinm1215-m9bh3.ondigitalocean.app/auth/github/callback"
 },
-  function (accessToken, refreshToken, profile, cb) {
-    // Here you could potentially store the profile data in your database.
-    return cb(null, profile);
-  }
+async (accessToken, refreshToken, profile, cb) => {
+    try {
+        let user = await User.findOne({ email: profile.emails[0].value });
+
+        if (!user) {
+            user = new User({
+                username: profile.username,
+                email: profile.emails[0].value,
+                github: true
+            });
+            await user.save();
+        } else if (!user.github) {
+            user.github = true;
+            await user.save();
+        }
+        cb(null, user);
+    } catch (err) {
+        cb(err, null);
+    }
+}
 ));
 
+passport.use(new LocalStrategy(async (username, password, done) => {
+  try {
+      const user = await User.findOne({ username: username });
+      if (!user) {
+          return done(null, false, { message: 'Incorrect username.' });
+      }
+      const isValid = await bcrypt.compare(password, user.password);
+      if (!isValid) {
+          return done(null, false, { message: 'Incorrect password.' });
+      }
+      return done(null, user);
+  } catch (e) {
+      return done(e);
+  }
+}));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+      const user = await User.findById(id);
+      done(null, user);
+  } catch (e) {
+      done(e, null);
+  }
+});
+
+app.post('/login', passport.authenticate('local', {
+  successRedirect: '/dashboard',
+  failureRedirect: '/login',
+  failureFlash: true
+}));
+
+app.get('/dashboard', (req, res) => {
+  if (req.isAuthenticated()) {
+      res.redirect('/index.html');
+  } else {
+      res.redirect('/login');
+  }
+});
+
 app.use(function (req, res, next) {
-  console.log("use");
   if (req.user || req.path === '/login.html' || req.path === '/auth/github' || req.path.includes('/auth/github/callback') || req.path.includes('/robots.txt')) {
     next();
   }
@@ -90,15 +140,14 @@ app.use(function (req, res, next) {
 app.use(express.static('public')); // Serve static files from the public directory
 
 // Authentication routes
-app.get('/auth/github', passport.authenticate('github'));
+app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
 
 app.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/' }),
-  function (req, res) {
-    console.log("/auth/github/callback");
-    // Successful authentication.
-    res.redirect('/index.html');
-  });
+  passport.authenticate('github', {
+    successRedirect: '/dashboard',
+    failureRedirect: '/login',
+    failureFlash: true
+}));
 
 // Logout route
 app.get('/logout', (req, res) => {
