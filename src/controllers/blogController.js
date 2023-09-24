@@ -3,7 +3,7 @@ const BlogPost = require('../models/BlogPost');
 // Controller functions
 exports.getAllBlogPosts = async (req, res) => {
     try {
-        const blogPosts = await BlogPost.find();
+        const blogPosts = await BlogPost.find({ githubId: req.user.githubId });
         res.status(200).json(blogPosts);
     } catch (error) {
         res.status(500).send('Internal Server Error');
@@ -13,6 +13,7 @@ exports.getAllBlogPosts = async (req, res) => {
 exports.createBlogPost = async (req, res) => {
     const blogPostData = req.body;
     blogPostData.readingTime = calculateReadingTime(blogPostData.content);
+    blogPostData.githubId = req.user.githubId;
 
     try {
         const newBlogPost = new BlogPost(blogPostData);

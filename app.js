@@ -7,6 +7,8 @@ const app = express();
 const port = 3000;
 require('dotenv').config();
 
+const User = require('./src/models/User');
+
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -19,10 +21,24 @@ passport.use(new GitHubStrategy({
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: `${process.env.BASE_URL}/auth/github/callback`, // Update BASE_URL in your .env file
 },
-    (accessToken, refreshToken, profile, done) => {
-        // This callback function is called when a user is authenticated
-        // You can save the user data to your database or perform other actions here
-        return done(null, profile);
+    async (accessToken, refreshToken, profile, done) => {
+        try {
+            // Check if the user already exists in the database
+            let user = await User.findOne({ githubId: profile.id });
+
+            if (!user) {
+                user = new User({
+                    githubId: profile.id,
+                    username: profile.username,
+                });
+
+                await user.save();
+            }
+
+            return done(null, user);
+        } catch (err) {
+            return done(err);
+        }
     }
 ));
 
