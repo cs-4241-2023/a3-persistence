@@ -1,0 +1,90 @@
+body {
+  background: rgb(236, 210, 210);
+  color: black; 
+  font-family: 'Cormorant Garamond', serif;
+  margin-left: 50px;
+
+}
+h1{
+  color:black;
+}
+
+
+.userInput{
+  display:grid; 
+ gap:1rem;
+  grid-template-columns: repeat(4, 20%);
+
+} 
+
+.userLibrary {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, 2fr); 
+  margin-right: 170px;
+
+  
+}
+
+li {
+  
+  padding: 10px;
+  background-color: #ca91b5;
+  border: 1px solid #d49898;
+  border-radius: 5px;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+  margin-bottom: 10px;
+  position: relative;
+  
+}
+
+.userLibrary .delete:hover {
+  background-color: #c0392b;
+}
+button {
+	background: #8d6be3;
+
+	color: white;
+	font-size: 15px;
+	width: 60px;
+	margin: 10px 0 0;
+  font-family: 'Cormorant Garamond', serif;
+	cursor: pointer;
+  border: 5px;
+  border-radius: 3px;
+  margin-top: 10px;
+  margin-bottom:10px;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+b {
+  color:red; 
+  
+
+}
+
+input[type="text"] {
+	margin: 0;
+	font-size: 15px;
+	line-height: 15px;
+	height: 15px;
+	padding: 5px;
+	border: 1px solid #ddd;
+	background: #fff;
+	border-radius: 6px;
+  font-family: 'Cormorant Garamond', serif;
+	color: #888;
+}
