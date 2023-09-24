@@ -1,100 +1,79 @@
-const http = require("http"),
-  fs = require("fs"),
-  // IMPORTANT: you must run `npm install` in the directory for this assignment
-  // to install the mime library if you're testing this on your local machine.
-  // However, Glitch will install it automatically by looking in your package.json
-  // file.
-  mime = require("mime"),
-  dir = "public/",
-  port = 3000;
+const express = require('express');
+const fs = require('fs');
+const mime = require('mime');
+const path = require('path');
+
+const app = express();
+const port = 3000;
 
 let tasks = [];
 
-const server = http.createServer(function (request, response) {
-  if (request.method === "GET") {
-    handleGet(request, response);
-  } else if (request.method === "POST") {
-    handlePost(request, response);
-  }
+app.use(express.json()); // Middleware to parse JSON request bodies
+
+// Log all incoming requests
+app.use((req, res, next) => {
+    console.log(`Received ${req.method} request for: ${req.url}`);
+    next();
 });
 
-const handleGet = function (request, response) {
-  const filename = dir + request.url.slice(1);
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-  if (request.url === "/") {
-    sendFile(response, "src/pages/index.html");
-  } else if (request.url === "/getTasks") {
-    response.writeHead(200, { "Content-Type": "application/json" });
-    response.end(JSON.stringify(tasks));
-  } else {
-    console.log("Sending File", filename);
-    sendFile(response, filename);
-  }
-};
+// Handle GET requests
+app.get('/', (req, res) => {
+    console.log('Serving index.html');
+    res.sendFile(path.join(__dirname, 'src/pages/index.html'));
+});
 
-const handlePost = function (request, response) {
-  console.log("Received POST request for:", request.url);
+app.get('/getTasks', (req, res) => {
+    console.log('Sending tasks:', tasks);
+    res.json(tasks);
+});
 
-  let dataString = "";
-
-  request.on("data", function (data) {
-    dataString += data;
-  });
-
-  request.on("end", function () {
-    const data = JSON.parse(dataString);
-
-    if (request.url === "/addTask") {
-      const currentDate = new Date();
-      switch (data.priority) {
-        case "high":
-          currentDate.setDate(currentDate.getDate() + 1);
-          break;
-        case "medium":
-          currentDate.setDate(currentDate.getDate() + 3);
-          break;
-        case "low":
-          currentDate.setDate(currentDate.getDate() + 7);
-          break;
-      }
-      data.dueDate = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
-
-      tasks.push(data);
-
-      response.writeHead(200, { "Content-Type": "application/json" });
-      response.end(JSON.stringify({ success: true }));
-    } else if (request.url === "/deleteTask") {
-        const taskIndex = tasks.findIndex(t => t.task === data.task && t.dueDate === data.dueDate);
-        if (taskIndex !== -1) {
-            tasks.splice(taskIndex, 1);
-            response.writeHead(200, { "Content-Type": "application/json" });
-            response.end(JSON.stringify({ success: true }));
-        } else {
-            response.writeHead(404, { "Content-Type": "text/plain" });
-            response.end("Task not found.");
-        }
-    } else {
-      response.writeHead(404, { "Content-Type": "text/plain" });
-      response.end("Endpoint not recognized.");
+// Handle POST requests
+app.post('/addTask', (req, res) => {
+    const data = req.body;
+    console.log('Received task data for addition:', data);
+    
+    const currentDate = new Date();
+    switch (data.priority) {
+        case 'high':
+            currentDate.setDate(currentDate.getDate() + 1);
+            break;
+        case 'medium':
+            currentDate.setDate(currentDate.getDate() + 3);
+            break;
+        case 'low':
+            currentDate.setDate(currentDate.getDate() + 7);
+            break;
     }
-  });
-};
+    data.dueDate = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+    tasks.push(data);
+    console.log('Task added. Current tasks:', tasks);
+    res.json({ success: true });
+});
 
-const sendFile = function (response, filename) {
-  const type = mime.getType(filename);
-
-  fs.readFile(filename, function (err, content) {
-    // if the error = null, then we've loaded the file successfully
-    if (err === null) {
-      // status code: 200
-      response.writeHeader(200, { "Content-Type": type });
-      response.end(content);
+app.post('/deleteTask', (req, res) => {
+    const data = req.body;
+    console.log('Received task data for deletion:', data);
+    
+    const taskIndex = tasks.findIndex(t => t.task === data.task && t.dueDate === data.dueDate);
+    if (taskIndex !== -1) {
+        tasks.splice(taskIndex, 1);
+        console.log('Task deleted. Current tasks:', tasks);
+        res.json({ success: true });
     } else {
-      // file not found, error code 404
-      response.writeHeader(404);
-      response.end("404 Error: File Not Found");
+        console.log('Task not found for deletion.');
+        res.status(404).send('Task not found.');
     }
-  });
-};
+});
 
-server.listen(process.env.PORT || port);
+// Handle 404 for unrecognized endpoints
+app.use((req, res) => {
+    console.log('404 Error: Endpoint not recognized:', req.url);
+    res.status(404).send('404 Error: File Not Found');
+});
+
+app.listen(process.env.PORT || port, () => {
+    console.log(`Server started on http://localhost:${port}`);
+});
