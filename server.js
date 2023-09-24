@@ -7,6 +7,10 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+
+
+const bcrypt = require('bcrypt');
 const app = express();
 const port = 3000;
 
