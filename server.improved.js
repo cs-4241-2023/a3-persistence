@@ -7,10 +7,35 @@ const app = express();
 
 const port = 3000
 
+const uri = "mongodb+srv://ngheineman:assignment3@fictiontracker.wlfu0nv.mongodb.net/?retryWrites=true&w=majority";
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    
+  } finally {
+    // Ensures that the client will close when you finish/error
+    //await client.close();
+  }
+}
+run().catch(console.dir);
 
 
 
 
+// https://a3-nicholas-heineman.glitch.me/
 
 
 let accountName = ''
@@ -28,13 +53,6 @@ ClientID: f3f3f475744e79044ed5
 ClientSecret: ea6c8474ad873ea2a31350a4428537e6ebfe90b0
 */
 
-const users = [
-  {
-    id: 'ngheineman',
-    username: 'ngheineman',
-    displayName: 'Nancy Heineman',
-  },
-];
 
 //OAuth
 app.use(session({
@@ -44,16 +62,26 @@ app.use(session({
 }));
 
 
+
 passport.use(new GitHubStrategy({
   clientID: 'f3f3f475744e79044ed5',
   clientSecret: 'ea6c8474ad873ea2a31350a4428537e6ebfe90b0',
-  callbackURL: 'https://fiction-character-tracker.glitch.me/auth/github/callback',
-}, (accessToken, refreshToken, profile, done) => {
-  const user = users.find(user => user.id === 'ngheineman'); //change
+  callbackURL: 'http://localhost:3000/auth/github/callback',
+}, async (accessToken, refreshToken, profile, done) => {
+
+
+  const user = await client.db('world-data').collection('githubUsers').findOne({user : profile.id})
+
+  accountName = profile.username;
+
+
+  //const user = users.find(user => user.id === 'ngheineman'); //change
 
   if (!user) {
-    return done(new Error('User not found'));
-  }
+    const document = {user : profile.id}
+    const newUser = await client.db('world-data').collection('githubUsers').insertOne(document)
+    return done(null, document);
+  } 
 
   // Save the user object in the session
   return done(null, user);
@@ -61,13 +89,13 @@ passport.use(new GitHubStrategy({
 
 // Serialize the user to store it in the session
 passport.serializeUser((user, done) => {
-  done(null, user.id); // Use the GitHub username as the unique identifier
+  done(null, user.user); // Use the GitHub id as the unique identifier
 });
 
 // Deserialize the user when retrieving it from the session
-passport.deserializeUser((id, done) => {
+passport.deserializeUser(async (id, done) => {
   // Find the user by GitHub username
-  const user = users.find(user => user.id === id);
+  const user = await client.db('world-data').collection('githubUsers').findOne({user : id})
 
   if (!user) {
     return done(new Error('User not found'));
@@ -446,30 +474,7 @@ function AssignEra(timelineData, value) {
   return value.era;
 }
 
-const uri = "mongodb+srv://ngheineman:assignment3@fictiontracker.wlfu0nv.mongodb.net/?retryWrites=true&w=majority";
-// Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    
-  } finally {
-    // Ensures that the client will close when you finish/error
-    //await client.close();
-  }
-}
-run().catch(console.dir);
 
 
 app.listen(process.env.PORT || port, () => console.log("server running"));
