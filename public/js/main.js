@@ -319,6 +319,12 @@ const update = (data) => {
   hideModifyView();
 };
 
+const showLoginPopup = function() {
+  const popUp = document.getElementById("loginPopup");
+  popUp.classList.toggle("show")
+  setTimeout(() => {popUp.classList.toggle("show")} , 1000)
+}
+
 window.onload = function () {
   document.querySelector("#taskForm").onsubmit = submit;
   document.querySelector("#deleteButton").onclick = showDeleteButtons;
@@ -328,4 +334,6 @@ window.onload = function () {
   console.log("loaded");
   setTodayMax(document.getElementById("start-date-input"));
   firstLoad();
+
+  showLoginPopup();
 };

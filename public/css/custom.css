@@ -1,0 +1,131 @@
+[data-theme=light],
+:root:not([data-theme=dark]) {
+    --background-color: #fff;
+    --color: hsl(205, 20%, 32%);
+    --h1-color: hsl(205, 30%, 15%);
+    --h2-color: #24333e;
+    --h3-color: hsl(205, 25%, 23%);
+    --h4-color: #374956;
+    --h5-color: hsl(205, 20%, 32%);
+    --h6-color: #4d606d;
+    --muted-color: hsl(205, 10%, 50%);
+    --muted-border-color: hsl(205, 20%, 94%);
+    --primary: hsl(196, 81.2%, 27.1%);
+    --primary-hover: hsl(195, 90%, 32%);
+    --primary-focus: rgba(16, 149, 193, 0.125);
+    --primary-inverse: #fff;
+    --secondary: hsl(205, 15%, 41%);
+    --secondary-hover: hsl(205, 20%, 32%);
+    --secondary-focus: rgba(89, 107, 120, 0.125);
+    --secondary-inverse: #fff;
+    --contrast: hsl(205, 30%, 15%);
+    --contrast-hover: #000;
+    --contrast-focus: rgba(89, 107, 120, 0.125);
+    --contrast-inverse: #fff;
+    --mark-background-color: #fff2ca;
+    --mark-color: #543a26;
+    --ins-color: #388e3c;
+    --del-color: #c62828;
+    --button-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    --button-hover-box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    --form-element-background-color: transparent;
+    --form-element-border-color: hsl(205, 14%, 68%);
+    --form-element-color: var(--color);
+    --form-element-placeholder-color: var(--muted-color);
+    --form-element-active-background-color: transparent;
+    --form-element-active-border-color: var(--primary);
+    --form-element-focus-color: var(--primary-focus);
+    --form-element-disabled-background-color: hsl(205, 18%, 86%);
+    --form-element-disabled-border-color: hsl(205, 14%, 68%);
+    --form-element-disabled-opacity: 0.5;
+    --form-element-invalid-border-color: #c62828;
+    --form-element-invalid-active-border-color: #d32f2f;
+    --form-element-invalid-focus-color: rgba(211, 47, 47, 0.125);
+    --form-element-valid-border-color: #388e3c;
+    --form-element-valid-active-border-color: #43a047;
+    --form-element-valid-focus-color: rgba(67, 160, 71, 0.125);
+    --table-border-color: var(--muted-border-color);
+    --table-row-stripped-background-color: #f6f8f9;
+}
+
+#inputDiv {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#controllerDiv {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding: 50px;
+}
+
+#loginDiv {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 100vh;
+    margin: auto;
+}
+
+/* Popup container - can be anything you want */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  /* The actual popup */
+  .popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 50%;
+    margin-left: -80px;
+  }
+  
+  /* Popup arrow */
+  .popup .popuptext::after {
+    content: "";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent #555 transparent;
+  }
+  
+  /* Toggle this class - hide and show the popup */
+  .popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+  }
+  
+  /* Add animation (fade in the popup) */
+  @-webkit-keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  
+  @keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
