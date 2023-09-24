@@ -53,6 +53,28 @@ const addClassesTo = async function ( dropdown , data) {
   }
 }
 
+const displayErrors = async function ( data ) {
+  if(!data.hasOwnProperty('errors')) {
+    return;
+  }
+
+  // remove all error messages
+  const warnings = document.getElementsByClassName('warning')
+  for (warning of warnings) {
+    warning.innerHTML = "";
+  }
+
+  // if there are warnings, show them
+  if(data.errors !== false) {
+    Object.keys(data).forEach(key => {
+      const warning = document.getElementById(key + "Warning")
+      if(!!warning) {
+        warning.innerHTML = data[key]
+      }
+    })
+  }
+}
+
 window.onload = async function () {
 
   const response = await fetch( '/data', {
@@ -60,8 +82,6 @@ window.onload = async function () {
   })
 
   const data = await response.json();
-
-  console.log('data: ' + JSON.stringify(data));
 
   const classes = data.schedules
 
@@ -74,6 +94,9 @@ window.onload = async function () {
 
   document.getElementById("classSelect").onchange = showClass
   document.getElementById("classModifySelect").onchange = loadClass
+
+  // display any errors
+  displayErrors(data.error);
 
   // display the username
   document.getElementById('usernameDisplay').innerHTML = data.username;

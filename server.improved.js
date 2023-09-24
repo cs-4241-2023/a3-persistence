@@ -1,3 +1,5 @@
+const { error } = require('console');
+
 const http = require( 'http' ),
       fs   = require( 'fs' ),
       express = require('express'),
@@ -13,6 +15,13 @@ const http = require( 'http' ),
 dotenv.config()
 
 const handleLogin = async function(request, response) {
+
+  // check if already logged in
+  if(request.session.login === true) {
+    response.redirect("/main.html")
+    return;
+  }
+
   // check if the username matches a username in the database
   let match = await collections.users.find({'username': `${request.body.username}`}).toArray()
   if( match.length > 0 ) { // TODO
@@ -35,7 +44,7 @@ const handleLogin = async function(request, response) {
 const handleAdd = async function(request, response) {
 
   // check has name, start time, end time, and 1 day associated
-  const error = validate(request.body);
+  const error = validate(request.body, '');
 
   // TODO: check no repeats
 
@@ -52,12 +61,11 @@ const handleAdd = async function(request, response) {
           { _id: current_user[0].schedules[0]  }, 
           { $push: {'classes': newClass.insertedId } }) // gets the first schedule every time
       })
-    // response.json(result)
-
-  } else { // set error flags
-    let result = await collections.errors.deleteOne( {} )
-    result = await collections.errors.insertOne(error)
   }
+
+  // set errors
+  let result = await collections.errors.deleteOne( {} )
+  result = await collections.errors.insertOne(error)
 
   response.redirect('/main.html')
 }
@@ -66,28 +74,41 @@ const handleRemove = async function(request, response) {
       
     // find the data to remove
     
+    // get the class to remove id
+    if(!request.body.hasOwnProperty('selected')) {
+      response.redirect('/main.html')
+      return;
+    }
+
+    const class_id = new ObjectId(JSON.parse(request.body.selected)._id)
+
     // get the user
     const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
       .then( async current_user => {    // remove the class from the user's schedule
-        const class_id = new ObjectId(JSON.parse(request.body.selected)._id)
         const result2 = await collections.schedules.updateOne(  { _id : new ObjectId(current_user[0].schedules[0]) }, 
                                                                 {$pull: { classes: { $eq: class_id }}}) // remove the class from the schedule
       })
 
     // remove the class from classes
-    const result2 = await collections.classes.deleteOne({_id:  new ObjectId(request.body.selected._id)})
+    const result2 = await collections.classes.deleteOne({_id:  new ObjectId(class_id)})
+
+    // set errors
+    let resultError = await collections.errors.deleteOne( {} )
+    resultError = await collections.errors.insertOne( {errors: false} )
 
     response.redirect('/main.html')
 }
 
 const handleModify = async function(request, response) {
 
+  if(!request.body.hasOwnProperty('previous')) {
+    response.redirect('/main.html')
+    return;
+  }
+
   prev = JSON.parse(request.body.previous)
   data = request.body
   delete data.previous
-
-  console.log('prev: ' + JSON.stringify(prev))
-  console.log('data: ' + JSON.stringify(data))
 
   if(prev === "") { // no classes to modify
     const error = {
@@ -98,46 +119,53 @@ const handleModify = async function(request, response) {
     result = await collections.errors.insertOne(error)
   } else {
     // validate the new values
-    const error = validate(data);
+    const error = validate(data, '2');
 
     if(error.errors === false) {
       // find the data to modify
 
-      // const schedule = await collections.users.find({'username': `${request.session.user}`}).toArray()
-      // .then(async current_user => {
-      //   // delete the old class from the schedule
-      //   const result2 = await collections.schedules.updateOne(  { _id : new ObjectId(current_user[0].schedules[0]) }, 
-      //                                                           {$pull: { classes: { $eq: prev._id }}}) // remove the class from the schedule
-      //   // delete the old class
-      //   const result3 = await collections.classes.deleteOne({_id:  new ObjectId(prev._id)})
+      const schedule = await collections.users.find({'username': `${request.session.user}`}).toArray()
+      .then(async current_user => {
+        // delete the old class from the schedule
+        const result2 = await collections.schedules.updateOne(  { _id : new ObjectId(current_user[0].schedules[0]) }, 
+                                                                {$pull: { classes: { $eq: new ObjectId(prev._id) } } } ) // remove the class from the schedule
 
-      //   // add the new class
-      //   data.duration = calcDerivedLength(data.start, data.end);
-      //   const newClass = await collections.classes.insertOne( data )
+        // delete the old class
+        const result3 = await collections.classes.deleteOne({_id:  new ObjectId(prev._id)})
 
-      //   // add the new class to the schedule
-      //   const schedule2 = await collections.users.find({'username': `${request.session.user}`}).toArray()
-      //     .then(async current_user => {
-      //       const result4 = await collections.schedules.updateOne(
-      //         { _id: current_user[0].schedules[0]  }, 
-      //         { $push: {'classes': newClass.insertedId } }) // gets the first schedule every time
-      //     })
-      // })
-    } else { // send back error message
-      let result = await collections.errors.deleteOne( {} )
-      result = await collections.errors.insertOne(error)
-    }        
+        // add the new class
+        data.duration = calcDerivedLength(data.start, data.end);
+        const newClass = await collections.classes.insertOne( data )
+
+        // add the new class to the schedule
+        const schedule2 = await collections.users.find({'username': `${request.session.user}`}).toArray()
+          .then(async current_user => {
+            const result4 = await collections.schedules.updateOne(
+              { _id: current_user[0].schedules[0]  }, 
+              { $push: {'classes': newClass.insertedId } }) // gets the first schedule every time
+          })
+      })
+    }
+
+    let result = await collections.errors.deleteOne( {} )
+    result = await collections.errors.insertOne(error)       
   }
+
+  response.redirect('/main.html')
 }
 
 const handleGetAll = async function(request, response) {
 
   let data = {
     username: "",
-    schedules: []
+    schedules: [],
+    error: {}
   }
 
+  // get the username of the logged in user
   data.username = request.session.user;
+
+  // get the classes of the logged in user
   const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
     .then( async current_user => {
       const result2 = await collections.schedules.find({ _id : new ObjectId(current_user[0].schedules[0]) }).toArray() // get the schedules of the user
@@ -157,49 +185,52 @@ const handleGetAll = async function(request, response) {
       })
 
   data.schedules = result
+
+  // get the errors
+  const errorResult = await collections.errors.find({}).toArray();
+  console.log(JSON.stringify(errorResult))
+  data.error = errorResult[0]
+
+  // send the data
   response.json(data)
   
 }
 
+const validate = (data, id) => {
+  const error = {
+    errors: false
+  }
+  if(!Object.hasOwn(data, 'name') || !(data.name.length > 0) ) {
+    error['className' + id] = "Name required"
+    error.errors = true
+  }
+  if(!Object.hasOwn(data, 'start') || !(data.start.length > 0) ) {
+    error['startTime' + id] = "Start Time required"
+    error.errors = true
+  }
+  if(!(data.end.length > 0) ) {
+    error['endTime' + id] = "End Time required"
+    error.errors = true
+  }
 
-const validate = data => {
-error = {
-  errors: false,
-  name: true,
-  start: true,
-  end: true,
-  days:  true
-}
-if(!Object.hasOwn(data, 'name') || !(data.name.length > 0) ) {
-  error.className = "Name required"
-  error.errors = true
-}
-if(!Object.hasOwn(data, 'start') || !(data.start.length > 0) ) {
-  error.start = "Start Time required"
-  error.errors = true
-}
-if(!(data.end.length > 0) ) {
-  error.end = "End Time required"
-  error.errors = true
-}
+  const start = data.start.split(':')
+  const end = data.end.split(':')
+  // console.log('times: ' + start + " " + end)
+  if(start[0] > end[0]) {
+    error['startTime' + id] = "Start Time must be before End Time"
+    error.errors = true
+  } else if (start[0] == end[0] && start[1] > end[1]) {
+    error['startTime' + id] = "Start Time must be before End Time"
+    error.errors = true
+  }
 
-const start = data.start.split(':')
-const end = data.start.split(':')
-if(start[0] > end[0]) {
-  error.start = "Start Time must be before End Time"
-  error.errors = true
-} else if (start[0] == end[0] && start[1] > end[1]) {
-  error.start = "Start Time must be before End Time"
-  error.errors = true
-}
+  if(!validateDays(data)) {
+    error['days' + id] = "Must select at least one day"
+    error.errors = true
+  }
 
-if(!validateDays(data)) {
-  error.days = "Must select at least one day"
-  error.errors = true
+  return error;
 }
-
-return error;
-};
 
 const validateDays = data => {
   return Object.hasOwn(data, 'monday') || Object.hasOwn(data, 'tuesday') || 
@@ -298,8 +329,11 @@ app.use( (request,response,next) => {
 
 // GET requests
 app.get('/', function (request, response) {
-  console.log('getting index.html')
-  response.sendFile( __dirname + '/public/index.html' )
+  if(request.session.login === true) {
+    response.sendFile( __dirname + '/public/main.html' )
+  } else {
+    response.sendFile( __dirname + '/public/index.html' )
+  }
 })
 
 app.get('/main', function (request, response) {
@@ -309,12 +343,12 @@ app.get('/main', function (request, response) {
 
 // POST requests
 app.post('/login', handleLogin)
+app.get('/login', handleLogin)
 
 app.use( function( request, response, next ) {
   if (request.session.login === true ) {
     next()
   } else {
-    console.log('session not logged in')
     response.sendFile(__dirname + '/public/index.html')
   }
 })
