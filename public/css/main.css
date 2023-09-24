@@ -25,6 +25,8 @@ html {
   background-color: #ffffff;
   padding-top: 20px;
   padding-left: 50px;
+  padding-right: 50px;
+  overflow: auto;
 }
 
 h1 {
@@ -34,11 +36,16 @@ h1 {
 
 /* Task-Table */
 .tasks-div {
-  margin-right: 50px;
+  overflow-y: auto;
+  margin-top: 25px;
+  margin-bottom: 50px;
+}
+
+.tasks-div::-webkit-scrollbar {
+  width: 0px;
 }
 
 #menu-table {
-  margin-top: 25px;
   padding-right: 5px;
   padding-left: 5px;
   color: #d2d2d2;
@@ -47,7 +54,7 @@ h1 {
 }
 
 .menu-row {
-  border-radius: 5px;
+  border-radius: 5px 0px 0px 5px;
   height: 30px;
   background-color: #515151;
   text-align: left;
@@ -56,10 +63,10 @@ h1 {
   margin-bottom: 2px;
   align-items: center;
   font-size: 12px;
+  margin-left: 10px;
 }
 
 #task-table {
-  margin-top: 25px;
   color: #d2d2d2;
   flex: 1;
   width: 100%;
@@ -73,6 +80,7 @@ td {
   text-align: left;
   display: flex;
   justify-content: space-between;
+  margin-bottom: 2px;
 }
 
 .left-container {
@@ -195,8 +203,6 @@ td {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  margin-right: 52px;
-  margin-left: 2px;
 }
 
 .create-task-container {
@@ -211,6 +217,9 @@ td {
   text-align: left;
   display: flex;
   justify-content: space-between;
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
 }
 
 input {
