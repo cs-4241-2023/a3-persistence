@@ -1,12 +1,45 @@
 import express, { json } from "express";
+import {fileURLToPath} from 'url';
+import { dirname } from "path";
+import cookieSession from 'cookie-session';
 import { MongoClient, ObjectId } from "mongodb";
 import "dotenv/config";
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename)
+
 const app = express();
 
-app.use(express.static("public"));
-app.use(express.static("views"));
+// app.use(express.static("public"));
+// app.use(express.static("views"));
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  cookieSession({
+    name: "session",
+    keys: ["key1", "key2"],
+  })
+);
+
+app.post("/login", (req, res) => {
+  console.log(req.body);
+
+  if (rq.body.password === "test") {
+    req.session.login = true;
+    res.redirect("task.html");
+  } else {
+    res.sendFile(__dirname + "/views/login.html");
+  }
+});
+
+app.use(function (req, res, next) {
+  if (req.session.login === true) {
+    next();
+  } else {
+    res.sendFile(__dirname + "/views/login.html");
+  }
+});
 
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}`;
 const client = new MongoClient(uri);
