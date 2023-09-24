@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Recipe Tracker</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+  </head>
+  <h1 class="title">Recipe Logger</h1>
+  <body>
+    <header class="section">
+      <h1 class="title">Login</h1>
+      <div class="container">
+        <div class="columns">
+          <div class="column">
+            <form id="login_form" class="box">
+              <div class="field">
+                <label for="username_login" class="label">Username:</label>
+                <div class="control">
+                  <input
+                    type="text"
+                    id="username_login"
+                    placeholder="Username"
+                    class="input"
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <label for="password_login" class="label">Password:</label>
+                <div class="control">
+                  <input
+                    type="password"
+                    id="password_login"
+                    placeholder="Password"
+                    class="input"
+                  />
+                </div>
+              </div>
+              <button id="login_button" class="button is-primary">Login</button>
+            </form>
+          </div>
+          <div class="column">
+            <form id="register_form" class="box">
+              <div class="field">
+                <label for="username_register" class="label">Username:</label>
+                <div class="control">
+                  <input
+                    type="text"
+                    id="username_register"
+                    placeholder="Username"
+                    class="input"
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <label for="password_register" class="label">Password:</label>
+                <div class="control">
+                  <input
+                    type="password"
+                    id="password_register"
+                    placeholder="Password"
+                    class="input"
+                  />
+                </div>
+              </div>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button id="register_button" class="button is-primary">
+                    Register
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container">
+        <h1 class="title">Recipe Tracker</h1>
+        <hr class="is-small" />
+
+        <section id="add_recipe_section" class="box">
+          <h2 class="subtitle">Add a Recipe</h2>
+          <form id="recipe_form">
+            <div class="field">
+              <label for="recipe_name" class="label">Recipe Name:</label>
+              <div class="control">
+                <input
+                  type="text"
+                  id="recipe_name"
+                  name="recipe_name"
+                  class="input"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label for="recipe_ingredients" class="label">Ingredients:</label>
+              <div class="control">
+                <textarea
+                  id="recipe_ingredients"
+                  name="recipe_ingredients"
+                  class="textarea"
+                  required
+                ></textarea>
+              </div>
+            </div>
+            <div class="field">
+              <label for="recipe_directions" class="label">Directions:</label>
+              <div class="control">
+                <textarea
+                  id="recipe_directions"
+                  name="recipe_directions"
+                  class="textarea"
+                  required
+                ></textarea>
+              </div>
+            </div>
+            <div class="field is-grouped">
+              <div class="control">
+                <button id="add_recipe" class="button is-primary">
+                  Add Recipe
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section id="delete_recipe_section" class="box">
+          <h2 class="subtitle">Delete a Recipe</h2>
+          <form id="delete_recipe_form">
+            <div class="field">
+              <label for="recipe_to_delete" class="label"
+                >Recipe Name to Delete:</label
+              >
+              <div class="control">
+                <input
+                  type="text"
+                  id="recipe_to_delete"
+                  name="recipe_to_delete"
+                  class="input"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label for="username_to_delete" class="label">Username:</label>
+              <div class="control">
+                <input
+                  type="text"
+                  id="username_to_delete"
+                  name="username_to_delete"
+                  class="input"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field is-grouped">
+              <div class="control">
+                <button id="delete_recipe" class="button is-danger">
+                  Delete Recipe
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section id="recipe_list_section">
+          <h1 class="title">Your Recipe List</h1>
+          <hr class="is-small" />
+          <table class="table is-fullwidth">
+            <thead>
+              <tr>
+                <th>Recipe Name</th>
+                <th>Ingredients</th>
+                <th>Directions</th>
+                <th>Cooking Time</th>
+              </tr>
+            </thead>
+            <tbody id="recipe_table"></tbody>
+          </table>
+        </section>
+      </div>
+    </main>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>
