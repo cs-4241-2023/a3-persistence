@@ -8,6 +8,17 @@
   color:white
 }
 
+#era {
+  width: 30%;
+}
+
+#date {
+  width: 30%;
+}
+#description {
+  width: 30%;
+}
+
 #timelineErrorMessage {
   color: red;
   display: none;

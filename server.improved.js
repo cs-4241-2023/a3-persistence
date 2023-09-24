@@ -40,6 +40,7 @@ app.post('/assignActiveUser', async (req, res) => {
     
     const x = dataString;
     const account = await client.db('world_data').collection('users').findOne({user : dataString})
+
     accountName = account.user;
 
     res.setHeader('Content-Type', 'text');
@@ -47,30 +48,6 @@ app.post('/assignActiveUser', async (req, res) => {
   })
   
 })
-
-
-//get functions
-
- app.get('/timelineData', async (req, res) => {
-
-  const cursor = client.db('world_data').collection('timelineData').find({user : accountName}).sort({date: 1});
-  const timelineData = await cursor.toArray()
-
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify(timelineData));
-});
-
-app.get('/characterData', async (req, res) => {
-  await RecheckCharacters();
-
-  const cursor = client.db('world_data').collection('characterData').find({user : accountName}).sort({start: 1});
-  const characterData = await cursor.toArray()
-  res.setHeader('Content-Type', 'application/json');
-  res.end(JSON.stringify(characterData));
-});
-
-
-
 
 app.post('/login', async (request, response) => {
 
@@ -126,6 +103,29 @@ app.post('/signup', async (request, response) => {
   })
 
 })
+
+
+//get functions
+
+ app.get('/timelineData', async (req, res) => {
+
+  const cursor = client.db('world_data').collection('timelineData').find({user : accountName}).sort({date: 1});
+  const timelineData = await cursor.toArray()
+
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(timelineData));
+});
+
+app.get('/characterData', async (req, res) => {
+  await RecheckCharacters();
+
+  const cursor = client.db('world_data').collection('characterData').find({user : accountName}).sort({start: 1});
+  const characterData = await cursor.toArray()
+  res.setHeader('Content-Type', 'application/json');
+  res.end(JSON.stringify(characterData));
+});
+
+
 
 
 //add functions

@@ -4,7 +4,19 @@ body {
   background:gray;
   color:black;
   font-family: "Trirong", sans-serif;
+  font-display: swap;
 }
+
+.loginPage {
+  position: absolute;
+  border: 3px solid black;
+  padding: 10px;
+}
+
+#loginError {
+  color: red;
+}
+
 
 p{
   max-width: 800px;

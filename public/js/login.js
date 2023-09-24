@@ -55,15 +55,10 @@ const signup = async function( event ) {
   const errorMsg = document.getElementById("loginError");
 
   if(validity === "true"){
-    errorMsg.textContent = ""
-    fetch('/assignActiveUser', {
-      method: 'POST',
-      body
-    })
+    errorMsg.textContent = "Added Account to System"
 
-    window.location.href = '/index';
   } else {
-    errorMsg.textContent = "Account Already Exists"
+    
   }
 
    
