@@ -75,30 +75,41 @@ const displayErrors = async function ( data ) {
   }
 }
 
-window.onload = async function () {
-
+const getData = async _ => {
   const response = await fetch( '/data', {
     method:'GET'
   })
 
-  const data = await response.json();
+  return await response.json();
+}
 
-  const classes = data.schedules
+window.onload = function () {
 
-  // display the schedule
-  displaySchedule(classes)
+  data = getData()
 
-  // set up dropdowns
-  addClassesTo(document.getElementById("classSelect"), classes).then(showClass)
-  addClassesTo(document.getElementById("classModifySelect"), classes).then(loadClass)
 
-  document.getElementById("classSelect").onchange = showClass
-  document.getElementById("classModifySelect").onchange = loadClass
+  const classSelect = document.getElementById("classSelect")
+  const classModifySelect = document.getElementById("classModifySelect")
+  const usernameDisplay = document.getElementById('usernameDisplay')
+  if(!!classSelect === true && !!classModifySelect === true && !!usernameDisplay === true) {
 
-  // display any errors
-  displayErrors(data.error);
+    // display the schedule
+    const classes = data.schedules
+    displaySchedule(classes)
 
-  // display the username
-  document.getElementById('usernameDisplay').innerHTML = data.username;
+    // set up dropdowns
+    addClassesTo(classSelect, classes).then(showClass)
+    addClassesTo(classModifySelect, classes).then(loadClass)
+  
+    classSelect.onchange = showClass
+    classModifySelect.onchange = loadClass
+    
+    // display any errors
+    displayErrors(data.error);
+
+    // display the username
+    usernameDisplay.innerHTML = data.username;
+  }
+
 }
 
