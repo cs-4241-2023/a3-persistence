@@ -4,66 +4,85 @@ const http = require("http"),
   // to install the mime library if you're testing this on your local machine.
   // However, Glitch will install it automatically by looking in your package.json
   // file.
-  mime = require("mime"),
   express = require('express'),
+  mongodb = require( 'mongodb' ),
   app = express(),
   path = require('path'),
   dir = "public/",
   port = 3000;
+
 
 const appdata = [
   {
     name: "Alex Marrinan",
     email: "ammarrinan@wpi.edu",
     type: "Undergrad Student",
-    department: "CS/IMGD",
+    department: "IMGD",
     id: 0,
+  },
+  {
+    name: "Dale Messer",
+    email: "ammarrinan@wpi.edu",
+    type: "Undergrad Student",
+    department: "HUA",
+    id: 1,
   },
   {
     name: "Charlie Roberts",
     email: "croberts@wpi.edu",
     type: "Professor",
-    department: "CS/IMGD",
-    id: 1,
+    department: "IMGD",
+    id: 2,
+  },
+  {
+    name: "Michael Engling",
+    email: "croberts@wpi.edu",
+    type: "Professor",
+    department: "CS",
+    id: 3,
   },
 ];
 
-var nextId = 2;
+var nextId = 4;
 
+app.get('/getUsers', (request, response) => {
+  response.writeHead(200, "OK", { "Content-Type": "text/json" });
+  response.end(JSON.stringify(appdata));
+})
 app.get('/', (request, response) => {
   handleGet(request, response)
 })
-
-app.post('/', (request, response) => {
+app.post('/newUser', (request, response) => {
   handlePost(request, response)
 })
 
-app.delete('/', (request, response) => {
+app.delete('/deleteUser', (request, response) => {
   handleDelete(request, response)
 })
 
+app.delete('/clearUsers', (request, response) => {
+  var len = appdata.length;
+  appdata.splice(0, len);
+  response.writeHead(200, "OK", { "Content-Type": "text/json" });
+  response.end("deleted all users!");
+})
 const server = http.createServer(app)
 
 const handleGet = function (request, response) {
-  console.log('got!')
   const filename = dir + request.url.slice(1);
   if (request.url === "/") {
     sendFile(response, "public/index.html");
-  }
-  if (request.url === "/getUsers") {
-    response.writeHead(200, "OK", { "Content-Type": "text/json" });
-    response.end(JSON.stringify(appdata));
-  } else {
+  }else{
     sendFile(response, filename);
   }
 };
 
+app.use(express.static('public'));
+
 const handlePost = function (request, response) {
   console.log('posted!!')
   let dataString = "";
-  if (request.url !== "/newUser") {
-    return;
-  }
+
   request.on("data", function (data) {
     dataString += data;
   });
@@ -84,14 +103,6 @@ const handlePost = function (request, response) {
 const handleDelete = function (request, response) {
   console.log('deleted!!')
   let dataString = "";
-  if (request.url === "/clearUsers") {
-    var len = appdata.length;
-    appdata.splice(0, len);
-    response.writeHead(200, "OK", { "Content-Type": "text/json" });
-    response.end("deleted all users!");
-    return;
-  }
-
   request.on("data", function (data) {
     dataString += data;
   });
@@ -118,7 +129,7 @@ const sendFile = function (response, filename) {
   
   response.sendFile(filename, options, function (err) {
       if (err) {
-          //next(err);
+          console.log('Error:', err);
       } else {
           console.log('Sent:', filename);
       }
