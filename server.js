@@ -104,11 +104,11 @@ app.post( '/submit', express.json(), async (req, res) => {
 })
 
 app.post('/update',express.json(),(req,res)=>{
-    let id=JSON.parse(req.body._id);
+    //let id=JSON.parse(req.body._id);
 
 })
 
-app.post('/delete',async (req,res) => {
+app.post('/delete',express.json(), async (req,res) => {
     let id=JSON.parse(req.body._id);
     await taskCollection.deleteOne({_id: new ObjectID(id)});
     res.redirect('app.html')

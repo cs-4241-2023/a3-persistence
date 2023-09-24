@@ -118,7 +118,7 @@ function CreateDeleteButton(taskID){
     const button=document.createElement('button');
     button.className="delete-button";
     button.ariaLabel="Delete Task Button";
-    button.innerHTML = `<i class="fa-solid fa-trash"></i>`;
+    button.innerHTML = "Delete";//`<i class="fa-solid fa-trash"></i>`;
     button.onclick= (e) => {
         deleteData(id);
     }
@@ -149,7 +149,7 @@ function CreateEditButton(taskID){
     const button=document.createElement('button');
     button.className="edit-button";
     button.ariaLabel="Edit Task Button";
-    button.innerHTML = `<i class="fa-solid fa-pen-to-square"></i>`;
+    button.innerHTML = "Edit";//`<i class="fa-solid fa-pen-to-square"></i>`;
     button.onclick= (e) => {
         editData(id);
     }
