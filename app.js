@@ -56,8 +56,19 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-    res.sendFile(__dirname + '/src/public/login.html');
+    if (req.isAuthenticated()) {
+        res.redirect('/blogs');
+    } else {
+        res.sendFile(__dirname + '/src/public/login.html');
+    }
 })
+
+app.get('/logout', (req, res) => {
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/login');
+    });
+});
 
 app.get('/blogs', ensureAuthenticated, (req, res) => {
     res.sendFile(__dirname + '/src/public/blog.html');
