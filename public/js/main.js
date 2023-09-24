@@ -231,7 +231,13 @@ const signup = async function(event) {
   }
 }
 
-window.onload = function() {
+window.onload = async function() {
+  const postResponse = await fetch('/deleteTasks', {
+    method: 'POST'
+  });
+
+  console.log("here");
+
   const button = document.querySelector("#addTaskButton");
   button.onclick = submit;
 

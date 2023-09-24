@@ -169,5 +169,19 @@ app.post('/updateTask', (req, res) => {
   });
 });
 
+app.post('/deleteTasks', (req, res) => {
+
+  req.on('data', function(data) {
+    console.log("Deleting all tasks unassociated with a user");
+  });
+
+  req.on('end', async function() {
+    const result = await task_collection.deleteMany({ user: "" });
+
+    res.writeHead(200, "OK", {'Content-Type': 'text/plain' });
+    res.end('Many Task Delete Success');
+  });
+});
+
 run();
 app.listen(process.env.PORT || 3000);
