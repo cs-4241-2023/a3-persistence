@@ -14,8 +14,8 @@ const submit = async function (event) {
   event.preventDefault(); // Stop page defualt reload behavior
 
   // hide div with input-container
-  const inputContainer = document.querySelector('#input-container');
-  inputContainer.style.display = 'none';
+  // const inputContainer = document.querySelector('#input-container');
+  // inputContainer.style.display = 'none';
 
   const name = document.querySelector('#yourname'); // get form input element with id=yourname
   const color = document.querySelector('#color');
@@ -34,7 +34,8 @@ const submit = async function (event) {
   let serverData = await response.json() // Get server response
   console.log('SERVER DATA (after add player):')
   console.log(serverData) // Print current server data
-  populateList(serverData); // Populate list of players in html with server data
+  // populateList(serverData); // Populate list of players in html with server data
+  window.location.href = '/game'; // Redirect to game
 }
 
 // Populate list of players in html with server data

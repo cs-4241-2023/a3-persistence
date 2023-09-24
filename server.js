@@ -89,6 +89,20 @@ app.get('/editPlayer', isAuth, (req, res) => {
   res.sendFile(__dirname + '/public/editPlayer.html')
 })
 
+// When play button on menu.html is clicked, redirect to game.html
+app.get('/game', isAuth, (req, res) => {
+  res.sendFile(__dirname + '/public/game.html');
+});
+
+// Results, redirect to results.html
+app.get('/results', isAuth, (req, res) => {
+
+
+  // Show only current session player's info from mongodb in results.html
+
+  res.sendFile(__dirname + '/public/results.html');
+});
+
 
 app.get('/login', (req, res) => {
   if (req.user) {
@@ -98,11 +112,19 @@ app.get('/login', (req, res) => {
   }
 });
 
-// Logout route
+// Logout route with a callback function
 app.get('/logout', (req, res) => {
-  req.logOut();
-  res.redirect('/login');
-})
+  req.logout((err) => {
+    if (err) {
+      // Handle any errors that occur during logout
+      console.error(err);
+    }
+    // delete cookies from browser so user must re-authenticate
+    req.session = null;
+    res.redirect('/login');
+  });
+});
+
 
 // Middleware to check if user is authenticated
 app.get('/auth/github', passport.authenticate('github'));
@@ -111,10 +133,11 @@ app.get('/auth/github', passport.authenticate('github'));
 app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }),
   async function (req, res) {    
     // No player account -> Serve editPlayer.html to create player account  
+    req.session.githubUsername = req.user.username;
     const existingPlayer = await collection.findOne({ githubName: req.user.username });
+
     if (!existingPlayer) {
       // Store the GitHub username in the session
-      req.session.githubUsername = req.user.username;
       res.redirect('/editPlayer')
     } else {
       // Yes player account
@@ -137,12 +160,27 @@ app.use((req, res, next) => {
   }
 })
 
+
+// Get player data from database
+app.get('/getResults', isAuth, express.json(), async (req, res) => {
+  const githubUsername = req.session.githubUsername; // Get the GitHub username from the session
+  const player = await collection.findOne({ githubName: githubUsername });
+
+  // Create json object which contains list of json objects
+  // The first item in the list should be the current session player's info
+  // Followed by the top 10 players in the database
+  const resultsList = [];
+  resultsList.push(player);
+  const top10 = await collection.find({}).sort({ score: -1 }).limit(10).toArray();
+  resultsList.push(...top10);
+  res.status(200).json(resultsList);
+})
+
+
 // POST 
 app.post('/submit', express.json(), async (req, res) => {
   // Add githubUsername to req.body
-  const githubUsername = req.session.githubUsername;
-  console.log(`GitHub username from session (in submit post): ${githubUsername}`);
-  req.body.githubName = githubUsername // TODO: can this be done without global variable?
+  req.body.githubName = req.session.githubUsername 
   await collection.insertOne(req.body); // Add new player to the database
   await updatePlayersAndRespond(res);
 });
