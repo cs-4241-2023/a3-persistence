@@ -7,8 +7,6 @@
     <meta name="description" content="Author: Nelson Diaz, Assignment: a3-persistence,
       Class: CS4241 Webware, Instructor: Charlie Roberts">
 
-    <script src="/js/button_events.js" async></script>
-
     <!--PureCSS-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/tables-min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/forms-nr-min.css">
@@ -72,24 +70,49 @@
         </thead>
 
         {{#each data}}
-        <tr id="{{_id}}">
-          <td>{{item}}</td>
-          <td>{{numberFormat amount}}</td>
-          <td>{{currencyFormat unit_value}}</td>
+        <tr>
+          {{#if (idEqual _id ../modifyId)}}
+            <td class="modifyTD">
+              <input form="modifyForm" type="text" name="item" value="{{item}}" required>
+            </td>
+            <td class="modifyTD">
+              <input form="modifyForm" type="number" name="amount" value="{{amount}}" min="0" max="999999999999" required>
+            </td>
+            <td class="modifyTD">
+              <input form="modifyForm" type="number" name="unit_value" value="{{unit_value}}" min="0" max="999999999" step="0.01" required>
+            </td>
+          {{else}}
+            <td>{{item}}</td>
+            <td>{{numberFormat amount}}</td>
+            <td>{{currencyFormat unit_value}}</td>
+          {{/if}}
+
           <td>{{currencyFormat total_value}}</td>
+
           <td class="tableButton">
-            <button onclick="modifyData(this)">Modify</button>
-            <button form="form:{{{_id}}}" type="submit" hidden>Save</button>
+            {{#if (idEqual _id ../modifyId)}}
+              <button form="modifyForm" type="submit">Save</button>
+            {{else}}
+              <form action="/modifyLoad" method="POST">
+                <button type="submit">Modify</button>
+                <input type="hidden" name="modifyId" value="{{_id}}">
+              </form>
+            {{/if}}
           </td>
+
           <td class="tableButton">
             <form action="/delete" method="POST">
               <button type="submit">Delete</button>
-              <input name="_id" type="hidden" value="{{_id}}">
+              <input type="hidden" name="_id" value="{{_id}}">
             </form>
           </td>
         </tr>
         {{/each}}
       </table>
     </main>
+
+    <form id="modifyForm" action="/modify" method="POST" autocomplete="off">
+      <input type="hidden" name="_id" value="{{modifyId}}">
+    </form>
   </body>
 </html>

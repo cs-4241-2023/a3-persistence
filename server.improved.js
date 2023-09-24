@@ -29,7 +29,8 @@ const numberFormat = new Intl.NumberFormat('en-US')
 const hbs = create({
     helpers: {
       numberFormat(amount) { return numberFormat.format(amount) },
-      currencyFormat(amount) { return currencyFormat.format(amount) }
+      currencyFormat(amount) { return currencyFormat.format(amount) },
+      idEqual(id1, id2) {return id1.equals(id2)}
     }
 })
 
@@ -159,6 +160,7 @@ app.get( '/main', async (req, res) => {
     username: req.session.passport.user.username,
     new_user: req.session.passport.user.new_user,
     data: data,
+    modifyId: new ObjectId(req.session.modifyId),
     layout: false
   })
 })
@@ -166,6 +168,7 @@ app.get( '/main', async (req, res) => {
 app.get( '/logout', (req, res) => {
   req.session.passport = null
   req.session.login = false
+  req.session.modifyId = null
   res.redirect( '/index.html' )
 })
 
@@ -196,6 +199,11 @@ app.post( '/delete', async (req, res) => {
   }
 })
 
+app.post( '/modifyLoad', (req, res) => {
+  req.session.modifyId = req.body.modifyId
+  res.redirect( '/main' )
+})
+
 app.post( '/modify', async (req, res) => {
   const data = req.body
   data['amount'] = Number(data['amount'])
@@ -205,6 +213,7 @@ app.post( '/modify', async (req, res) => {
   data['_id'] = new ObjectId(data['_id'])
   
   const response = await data_collection.replaceOne( { _id: data['_id'] }, data )
+  req.session.modifyId = null
   
   if(response.modifiedCount == 1) {
     res.redirect( '/main' )
