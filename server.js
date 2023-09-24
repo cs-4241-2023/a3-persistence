@@ -7,10 +7,6 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
 const GitHubStrategy = require('passport-github').Strategy;
-const LocalStrategy = require('passport-local').Strategy;
-
-
-const bcrypt = require('bcrypt');
 const app = express();
 const port = 3000;
 
@@ -33,24 +29,6 @@ const taskSchema = new mongoose.Schema({
 
 const Task = conn.model('Task', taskSchema);
 
-const uri_users = "mongodb+srv://doapps-4ec1f246-ba4d-4013-aed9-b45e89750f81:l149ko35X086aHQj@db-mongodb-nyc1-53233-0b371da4.mongo.ondigitalocean.com/Users?authSource=admin&tls=true";
-
-var conn2 = mongoose.createConnection(uri_users, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  ssl: true
-});
-
-const userSchema = new mongoose.Schema({
-  username: String,
-  password: String,
-  email: String,
-  id: Number,
-  github: Boolean
-});
-
-const User = conn2.model('User', userSchema);
-
 app.use(bodyParser.json());
 
 app.use(session({
@@ -62,77 +40,27 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
 passport.use(new GitHubStrategy({
   clientID: '46eed9c0b0d5d6d2692d',
   clientSecret: 'ff3757c5d09b21eb079a2b2e6b3036cd2d8dbee6',
   callbackURL: "https://a3colinm1215-m9bh3.ondigitalocean.app/auth/github/callback"
 },
-async (accessToken, refreshToken, profile, cb) => {
-    try {
-        let user = await User.findOne({ email: profile.emails[0].value });
-
-        if (!user) {
-            user = new User({
-                username: profile.username,
-                email: profile.emails[0].value,
-                github: true
-            });
-            await user.save();
-        } else if (!user.github) {
-            user.github = true;
-            await user.save();
-        }
-        cb(null, user);
-    } catch (err) {
-        cb(err, null);
-    }
-}
+  function (accessToken, refreshToken, profile, cb) {
+    // Here you could potentially store the profile data in your database.
+    return cb(null, profile);
+  }
 ));
 
-passport.use(new LocalStrategy(async (username, password, done) => {
-  try {
-      const user = await User.findOne({ username: username });
-      if (!user) {
-          return done(null, false, { message: 'Incorrect username.' });
-      }
-      const isValid = await bcrypt.compare(password, user.password);
-      if (!isValid) {
-          return done(null, false, { message: 'Incorrect password.' });
-      }
-      return done(null, user);
-  } catch (e) {
-      return done(e);
-  }
-}));
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser(async (id, done) => {
-  try {
-      const user = await User.findById(id);
-      done(null, user);
-  } catch (e) {
-      done(e, null);
-  }
-});
-
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/dashboard',
-  failureRedirect: '/login',
-  failureFlash: true
-}));
-
-app.get('/dashboard', (req, res) => {
-  if (req.isAuthenticated()) {
-      res.redirect('/index.html');
-  } else {
-      res.redirect('/login');
-  }
-});
-
 app.use(function (req, res, next) {
+  console.log("use");
   if (req.user || req.path === '/login.html' || req.path === '/auth/github' || req.path.includes('/auth/github/callback') || req.path.includes('/robots.txt')) {
     next();
   }
@@ -144,14 +72,15 @@ app.use(function (req, res, next) {
 app.use(express.static('public')); // Serve static files from the public directory
 
 // Authentication routes
-app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
+app.get('/auth/github', passport.authenticate('github'));
 
 app.get('/auth/github/callback',
-  passport.authenticate('github', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/login',
-    failureFlash: true
-}));
+  passport.authenticate('github', { failureRedirect: '/' }),
+  function (req, res) {
+    console.log("/auth/github/callback");
+    // Successful authentication.
+    res.redirect('/index.html');
+  });
 
 // Logout route
 app.get('/logout', (req, res) => {
