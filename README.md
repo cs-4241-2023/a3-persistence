@@ -1,6 +1,8 @@
 ## TO-DO App
 
-https://a2-nathanwong.glitch.me/
+https://a3-nathanwong.glitch.me/
+
+**An admin account has been created for testing purposes (username: admin, password: admin)**
 
 ### Goal
 This project allows users to create TODO tasks which will be stored on a database connected to an account they make on the webpage. Users have the ability to add, modify, and delete the tasks that they make under their account.
@@ -57,7 +59,16 @@ All baseline requirements for this project have been fulfilled.
 ## Technical Achievements
 - **Tech Achievement 1**: This website scores 100% for all four required tests in Google Lighthouse. Images have been provided in this repository as proof (also just in case of any hardware differences when the grader confirms on their end)
 
+- **Tech Achievement 2**: I implemented my own hash function to ensure security of user accounts. When a user either logs in or create an account, the client-side will hash the password before sending the POST request to the server. Therefore, a user's password cannot be exposed even if the request is intercepted or if the database is compromised (see lines 2-12 in main.js). I believe this achievement should be awarded 2 points.
+
 - **Tech Achievement 2**: 
 
 ## Design Achievements
+### CRAP Principles
+- Contrast: I implemented contrast in my application through a contrast of colors and prominent borders. Inside the header of the application, each input field displays its prominence through the use of labels with bold, black text. These labels contrast against the white background in the header to help bring attention to the input fields. Each input field also uses a gray border to contrast against the white header to mark the start and end of each  field. Alongside the input fields, I have an "add" button that has a green background. This button color has high contrast with the header background and it also contrasts with the color scheme of the input fields to showcase the different function of the button compared to the input fields. Likewise, the "log in" button has a differing color from the "add" button and input fields to once again show it has a different function from the other elements in the header. Lastly, the result table in the middle of the page has a gray border and white background to help contrast against the light green backdrop in the remainder of the page. All of these examples of help the user distinguish key features within the webpage.
 
+- Repetition: I implemented repetition in my application through the use of similar styles on all input fields. All input fields found throughout header and the log in modal window use the same Bulma style. This repetition of styles allows the user to easily recognize when a text input is required of the user. The tasks in the result box of the webpage also use repetition. Each task that is displayed uses the exact same format where the name, due date, days remaining, priority, modify button, and delete button are all shown horizontally on the result box. Displaying the tasks in this consistent format allows the user to identify key task information for any task they look at. Additionally, because of repetition, users can easily find the modify and delete task buttons for any task they want to edit.
+
+- Alignment: I implemented alignment in my application through the combination of labels and input fields and displaying tasks. All input fields (either for adding tasks or logging in) are accompanied by a label. These labels are always placed above their corresponding input fields, and they are left aligned with their input fields. This type of alignment allows users to easily understand which labels are describing which input fields. Furthermore, the task list also uses alignment for each task. Every task displays a name, due date, days remaining, priority, modify button, and delete button; all of these elements of the task are aligned horizontally with each other. Furthermore, the name of each task are aligned vertically with all other tasks (this is the same for every element in each task). This alignment helps organize the information of each task and helps users easily find the modify and delete buttons for each task as they can be found in the same place for every task.
+
+- Proximity: I implemented proximity in my application by grouping input fields and buttons together. When the user wants to add a task they must first fill out all input fields and click the "add" button. These input fields are visually close to the "add" button which helps indicate that the values in the input fields are used by the "add" button. The login modal also uses proximity as the input fields for username and password are close to the buttons that handle logging a user in. The "Log In" button uses proximity in the opposite manner; the "Log In" button is placed away from all other elements in the webpage as the "Log In" button has functionality that does not rely on other information on the page.
