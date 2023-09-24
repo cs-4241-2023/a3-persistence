@@ -3,6 +3,7 @@
     <head>
         <title>CS4241 Assignment 3</title>
         <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="Enter your assignment into the WPI School Work Tracker.">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.6.0.min.css"/>
         <link rel="stylesheet" href="css/main.css">
         <link rel="icon" href="data:;base64,iVBORw0KGgo=">
@@ -12,8 +13,8 @@
 
         <h3 id="login-header">Login To Use WPI School Work Tracker</h3>
         <form id="login-form" action="/login" method="POST" autocomplete="off">
-            <input type="text" id="username-input" name="username" placeholder="username">
-            <input type="password" id="password-input" name="password" placeholder="password">
+            <input aria-label="username" type="text" id="username-input" name="username" placeholder="username">
+            <input aria-label="password" type="password" id="password-input" name="password" placeholder="password">
             <input id="login-button" type="submit" value="Login">
         </form>
         <button id="sign-up-button">Sign Up</button>

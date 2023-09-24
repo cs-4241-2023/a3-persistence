@@ -3,6 +3,7 @@
   <head>
     <title>CS4241 Assignment 3</title>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Login to use WPI School Work Tracker.">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yegor256/tacit@gh-pages/tacit-css-1.6.0.min.css"/>
     <link rel="stylesheet" href="css/main.css">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
@@ -23,22 +24,22 @@
 
       <form id="edit-window" autocomplete="off">
         <h3 id="edit-header">Edit Assignment Information:</h3>
-        <input type="text" id="class-name-edit" placeholder="Class Name">
-        <input type="text" id="assignment-name-edit" placeholder="Assignment Name">
-        <input type="date" id="due-date-edit">
-        <input type="number" id="difficulty-edit" placeholder="Difficulty (1 to 10)">
+        <input aria-label="class-name" type="text" id="class-name-edit" placeholder="Class Name">
+        <input aria-label="assignment-name" type="text" id="assignment-name-edit" placeholder="Assignment Name">
+        <input aria-label="due-date" type="date" id="due-date-edit">
+        <input  aria-label="difficulty" type="number" id="difficulty-edit" placeholder="Difficulty (1 to 10)">
         <button id="cancel-edit-button">Cancel</button>
         <button type="submit" id="submit-button-edit">Submit</button>
       </form>
 
       <form id="assignment-form" autocomplete="off">
-        <input type="text" id="class-name" placeholder="Class Name">
-        <input type="text" id="assignment-name" placeholder="Assignment Name">
-        <input type="date" id="due-date">
-        <input type="number" id="difficulty" placeholder="Difficulty (1 to 10)">
+        <input aria-label="class-name" type="text" id="class-name" placeholder="Class Name">
+        <input aria-label="assignment-name" type="text" id="assignment-name" placeholder="Assignment Name">
+        <input aria-label="due-date" type="date" id="due-date">
+        <input aria-label="difficulty" type="number" id="difficulty" placeholder="Difficulty (1 to 10)">
         <button type="submit" id="submit-button">Submit</button>
         <p id="submission-message">Text</p>
       </form>
-      <h3 id="table-title">Tracked Assignments Stored on Node.js Server</h3>
+      <h2 id="table-title">Tracked Assignments Stored on Node.js Server</h2>
   </body>
 </html>
