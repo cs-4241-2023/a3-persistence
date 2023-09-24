@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Login</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="a3-asosa117 project">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css"
+    />
+     <link
+      rel="stylesheet"
+      href="css/user.css"
+    />
+    <script src="js/createUser.js"></script>
+  </head>
+
+  <body class="has-background-black">
+    <main id="main-holder">
+      <h1 id="login-header" class="has-text-success">Login</h1>
+      <span id="login-message"></span>
+
+      <form id="login">
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Username"
+          class="input is-small"
+        />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Password"
+          class="input is-small"
+        />
+        <input
+          type="submit"
+          value="Login"
+          class="button is-dark"
+          onclick="Login()"
+        />
+      </form>
+      <script>
+        function Login() {
+          if (
+            username.value === Cusername.value &&
+            password.value === Cpassword.value
+          ) {
+            login.action = "index2.html";
+          } else {
+            event.preventDefault();
+            document.getElementById("login-message").innerHTML =
+              "Login Failed.";
+          }
+        }
+      </script>
+
+      <h2 id="Create-User" class="has-text-success">Create User</h2>
+      <form id="Create">
+        <input
+          type="text"
+          id="Cusername"
+          placeholder="Username"
+          class="input is-small"
+        />
+        <input
+          type="password"
+          id="Cpassword"
+          placeholder="Password"
+          class="input is-small"
+        />
+        <button id="create" class="button is-dark">Create</button>
+      </form>
+    </main>
+    <footer>
+      
+    </footer>
+  </body>
+</html>
