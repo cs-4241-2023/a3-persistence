@@ -1,22 +1,12 @@
 const { Router } = require("express");
+const { hashPassword } = require("../utils/helpers");
 
 const router = Router();
 
 router.post("/login", (req, res) => {
-  // console.log(req.body);
-  const { username, password } = req.body;
-  if (username && password) {
-    if (req.session.user) {
-      res.send(req.session.user);
-    } else {
-      req.session.user = {
-        username,
-      };
-      res.send(req.session);
-    }
-  } else {
-    res.send(401);
-    res.end();
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).send("Missing email or password");
   }
 });
 
