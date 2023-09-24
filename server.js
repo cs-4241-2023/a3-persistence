@@ -1,6 +1,6 @@
 const express = require( 'express' ),
     mongodb = require( 'mongodb' ),
-    cookie  = require( 'cookie-session' ),
+    ObjectID = mongodb.ObjectId,
     app = express()
 
 require('dotenv').config();
@@ -92,10 +92,6 @@ app.get('/loadTasks',async (req, res) => {
 })
 
 
-app.get( '/', (req,res) => {
-    res.render( 'index', { msg:'', layout:false })
-})
-
 
 app.post( '/submit', express.json(), async (req, res) => {
     if(userID !== process.env.ADMIN_ACCOUNT_ID){
@@ -108,7 +104,14 @@ app.post( '/submit', express.json(), async (req, res) => {
 })
 
 app.post('/update',express.json(),(req,res)=>{
+    let id=JSON.parse(req.body._id);
 
+})
+
+app.post('/delete',async (req,res) => {
+    let id=JSON.parse(req.body._id);
+    await taskCollection.deleteOne({_id: new ObjectID(id)});
+    res.redirect('app.html')
 })
 
 app.listen( 3000 )

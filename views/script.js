@@ -127,11 +127,16 @@ function CreateDeleteButton(taskID){
 }
 
 const deleteData = (taskID) => {
-    const body = taskID;
+    const body = JSON.stringify({_id:taskID});
 
-    fetch( "/delete", {
+    fetch("/delete", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body
-    }).then(() =>{
+    }).then(r =>{
+        console.log("Deleted")
         window.location.reload();
     })
 }
