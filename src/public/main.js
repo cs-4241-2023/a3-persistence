@@ -1,4 +1,5 @@
 let currentlyEditingPostId = null;
+const buttonStyle = 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-0.5 px-1.5 rounded';
 
 const displayPosts = function () {
     axios
@@ -18,8 +19,8 @@ const displayPosts = function () {
                     <p>id: ${blogPost._id}</p>
                     <p>Reading Time: ${blogPost.readingTime} min</p>
                     <p id="content-${blogPost._id}">${blogPost.content}</p>
-                    <button onclick="editPost('${blogPost._id}')">Edit</button>
-                    <button onclick="deletePost('${blogPost._id}')">Delete</button>
+                    <button onclick="editPost('${blogPost._id}')" class="${buttonStyle}">Edit</button>
+                    <button onclick="deletePost('${blogPost._id}')" class="${buttonStyle}">Delete</button>
                 `;
 
                 blogPostsSection.appendChild(blogPostDiv);
