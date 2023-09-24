@@ -1,0 +1,280 @@
+/* Reset some default styles */
+body, h1, h2, p, ul, ol, li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+}
+/* Use Dancing Script font for headings */
+h1, h2, h3 {
+    font-family: 'Dancing Script', cursive;
+}
+
+
+#fancy_text {
+    background-color: #ff66b2; /* Pink */
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem 0;
+    border-radius: 10px;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem;
+    background-color: #fff6e6; /* Light Peach */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#recipe_form {
+    flex: 1;
+    padding: 1rem;
+    background-color: #ffd4e8; /* Light Pink */
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#recipe_form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #ff66b2; /* Pink */
+    font-size: 18px; 
+}
+
+#recipe_form input[type="text"],
+#recipe_form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 5px;
+    font-size: 16px; 
+}
+
+#recipe_form button {
+    background-color: #ff66b2; /* Pink */
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px; 
+}
+
+#recipe_form button:hover {
+    background-color: #ff3385; /* Darker Pink on hover */
+}
+
+#delete_form {
+    flex: 1;
+    padding: 1rem;
+    background-color: #ffd4e8; /* Light Pink */
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#delete_form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #ff66b2; /* Pink */
+    font-size: 18px; /* Larger font size */
+}
+
+#delete_form input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 5px;
+    font-size: 16px; /* Slightly larger font size */
+}
+
+#delete_form button {
+    background-color: #ff66b2; /* Pink */
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px; /* Slightly larger font size */
+}
+
+#delete_form button:hover {
+    background-color: #ff3385; /* Darker Pink on hover */
+}
+
+#recipe_table {
+    flex: 2;
+    padding: 1rem;
+    background-color: #ffd4e8; /* Light Pink */
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ff66b2; /* Pink */
+}
+
+th, td {
+    padding: 0.5rem;
+    text-align: left;
+    background-color: #ff66b2; /* Pink */
+    color: #fff;
+    font-size: 16px; /* Slightly larger font size */
+}
+/* Reset some default styles */
+body, h1, h2, p, ul, ol, li {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+}
+/* Use Dancing Script font for headings */
+h1, h2, h3 {
+    font-family: 'Dancing Script', cursive;
+}
+
+
+#fancy_text {
+    background-color: #ff66b2; /* Pink */
+    color: #ffffff;
+    text-align: center;
+    padding: 1rem 0;
+    border-radius: 10px;
+}
+
+main {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem;
+    background-color: #fff6e6; /* Light Peach */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#recipe_form {
+    flex: 1;
+    padding: 1rem;
+    background-color: #ffd4e8; /* Light Pink */
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#recipe_form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #ff66b2; /* Pink */
+    font-size: 18px; 
+}
+
+#recipe_form input[type="text"],
+#recipe_form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 5px;
+    font-size: 16px; 
+}
+
+#recipe_form button {
+    background-color: #ff66b2; /* Pink */
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px; 
+}
+
+#recipe_form button:hover {
+    background-color: #ff3385; /* Darker Pink on hover */
+}
+
+#delete_form {
+    flex: 1;
+    padding: 1rem;
+    background-color: #ffd4e8; /* Light Pink */
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+#delete_form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #ff66b2; /* Pink */
+    font-size: 18px; /* Larger font size */
+}
+
+#delete_form input[type="text"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 5px;
+    font-size: 16px; /* Slightly larger font size */
+}
+
+#delete_form button {
+    background-color: #ff66b2; /* Pink */
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px; /* Slightly larger font size */
+}
+
+#delete_form button:hover {
+    background-color: #ff3385; /* Darker Pink on hover */
+}
+
+#recipe_table {
+    flex: 2;
+    padding: 1rem;
+    background-color: #ffd4e8; /* Light Pink */
+    border: 1px solid #ff66b2; /* Pink */
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid #ff66b2; /* Pink */
+}
+
+th, td {
+    padding: 0.5rem;
+    text-align: left;
+    background-color: #ff66b2; /* Pink */
+    color: #fff;
+    font-size: 16px; /* Slightly larger font size */
+}
