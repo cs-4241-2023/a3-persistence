@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Author: Nelson Diaz, Assignment: a3-persistence,
+      Class: CS4241 Webware, Instructor: Charlie Roberts">
+
+    <script src="/js/button_events.js" async></script>
+
+    <!--PureCSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/tables-min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/forms-nr-min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/buttons-min.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <link rel="stylesheet" href="/css/main.css">
+
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+
+    <!-- Imports google font Lato -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:wght@400&display=swap">
+    </noscript>
+  </head>
+
+  <body>
+    <header>
+      <p>User: {{{username}}}</p>
+
+      <form action='/logout'><button type="submit">Logout</button></form>
+    </header>
+
+    <main>
+      <div id="formDiv">
+        <form action='/add' method='POST' autocomplete="off" class="pure-form pure-form-aligned">
+          <fieldset>
+            <div class="pure-control-group">
+              <label for="itemInput">Item:</label>
+              <input type="text" id="itemInput" name="item" placeholder="e.g. Baseball" required>
+            </div>
+            
+            <div class="pure-control-group">
+              <label for="amountInput">Amount:</label>
+              <input type="number" id="amountInput" name="amount" min="0" max="999999999999" placeholder="25" required>
+            </div>
+
+            <div class="pure-control-group">
+              <label for="valueInput">Unit Value:</label>
+              <input type="number" id="valueInput" name="unit_value" min="0" max="999999999" step="0.01" placeholder="2.10" required>
+            </div>
+
+            <button type="submit" class="button-submit pure-button">Add Item</button>
+          </fieldset>
+        </form>
+      </div>
+
+      <h1>Inventory</h1>
+      <table class="pure-table pure-table-bordered pure-table-striped">
+        <thead>
+          <tr>
+            <th>Item</th>
+            <th>Amount</th>
+            <th>Unit Value</th>
+            <th>Total Value</th>
+            <th colspan="2">Edit Data</th>
+          </tr>
+        </thead>
+
+        {{#each data}}
+        <tr id="{{_id}}">
+          <td>{{item}}</td>
+          <td>{{numberFormat amount}}</td>
+          <td>{{currencyFormat unit_value}}</td>
+          <td>{{currencyFormat total_value}}</td>
+          <td class="tableButton">
+            <button onclick="modifyData(this)">Modify</button>
+            <button form="form:{{{_id}}}" type="submit" hidden>Save</button>
+          </td>
+          <td class="tableButton">
+            <form action="/delete" method="POST">
+              <button type="submit">Delete</button>
+              <input name="_id" type="hidden" value="{{_id}}">
+            </form>
+          </td>
+        </tr>
+        {{/each}}
+      </table>
+    </main>
+  </body>
+</html>
