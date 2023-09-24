@@ -2,6 +2,8 @@ require('dotenv').config();
 
 const express = require('express'),
       { MongoClient, ObjectId } = require("mongodb"),
+      morgan = require('morgan'),
+      timeout = require('connect-timeout');
       app = express();
 
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`;
@@ -17,8 +19,11 @@ async function run() {
 }
 
 app.use(express.static('public'));
+app.use(morgan('tiny'));
+app.use(express.json());
+app.use(timeout('30s'));
 
-app.use( (req,res,next) => {
+app.use( (req, res, next) => {
   if(task_collection !== null && account_collection !== null) {
     next()
   }else{
