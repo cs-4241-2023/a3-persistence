@@ -22,7 +22,7 @@ const handleGet = function (request, response) {
   const filename = dir + request.url.slice(1);
 
   if (request.url === "/") {
-    sendFile(response, "public/index.html");
+    sendFile(response, "src/pages/index.html");
   } else if (request.url === "/getTasks") {
     response.writeHead(200, { "Content-Type": "application/json" });
     response.end(JSON.stringify(tasks));
@@ -86,7 +86,7 @@ const sendFile = function (response, filename) {
   fs.readFile(filename, function (err, content) {
     // if the error = null, then we've loaded the file successfully
     if (err === null) {
-      // status code: https://httpstatuses.com
+      // status code: 200
       response.writeHeader(200, { "Content-Type": type });
       response.end(content);
     } else {

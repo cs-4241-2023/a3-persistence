@@ -17,9 +17,33 @@ body {
 
 #todoForm {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 20px;
+  border-radius: 10px;
+  font-size: 1.2em;
+}
+
+#todoForm #taskName {
+  align-items: center;
+  flex-grow: 1;
+}
+
+#todoForm #description {
+  padding: 0px;
+  margin: 0px;
+  width: 100%;
+}
+
+#todoForm #assignedTo {
+  flex-grow:10;
+}
+#todoForm #submit {
+  flex-grow: 1;
+}
+
+#todoForm #priority {
+  width: fit-content;
 }
 
 #todoForm input,
