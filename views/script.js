@@ -28,15 +28,20 @@ const submit = async function( event) {
     }
 
     if(taskValid && dateValid && deadlineValid){
-        let json = { task, creationDate, deadline};
-        let body = JSON.stringify( json );
-        console.log(body);
-        const response = await fetch( '/json', {
+        let taskObject = { task: task, creationDate:creationDate, deadline:deadline};
+        let body=JSON.stringify(taskObject);
+        const response1 = await fetch( '/submit', {
             method:'POST',
-            url:'/addtask',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body
         })
-        const data = await response.json();
+        await response1;
+        const response2 = await fetch( '/loadTasks', {
+            method:'GET'
+        })
+        const data = await response2.json();
         LoadFromServer(data);
         ClearForm();
     }
@@ -78,7 +83,7 @@ function CreateHeaderCell(cellInfo){
     return cell;
 }
 
-function CreateRow(task,creationDate,deadline,priority,jsonString){
+function CreateRow(task,creationDate,deadline,priority){
     let row=document.createElement("tr");
     row.append(CreateCell(task));
     row.append(CreateCell(creationDate));
@@ -102,22 +107,26 @@ function CreateCell(cellInfo){
 }
 
 function LoadFromServer(data){
+    console.log("Load from server")
     const table=document.createElement("table");
     let firstRow=CreateFirstRow();
 
+
     table.append(firstRow);
     if(Array.isArray(data)){
-        data.forEach((input)=>{
-            let taskData=input.tasks;
-            taskData.forEach(item=>{
-                let row=CreateRow(item.task,
-                    item.creationDate,
-                    item.deadline,
-                    JudgePriority(item.deadline),
-                    item.toString());
-                table.append(row);
-            })
+        console.log("Is Array")
+        console.log(data[0].toString())
+        data.forEach((item)=>{
+            console.log(typeof input)
+            let row=CreateRow(item.task,
+                item.creationDate,
+                item.deadline,
+                JudgePriority(item.deadline),
+                item.toString());
+            table.append(row);
         });
+    }else{
+        console.log("Not Array")
     }
 
     let htmlTable=document.getElementById("task-table");
@@ -133,5 +142,6 @@ window.onload = async function() {
         method:'GET'
     })
     const data = await response.json();
+    console.log("On Load: "+data.toString())
     LoadFromServer(data);
 }

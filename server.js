@@ -1,8 +1,7 @@
 const express = require( 'express' ),
     mongodb = require( 'mongodb' ),
     cookie  = require( 'cookie-session' ),
-    app = express(),
-    appData=[]
+    app = express()
 
 require('dotenv').config();
 
@@ -15,14 +14,14 @@ app.use( express.urlencoded({ extended:true }) )
 // #region Mongodb
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new mongodb.MongoClient( uri, { useNewUrlParser: true, useUnifiedTopology:true })
-let collection = null;
+let collectionID=process.env.DB_USERS;
 let userID;
 const db=client.db( process.env.DB );
 
 client.connect()
     .then( () => {
         // will only create collection if it doesn't exist
-        return db.collection( process.env.DB_TASKS )
+        return db.collection( collectionID )
     })
     .then( __collection => {
         // store reference to collection
@@ -63,6 +62,7 @@ app.post( '/login', async (req, res) => {
     }
 })
 const checkLoginInfo=async (req, res)=>{
+    let collection=db.collection( process.env.DB_USERS );
     let password = req.body.Password;
     let invalidInput = req.body.Username === null && password === null;
     if(!invalidInput){
@@ -74,9 +74,6 @@ const checkLoginInfo=async (req, res)=>{
         }*/
         if(info !== null){
             if(password===info.password){
-                for(let userTask in info.tasks){
-                    appData.push(userTask)
-                }
                 console.log("Successful Login");
                 return info._id;
             }else{
@@ -85,7 +82,7 @@ const checkLoginInfo=async (req, res)=>{
         }else{
             //Account not found so make one
             console.log("Account not found, making one")
-            let acc = {'username': req.body.Username, 'password': req.body.Password, 'tasks':JSON.stringify(appData)};
+            let acc = {'username': req.body.Username, 'password': req.body.Password};
             return await collection.insertOne(acc);
         }
     }
@@ -93,10 +90,15 @@ const checkLoginInfo=async (req, res)=>{
 
 //Load Table
 app.get('/loadTasks',async (req, res) => {
+    let collection=db.collection( process.env.DB_TASKS );
     if (userID.toString() === process.env.ADMIN_ACCOUNT_ID) {
-        collection.find({ }).toArray().then( result => res.json( result ) )
+        collection.find({ }).toArray().then( result => {
+            res.json( result )
+        } )
     }else{
-        collection.find({_id:userID}).toArray().then( result => res.json( result ) )
+        collection.find({userID:userID}).toArray().then( result => {
+            res.json( result )
+        }  )
     }
 })
 
@@ -119,18 +121,15 @@ app.get( './views/app.html', ( req, res) => {
 
 
 
-// Express dev
-
-app.post( '/addTask', express.json(), ( req, res ) =>{
-    appData.push( req.body.newData )
-    res.writeHead( 200, { 'Content-Type': 'application/json'})
-    res.end( JSON.stringify( appData ) )
-})
-
-app.post( '/signup', express.json(), ( req, res ) =>{
-    appData.push( req.body.newData )
-    res.writeHead( 200, { 'Content-Type': 'application/json'})
-    res.end( JSON.stringify( appData ) )
+app.post( '/submit', express.json(), async (req, res) => {
+    let collection=db.collection( process.env.DB_TASKS );
+    if(userID !== process.env.ADMIN_ACCOUNT_ID){
+        let info=req.body;
+        await collection.insertOne(
+            {userID:userID, task:info.task, creationDate: info.creationDate, deadline: info.deadline}
+        )
+    }
+    res.end();
 })
 
 app.listen( 3000 )
