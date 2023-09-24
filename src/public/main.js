@@ -3,7 +3,7 @@ const buttonStyle = 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blu
 
 const displayPosts = function () {
     axios
-        .get('/blogs')
+        .get('/api/blogs')
         .then((response) => {
             const data = response.data;
 
@@ -43,7 +43,7 @@ const createPost = function (event) {
     };
 
     axios
-        .post('/blogs', blogPost, {
+        .post('/api/blogs', blogPost, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -112,7 +112,7 @@ const updatePost = function (postId) {
     };
 
     axios
-        .put(`/blogs/${postId}`, updatedBlogPost, {
+        .put(`/api/blogs/${postId}`, updatedBlogPost, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -128,7 +128,7 @@ const updatePost = function (postId) {
 
 const deletePost = function (postId) {
     axios
-        .delete(`/blogs/${postId}`)
+        .delete(`/api/blogs/${postId}`)
         .then(() => {
             console.log(`Blog post id:${postId} deleted successfully`);
             displayPosts(); // Fetch and display updated blog posts
