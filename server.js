@@ -10,8 +10,8 @@ const __dirname = dirname(__filename)
 
 const app = express();
 
-// app.use(express.static("public"));
-// app.use(express.static("views"));
+app.use(express.static("public"));
+app.use(express.static("views"));
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
@@ -25,11 +25,12 @@ app.use(
 app.post("/login", (req, res) => {
   console.log(req.body);
 
-  if (rq.body.password === "test") {
+  if (req.body.password === "test") {
     req.session.login = true;
-    res.redirect("task.html");
+    console.log("REDIRECT")
+    res.redirect("/task.html");
   } else {
-    res.sendFile(__dirname + "/views/login.html");
+    res.sendFile(__dirname + "/views/index.html");
   }
 });
 
