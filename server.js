@@ -11,6 +11,7 @@ const app = express();
 const port = 3000;
 
 const uri_tasks = "mongodb+srv://doapps-4ec1f246-ba4d-4013-aed9-b45e89750f81:l149ko35X086aHQj@db-mongodb-nyc1-53233-0b371da4.mongo.ondigitalocean.com/Tasks?authSource=admin&tls=true";
+
 var conn = mongoose.createConnection(uri_tasks, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -27,6 +28,24 @@ const taskSchema = new mongoose.Schema({
 });
 
 const Task = conn.model('Task', taskSchema);
+
+const uri_users = "mongodb+srv://doapps-4ec1f246-ba4d-4013-aed9-b45e89750f81:l149ko35X086aHQj@db-mongodb-nyc1-53233-0b371da4.mongo.ondigitalocean.com/Users?authSource=admin&tls=true";
+
+var conn2 = mongoose.createConnection(uri_users, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  ssl: true
+});
+
+const userSchema = new mongoose.Schema({
+  username: String,
+  password: String,
+  email: String,
+  id: Number,
+  github: Boolean
+});
+
+const User = conn2.model('User', userSchema);
 
 app.use(bodyParser.json());
 
