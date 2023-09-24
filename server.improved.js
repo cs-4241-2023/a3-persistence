@@ -16,6 +16,91 @@ const port = 3000
 let accountName = ''
 
 
+const session = require('express-session');
+
+const passport = require('passport');
+
+const GitHubStrategy = require('passport-github2').Strategy;
+
+
+/*
+ClientID: f3f3f475744e79044ed5
+ClientSecret: ea6c8474ad873ea2a31350a4428537e6ebfe90b0
+*/
+
+const users = [
+  {
+    id: 'ngheineman',
+    username: 'ngheineman',
+    displayName: 'Nancy Heineman',
+  },
+];
+
+//OAuth
+app.use(session({
+  secret: 'babysharkdodododododobabysharkdodododododo', // Replace with a strong and unique secret key
+  resave: false,
+  saveUninitialized: true,
+}));
+
+
+passport.use(new GitHubStrategy({
+  clientID: 'f3f3f475744e79044ed5',
+  clientSecret: 'ea6c8474ad873ea2a31350a4428537e6ebfe90b0',
+  callbackURL: 'https://fiction-character-tracker.glitch.me/auth/github/callback',
+}, (accessToken, refreshToken, profile, done) => {
+  const user = users.find(user => user.id === 'ngheineman'); //change
+
+  if (!user) {
+    return done(new Error('User not found'));
+  }
+
+  // Save the user object in the session
+  return done(null, user);
+}));
+
+// Serialize the user to store it in the session
+passport.serializeUser((user, done) => {
+  done(null, user.id); // Use the GitHub username as the unique identifier
+});
+
+// Deserialize the user when retrieving it from the session
+passport.deserializeUser((id, done) => {
+  // Find the user by GitHub username
+  const user = users.find(user => user.id === id);
+
+  if (!user) {
+    return done(new Error('User not found'));
+  }
+
+  done(null, user);
+});
+
+app.use(passport.initialize());
+
+app.get('/auth/github',
+  passport.authenticate('github', { scope: ['user:email'] })
+);
+
+app.get('/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/' }),
+  (req, res) => {
+    // Redirect to a success page or perform other actions after successful authentication
+    res.redirect('/index');
+  }
+);
+
+// Route to display user profile (requires authentication)
+app.get('/profile', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.send(`Welcome, ${req.user.username}`);
+  } else {
+    res.redirect('/');
+  }
+});
+
+
+
 //setup express functions
 
 app.use(express.static('public'));

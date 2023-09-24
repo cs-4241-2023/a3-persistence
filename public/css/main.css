@@ -24,6 +24,8 @@ p{
 
 #lotr_map {
   background-color: transparent;
+  width: 400px;
+  height: 300px;
 }
 
 table {

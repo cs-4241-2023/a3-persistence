@@ -74,6 +74,11 @@ window.addEventListener('load', async function () {
 
   const button2 = document.getElementById("signupButton");
   button2.onclick = signup;
+
+  document.getElementById('github-login-button').addEventListener('click', async () => {
+    // Redirect the user to your server's OAuth authentication route
+    window.location.href = '/auth/github';
+  });
 })
 
 
