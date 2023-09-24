@@ -1,0 +1,15 @@
+{
+  "name": "",
+  "version": "",
+  "description": "",
+  "author": "",
+  "scripts": {
+    "start": "node expressed_server_rewrite.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mime": "^2.6.0",
+    "mongodb": "^6.1.0",
+    "passport": "^0.6.0"
+  }
+}

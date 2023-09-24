@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Grocery List</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Oswald" type="text/css">
+    <script src="js/main.js"></script>
+    
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <h1>Your Grocery List</h1>
+    <form>
+      <input type="text" id="item" value="item name">
+      <input type="text" id ="price" value="Price $ (X.XX)">
+      <button id="submit">Submit</button>
+      <button id="reset">Reset</button>
+      <button id="modify">Modify Item Price</button>
+      <button id="delete" hidden>Delete Items</button> <!-- couldnt finish this on time but everything else works-->
+      <h6 hidden class="errorMsg">Price must be a number</h6>
+    </form>
+
+    <div class="priceCounts">
+      <label id="totalPrice"> Total Price: <span id="tpNum"> $0.00</span></label>
+      <label id="workingPrice">In Cart: <span id="icNum">$0.00</span></label>
+      <label id="diff">Difference: <span id="difNum">$0.00</span></label>
+    </div>
+    <div class="lists" id="list-container">
+
+      <ul id="groceryList">
+        <label id="glist-lab">Check items In Cart <label id="modbox-label">Check to Modify</label></label>
+        
+        <li class="groceryItem"><input type="checkbox" class="giBox">Item Name: Price($)<input type="checkbox" class="modbox"></li>
+      </ul>
+      <ul id="cartList">
+        <label id="cart-lab">In Your Cart</label>
+      </ul>
+    </div>
+
+  </body>
+</html>
