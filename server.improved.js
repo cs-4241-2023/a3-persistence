@@ -52,12 +52,23 @@ passport.deserializeUser(function(user, done) {
 });
 
 passport.use(new LocalStrategy(async function verify(username, password, cb) {
-  const result = await user_collection.find({username, password}).toArray()
+  const result = await user_collection.findOne({username, oauth: { $exists: false }})
 
-  if(result.length > 0) {
-    return cb(null, result[0].username)
+  if(!result) {
+    const newUser = await user_collection.insertOne( {username, password} )
+    return cb(null, {
+      username,
+      user_id: newUser.insertedId,
+      new_user: true
+    })
+  } else if(result.password === password) {
+    return cb(null, {
+      username,
+      user_id: result._id,
+      new_user: false
+    })
   } else {
-    return cb(null, false, { message: 'Incorrect username or password.' })
+    return cb(null, false, { message: 'User exists, but the password is incorrect.' })
   }
 }))
 
@@ -66,15 +77,46 @@ passport.use(new GitHubStrategy({
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: "http://localhost:3000/oauth2/github/redirect"
   },
-  function(accessToken, refreshToken, profile, cb) {
-    return cb(null, profile.username)
+  async function(accessToken, refreshToken, profile, cb) {
+    
+    const result = await user_collection.findOne({username: profile.username, oauth: 'github'})
+
+    if(!result) {
+      const newUser = await user_collection.insertOne( {username: profile.username, oauth: 'github'} )
+      return cb(null, {
+        username: profile.username,
+        user_id: newUser.insertedId,
+        new_user: true
+      })
+    } else {
+      return cb(null, {
+        username: profile.username,
+        user_id: result._id,
+        new_user: false
+      })
+    }
   }
 ))
 
 app.use( express.json() )
 app.use( express.urlencoded({ extended:true }) )
+app.use( express.static( 'public' ) )
 
-app.post( '/login/local', passport.authenticate('local', { failureRedirect: '/index.html', failureMessage: true }),
+app.get('/', (req, res) => res.redirect('/login'))
+
+app.get( '/login', function(req, res) {
+  if(req.session.login === true) {
+    res.redirect('/main')
+    return;
+  }
+  
+  const message = req.session.messages ? req.session.messages[0] : ''
+
+  res.render('login', {message, layout: false})
+  req.session.messages = []
+})
+
+app.post( '/login/local', passport.authenticate('local', { failureRedirect: '/login', failureMessage: true }),
   async function(req, res) {
     req.session.login = true
     res.redirect( '/main' )
@@ -83,7 +125,7 @@ app.post( '/login/local', passport.authenticate('local', { failureRedirect: '/in
 
 app.get('/login/github', passport.authenticate('github'))
 
-app.get('/oauth2/github/redirect', passport.authenticate('github', { failureRedirect: '/index.html' }),
+app.get('/oauth2/github/redirect', passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
     req.session.login = true
@@ -92,18 +134,16 @@ app.get('/oauth2/github/redirect', passport.authenticate('github', { failureRedi
 )
 
 app.use( function( req,res,next) {
-  let contain_index = req.url.includes('index')
-  let contain_css = req.url.includes('html')
-  let contain_js = req.url.includes('html')
+  let contain_login = req.url.includes('login')
+  let contain_robots = req.url.includes('robots.txt') // Prvents SEO error in Lighthouse test
 
-  if( req.session.login !== true && !contain_css && !contain_js && !contain_index ) {
-    res.redirect( '/index.html' )
+  if( req.session.login !== true && !contain_login && !contain_robots ) {
+    res.redirect( '/login' )
   } else {
     next()
   }
 })
 
-app.use( express.static( 'public' ) )
 
 app.use( (req,res,next) => {
   if( data_collection !== null ) {
@@ -114,8 +154,13 @@ app.use( (req,res,next) => {
 })
 
 app.get( '/main', async (req, res) => {
-  const data = await data_collection.find({username: req.session.passport.user}).toArray()
-  res.render( 'main', {username: req.session.passport.user, data: data, layout: false} )
+  const data = await data_collection.find({user_id: req.session.passport.user.user_id}).toArray()
+  res.render( 'main', {
+    username: req.session.passport.user.username,
+    new_user: req.session.passport.user.new_user,
+    data: data,
+    layout: false
+  })
 })
 
 app.get( '/logout', (req, res) => {
@@ -129,7 +174,8 @@ app.post( '/add', async (req, res) => {
   data['amount'] = Number(data['amount'])
   data['unit_value'] = Number(data['unit_value'])
   data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
-  data['username'] = req.session.passport.user
+  data['user_id'] = req.session.passport.user.user_id
+  console.log(req.session.passport.user)
   await data_collection.insertOne( data )
 
   console.log('ADD:', data)
@@ -155,7 +201,7 @@ app.post( '/modify', async (req, res) => {
   data['amount'] = Number(data['amount'])
   data['unit_value'] = Number(data['unit_value'])
   data['total_value'] = parseFloat((data['amount'] * data['unit_value']).toFixed(2))
-  data['username'] = req.session.passport.user
+  data['user_id'] = req.session.passport.user.user_id
   data['_id'] = new ObjectId(data['_id'])
   
   const response = await data_collection.replaceOne( { _id: data['_id'] }, data )

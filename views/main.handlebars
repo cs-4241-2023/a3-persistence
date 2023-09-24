@@ -30,7 +30,7 @@
 
   <body>
     <header>
-      <p>User: {{{username}}}</p>
+      <p>User: {{{username}}} {{#if new_user}}(new user){{/if}}</p>
 
       <form action='/logout'><button type="submit">Logout</button></form>
     </header>

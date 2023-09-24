@@ -11,10 +11,25 @@ body > * {
   margin: auto;
 }
 
+#error_message {
+	margin-bottom: 15px;
+	color: red;
+	height: 2em;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+main {
+	padding: 2em;
+	border: 1px solid black;
+	border-radius: 50px;
+	filter: drop-shadow(3mm 3mm 3mm gray);
+	background-color: white;
+}
+
 form {
-	margin-bottom: 0;
-	padding: 0 50px;
-	padding-bottom: 15px;
+	margin: 0 auto;
+	padding: 15px 50px;
 	border-bottom: 1px solid black;
 }
 
@@ -39,8 +54,7 @@ form {
 }
 
 .button-oauth > p {
-	margin: 0;
-	margin-left: 10px;
+	margin: 0 auto;
 }
 
 .button-oauth > svg {
