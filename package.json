@@ -2,7 +2,7 @@
   "name": "a3-mahirsowad3",
   "version": "",
   "engines": {
-    "node": "16.20.1"
+    "node": "16.x"
   },
   "description": "TODO List Application",
   "author": "Mahir Sowad",
