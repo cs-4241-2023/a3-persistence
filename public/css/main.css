@@ -115,6 +115,15 @@ fieldset label {
   padding-right: 30px;
 }
 
+#usernameDisplay {
+  float: right;
+  margin-right: 20px;
+}
+
+.h1 {
+  margin-right: -20px;
+}
+
 /* Schedule Display */
 
 #dataView {

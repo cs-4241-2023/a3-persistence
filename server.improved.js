@@ -12,11 +12,12 @@ const http = require( 'http' ),
 // allows use of environment variables
 dotenv.config()
 
-const handleLogin = function(request, response) {
+const handleLogin = async function(request, response) {
   // check if the username matches a username in the database
-  if( request.body.username == 'test' ) { // TODO
+  let match = await collections.users.find({'username': `${request.body.username}`}).toArray()
+  if( match.length > 0 ) { // TODO
     // check if the password matches
-    if(request.body.password == 'test') { // TODO
+    if(request.body.password === match[0].password) { // TODO
       // request.session.login == true
       request.session.login = true
       request.session.user = request.body.username
@@ -50,15 +51,12 @@ const handleAdd = async function(request, response) {
         const result = await collections.schedules.updateOne(
           { _id: current_user[0].schedules[0]  }, 
           { $push: {'classes': newClass.insertedId } }) // gets the first schedule every time
-          .then(async _ => {})
       })
     // response.json(result)
 
   } else { // set error flags
-    const result = await collections.errors.remove( {} )
-      .then(async _ => { 
-        await collections.errors.insertOne(error)
-      })
+    let result = await collections.errors.deleteOne( {} )
+    result = await collections.errors.insertOne(error)
   }
 
   response.redirect('/main.html')
@@ -152,6 +150,38 @@ const handleModify = function(request, response) {
   }
 }
 
+const handleGetAll = async function(request, response) {
+
+  let data = {
+    username: "",
+    schedules: []
+  }
+
+  console.log(request.session.user)
+  data.username = request.session.user;
+  const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
+    .then( async current_user => {
+      const result2 = await collections.schedules.find({ _id : new ObjectId(current_user[0].schedules[0]) }).toArray() // get the schedules of the user
+        .then( async current_schedule => {
+          const classes = []
+          current_schedule[0].classes.forEach(async class_id => {
+            const a_class = await collections.classes.find({'_id' : new ObjectId(class_id) }).toArray()
+              .then( async current_class classes.push(a_class[0])
+          })
+          console.log('classes: ' + JSON.stringify(classes))
+          return classes
+        })
+        return result2;
+    })
+
+  data.schedules = result
+
+  console.log('sending: ' + JSON.stringify(data))
+  response.json(data)
+  
+}
+
+
 const validate = data => {
 error = {
   errors: false,
@@ -227,7 +257,6 @@ const sendFile = function( response, filename ) {
      }
    })
 }
-
 
 // express set up
 
@@ -309,10 +338,11 @@ app.use( function( request, response, next ) {
   }
 })
 
-
 app.post('/add', handleAdd)
 app.delete('/remove', handleRemove)
 app.post('/modify', handleModify)
+
+app.get('/data', handleGetAll);
 
 // set up the server
 app.listen(3000)

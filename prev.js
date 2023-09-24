@@ -21,15 +21,7 @@ const handleGet = function( request, response ) {
     }
   }
   
-  const handleGetAll = function(request, response) {
-      request.on( 'data', () => {})
-      request.on( 'end', function() {          
-        response.writeHead( 200, "OK", { 'Content-Type': 'application/json' })
-        console.log('getAll - sending: ' + JSON.stringify(appdata))
-        response.end(JSON.stringify(appdata))
-      })
-  }
-  
+
 
 
 app.post('/getAll', handleGetAll)
