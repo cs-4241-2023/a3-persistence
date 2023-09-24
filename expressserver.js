@@ -66,6 +66,26 @@ app.post( '/add', async (req,res) => {
     res.status(500).json({ message: 'Failed to add data to MongoDB' })
   }
 }) 
+app.put('/update/:id', async (req, res) => {
+  try {
+    const id = req.params.id
+    const updatedData = req.body
+    const result = await collection.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: updatedData }
+    )
+
+    if (result.modifiedCount === 1) {
+      res.status(200).json({ message: 'Item updated successfully' });
+    }
+    else {
+      res.status(404).json({ message: 'Item not found' });
+    }
+  } catch (error) {
+    console.error('Error updating data in MongoDB:', error);
+    res.status(500).json({ message: 'Failed to update data in MongoDB' })
+  }
+})
 
 // assumes req.body takes form { _id:5d91fb30f3f81b282d7be0dd } etc.
 
@@ -109,11 +129,3 @@ app.get('/', (request, response) => {
   sendFile(response, 'public/index.html')
 })
 
-/*
-app.get('/library', (request, response) => {
-  console.log("library get request")
-  //response.json(appdata)
-  response.end(JSON.stringify(appdata))
-
-})
-*/
