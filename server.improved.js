@@ -137,18 +137,17 @@ app.post("/load", async (req, res) => {
 });
 
 app.post("/edit", async (req, res) => {
-  
   const { id, newTitle } = req.body;
-  
+
   const query = { _id: new ObjectId(id) };
-  const newTitleObj = { "$set": { title: newTitle } };
-  
+  const newTitleObj = { $set: { title: newTitle } };
+
   let current_user = req.session.username;
 
   const collection = client.db("a3-database").collection("playlists");
 
   let result = await collection.updateOne(query, newTitleObj);
-  
+
   console.log(result);
 
   const playlistData = await client
@@ -181,6 +180,8 @@ app.post("/login", async (req, res, next) => {
     .find()
     .toArray();
 
+  req.session.login = false;
+
   accounts.forEach((e) => {
     if (req.body.password === e.password && req.body.username === e.username) {
       req.session.login = true;
@@ -192,15 +193,15 @@ app.post("/login", async (req, res, next) => {
 
   if (req.session.login) {
     res.redirect("main.html");
+  } else {
+    res.render("index", {
+      msg: "login failed: incorrect password",
+      layout: false,
+    });
   }
 
   // cancel session login in case it was previously set to true
-  req.session.login = false;
   // password incorrect, send back to login page
-  res.render("index", {
-    msg: "login failed: incorrect password",
-    layout: false,
-  });
 });
 
 app.get("/", (req, res, next) => {
