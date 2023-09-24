@@ -1,6 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const cookieParser = require("cookie-parser");
+const session = require("express-session");
+
 const app = express();
 
 let currentId = 3;
@@ -43,7 +46,7 @@ function duration(date1, date2) {
 
 // logging middleware
 const logger = (req, res, next) => {
-  console.log("request url:", req.url);
+  console.log(`${req.method} request for ${req.url}`);
   next();
 };
 
