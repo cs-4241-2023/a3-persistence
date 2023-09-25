@@ -42,7 +42,9 @@ if something went wrong. It can error if the password exists but the user doesnt
 I used the bootstrap framework as I have heard of it and have seen some nice creations in the various classes I have taken. I kept the custom css
 I utilized and made from a2 as it fit the website theme better. I do borrow some of the aspecets from bootstrap like the sizing of the h1, b1, and tables
 are different than before. I think they look better now that they are more standardized with the bootstrap framework. The background color and the 
-echo on the title are the biggest parts that were kept from my a2 assignment.
+echo on the title are the biggest parts that were kept from my a2 assignment. The fonts are still custom, the body is custom to allow for centering aspects of the website.
+The table still has a custom outline becuase the default table in html has no outline. The hr, br, h1, b1 tags are have custom color or an echo effect.
+The new css tag that is not from a2 is the #login and #lower tags which make up the div login/register page that dissapears once the user logs into the website.
 - the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
 add a little more detail about what it does.
 I used the middleware packages of express.json, express.static, and mongoose db. Express.json allows me to parse json from post requests,
@@ -54,6 +56,9 @@ static files in express.
 - **Tech Achievement 1**: Get 100% in all four lighthouse tests:
 https://cdn.glitch.global/27ecaa25-6fa0-4ea2-967d-1b728de89cfd/a170871c-1b44-4b33-a109-fb40b297e0f4.image.png?v=1695619896864
 I did it, it required some tweaking specifically in the form labels that I lacked. The link is posted above for the screemshot of all the achievements.
+- **Tech Achievement 1**: Instead of Glitch, host your site on a different service like Heroku
+- https://a3-colin-fyock-91396a301d82.herokuapp.com/
+- I used Heroku because it seemed the simplest way to host my web app. I liked how I could just upload a github link and mostly be done. I did have to tweak the way my port was created because it was only listed as 3000 because I was running the server locally. Once I fixed that the Heroku server ran fine. I would say it is probably better than glitch since glitch doesn't allow the user to upload individual files manually, only creating a new project from scratch or from a github page. The downside to Heroku is that it is not free to host a website.
 
-### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+
+
