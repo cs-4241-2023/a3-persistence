@@ -1,6 +1,6 @@
 ## A3 Task Manager Application
 
-Glitch link e.g. http://a3-charlie-roberts.glitch.me
+Glitch link: https://glitch.com/~a3-camilo-cordobaescobar
 
 Extension confirmed by Prof. Roberts.
 
