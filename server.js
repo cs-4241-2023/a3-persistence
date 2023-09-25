@@ -143,6 +143,7 @@ app.post("/submit", async (request, response) => {
     let dueDate = sentData.dueDate;
     let difficulty = sentData.difficulty;
     let difficultyNum = parseInt(difficulty);
+    let completed = sentData.completed;
 
     let result = {result: "", message: ""};
 
@@ -161,13 +162,13 @@ app.post("/submit", async (request, response) => {
                 assignmentName: assignmentName,
                 dueDate: dueDate,
                 difficulty: difficulty,
+                completed: completed,
                 priority: priority
             }
         );
         result = {result: "success", message: ""};
     }
 
-    //let result = await handleAssignmentData(sentData);
     response.writeHead(200, {"Content-Type": "application/json"});
     response.end(JSON.stringify(result));
 });
@@ -198,34 +199,6 @@ app.delete("/assignment-delete", async (request, response) => {
 });
 
 app.listen(process.env.PORT || port) // set up server to listen on port 3000
-
-const handleAssignmentData = async function (sentData) {
-    let className = sentData.className;
-    let assignmentName = sentData.assignmentName;
-    let dueDate = sentData.dueDate;
-    let difficulty = sentData.difficulty;
-    let difficultyNum = parseInt(difficulty);
-
-    // send failure if any of the fields are empty
-    if (className === "" || assignmentName === "" || dueDate === "") {
-        return JSON.stringify({result: "failure", message: "One or more fields are empty!"});
-    } else if (difficulty === "" || isNaN(difficultyNum) || difficultyNum < 0 || difficultyNum > 10) {
-        return JSON.stringify({result: "failure", message: "Difficulty must be an integer between 1 and 10!"});
-    } else {
-        let priority = calculatePriority(dueDate, difficulty); // calculate derived field
-
-        await assignmentCollection.insertOne(
-            {
-                className: className,
-                assignmentName: assignmentName,
-                dueDate: dueDate,
-                difficulty: difficulty,
-                priority: priority
-            }
-        );
-        return JSON.stringify({result: "success", message: ""});
-    }
-}
 
 const calculatePriority = function (dueDate, difficulty) {
   let date = new Date(dueDate);

@@ -63,12 +63,14 @@ const submitAssignment = async function(event) {
   // stop form submission from trying to load a new .html page for displaying results
   event.preventDefault();
 
+
   // get information from input text boxes and parse into a JSON
   const inputJSON = {
     className: document.querySelector("#class-name").value,
     assignmentName: document.querySelector("#assignment-name").value,
     dueDate: document.querySelector("#due-date").value,
     difficulty: document.querySelector("#difficulty").value,
+    completed: document.querySelector("#completed").checked,
     priority: "" // priority is empty until we derive it in the server
   };
 
@@ -92,6 +94,7 @@ const submitAssignment = async function(event) {
     document.querySelector("#assignment-name").value = "";
     document.querySelector("#due-date").value = "";
     document.querySelector("#difficulty").value = "";
+    document.querySelector("#completed").checked = false;
 
     // update data table with new data
     await getAllData();
@@ -120,7 +123,7 @@ const getAllData = async function () {
 
   // create table element in HTML
   const table = document.createElement("table");
-  table.innerHTML = "<th>Class</th> <th>Name</th> <th>Due Date</th> <th>Difficulty</th> <th>Priority</th>";
+  table.innerHTML = "<th>Class</th> <th>Name</th> <th>Due Date</th> <th>Difficulty</th> <th>Completed</th> <th>Priority</th>";
 
   // add assignment information to corresponding row
   assignmentData.forEach((assignment) => {
@@ -129,6 +132,7 @@ const getAllData = async function () {
                      <td>${assignment.assignmentName}</td>
                      <td>${assignment.dueDate}</td>
                      <td>${assignment.difficulty} out of 10</td>
+                     <td>${assignment.completed}</td>
                      <td>${assignment.priority} priority</td>
                      `
     // create delete button for table row
@@ -200,7 +204,7 @@ const editPopUp = function (event, assignment) {
   // set on-click listener for edit submission
   document.querySelector("#submit-button-edit").onclick = async (event) => {
     event.preventDefault();
-    await editAssignment(assignment._id);
+    await editAssignment(event, assignment._id);
   }
 
   // close pop-up window and show original form if cancel is clicked
