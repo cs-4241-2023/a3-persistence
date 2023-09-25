@@ -4,7 +4,7 @@
   "description": "",
   "author": "",
   "scripts": {
-    "start": "node server.improved.js"
+    "start": "nodejs server.improved.js"
   },
   "dependencies": {
     "cookie-session": "^2.0.0",

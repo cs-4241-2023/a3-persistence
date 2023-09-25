@@ -6,6 +6,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb'),
       sqrl = require('squirrelly'),
       path = require('path'),
       app = express(),
+      hostname = '0.0.0.0',
       port = 3000,
       mongouser = process.env.MONGO_USERNAME,
       mongopass = process.env.MONGO_PASSWORD;
@@ -335,5 +336,4 @@ async function getUserName(token) {
 
 }
 
-app.listen( process.env.PORT || port )
- 
+app.listen( port , hostname)
