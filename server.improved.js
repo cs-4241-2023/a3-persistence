@@ -2,22 +2,32 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 require('dotenv').config();
-const mime = require('mime');
-const fs = require('fs');
-const dir = 'public/';
-const port = process.env.PORT || 3000;
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 // Configure MongoDB connection using the MONGO_STRING environment variable
 mongoose.connect(process.env.MONGO_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-});
+  writeConcern: {
+    w: 'majority', // Correct write concern mode
+  },
+})
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((error) => {
+    console.error('Error connecting to MongoDB:', error);
+  });
 
-// Define a schema for tasks using Mongoose (you can modify this as needed)
+
+// Define a schema for tasks using Mongoose
 const taskSchema = new mongoose.Schema({
   task: String,
+  description: String, // Add task description field
+  dueDate: Date, // Add due date field
+  priority: String, // Add priority field
   timestamp: Date,
 });
 

@@ -41,7 +41,7 @@ const displayTasks = function (tasks) {
     // Add an event listener to the delete button
     deleteButton.addEventListener("click", () => {
       // Call a function to handle task deletion (you need to implement this)
-      handleDeleteTask(task.id); // Pass the task ID to the handler
+      handleDeleteTask(task._id); // Pass the task ID to the handler
       // Remove the task item from the DOM
       taskList.removeChild(listItem);
     });
@@ -80,7 +80,7 @@ const submit = async function (event) {
   event.preventDefault();
 
   const inputTaskName = document.querySelector("#task-input");
-  const inputTaskDescription = document.querySelector("#task-description"); // Add this line
+  const inputTaskDescription = document.querySelector("#task-description");
   const dueDateInput = document.querySelector("#due-date");
   const prioritySelect = document.querySelector("#priority");
 
@@ -97,13 +97,13 @@ const submit = async function (event) {
 
   const json = {
     task: inputTaskName.value,
-    description: inputTaskDescription.value, // Send the task description
+    description: inputTaskDescription.value,
     dueDate: dueDateInput.value,
     priority: prioritySelect.value,
   };
   const body = JSON.stringify(json);
 
-  const response = await fetch("/submit", {
+  const response = await fetch("/tasks", {
     method: "POST",
     body,
     headers: {
