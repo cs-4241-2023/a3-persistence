@@ -9,6 +9,9 @@ Extension confirmed by Prof. Roberts.
 - I chose local storage and MongoDB as my authentication strategy because it was the simplest. When the user enters new or saved login info, the local storage saves the username and whether the user is logged in, which is then used to get the correct data from the tasks collection.
 - I used bootstrap because I wanted to work with a popular CSS framework that I'll likely use later on in my CS career
   - I modified the CSS stylesheets to implement some flex box functionalities and other colors
+- Express middleware packages
+  - json: parses requests with JSON payloads.
+  - static: serves the static files in the public directory
 
 ## Technical Achievements
 
