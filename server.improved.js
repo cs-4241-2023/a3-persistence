@@ -86,7 +86,10 @@ app.delete("/deleteRecipe/:recipeName", async (req, res) => {
     const DB = client.db("recipeTracker");
     const collection = DB.collection("recipes");
 
-    const result = await collection.deleteOne({ recipe_name: recipeName, username: username });
+    const result = await collection.deleteOne({
+      recipe_name: recipeName,
+      username: username,
+    });
 
     if (result.deletedCount === 1) {
       res.writeHead(200, { "Content-Type": "application/json" });
@@ -101,7 +104,6 @@ app.delete("/deleteRecipe/:recipeName", async (req, res) => {
     res.end(JSON.stringify({ message: "Internal server error." }));
   }
 });
-
 
 async function loginHelper(aUser, res, req) {
   try {
@@ -161,6 +163,51 @@ app.get("/getRecipes", async (request, response) => {
 app.get("/getRecipes", (request, response) => {
   const username = request.session.username;
   getUsers(username, response);
+});
+
+app.put("/updateRecipe", async (req, res) => {
+  try {
+    const updatedRecipeData = req.body;
+    console.log("Received updated data:", req.body);
+    // Validate that the entire object is present
+    if (!updatedRecipeData) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      return res.end(JSON.stringify({ message: "Invalid data." }));
+    }
+
+    const username = req.session.username;
+    const DB = client.db("recipeTracker");
+    const collection = DB.collection("recipes");
+
+    const query = {
+      recipe_name: updatedRecipeData.original_recipe_name,
+      username: username,
+    };
+    const update = {
+      $set: {
+        recipe_name: updatedRecipeData.new_recipe_name,
+        recipe_ingredients: updatedRecipeData.new_recipe_ingredients,
+        recipe_directions: updatedRecipeData.new_recipe_directions,
+      },
+    };
+
+    console.log("Query:", query);
+    console.log("Update:", update);
+
+    const result = await collection.updateOne(query, update);
+
+    if (result.modifiedCount === 1) {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Recipe updated successfully." }));
+    } else {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Recipe not found." }));
+    }
+  } catch (e) {
+    console.error("Error updating recipe:", e);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Internal server error." }));
+  }
 });
 
 async function getUsers(username, res) {
