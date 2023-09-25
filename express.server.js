@@ -5,7 +5,13 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@cluster.du4q9pb.mongodb.net/?retryWrites=true&w=majority`;
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
 let tasksCollection;
 let usersCollection;
 
@@ -23,6 +29,8 @@ async function connectToDatabase() {
     console.error("Error connecting to MongoDB:", error);
   }
 }
+
+app.get("/");
 
 // Handle GET requests for tasks
 app.get("/tasks/:username", async (req, res) => {
