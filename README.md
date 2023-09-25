@@ -4,35 +4,42 @@
 ## Meeting Time
 https://eminent-flint-option.glitch.me/
 
-The web applicaiton is used at the moment to record meetings so that they won't be forgotten. It also includes a password so that not anyone can just spam the application with any meetings that they want to make.
+The web applicaiton is used at the moment to record meetings so that they won't be forgotten. There is a login along with password to ensure not just anyone can add meetings to the website.
+
+The Website first contains a login button with a username and password field. At the moment, this is the only thing on the website that can be interacted with since everything else is disabled
+Upon entering the correct username and password, the login form will gray out and everything else will be ungrayed, meaning they can be interacted with.
+On top of ungraying the new fields, since the user is now verified, all of the data will show up by showing the meetings in a bulleted list below the form.
+
+**The Username and Password is "PaulGodinez"**
 
 The form consists of:
 Meeting Name: The name of the meeting
 Location: The location of the meeting
 Date: The date of the meeting (MM/DD/YY)
+Delete Button: used for deleting entries
+Update Button: Used for Updating entries
+Add Button: Used for adding entries.
 
-The final input is the password field, **THE PASSWORD IS "Paul Godinez"**
+To update or delete an entry, the meeting name must first match the entry that you want to delete or update, and upon clicking the button, the data showed in the list below will reflect the change.
+I.E To update or delete an entry called MQP Meeting, I must have the "Meeting Name" field match exactly MQP Meeting, and then once I click delete it will delete, or once I click update it will change the field
+to whatever I have written in the form at the time.
 
-Upon pressing submit, it will update the website with a list of all future meetings and how many days it will be until that meeting takes place.
-The amount of days until the meeting takes place is the "derived field" that is the new row of data, which takes the current date and subtracts the date of the meeting to get how many days it is until the meeting takes place.
+For adding an entry, all you need to do is change the three fields and press add.
+
+Challenges: The biggest challenge when it came to programing the website was ensuring that all the parts from A2 was nicely adapted into A3, as moving the DB from local to mongo was quite annoying.
+
+Authentication: The authentication strategy I chose was comparing the entry that the user tried to login with to a collection in the database that stored all the users that are allowed to use the website. I chose this since it was the easiest to do.
 
 HTML:
 The HTML form is the four fields which is used to collect the data so that it can be sent to the server
 The resutls page is the same page that you start on, it only appears upon clicking submit
 
 CSS:
-The CSS was changed so that the background was grey and the text was red, the colors of WPI.
-Element Selectors: There are numerous element selectors in the css to change the form and the entries inside the form
-ID Selector: The password field is bolded so that people know that it is seperate to the form above which is used to plan meetings
-Class selector: The flexbox class is used so that the entire body of the file can be put into a flexbox
-
-CSS Positioning:
-As mentioned earlier, the flexbox was used so that the form and the results field can be alligned, and if page is too small, then the results will wrap beneath the form. 
-The roboto font was added (since it's my favorite) and is used for all text in the website.
+The CSS framework I used was Bootstrap, mostly because it was the only one that I thought looked nice with my website when testing out different frameworks. The changes I have made to the framework are the same CSS
+changes I used in A2.
 
 
 ## Technical Achievements
-- **Tech Achievement 1**: The entire website takes place on one page, where the form allows users to submit data and automatically updates the server with the new data if it's allowed to be updated. For example, if a meeting was submited with the date 11/11/2023, then as of 9/11/2023 it would show the new meeting with days until the meeting set at 60.
-  
+N/A
 ### Design/Evaluation Achievements
 N/A
