@@ -4,7 +4,8 @@
     "description": "blog app for a3",
     "author": "huangrandy",
     "scripts": {
-        "start": "nodemon app.js & tailwindcss build -i src/public/styles.css -o src/public/output.css --watch"
+        "start": "nodemon app.js",
+        "build-css": "tailwindcss build -i src/public/styles.css -o src/public/output.css --watch"
     },
     "dependencies": {
         "autoprefixer": "^10.4.15",
