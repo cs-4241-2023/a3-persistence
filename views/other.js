@@ -3,7 +3,7 @@ function navigateTo(string) {
 }
 
 function showPassword() {
-  let x = document.getElementById("pw");
+  let x = document.getElementById("Password");
   if (x.type === "password") {
     x.type = "text";
   } else {

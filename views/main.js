@@ -24,8 +24,8 @@ const submit = async function (event) {
     dueDate.setDate(dueDate.getDate() + 1);
     let due = dueDate.toLocaleDateString();
 
-    let json = { task, due };
-    let body = JSON.stringify(json);
+    let taskObject = { task: task, duedate: due };
+    let body = JSON.stringify(taskObject);
 
     const response1 = await fetch("/submit", {
       method: "POST",
@@ -45,12 +45,6 @@ const submit = async function (event) {
     ClearForm();
   }
 };
-
-function ClearForm() {
-  const form = document.querySelector("#addItemContainer");
-  form.taskname.value = "";
-  form.duedate.value = "";
-}
 
 function CreateDeleteButton(index) {
   let json = { index };
@@ -89,10 +83,10 @@ function CreateHeaderCell(cellInfo) {
   return cell;
 }
 
-function CreateRow(task, due, index) {
+function CreateRow(task, due, dataIndex) {
   let row = document.createElement("tr");
-  row.append(CreateEditButton(index));
-  row.append(CreateDeleteButton(index));
+  row.append(CreateEditButton(dataIndex));
+  row.append(CreateDeleteButton(dataIndex));
   row.append(CreateCell(task));
   row.append(CreateCell(due));
   return row;
@@ -154,7 +148,7 @@ const editData = (event) => {
 };
 
 function closeEditForm() {
-  const editForm = document.querySelector(".Edit-Task");
+  const editForm = document.querySelector(".todo-edit");
   editForm.style.display = "none";
 }
 
@@ -163,11 +157,17 @@ function LoadFromServer(data) {
   let firstRow = CreateFirstRow();
 
   table.append(firstRow);
-  data.forEach((item, index) => {
-    console.log(index);
-    let row = CreateRow(item["task"], item["due"], index);
+  if (Array.isArray(data)) {
+  data.forEach((item) => {
+    let row = CreateRow(
+          item._id,
+          item.task,
+          item.duedate,
+          item.toString()
+        );
     table.append(row);
   });
+}
 
   let htmlTable = document.getElementById("task-table");
   htmlTable.replaceChildren();
@@ -178,7 +178,12 @@ window.onload = async function () {
   const addButton = document.querySelector(".add-button");
   addButton.onclick = submit;
 
-  const response = await fetch("/json", {
+  const editForm = document.querySelector(".Edit-Task");
+  editForm.style.display = "none";
+  const editSubmit = document.querySelector(".edit-button");
+  editSubmit.onclick = editData;
+
+  const response = await fetch("/loadTasks", {
     method: "GET",
   });
   const data = await response.json();

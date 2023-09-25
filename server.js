@@ -41,7 +41,7 @@ app.post( '/createAccount', async (req, res) => {
   userID = await checkCreateAccount(req, res);
 
   if(userID !== null && userID !== undefined){
-      res.redirect('app.html');
+      res.redirect('content.html');
   }else{
       res.sendFile(__dirname+'/views/signupfail.html');
   }
@@ -98,7 +98,7 @@ app.post( '/submit', express.json(), async (req, res) => {
   if(userID !== process.env.ADMIN_ACCOUNT_ID){
       let info=req.body;
       await taskCollection.insertOne(
-          {userID:userID, task:info.task, deadline: info.deadline}
+          {userID:userID, task:info.task, duedate: info.due}
       )
   }
   res.end();
@@ -106,14 +106,14 @@ app.post( '/submit', express.json(), async (req, res) => {
 
 app.post('/update',express.json(),async (req,res)=>{
   let id=JSON.parse(req.body._id);
-  await taskCollection.updateOne({_id:new ObjectID(id)},{ $set: { task: req.body.task,deadline:req.body.deadline } });
+  await taskCollection.updateOne({_id:new ObjectID(id)},{ $set: { task: req.body.task,duedate:req.body.due } });
   res.redirect('content.html')
 })
 
 app.post('/delete',express.json(), async (req,res) => {
   let id=JSON.parse(req.body._id);
   await taskCollection.deleteOne({_id: new ObjectID(id)});
-  res.redirect('app.html')
+  res.redirect('content.html')
 })
 
 app.listen( 3000 )
