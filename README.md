@@ -3,7 +3,8 @@ Assignment 3 - Persistence: Two-tier Web Application with Database, Express serv
 
 ## Personalized Todo List
 
-Hosted by glitch: [Link to Glitch](https://a3-persistence-arnav-sacheti.glitch.me/) \
+Hosted by Glitch: [Link to Glitch](https://a3-persistence-arnav-sacheti.glitch.me/) \
+Hosted by Heroku: [Link to Heroku](https://a3-arnav-sacheti-405d7d064604.herokuapp.com/) \
 Username: `webware` \
 Password: `password`
 
@@ -17,5 +18,6 @@ The primary objective my application is to provide users with an intuitive inter
 
 
 ## Technical Achievements
+- **Support another hosting service**: Added support for Heroku app, seems pretty similar to Glitch, i do like the auto deploy hook from github meaning i no longer have to 'import from github'. Setup was pretty easy, longest thing was setting up the CLI tool.
 - **100% Lighthouse Report**: Accomplished 100% in all of the lighhouse categories on both the login and main page, i have included a JSON copy of the lighthouse report in the github if it helps
 - **Added Password Encryption for Storage**[5pts]: I do not believe that adding support for password encryption was required, but this is a better stance for password security. This deserves some EC since it does require a little bit of troubleshooting your workflow as there are now nested callbacks which caused issues requiring me to use `.then` to ensure concurrency.
