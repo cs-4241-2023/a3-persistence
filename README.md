@@ -1,16 +1,20 @@
 ## A3 Task Manager
 
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
+Server: http://a3-charlie-roberts.glitch.me
+
+## Summary
+This website allows users to connect to a mongodb server and load in data about pending tasks on their todo list. Additionally, it allows you to add, edit, and delete your task data on the server. It will generate a priority depending on how close the task's deadline is to the current day.
+
+### Challenges
+The biggest challenge I faced was incorporating mongodb, as I had relatively little experience working with servers before this project.
+
+### Authentication Strategy
+Due to time constraints, I decided to authenticate users by comparing their usernames and passwords to the ones in my mongodb server.
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
+### CSS Framework
+I wanted to use a simple CSS framework that provided a nice contrast and that was easy to digest for color-blind people, so I decided to go with the Water.css framework.
 
 ## Technical Achievements
 - **Tech Achievement 1**: I got 100% on all four lighthouse tests
