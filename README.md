@@ -23,6 +23,3 @@ https://a3-sameer-desai.glitch.me/results
 
 ## Technical Achievements
 - **Tech Achievement 1**: OAuth authentication with GitHub using Passport.js
-
-- **Tech Achievement 2**: Heroku hosted site instead of Glitch
-
