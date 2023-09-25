@@ -5,9 +5,6 @@ Assignment 3 - Persistence: Two-tier Web Application with Database, Express serv
 
 https://a3-sean-arackal.glitch.me/
 
-
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
-
 Access:
 Username: cs4241
 Password: admin
@@ -21,15 +18,11 @@ Password: admin
 - The main challenges were integrating OAuth for authentication, transitioning the Node.js HTTP server to Express, configuring the database, and deploying the application to a new host.
 
 ### Authentication Strategy 
--  authenticate users by comparing their usernames and passwords to the ones in my mongodb server
+-  authenticate users by comparing their usernames and passwords to the ones in the mongodb database
 
 ### CSS Framework
 
 - sakura (sakura-vader)
-
-### Express middleware packageS
-
-- asdasd
 
 ---
 
@@ -53,7 +46,6 @@ Password: admin
 > Displays data related to a particular user
 
 ## Technical Achievements
-- **Tech Achievement 2**: (5 points) Instead of Glitch, host your site on a different service like Heroku or Digital Ocean. Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse?
 
 - **Tech Achievement 3**: Got 100% in all four lighthouse tests required for this assignment.
 ![Lighthouse Test Scores](images/image.png)
@@ -75,8 +67,3 @@ Password: admin
 > Developing for Web Accessibility
 11. Associate a label with every form control
 12. Ensure that all interactive elements are keyboard accessible
-
-- **Design Achievement 2**: Contrast, Repetition, Alignment and Proximity principles: Which element received the most emphasis (contrast) on each page?
- How did you use proximity to organize the visual information on your page? 
- What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
- How did you use alignment to organize information and/or increase contrast for particular elements
