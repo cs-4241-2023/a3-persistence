@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Generate custom tier lists.">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <div class="centered">
+      <h1>Tier List Generator</h1>
+    </div>  
+    <div class="centered">
+      <h2>Michael Oliveira</h2>
+    </div>
+    <table id="data-table">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th id="wide">Item</th>
+          <th>Rating</th>
+          <th>Tier</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="centered">
+      <h3>Add/edit data</h3>
+    </div>
+    <form>
+      <ul>
+        <li>
+          <label for="item">Item: </label>
+          <input type="text" id="item" name="item">
+        </li>
+        <li>
+          <label for="rating">Rating (out of 100): </label>
+          <input type="text" id="rating" name="rating">
+        </li>
+        <li>
+          <label for="image">Image URL: </label>
+          <input type="text" id="image" name="image">
+        </li>
+      </ul>
+      <div class="centered">
+        <button id="submit">Submit</button>
+      </div>
+    </form>
+  </body>
+</html>
