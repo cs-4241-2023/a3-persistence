@@ -87,23 +87,23 @@ const isAuth = (req, res, next) => {
 
 // Send to menu if user is already authenticated with cookie
 app.get('/', isAuth, (req, res) => {
-  res.render('menu', { githubUsername: req.session.githubUsername });
+  res.render('menu', { title: 'Menu' });
 })
 
 // redirect for /editPlayer
 app.get('/editPlayer', isAuth, (req, res) => {
-  res.render('editPlayer', { githubUsername: req.session.githubUsername });
+  res.render('editPlayer', { title: 'Edit Player' });
 })
 
 // When play button on menu.html is clicked, redirect to game.html
 app.get('/game', isAuth, (req, res) => {
-  res.render('game', { githubUsername: req.session.githubUsername });
+  res.render('game', { title: 'Game' });
 });
 
 // Results, redirect to results.html
 app.get('/results', isAuth, (req, res) => {
   // Show only current session player's info from mongodb in results.html
-  res.render('results', { githubUsername: req.session.githubUsername });
+  res.render('results', { title: 'Results' });
 });
 
 
@@ -111,7 +111,7 @@ app.get('/login', (req, res) => {
   if (req.user) {
     return res.redirect('/'); // Yes
   } else {
-    res.render('index', { githubUsername: req.session.githubUsername });
+    res.render('welcome', { title: 'Welcome' });
   }
 });
 
