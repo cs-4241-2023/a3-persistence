@@ -1,28 +1,40 @@
 Nelson Diaz
-https://a2-nadiaz2.glitch.me
+https://a3-nadiaz2.glitch.me
 
 ## SIMS: Simple Inventory Management System
-For my project, I created a simple inventory management system. The system takes in an item, some amount of that item, and some price per one of that item. The server side then computes what the total value is of the stock of that item and sends the value back to the client. I used flexbox to align the input form and the data table horizontally from one another. I also used a grid display to format the input form itself.
+
+### Summary
+This application is designed to keep track of a store's total inventory, being able to keep track of what items are in stock, how much each costs, and total value of each item's stock. When creating this application I had to learn how to use passport.js for authentication, how to store and access cookies on a client, how to poperly redirect unauthenticated users, and how to perform server-side rendering of HTML files. Each of these took time for me to learn and experiment with as well as tought me a lot about how to perform certain actions in a web application. In addition to all this, I was able to cut out all client-side JavaScript due to the use of server-side rendering and native HTML forms. This means that users are able to have full access and functionallity within my application even if they have JavaScript turned off.
+
+### Authentication
+I used passport.js to handle all of the authentication in my application. This authentication comes in two forms, Username/Password login and OAuth GitHub login. By using passport.js both of these types of authentication were very similar to implement. In both cases, if a new user tries to sign in, then a new account will be made for them, indicated by the '(new user)' text in the top-left corner next to their username. Cookies are used to keep track of a user's current sign in session.
+
+<img src="https://github.com/nadiaz2/a3-persistence/blob/main/New_User.png?raw=true" width="700"/>
+
+**Important to note**: If a user is trying to sign-in via Username/Password, a unique username needs to be provided in order for a new account to be created. If a user name that is already in use is entered, then the user is alerted to this fact and will need to try again. A sample account with data has been created for testing purposes (Username: test, Password: 1234).
+
+Passport.js was used as my authentication strategy because it was relativly easy to use and also allows for creating new authentication methods very easily. For example, I likely be able to implement Sign-In With Google functionality very easily if I wanted to. Keeping track of sign-in via cookies was also a simple task and easy to implement.
+
+### CSS Framework
+I used Pure.css as my CSS framework for this project. I chose this framework because it was a simple framework that was easy to use without too many bells and whistles. I only authored a small amount of custom CSS that was focused on centering and aligning elements on the page. On the login page, I additionally added CSS to change the background color of the page and draw the user's attention to the center of the page.
+
+### Express Middleware
+- **cookie-session**: This enables the use of cookies to store information about the user's current sign-in session.
+- **express-handlebars**: This middleware allows the server to render custom html before sending it to the client
+- **passport-local**: This allows for Username/Password authentication for users.
+- **passport-github**: This allows for OAuth GitHub authentication for users.
+- **express.static( 'public' )**: This middleware servers up static files to the client, such as CSS files.
+- **express.urlencoded({ extended:true })**: This middleware parses form submissions to the server for easy access of the inputs.
+
 
 ## Technical Achievements
-- **Tech Achievement 1**: Created a single-page app by combining the submission form for new data and the data table into the same page. In addition to this, there are delete and modify buttons for each row of data, allowing the user to have full contol without needing to switch pages. To accomplish this, I needed to generate HTML through JS in order to keep the data table updated as data was added, deleted, or modified.
-- **Tech Achievement 2**: Added the ability to modify existing data by including a 'Modify' button next to each row in the data table. To accomplish this, I implemented a uuid system in order to uniquely identify each data entry as well as add additional JS code to swap out the text displays in the table with input elements when the modify button is pressed.
 
-### Design/Evaluation Achievements
-- **Design Achievement 1**: I performed a user study with one person to see how they reacted to my user interface design.
-Tasks Provided:
-Create a new row of data
-Modify an existing row of data
-Delete a row of data
+- **Tech Achievement 1**: I implemented OAuth authentication via GitHub into my application. This was done using passport.js. If a new user signs in with their GitHub account a new account will be created. This will be indicated by '(new account)' being displayed at the top left of the screen next to the username. This will remain until the next time the user signs in.
 
-Q1: Provide the last name of each student you conduct the evaluation with.
-- *Hariyanto*
+- **Tech Achievement 2**: I achieved 100% in all four Lighthouse tests in both my Login and Main pages.
 
-Q2: What problems did the user have with your design?
-- *The user mentioned that they would like to see more color of the webpage as well as a dollar sign on the necessary fields.*
+### Login Page:
+<img src="https://github.com/nadiaz2/a3-persistence/blob/main/Login_Lighthouse.png?raw=true" width="700"/>
 
-Q3: What comments did they make that surprised you?
-- *The comment about adding the dollar sign surprised me because it was just something I hadn't though about. It was something that I overlooked due to spending so much time lookng at the webpage.*
-
-Q3: What would you change about the interface based on their feedback?
-- *I would likely incroperate their feedback by adding more color to the website to make it look better and also add the dollar sign to indicate currency on the fields that need it.*
+### Main Page:
+<img src="https://github.com/nadiaz2/a3-persistence/blob/main/Main_Lighthouse.png?raw=true" width="700"/>
