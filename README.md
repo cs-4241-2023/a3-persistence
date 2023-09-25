@@ -16,6 +16,13 @@ Include a very brief summary of your project here. Images are encouraged, along 
 ### CSS Framework
 I wanted to use a simple CSS framework that provided a nice contrast and that was easy to digest for color-blind people, so I decided to go with the Water.css framework.
 
+### Express Middleware Packages
+- Serve-static: I used this to help serve static files such as my html pages.
+- Helmet: Helmet is a connect-style middleware that helps secure node.js applications. I use it to tell browsers to use HTTPS which is more secure than HTTP.
+- Express.Json: Express.json parses incoming JSON requests and uses that information to populate the request body. I use this in my submit, edit, and delete task server functions.
+- Express.urlencoded: A built-in middleware that parses some of my incoming URL-encoded requests.
+- Request Logger: A custom Express middleware that is useful in development as it allows me to see what type of requests that are being sent, as well as to what URLs.
+
 ## Technical Achievements
 - **Tech Achievement 1**: I got 100% on all four lighthouse tests
 

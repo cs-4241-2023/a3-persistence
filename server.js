@@ -1,5 +1,6 @@
 const express = require( 'express' ),
     mongodb = require( 'mongodb' ),
+    helmet =require('helmet'),
     ObjectID = mongodb.ObjectId,
     app = express()
 
@@ -8,13 +9,18 @@ require('dotenv').config();
 app.use( express.static('./views/') )
 app.use( express.json() )
 app.use( express.urlencoded({ extended:true }) )
+app.use(helmet());
 
+const requestLogger = (request, response, next) => {
+    console.log(`${request.method} url: ${request.url}`);
+    next()
+}
 
+app.use(requestLogger)
 
 // #region Mongodb
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new mongodb.MongoClient( uri, { useNewUrlParser: true, useUnifiedTopology:true })
-let collectionID=process.env.DB_USERS;
 let userID;
 const db=client.db( process.env.DB );
 let userCollection=db.collection( process.env.DB_USERS );
