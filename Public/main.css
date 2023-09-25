@@ -1,0 +1,43 @@
+body {
+  .selector-for-some-widget {
+    box-sizing: content-box;
+  }
+  background:black;
+  color:white;
+  font-family: "Poppins", sans-serif;
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-column-gap: 10px;
+    margin: 10px 0;
+}
+
+.hcell {
+    padding: 10px;
+    border: 1px solid white;
+}
+
+.cellGuess {
+  padding: 50px;
+  border: 1px solid white;
+}
+
+.cellName {
+  padding: 75px;
+  border: 1px solid white;
+}
+
+.cellResult {
+  padding: 55px;
+  border: 1px solid white;
+}
+
+
+}
