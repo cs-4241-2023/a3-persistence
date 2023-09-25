@@ -1,136 +1,119 @@
 const express = require( 'express' ),
     mongodb = require( 'mongodb' ),
-    cookie  = require( 'cookie-session' ),
-    app = express(),
-    appData=[]
+    helmet =require('helmet'),
+    ObjectID = mongodb.ObjectId,
+    app = express()
 
 require('dotenv').config();
 
 app.use( express.static('./views/') )
 app.use( express.json() )
 app.use( express.urlencoded({ extended:true }) )
+app.use(helmet());
 
+const requestLogger = (request, response, next) => {
+    console.log(`${request.method} url: ${request.url}`);
+    next()
+}
 
+app.use(requestLogger)
 
 // #region Mongodb
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new mongodb.MongoClient( uri, { useNewUrlParser: true, useUnifiedTopology:true })
-let collection = null;
 let userID;
 const db=client.db( process.env.DB );
-
-client.connect()
-    .then( () => {
-        // will only create collection if it doesn't exist
-        return db.collection( process.env.DB_TASKS )
-    })
-    .then( __collection => {
-        // store reference to collection
-        collection = __collection
-        // blank query returns all documents
-        return collection.find({ }).toArray()
-    })
-
-// route to get all docs
-app.get( '/', (req,res) => {
-    if( collection !== null ) {
-        // get array and pass to res.json
-        collection.find({ }).toArray().then( result => res.json( result ) )
-    }
-})
-// #endregion
-
-// Cookies
-app.use( cookie({
-    name: 'session',
-    keys: ['key1', 'key2']
-}))
-
+let userCollection=db.collection( process.env.DB_USERS );
+let taskCollection=db.collection( process.env.DB_TASKS );
 
 app.post( '/login', async (req, res) => {
-    console.log("Login post");
-    // express.urlencoded will put your key value pairs
-    // into an object, where the key is the name of each
-    // form field and the value is whatever the user entered
-    userID = await checkLoginInfo(req, res);
+  userID = await checkLoginInfo(req, res);
 
-    if(userID !== null){
-        req.session.login = true;
-        res.redirect('app.html');
-    }else{
-        console.log("Fail")
-        req.session.login = false;
-    }
+  if(userID !== null){
+      res.redirect('content.html');
+  }else{
+      res.redirect('loginfail.html');
+  }
 })
-const checkLoginInfo=async (req, res)=>{
-    let password = req.body.Password;
-    let invalidInput = req.body.Username === null && password === null;
-    if(!invalidInput){
-        let info=await collection.findOne({'username': req.body.Username});
 
-        /*
-        for (let key in info){
-            console.log(key);
-        }*/
-        if(info !== null){
-            if(password===info.password){
-                for(let userTask in info.tasks){
-                    appData.push(userTask)
-                }
-                console.log("Successful Login");
-                return info._id;
-            }else{
-                return null;
-            }
-        }else{
-            //Account not found so make one
-            console.log("Account not found, making one")
-            let acc = {'username': req.body.Username, 'password': req.body.Password, 'tasks':JSON.stringify(appData)};
-            return await collection.insertOne(acc);
-        }
-    }
+app.post( '/createAccount', async (req, res) => {
+  console.log("Create Account");
+  userID = await checkCreateAccount(req, res);
+
+  if(userID !== null && userID !== undefined){
+      res.redirect('app.html');
+  }else{
+      res.sendFile(__dirname+'/views/signupfail.html');
+  }
+})
+
+const checkCreateAccount=async (req)=>{
+  let info=await userCollection.findOne({'username': req.body.Username});
+  if(info === null || info === undefined){
+      let acc = {'username': req.body.Username, 'password': req.body.Password};
+      return await userCollection.insertOne(acc);
+  }else{
+      return null;
+  }
+}
+
+const checkLoginInfo=async (req, res)=>{
+  let password = req.body.Password;
+  let invalidInput = req.body.Username === null && password === null;
+  if(!invalidInput){
+      console.log(req.body.Username+" "+req.body.Password)
+      let info=await userCollection.findOne({'username': req.body.Username});
+      if(info !== null){
+          if(password===info.password){
+              return info._id;
+          }else{
+              console.log("Incorrect Password");
+              res.sendFile(__dirname+'/views/signup.html');
+              return null;
+          }
+      }else{
+          console.log("No Account Found");
+          return null;
+      }
+  }
 }
 
 //Load Table
 app.get('/loadTasks',async (req, res) => {
-    if (userID.toString() === process.env.ADMIN_ACCOUNT_ID) {
-        collection.find({ }).toArray().then( result => res.json( result ) )
-    }else{
-        collection.find({_id:userID}).toArray().then( result => res.json( result ) )
-    }
+  if(userID!==null) {
+      if (userID.toString() === process.env.ADMIN_ACCOUNT_ID) {
+          console.log("ADMIN")
+          taskCollection.find().toArray().then( result => {
+              res.json( result )
+          } )
+      }else{
+          taskCollection.find({userID:userID}).toArray().then( result => {
+              res.json( result )
+          }  )
+      }
+  }
 })
 
-
-app.get( '/', (req,res) => {
-    res.render( 'index', { msg:'', layout:false })
+app.post( '/submit', express.json(), async (req, res) => {
+  if(userID !== process.env.ADMIN_ACCOUNT_ID){
+      let info=req.body;
+      await taskCollection.insertOne(
+          {userID:userID, task:info.task, deadline: info.deadline}
+      )
+  }
+  res.end();
 })
 
-// add some middleware that always sends unauthenicaetd users to the login page
-app.use( function( req,res,next) {
-    if( req.session.login === true )
-        next()
-    else
-        res.render('index', { msg:'login failed, please try again', layout:false })
+app.post('/update',express.json(),async (req,res)=>{
+  let id=JSON.parse(req.body._id);
+  await taskCollection.updateOne({_id:new ObjectID(id)},{ $set: { task: req.body.task,deadline:req.body.deadline } });
+  res.redirect('content.html')
 })
 
-app.get( './views/app.html', ( req, res) => {
-    res.render( 'main', { msg:'success you have logged in', layout:false })
-})
-
-
-
-// Express dev
-
-app.post( '/addTask', express.json(), ( req, res ) =>{
-    appData.push( req.body.newData )
-    res.writeHead( 200, { 'Content-Type': 'application/json'})
-    res.end( JSON.stringify( appData ) )
-})
-
-app.post( '/signup', express.json(), ( req, res ) =>{
-    appData.push( req.body.newData )
-    res.writeHead( 200, { 'Content-Type': 'application/json'})
-    res.end( JSON.stringify( appData ) )
+app.post('/delete',express.json(), async (req,res) => {
+  let id=JSON.parse(req.body._id);
+  await taskCollection.deleteOne({_id: new ObjectID(id)});
+  res.redirect('app.html')
 })
 
 app.listen( 3000 )

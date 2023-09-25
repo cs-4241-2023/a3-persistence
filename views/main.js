@@ -1,5 +1,4 @@
-// FRONT-END (CLIENT) JAVASCRIPT HERE
-
+// FRONT-END (CLIENT) JAVASCRIPT
 const submit = async function( event ) {
     // stop form submission from trying to load
     // a new .html page for displaying results...
@@ -29,14 +28,22 @@ const submit = async function( event ) {
   
       let json = {task, due};
       let body = JSON.stringify( json );
+      
   
-      console.log("Body: " +body);
-  
-      const response = await fetch( '/json', {
-            method:'POST',
-            body
-          })
-      const data = await response.json();
+      const response1 = await fetch( '/submit', {
+        method:'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body
+      })
+
+      await response1;
+        const response2 = await fetch( '/loadTasks', {
+            method:'GET'
+        })
+
+      const data = await response2.json();
       LoadFromServer(data);
       ClearForm();
     }
@@ -73,7 +80,8 @@ const submit = async function( event ) {
   
   function CreateFirstRow(){
     let row=document.createElement("tr");
-    row.append(CreateHeaderCell(""));
+    row.append(CreateHeaderCell("Edit"));
+    row.append(CreateHeaderCell("Delete"));
     row.append(CreateHeaderCell("Task"));
     row.append(CreateHeaderCell("Due Date"));
     return row;
@@ -87,6 +95,7 @@ const submit = async function( event ) {
   
   function CreateRow(task,due,index){
     let row=document.createElement("tr");
+    row.append(CreateEditButton(index));
     row.append(CreateDeleteButton(index));
     row.append(CreateCell(task));
     row.append(CreateCell(due));
@@ -103,6 +112,55 @@ const submit = async function( event ) {
     })
   }
   
+  function CreateEditButton(dataIndex){
+    let id = JSON.stringify( dataIndex );
+    const cell = document.createElement('td');
+    cell.className="edit";
+    const button=document.createElement('button');
+    button.className="edit-button";
+    button.ariaLabel="Edit Task Button";
+    button.innerHTML = "Edit";
+    button.onclick= (e) => {
+      OpenEditForm(id);
+  }
+  cell.append(button);
+    return cell;
+  }
+  let editableTaskID="";
+
+  function OpenEditForm(dataIndex) {
+    const editForm=document.querySelector(".Edit-Task");
+    editForm.style.display = "block";
+    editableTaskID=dataIndex;
+}
+const editData = (event) => {
+  event.preventDefault()
+  const form = document.forms[1];
+  console.log(form === null || form === undefined)
+
+  let taskname=form["taskname"].value;
+  let dueDate=new Date(form["duedate"].value);
+  dueDate.setDate(dueDate.getDate()+1);
+  let due=dueDate.toLocaleDateString();
+  let taskObject = { _id:editableTaskID,task: taskname, duedate:due};
+  let body=JSON.stringify(taskObject);
+
+  fetch("/update", {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body
+  }).then(r =>{
+      console.log("Updated")
+      window.location.reload();
+  })
+}
+
+function closeEditForm(){
+  const editForm=document.querySelector(".Edit-Task");
+  editForm.style.display = "none";
+}
   
   function LoadFromServer(data){
     const table=document.createElement("table");
