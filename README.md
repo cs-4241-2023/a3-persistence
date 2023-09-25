@@ -23,7 +23,11 @@ Include a very brief summary of your project here. Images are encouraged, along 
 ![Screenshot 2023-09-24 012150](https://github.com/MarekSGarbaczonek/a3-mareksgarbaczonek/assets/66498850/676eacc2-a0a9-4e2f-aad4-d8bcf07cb85e)
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+- **Design Achievement 1**: CRAP Principles:
+-   Which element received the most emphasis (contrast) on each page? 
+-   How did you use proximity to organize the visual information on your page?
+-   What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site?
+-   How did you use alignment to organize information and/or increase contrast for particular elements. 
 
 - (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
 Which element received the most emphasis (contrast) on each page? 
