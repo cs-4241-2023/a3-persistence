@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <title>CS4241 Assignment 2</title>
-    <meta charset="utf-8" name="College Schedule Maker">
+    <meta charset="utf-8" name="description" content="Author: tcaplan">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://unpkg.com/sanitize.css" media="screen,handheld">
     <link rel="stylesheet" type="text/css" href="./css/main.css" media="screen,handheld">
@@ -17,7 +17,12 @@
   <body>
 
     <header>
-      <div id="usernameDisplay"></div>
+      <div id="userinfo">
+        <form id="logout" method="POST" action="logout">
+          <button type="submit">Logout</button>
+        </form>
+        <div id="usernameDisplay"></div>
+      </div>
       <h1>College Schedule Maker</h1>
     </header>
 

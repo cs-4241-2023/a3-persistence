@@ -2,14 +2,10 @@
 <html lang="en">
 <head>
     <title>CS4241 Assignment 2</title>
-    <meta charset="utf-8">
+    <meta charset="utf-8" name="description" content="Author: tcaplan">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="https://unpkg.com/sanitize.css" media="screen,handheld"> -->
     <link rel="stylesheet" type="text/css" href="./css/picnic.css" media="screen,handheld">
     <link rel="stylesheet" type="text/css" href="./css/main.css" media="screen,handheld">
-    <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime&display=swap">     -->
     <script src="js/display.js" async="true"></script>
     <script src="js/main.js" async="true"></script>
     
@@ -24,21 +20,32 @@
     <main class="login">
         <div class="grid-row">
           <div id="middleContent" class="column">
-            <form method="POST" action="/login">
-              <div class="grid-row">
-                <label for="username">Username: </label>
-                <input type='text' name='username' id="username">
-              </div>
-              <div class="grid-row">
-                <label for="password">Password: </label>
-                <input type='password' name='password' id="password">
-              </div>
-              <div class="grid-row">
-                <button type='submit' id="submitLogin">Login</button>
-              </div>
-            </form>
+            <div class="grid-row center">
+              <form method="POST" action="/login">
+                <div class="grid-row">
+                  <label for="username">Username: </label>
+                  <input type='text' name='username' id="username">
+                </div>
+                <div class="grid-row">
+                  <label for="password">Password: </label>
+                  <input type='password' name='password' id="password">
+                </div>
+                <div class="grid-row">
+                  <button type='submit' class="submitLogin">Login</button>
+                </div>
+              </form>
+            </div>
+            <div class="grid-row center">
+              <form method="GET" action="/auth">
+                <div class="grid-row">
+                  <p>-OR-</p>
+                  <p>Login using GitHub</p>
+                  <button type='submit' class="submitLogin">Login</button>
+                </div>
+              </form>
+            </div>
           </div>
-          </div>        
+        </div>        
     </main>
 
 </body>

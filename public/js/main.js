@@ -83,10 +83,20 @@ const getData = async _ => {
   return await response.json();
 }
 
-window.onload = function () {
+window.onload = async function () {
 
-  data = getData()
+  const response = await fetch( '/data', {
+    method:'GET'
+  })
 
+  data = await response.json();
+
+  if(data.username === "") {
+    const response2 = await fetch( '/logout', {
+      method:'POST'
+    })
+    return;
+  }
 
   const classSelect = document.getElementById("classSelect")
   const classModifySelect = document.getElementById("classModifySelect")
@@ -108,7 +118,7 @@ window.onload = function () {
     displayErrors(data.error);
 
     // display the username
-    usernameDisplay.innerHTML = data.username;
+    usernameDisplay.innerHTML = "User: " + data.username;
   }
 
 }
