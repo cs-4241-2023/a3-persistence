@@ -6,7 +6,6 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
   <link rel="stylesheet" href="css/login.css" class="rel">
-
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="The What to Do login page">
 
@@ -16,7 +15,7 @@
 
 <body>
   <main>
-    <form action="/login" method="POST">
+    <form action="/login" method="POST" id="login-form">
       <div class="text-container">
         <label for="username">Username<input class="username" type="text" name="username" id="username"></label>
         <label for="password">Password<input class="password" type="password" name="password" id="password"></label>
@@ -26,4 +25,5 @@
   </main>
 </body>
 
+<script src="js/index.js"></script>
 </html>
