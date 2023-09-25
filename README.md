@@ -93,19 +93,18 @@ Write a paragraph of at least 125 words *for each of four principles* (four para
 Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
 ---
 
-## Your Web Application Title
+## ToDo
 
 URL: https://personalmanager-f9ebf3c35885.herokuapp.com/
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
+- The goal of the app is for the user to have a very easy way to plan their day with a to-do list with different priority levels.
+- I have faced the challenge of time and unfortunately was not able to get the authentication to give the user's data once logged in. I have the authentication code working and getting the user data (commented below server code) but not fetching the user specific data.
+- I went for the github2 authentication with passport.js but I did not have enough time to do anything with the user data.
+- I used the sanitize.css CSS reset. Professor Roberts allowed me to just use a CSS reset for the framework requirement since I really liked the custom CSS I created.
+- Express Middleware:
+-   
 
 ## Technical Achievements
 - **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
