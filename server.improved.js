@@ -196,7 +196,7 @@ app.get("/github-callback", (request, response) => {
     .then((res) => res.data.access_token)
     .then(async (token) => {
       accessToken = token
-      response.redirect(`/main.html/?token=${token}`)
+      response.redirect(`/?token=${token}`)
       return token
     })
     .then( async (token) => {
