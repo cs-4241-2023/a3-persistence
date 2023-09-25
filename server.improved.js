@@ -66,7 +66,7 @@ app.use(session({
 passport.use(new GitHubStrategy({
   clientID: 'f3f3f475744e79044ed5',
   clientSecret: 'ea6c8474ad873ea2a31350a4428537e6ebfe90b0',
-  callbackURL: 'https://character-tracker.glitch.me/auth/github/callback',
+  callbackURL: 'https://fictional-character-tracker.glitch.me/auth/github/callback',
 }, async (accessToken, refreshToken, profile, done) => {
 
 

@@ -45,7 +45,7 @@ one js file to manage the server, database, OAuth, and other miscellaneous, serv
     -acheived at least 90% on all Lighthouse requirements (see further notes below)<br>
 
 ## Achievements:
--10 Points: implement OAuth authentication. Used Github, simply click the 'login with github' button on the login screen and it will add your credentials to the database and log you in. (If you are already signed into github, it may go through automatically, sometimes I had to sign out of github to see the screen)
--5 Points: 100% in lighthouse tests. I got 100% on both pages when using the Localhost variety. However, my performance would occasionally drop to 99% when using the glitch interface, as there was an error that was supposedly 'not actionable' . I hope this doesn't happen when tested, and I would hope to get most of the points for this one.
-
+-10 Points: implement OAuth authentication. Used Github, simply click the 'login with github' button on the login screen and it will add your credentials to the database and log you in. (If you are already signed into github, it may go through automatically, sometimes I had to sign out of github to see the screen)<br>
+-5 Points: 100% in lighthouse tests. I got 100% on both pages when using the Localhost variety. However, my performance would occasionally drop to 99% when using the glitch interface, as there was an error that was supposedly 'not actionable' . I hope this doesn't happen when tested, and I would hope to get most of the points for this one.<br>
+![Local Lighthouse Results](lighthouse.png)
 
