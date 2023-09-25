@@ -30,12 +30,14 @@ async function fetchAndDisplayTasks() {
       taskDescription.textContent = task.description;
       cardContent.appendChild(taskDescription);
 
-      const taskInfo = document.createElement("p");
-      const taskAssignedTo = document.createElement("span");
+      const taskInfo = document.createElement("div");
+      taskInfo.className = 'card-details'
+      const taskAssignedTo = document.createElement("div");
+      taskAssignedTo.className = "taskAssignedTo"
       taskAssignedTo.textContent = `Assigned to: ${task.assignedTo}`;
       taskInfo.appendChild(taskAssignedTo);
-
-      const dueDate = document.createElement("span");
+      const dueDate = document.createElement("div");
+      dueDate.className = "dueDate"
       dueDate.textContent = `Due: ${task.dueDate}`;
       taskInfo.appendChild(dueDate);
       cardContent.appendChild(taskInfo);
@@ -90,7 +92,7 @@ async function fetchAndDisplayTasks() {
             document.getElementById("taskName").value = task.taskName;
             document.getElementById("description").value = task.description;
             document.getElementById("assignedTo").value = task.assignedTo;
-            document.getElementById("priority").value = task.priority;
+            document.getElementById("priority-select").value = task.priority;
 
             // Remove the task element from the DOM
             tasksContainer.removeChild(taskElement);
@@ -119,7 +121,7 @@ document.getElementById("todoForm").addEventListener("submit", async (e) => {
   const taskName = document.getElementById("taskName").value;
   const description = document.getElementById("description").value;
   const assignedTo = document.getElementById("assignedTo").value;
-  const priority = document.getElementById("priority").value;
+  const priority = document.getElementById("priority-select").value;
 
   const response = await fetch("/addTask", {
     method: "POST",
@@ -151,9 +153,16 @@ document.getElementById("todoForm").addEventListener("submit", async (e) => {
 
 // Initialize Materialize components
 document.addEventListener('DOMContentLoaded', function () {
+  let selectDropdownInput = document.querySelector('.select-dropdown.dropdown-trigger');
+  let label = document.querySelector('label[for="priority-select"]');
+  if (selectDropdownInput && label) {
+      selectDropdownInput.setAttribute('aria-labelledby', label.id);
+  }
+
   var elems = document.querySelectorAll('select');
   var instances = M.FormSelect.init(elems);
 });
+
 
 // Fetch and display tasks on page load
 window.onload = fetchAndDisplayTasks;

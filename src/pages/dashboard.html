@@ -3,13 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="This webpage is a simple and easy to use todo list that saves entries as they are associated with each user">
-
+    <meta
+      name="description"
+      content="This webpage is a simple and easy to use todo list that saves entries as they are associated with each user"
+    />
 
     <title>Persistent Todo List</title>
 
     <!-- Materialize CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
+    />
 
     <!-- Import the webpage's stylesheet -->
     <link rel="stylesheet" href="/style.css" />
@@ -17,7 +22,10 @@
     <!-- Import the font via Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- get rid of favicon error -->
     <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
@@ -40,20 +48,24 @@
           <label for="assignedTo">Assigned To</label>
         </div>
         <div class="input-field">
-          <select id="priority" aria-hidden="true">
+          <select id="priority-select">
+            <option value="" disabled selected>Choose your priority</option>
             <option value="high">High</option>
             <option value="medium">Medium</option>
             <option value="low">Low</option>
           </select>
-          <label for="priority">Priority</label>
+          <label for="priority-select" id="priority-label">Priority</label>
         </div>
-        <button class="btn waves-effect waves-light" type="submit" id="submit">Add Task</button>
+
+        <button class="btn waves-effect waves-light" type="submit" id="submit">
+          Add Task
+        </button>
       </form>
 
       <h2>List of tasks</h2>
       <div id="tasksContainer"></div>
     </div>
-    
+
     <!-- Materialize JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <!-- Import the webpage's javascript -->

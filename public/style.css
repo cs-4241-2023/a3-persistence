@@ -15,6 +15,22 @@ body {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.input-field label {
+  color: #000000;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating):hover {
+  color: #8628B2;
+}
+
+.card .card-action a:not(.btn):not(.btn-large):not(.btn-small):not(.btn-large):not(.btn-floating) {
+  color: #5a27aa;
+}
+
+.btn {
+  background-color: #145A54;
+}
+
 /* Task Card Styles */
 #tasksContainer .card {
   margin: 10px 0;
@@ -40,15 +56,28 @@ body {
   color: gray;
 }
 
+#tasksContainer .card-details {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
 #tasksContainer .taskAssignedTo {
-  position: absolute;
-  right: 0;
-  bottom: 0;
+  flex-grow: 1;
+  /* position: absolute;
+  left: 0;
+  bottom: 0; */
 }
 
 #tasksContainer .dueDate {
-  display: block;
-  margin-top: 10px;
+  flex-grow: 1;
+  text-align: right;
+  /* display: block; */
+  /* position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-top: 10px; */
 }
 
 #tasksContainer .card-action a {
