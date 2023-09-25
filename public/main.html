@@ -1,0 +1,52 @@
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <title>Simple Digital Library</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="js/main.js"></script>
+   <link rel="stylesheet" href="css/main.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/chota@latest">
+
+    <link rel="stylesheet"
+  href="https://fonts.googleapis.com/css?family=Cormorant+Garamond">    
+    
+    <!-- get rid of favicon error -->
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+  </head>
+
+  <body>
+    <h1>Book Tracker</h1>
+
+    <form> <!--makes an object that takes inputs and returns data -->
+      <div class="userInput">
+        <label for="title"><b></b>Enter book title: </label>
+      <input type="text" id="title" value="">
+      <label for="author">Enter author's name: </label>
+      <input type="text" id="author" value="">
+      <label for="startDate">Date started: </label>
+      <input type="date" id="startDate">
+      <label for="dateFinished"> Date completed: </label> 
+      <input type="date" id="dateFinished">
+    </form>
+    </div>
+     
+      <br> 
+      <b>Every form item is required. <br> The submit button will be disabled until everything is filled out. Duplicate entries will not be added to the library.</b>
+      <br>
+      <button id="submit">submit</button>
+      <h1>My Library</h1>
+      <div class="userLibrary" id="userLibrary"> 
+      
+
+        <!-- User input will be displayed here -->
+    </div>
+
+
+    
+  
+  </body>
+</html>

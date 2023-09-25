@@ -1,0 +1,100 @@
+/* Reset default margin and padding */
+body, h1 {
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply Chota styles to the body */
+body {
+  background-color: #f0f0f0;
+  color: #333;
+  font-family: 'Cormorant Garamond', serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+/* Apply Chota styles to h1 */
+h1 {
+  font-size: 28px;
+  margin: 20px 0;
+  text-align: center;
+  color: #333; 
+}
+
+/* Apply Chota styles to form */
+.userInput {
+  max-width: 800px;
+  width: 100%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Apply Chota styles to userLibrary */
+.userLibrary {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* Apply Chota styles to li */
+li {
+  padding: 10px;
+  background-color: #f5dada; /* Change for better contrast */
+  border: 1px solid #d49898;
+  border-radius: 5px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+  margin-bottom: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Apply Chota styles to delete button on hover */
+.userLibrary .delete:hover {
+  background-color: #c0392b;
+}
+
+/* Apply Chota styles to buttons */
+button {
+  background: #8d6be3;
+  color: white;
+  font-size: 15px;
+  width: 120px;
+  margin: 10px 0;
+  margin-right: 30px;
+  cursor: pointer;
+  border: none;
+  border-radius: 3px;
+}
+
+/* Apply Chota styles to buttons on hover */
+button:hover {
+  background: #2980b9;
+}
+
+/* Apply Chota styles to labels */
+label {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+/* Apply Chota styles to bold text */
+b {
+  color: #d63031; 
+}
+
+/* Apply Chota styles to text inputs */
+input[type="text"] {
+  font-size: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 6px;
+  color: #333;
+}
