@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="description"
+      content="Task page that displays the user's tasks."
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <title>CS4241 Assignment 2</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center">To-do List</h1>
+
+      <div class="row justify-content-center mt-4">
+        <div class="col-md-6">
+          <form id="task-form" class="bg-light p-4 rounded border">
+            <div class="form-group">
+              <label for="task">Task</label>
+              <input
+                type="text"
+                id="task"
+                class="form-control"
+                placeholder="Task name"
+              />
+            </div>
+            <div class="form-group">
+              <label for="dueDate">Due Date</label>
+              <input type="date" id="dueDate" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input
+                type="text"
+                id="description"
+                class="form-control"
+                placeholder="Describe your task"
+              />
+            </div>
+            <button id="submitButton" class="btn btn-dark">Submit Task</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="row mt-4 text-center">
+        <div class="col">
+          <table class="table table-bordered table-hover bg-light">
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
