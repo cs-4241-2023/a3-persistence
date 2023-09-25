@@ -27,6 +27,52 @@ const getRecipes = async function () {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
+  document
+    .getElementById("login_button")
+    .addEventListener("click", async function (e) {
+    console.log("click");
+      e.preventDefault();
+
+      const username = document.getElementById("username_login").value;
+      const password = document.getElementById("password_login").value;
+
+      const userData = {
+        username: username,
+        password: password,
+      };
+
+      try {
+        console.log("trying");
+        const response = await fetch("/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userData),
+        });
+
+        if (response.ok) {
+          // If login is successful, update the sessionStorage and display the main content
+          sessionStorage.setItem("isLoggedIn", "true");
+          console.log("success");
+          document.getElementById("main_content").style.display = "block";
+          document.getElementById("not_logged_in").style.display = "none";
+        } else {
+          console.log("not match?");
+          console.error("Error logging in:", await response.text());
+        }
+      } catch (error) {
+        console.log("catch");
+        console.error("Error logging in:", error);
+      }
+    });
+  if (sessionStorage.getItem("isLoggedIn")) {
+    document.getElementById("main_content").style.display = "block";
+    document.getElementById("not_logged_in").style.display = "none";
+  } else {
+    document.getElementById("main_content").style.display = "none";
+    document.getElementById("not_logged_in").style.display = "block";
+  }
   getRecipes();
   displayRecipes();
 
@@ -131,7 +177,41 @@ const displayRecipes = function (recipes) {
     });
   }
 };
+document
+  .getElementById("register_button")
+  .addEventListener("click", async function (e) {
+    e.preventDefault();
 
+    const username = document.getElementById("username_register").value;
+    const password = document.getElementById("password_register").value;
+
+    const userData = {
+      username: username,
+      password: password,
+    };
+
+    try {
+      const response = await fetch("/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message);
+        sessionStorage.setItem("isLoggedIn", "true");
+        document.getElementById("main_content").style.display = "block";
+        document.getElementById("not_logged_in").style.display = "none";
+      } else {
+        console.error("Error registering user:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+    }
+  });
 
 // Function to make a cell editable
 const makeCellEditable = function (cell) {
