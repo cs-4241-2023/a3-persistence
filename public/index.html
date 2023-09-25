@@ -6,17 +6,15 @@
     <title>Recipe Tracker</title>
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&display=swap"
-    />
-    <link
-      rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+      defer
     />
   </head>
-  <h1 class="title">Recipe Logger</h1>
   <body>
     <header class="section">
       <h1 class="title">Login</h1>
+      <!-- Instructions for new account -->
+      <h2 class="subtitle">Create a New Account If You Don't Have One</h2>
       <div class="container">
         <div class="columns">
           <div class="column">
@@ -83,104 +81,115 @@
       </div>
     </header>
 
-    <main class="section">
-      <div class="container">
-        <h1 class="title">Recipe Tracker</h1>
-        <hr class="is-small" />
+    <div id="not_logged_in" style="display: block">
+      <h1>Please log in to view the content.</h1>
+    </div>
 
-        <section id="add_recipe_section" class="box">
-          <h2 class="subtitle">Add a Recipe</h2>
-          <form id="recipe_form">
-            <div class="field">
-              <label for="recipe_name" class="label">Recipe Name:</label>
-              <div class="control">
-                <input
-                  type="text"
-                  id="recipe_name"
-                  name="recipe_name"
-                  class="input"
-                  required
-                />
-              </div>
-            </div>
-            <div class="field">
-              <label for="recipe_ingredients" class="label">Ingredients:</label>
-              <div class="control">
-                <textarea
-                  id="recipe_ingredients"
-                  name="recipe_ingredients"
-                  class="textarea"
-                  required
-                ></textarea>
-              </div>
-            </div>
-            <div class="field">
-              <label for="recipe_directions" class="label">Directions:</label>
-              <div class="control">
-                <textarea
-                  id="recipe_directions"
-                  name="recipe_directions"
-                  class="textarea"
-                  required
-                ></textarea>
-              </div>
-            </div>
-            <div class="field is-grouped">
-              <div class="control">
-                <button id="add_recipe" class="button is-primary">
-                  Add Recipe
-                </button>
-              </div>
-            </div>
-          </form>
-        </section>
-
-        <section id="delete_recipe_section" class="box">
-          <h2 class="subtitle">Delete a Recipe</h2>
-          <form id="delete_recipe_form">
-            <div class="field">
-              <label for="recipe_to_delete" class="label"
-                >Recipe Name to Delete:</label
-              >
-              <div class="control">
-                <input
-                  type="text"
-                  id="recipe_to_delete"
-                  name="recipe_to_delete"
-                  class="input"
-                  required
-                />
-              </div>
-            </div>
-            <div class="field is-grouped">
-              <div class="control">
-                <button id="delete_recipe" class="button is-danger">
-                  Delete Recipe
-                </button>
-              </div>
-            </div>
-          </form>
-        </section>
-
-        <section id="recipe_list_section">
-          <h1 class="title">Your Recipe List</h1>
+    <div id="main_content" style="display: none">
+      <main class="section">
+        <div class="container">
+          <h1 class="title">Recipe Tracker</h1>
           <hr class="is-small" />
-          <table class="table is-fullwidth">
-            <thead>
-              <tr>
-                <th>Recipe Name</th>
-                <th>Ingredients</th>
-                <th>Directions</th>
-                <th>Cooking Time</th>
-              </tr>
-            </thead>
-            <tbody id="recipe_table"></tbody>
-          </table>
-        </section>
-        <div id="recipe_status"></div>
-      </div>
-    </main>
 
+          <section id="add_recipe_section" class="box">
+            <h2 class="subtitle">Add a Recipe</h2>
+            <form id="recipe_form">
+              <div class="field">
+                <label for="recipe_name" class="label">Recipe Name:</label>
+                <div class="control">
+                  <input
+                    type="text"
+                    id="recipe_name"
+                    name="recipe_name"
+                    class="input"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="field">
+                <label for="recipe_ingredients" class="label"
+                  >Ingredients:</label
+                >
+                <div class="control">
+                  <textarea
+                    id="recipe_ingredients"
+                    name="recipe_ingredients"
+                    class="textarea"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+              <div class="field">
+                <label for="recipe_directions" class="label">Directions:</label>
+                <div class="control">
+                  <textarea
+                    id="recipe_directions"
+                    name="recipe_directions"
+                    class="textarea"
+                    required
+                  ></textarea>
+                </div>
+              </div>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button id="add_recipe" class="button is-primary">
+                    Add Recipe
+                  </button>
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <section id="delete_recipe_section" class="box">
+            <h2 class="subtitle">Delete a Recipe</h2>
+            <form id="delete_recipe_form">
+              <div class="field">
+                <label for="recipe_to_delete" class="label"
+                  >Recipe Name to Delete:</label
+                >
+                <div class="control">
+                  <input
+                    type="text"
+                    id="recipe_to_delete"
+                    name="recipe_to_delete"
+                    class="input"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="field is-grouped">
+                <div class="control">
+                  <button id="delete_recipe" class="button is-danger">
+                    Delete Recipe
+                  </button>
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <section id="recipe_list_section">
+            <h1 class="title">Your Recipe List</h1>
+            <hr class="is-small" />
+            <h2 class="subtitle">
+              Click a Table Cell to Edit and Press Enter to Save Your Changes
+            </h2>
+            <table class="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Recipe Name</th>
+                  <th>Ingredients</th>
+                  <th>Directions</th>
+                  <th>Cooking Time</th>
+                </tr>
+              </thead>
+              <tbody id="recipe_table"></tbody>
+            </table>
+            <div id="recipe_status"></div>
+          </section>
+        </div>
+      </main>
+    </div>
     <script src="js/main.js"></script>
   </body>
 </html>
+
