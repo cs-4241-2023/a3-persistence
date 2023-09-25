@@ -105,22 +105,23 @@ run()
 
 app.get('/data', async (request, response) => {
 
-  var url = new URL(request.url.toString());
-  // OR: If you want to use the current page's URL
-  var url = window.location;
+  console.log(JSON.stringify(request.url))
+  // var url = new URL(request.url);
+  // // OR: If you want to use the current page's URL
+  // var url = window.location;
 
-  var access_token = new URLSearchParams(url.search).get('token');
-  console.log('token: ' + JSON.stringify(access_token))
-  if( !!access_token ) {
-    request.session.login = true
-    request.session.user = data.login
-    let data = await axios.get('https://api.github.com/user', {}, {
-      headers: {
-        authorization: 'Bearer ' + token
-      }
-    })
-    console.log(JSON.stringify(data))
-  }
+  // var access_token = new URLSearchParams(url.search).get('token');
+  // console.log('token: ' + JSON.stringify(access_token))
+  // if( !!access_token ) {
+  //   request.session.login = true
+  //   request.session.user = data.login
+  //   let data = await axios.get('https://api.github.com/user', {}, {
+  //     headers: {
+  //       authorization: 'Bearer ' + token
+  //     }
+  //   })
+  //   console.log(JSON.stringify(data))
+  // }
 
   let data = {
     username: "",
