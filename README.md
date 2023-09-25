@@ -24,10 +24,14 @@ Include a very brief summary of your project here. Images are encouraged, along 
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: CRAP Principles:
--   Which element received the most emphasis (contrast) on each page? 
+-   Which element received the most emphasis (contrast) on each page?
+-     The task list received the most emphasis and contrast as it is dark gray on top of a white background so it visually stands out from the rest of the UI. I wanted the user to look at the task list first as that is the most important part of the app.
 -   How did you use proximity to organize the visual information on your page?
+-     I used proximity to group all of the tasks together as well as all of the relevant task information is on each task which is nicely grouped on the right side of each task. Since the task information is on the task itself, it visually has very clear proximity and association with the parent row task element.
 -   What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site?
--   How did you use alignment to organize information and/or increase contrast for particular elements. 
+-     I went with a nice white and gray color design and used color very consevratively to only show the priority of each cell whcih gives a lot of visual contrast and emphasis when just glancing at the site. I have pop up hints over the priority buttons but visually it is clear that green means dont worry and red means emergency which further helped sell my design. I have used a very simple non curvy font called Nunito Sans which gave the page a modern feel as the text is very readable and very minimalistic.
+-   How did you use alignment to organize information and/or increase contrast for particular elements.
+-     
 
 - (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
 Which element received the most emphasis (contrast) on each page? 
