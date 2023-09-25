@@ -30,6 +30,8 @@ I used water.css because it looked nice in the demo and when applied to my site.
 ## Technical Achievements
 - **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy. Users confirm ownership of a GitHub account using OAuth, and the application uses their GitHub user id to identify them when storing data.
 - **Tech Achievement 2**: I achieved a 100% in all four lighthouse tests required for this assignment.
+![image](https://github.com/Flame442/cs4241-a3/assets/34169552/15ae8eef-bdc0-4418-b5c2-6af4407676d3)
+
 
 ### Design/Evaluation Achievements
 - N/A
