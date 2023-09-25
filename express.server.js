@@ -24,7 +24,11 @@ async function connectToDatabase() {
   }
 }
 
-app.get("/");
+connectToDatabase();
+
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/login.html");
+});
 
 // Handle GET requests for tasks
 app.get("/tasks/:username", async (req, res) => {
@@ -114,6 +118,5 @@ app.delete("/tasks/:id", async (req, res) => {
 });
 
 app.listen(port, () => {
-  connectToDatabase();
   console.log(`Server is running on port ${port}`);
 });
