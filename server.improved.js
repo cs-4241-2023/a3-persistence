@@ -32,12 +32,18 @@ async function run() {
  await dbconnect.connect().then(()=>console.log("db works"))
   collection = await dbconnect.db("a3-Persistence").collection("a3");
   users = await dbconnect.db("a3-Persistence").collection("users");  
-  //console.log(users)
 } catch(err){
   console.error("database failed:", err)
 }
 }
 
+app.use( (req,res,next) => {
+    if( (collection !== null) ||(users !== null)) {
+      next()
+    }else{
+      res.status( 503 ).send()
+    }
+  })
 
 app.post("/login", async (req, res) => {
   const user = req.body.username;
@@ -72,6 +78,7 @@ app.post("/submit", async (req, res) => {
 
 app.get("/display", async (req,res)=>{
   const results= await collection.find({}).toArray()
+  //console.log(results)
   res.json(results);
 });
 

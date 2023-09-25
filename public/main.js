@@ -33,17 +33,16 @@ const submit = async function (event) {
   
     clear(event);
   
-    let response = fetch("/display", {
+    let res = fetch("/display", {
       method: "GET",
-    })
-      .then((text) => response.json())
-      .then(function (text) {
+    }).then(res => res.json())
+      .then(function (res) {
         const list = document.getElementById("data");
         const header = document.createElement("tr");
         header.innerHTML = `<th>Email</th> <th>Name</th> <th>Birth</th> <th>Age</th> <th>Delete</th>`;
-        list.insertRow(header);
+        list.appendChild(header);
         let i = 0;
-        text.forEach((d) => {
+        res.forEach((d) => {
           const item = document.createElement("tr");
           item.innerHTML = `
       <td>${d.Email}</td> 
@@ -54,7 +53,7 @@ const submit = async function (event) {
       onclick="checkedOnClick(this)" value="${d._id}"/></td>
       `;
           i++;
-          list.insertRow(item);
+          list.appendChild(item);
         });
   
         document.body.appendChild(list);
