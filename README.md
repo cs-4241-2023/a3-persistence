@@ -1,6 +1,6 @@
-## Your Web Application Title
+## A3 Task Manager Application
 
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
+Glitch link e.g. http://a3-charlie-roberts.glitch.me
 
 Extension confirmed by Prof. Roberts.
 
