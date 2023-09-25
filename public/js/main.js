@@ -18,6 +18,13 @@ const submit = async function( event ) {
   })
 
   const text = await response.text()
+  const respObj = JSON.parse(text)
+
+  if (respObj.seccess) {
+    document.querySelector("#ms_fail_text").innerHTML = ""
+  } else {
+    document.querySelector("#ms_fail_text").innerHTML = "You cannot edit that score!"
+  }
 
   await refreshScores()
 }
@@ -25,8 +32,10 @@ const submit = async function( event ) {
 window.onload = function() {
   const button = document.querySelector("#sub_button");
   const refreshButton = document.querySelector("#ref_button")
+  const logoutButton = document.querySelector("#logout")
   button.onclick = submit;
   refreshButton.onclick = manualRefresh;
+  logoutButton.onclick = logout;
   refreshScores()
 }
 
@@ -72,7 +81,7 @@ async function refreshScores() {
     const date = document.createElement('td')
 
     const currDate = new Date(current.date)
-    console.log(current.date)
+    //console.log(current.date)
 
     name.innerHTML = current.name
     score.innerHTML = current.score
@@ -82,5 +91,23 @@ async function refreshScores() {
     row.appendChild(score)
     row.appendChild(date)
     table.appendChild(row)
+  }
+}
+
+async function logout(event) {
+  const body = {'id': true}
+
+  const response = await fetch( '/logout', {
+      method:'POST',
+      body 
+  })
+  
+  const text = await response.text()
+  const respObj = JSON.parse(text)
+  console.log(respObj)
+
+  if (respObj.success) {
+      window.location.href = "/";
+      console.log("logging out")
   }
 }

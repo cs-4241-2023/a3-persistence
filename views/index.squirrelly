@@ -5,8 +5,11 @@
     <meta charset="utf-8">
     <script src="js/main.js"></script>
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
     
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- get rid of favicon error -->
+    <meta name="description" content="This is a website that keeps track of the scores on the subway!!">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
   </head>
   <body>
@@ -19,10 +22,14 @@
           Submit the number of subway stops you have been to in one hour to be recognized on this leaderboard!
         </p>
       </div>
+      <div class="userwelcome">
+        <h2>Hello {{name}}, welcome!</h2>
+      </div>
       <div class="manual_score_text">
         <p class="thick">Manually Submit Score:</p>
         <p>To change your score, simply use the same name as your original score with a new value to change it.</p>
         <p>To delete your score, use your same name, then set the score to a negative value</p>
+        <p>You can only edit the scores that you originally entered!!</p>
       </div>
       <div class="score_table">
         <p class="thick">Leaderboard:</p>
@@ -38,6 +45,10 @@
           <button id="sub_button">Submit</button>
           <button id="ref_button">Refresh</button>
         </form>
+        <p id="ms_fail_text" class="invalid_text"></p>
+      </div>
+      <div class="logout_button">
+        <button id="logout">Log Out</button>
       </div>
     </div>
   </body>
