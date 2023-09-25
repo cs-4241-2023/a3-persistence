@@ -54,12 +54,12 @@ async function fetchAndDisplayTasks() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ taskName: task.taskName, dueDate: task.dueDate }),
+          body: JSON.stringify({ taskName: task.taskName,assignedTo: task.assignedTo, priority: task.priority, dueDate: task.dueDate }),
         });
 
         if (response.ok) {
           const result = await response.json();
-          if (result.success) {
+          if (result.acknowledged) {
             // Remove the task element from the DOM
             tasksContainer.removeChild(taskElement);
           } else {
@@ -81,12 +81,12 @@ async function fetchAndDisplayTasks() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ taskName: task.taskName, dueDate: task.dueDate }),
+          body: JSON.stringify({ taskName: task.taskName,assignedTo: task.assignedTo, priority: task.priority, dueDate: task.dueDate }),
         });
 
         if (response.ok) {
           const result = await response.json();
-          if (result.success) {
+          if (result.acknowledged) {
             document.getElementById("taskName").value = task.taskName;
             document.getElementById("description").value = task.description;
             document.getElementById("assignedTo").value = task.assignedTo;
@@ -136,7 +136,7 @@ document.getElementById("todoForm").addEventListener("submit", async (e) => {
 
   if (response.ok) {
     const result = await response.json();
-    if (result.success) {
+    if (result.acknowledged) {
       document.getElementById("todoForm").reset();
       fetchAndDisplayTasks(); // Refresh the list of tasks
       M.toast({ html: 'Task added successfully!' });

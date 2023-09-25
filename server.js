@@ -7,38 +7,37 @@ const fs = require('fs');
 const mime = require('mime');
 const path = require('path');
 const bcrypt = require('bcrypt');
+require('dotenv').config()
 
+// Configure app
 const app = express();
 const port = 3000;
-const saltRounds = 10;
-
 app.use(express.static("public"))
 app.use(express.json())
-
-const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
-const client = new MongoClient( uri )
-let users = null
-let tasks = null
-
-app.use( express.urlencoded({ extended:true }) )
-app.use( cookie({
+app.use(express.urlencoded({ extended: true }))
+app.use(cookie({
     name: 'session',
     keys: ['key1', 'key2']
 }))
 
-app.use(express.json()); // Middleware to parse JSON request bodies
+const saltRounds = 10;
 
 // Log all incoming requests
 const logger = (req, res, next) => {
     console.log('url:', req.url)
     next()
 }
-
 app.use(logger)
+
+// Configure MongoDB
+const mongo_uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
+const mongo_client = new MongoClient(mongo_uri)
+let users = null
+let tasks = null
 
 // Monitor MongoDB connection
 app.use((req, res, next) => {
-    if (collection !== null) {
+    if (users !== null && tasks !== null) {
         next()
     } else {
         res.status(503).send()
@@ -50,23 +49,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Handle GET requests
 app.get('/', (req, res) => {
-    console.log('Serving login page')
-    res.sendFile(path.join(__dirname, 'src/pages/login.html'));
-});
-
-
-app.get('/dashboard', (req, res) => {
     if (req.session.userId) {
+        console.log('Serving dashboard')
         res.sendFile(path.join(__dirname, 'src/pages/dashboard.html'))
     } else {
-        res.send('Please log in first');
-        res.redirect("/")
+        console.log('Serving login page')
+        res.sendFile(path.join(__dirname, 'src/pages/login.html'));
     }
 });
 
-app.get('/getTasks', (req, res) => {
-    console.log('Sending tasks:', tasks);
-    res.json(tasks);
+app.get('/getTasks', async (req, res) => {
+    const user_tasks = await tasks.find({userID: req.session.userId}).toArray();
+
+    console.log('Sending tasks:', user_tasks);
+    res.json(user_tasks);
 });
 
 // Handle POST requests
@@ -82,11 +78,13 @@ app.post('/addTask', async (req, res) => {
         case 'medium':
             currentDate.setDate(currentDate.getDate() + 3);
             break;
-        case 'low':
+        case 'low': 
             currentDate.setDate(currentDate.getDate() + 7);
             break;
     }
     data.dueDate = currentDate.toISOString().slice(0, 10); // Format as YYYY-MM-DD
+
+    data.userID = req.session.userId;
 
     const result = await tasks.insertOne(data)
     console.log('Task added');
@@ -94,55 +92,85 @@ app.post('/addTask', async (req, res) => {
 });
 
 app.post('/deleteTask', async (req, res) => {
-    const result = await tasks.deleteOne({
-        _id: new ObjectId(req.body._id)
-    })
+    const data = req.body;
 
-    res.json(result)
+    console.log(data);
+
+    const filter = {
+        taskName: data.taskName,
+        assignedTo: data.assignedTo,
+        priority: data.priority,
+        dueDate: data.dueDate,
+        userID: req.session.userId
+    };
+    const result = await tasks.deleteOne(filter);
+
+    res.json(result);
 });
 
 
 app.post('/login', async (req, res) => {
-    const { username, password } = JSON.parse(dataString);
+    console.log("Received login request");
+    const username = req.body.username
+    const password = req.body.password
+
+    console.log(`Logging in with username: ${username}`);
     const user = await users.findOne({ username });
 
     if (user) {
+        console.log("User exists, checking password...");
         // User exists, check password
         bcrypt.compare(password, user.password, function (err, result) {
-            if (err) throw err;
+            if (err) {
+                console.error("Error comparing passwords:", err);
+                throw err;
+            }
             if (result) {
                 // Passwords match
+                console.log("Passwords match");
                 res.writeHead(200, { "Content-Type": "application/json" });
                 res.end(JSON.stringify({ success: true, message: 'Logged in successfully' }));
             } else {
                 // Passwords don't match
+                console.log("Passwords don't match");
                 res.writeHead(401, { "Content-Type": "application/json" });
                 res.end(JSON.stringify({ success: false, message: 'Incorrect password' }));
+                return;
             }
         });
     } else {
+        console.log("User doesn't exist, creating new user...");
         // User doesn't exist, create a new user
         bcrypt.hash(password, saltRounds, function (err, hash) {
-            if (err) throw err;
-            users.insertOne({ username, password: hash }, function (err, res) {
-                if (err) throw err;
+            if (err) {
+                console.error("Error hashing password:", err);
+                throw err;
+            }
+            console.log("Inserting User into database")
+            users.insertOne({ username, password: hash }, function (err, _) {
+                if (err) {
+                    console.error("Error inserting new user:", err);
+                    throw err;
+                }
+                console.log("User created successfully");
                 res.writeHead(200, { "Content-Type": "application/json" });
                 res.end(JSON.stringify({ success: true, message: 'User created and logged in successfully' }));
             });
         });
     }
-    if (authenticated) {
-        req.session.userId = user._id;  // Save user ID in session
-        res.send('Logged in!');
-    } else {
-        res.send('Invalid credentials');
-    }
+
+    console.log("User authenticated, saving session data...");
+    req.session.userId = user._id;  // Save user ID in session
 });
 
+
 async function run() {
-    await client.connect()
-    users = await client.db("persistance").collection("users")
-    tasks = await client.db("persistance").collection("tasks")
+    console.log("Connecting to MongoDB")
+    await mongo_client.connect()
+
+    console.log("Connecting to collections")
+    users = await mongo_client.db("persistance").collection("users")
+    tasks = await mongo_client.db("persistance").collection("tasks")
 
     // route to get all docs
     app.get("/docs", async (req, res) => {
@@ -150,7 +178,7 @@ async function run() {
             const docs = await collection.find({}).toArray()
             res.json(docs)
         }
-        
+
         if (tasks !== null) {
             const docs = await collection.find({}).toArray()
             res.json(docs)
