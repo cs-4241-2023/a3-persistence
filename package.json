@@ -1,0 +1,16 @@
+{
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": "16.x"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongodb": "^6.1.0",
+    "sanitize.css": "^13.0.0"
+  },
+  "devDependencies": {
+    "modern-css-reset": "^1.4.0"
+  }
+}
