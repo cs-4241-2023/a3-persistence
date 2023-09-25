@@ -116,6 +116,7 @@ app.delete('/remove/:id', async (req, res) => {
   }
 })
 
+
 app.post( '/update', async (req,res) => {
   const result = await collection.updateOne(
     { _id: new ObjectId( req.body._id ) },
@@ -132,7 +133,8 @@ app.get('/docs', async (req, res) => {
     res.json(docs);
   }
 });
+
+
 app.get('/', (request, response) => {
   sendFile(response, 'public/index.html')
 })
-
