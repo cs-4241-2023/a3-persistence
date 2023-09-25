@@ -109,6 +109,12 @@ window.onload = function() {
   const header = document.getElementById('app-header')
   header.innerHTML = `Welcome, ${user}`
   updateList()
-  const button = document.querySelector("button");
-  button.onclick = submit;
+  const submitButton = document.getElementById('create-button')
+  submitButton.onclick = submit;
+  const logoutButton = document.getElementById('logout-button')
+  logoutButton.onclick = () => {
+    localStorage.removeItem('loggedIn')
+    localStorage.removeItem('user')
+    window.location = 'login.html'
+  }
 }

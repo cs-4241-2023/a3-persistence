@@ -5,6 +5,10 @@ body {
     flex-direction: column;
 }
 
+#logout-button {
+    margin-left: auto;
+}
+
 #app-header {
     font-weight: bold;
 }
