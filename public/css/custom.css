@@ -73,6 +73,18 @@
     margin: auto;
 }
 
+#logoutInput {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#popupDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* Popup container - can be anything you want */
 .popup {
     position: relative;
@@ -95,12 +107,12 @@
     padding: 8px 0;
     position: absolute;
     z-index: 1;
-    top: 125%;
+    top: 0%;
     left: 50%;
     margin-left: -80px;
   }
-  
-  /* Popup arrow */
+  /*
+  /* Popup arrow 
   .popup .popuptext::after {
     content: "";
     position: absolute;
@@ -110,7 +122,7 @@
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent #555 transparent;
-  }
+  }*/
   
   /* Toggle this class - hide and show the popup */
   .popup .show {

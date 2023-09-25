@@ -7,6 +7,7 @@ const express = require("express"),
   app = express(),
   methodOverride = require('method-override'),
   dir = "public/",
+  handlebars = require('express-handlebars'),
   port = 3000;
 
 require('dotenv').config();
@@ -60,26 +61,43 @@ app.use(passport.initialize())
 app.use(passport.session());
 app.use(methodOverride('_method'));
 
+app.set('view engine', 'hbs')
+app.engine('hbs', handlebars.engine({
+  layoutsDir: __dirname + '/views/layouts',
+  extname: 'hbs',
+  defaultLayout: 'indexLayout'
+}))
+app.set('views', './views')
+
+app.use(express.static('public'));
+app.use(express.json());
 
 app.get('/auth/github',
   passport.authenticate('github'));
 
 app.get('/auth/github/callback', 
-  passport.authenticate('github', { failureRedirect: '/login' }),
+  passport.authenticate('github', { failureRedirect: '/loginFail' }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/main');
   });
 
-app.post('/login', checkNotAuthenticated, passport.authenticate('local', { successRedirect: '/main', failureRedirect: '/login' }))
+//app.post('/login',  passport.authenticate('local', { successRedirect: '/main', failureRedirect: '/login' }))
 
-app.get('/login',checkNotAuthenticated, (req, res) => {
-  res.sendFile(__dirname + '/public/index.html')
+const failAuth = () => 'Login failed'
+
+app.get('/loginFail', (req, res) => {
+  res.render('index', {layout: 'indexLayout', failed: failAuth()})
 })
 
-app.get('/main', checkAuthenticated, (req, res) => {
+app.get('/login', (req, res) => {
+  res.render('index', {layout: 'indexLayout', failed: ''})
+})
+
+app.get('/main',  (req, res) => {
   console.log("Session Im checking ", req.user)
-  res.redirect('main.html')
+  res.render('main', {layout: 'mainLayout'})
+  //res.redirect('main.html')
 })
 
 app.delete('/logout', (req, res) => {
@@ -87,20 +105,15 @@ app.delete('/logout', (req, res) => {
   res.redirect('/login')
 })
 
-function checkAuthenticated(req, res, next){
-  if(req.isAuthenticated()){
-    return next();
-  }
-
-  res.redirect('/login');
-}
-
-function checkNotAuthenticated(req, res, next){
-  if(req.isAuthenticated()){
-    return res.redirect('/main')
-  }
-  next();
-}
+app.use(function (req, res, next) {
+  let index = req.url.includes("index");
+  let css = req.url.includes("css");
+  let js = req.url.includes("js");
+  let robot = req.url.includes("robots.txt");
+  if (req.session.login !== true && !index && !css && !js && !robot)
+    res.redirect("/login");
+  else next();
+});
 
 //login request
 /*app.post('/login', async (req, res) => {
@@ -133,15 +146,16 @@ app.use(function (req, res, next) {
     res.sendFile(__dirname + '/public/index.html')
 })*/
 
-app.use(express.static('public'));
-app.use(express.json());
-
 // route to get all data
 app.get("/getData", async (req, res) => {
+  console.log("Getting data")
   if (collection !== null) {
     const docs = await collection.find({ username: { $eq: req.user } }).toArray()
-    //console.log(docs)
+    console.log(docs)
     res.json(docs)
+  }
+  else{
+    console.log("DB failed")
   }
 })
 

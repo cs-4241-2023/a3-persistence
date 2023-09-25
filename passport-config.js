@@ -35,8 +35,8 @@ function initialize(passport, getUserByName, createUser) {
 
     passport.use(new GitHubStrategy(
         {
-            clientID: 'f727b63081b994b4ba6d',
-            clientSecret: '0fec7e745d07c10ef724d5b9e89b578903aa0041',
+            clientID: 'b665fa19b967350087f6',
+            clientSecret: '1999d7ae785620d10a17610dc0adcb158d73d298',
             callbackURL: "http://localhost:3000/auth/github/callback"
         },
 
@@ -44,15 +44,11 @@ function initialize(passport, getUserByName, createUser) {
 
     /*new LocalStrategy({ usernameField: 'username' },*/ authenticateUser))
     passport.serializeUser((user, done) => {
-        console.log("serializeID", user.username);
-        done(null, user.username)
-    })
-    passport.deserializeUser(async (user, done) => {
-        console.log("deserialize name", user)
-        const user1 = await getUserByName(user)
-        console.log("deserialize", user1)
-        return done(null, user1)
-    })
+      done(null, user.username)
+  })
+  passport.deserializeUser(async (user, done) => {
+      return done(null, user)
+  })
 }
 
 module.exports = initialize
