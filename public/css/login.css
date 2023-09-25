@@ -1,0 +1,25 @@
+body {
+    background: #264653;
+    height: 100vh;
+    color: #FAF9F6;
+}
+
+#login_page {
+    max-width: 500px;
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+    color: #FAF9F6;
+}
+
+input {
+    color: #FAF9F6;
+}
+
+#message {
+    color: red;
+    opacity: 0;
+    text-align: center;
+  }

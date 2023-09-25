@@ -1,0 +1,160 @@
+/* DISABLE SPIN BUTTONS */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+body {
+  background: #264653;
+  color:#FAF9F6;
+  font-family: 'Roboto' , sans-serif;
+  height: fit-content;
+}
+
+#logout_button {
+  display: inline;
+  width: fit-content;
+}
+
+header > h1, h4 {
+  color: #FAF9F6;
+  line-height: 0%;
+}
+
+
+.status {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  
+  padding: 1.5rem;
+  padding-inline: 2rem;
+  
+  line-height: 0%;
+
+  text-align: center;
+  border-radius: 20px;
+
+  margin-bottom: 5%;
+}
+
+.status > h2, p, h4, h1 {
+  color: #FAF9F6;
+}
+
+.edit_goal {
+  width: fit-content;
+  display: inline;
+  margin: auto;
+}
+
+.status_calories {
+  background: #F4A261;
+}
+
+.status_protein {
+  background: #E76F51;
+}
+
+
+
+
+.food_entry_form {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 1rem; */
+  background: #2A9D8F;
+  border-radius: 20px;
+  padding: 1rem;
+  margin-inline: 25%;
+
+  margin-bottom: 35px;
+
+}
+
+
+.food_submit_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.food_buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 30%;
+}
+
+
+#food_submit_message {
+  color: red;
+  line-height: 0%;
+  opacity: 0;
+}
+
+#food_list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.entry {
+  background-color: #E9C46A;
+  border-radius: 20px;
+  margin-inline: 25%;
+
+  height: 20%;
+
+  padding-inline-start: 3rem;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 5%;
+}
+
+.entry:hover {
+  background-color: #d7b357;
+}
+
+.entry > .name {
+  line-height: 0%;
+  margin-left: 10px;
+  margin-right: auto;
+}
+
+.entry > .info {
+  font-size: 1vw;
+  line-height: 30%;
+  text-align: right;
+}
+
+.entry > .delete {
+  background: #ed5353;
+  padding: 1.5rem;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  vertical-align: center;
+}
+
+.entry > .delete:hover {
+  background: #cf4141;
+}
+
+.entry > .delete:active {
+  background: #882929;}
+
+.entry > .delete_x {
+  vertical-align: center;
+}

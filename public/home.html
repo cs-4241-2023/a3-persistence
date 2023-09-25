@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <meta name="viewport">
+    <meta name="description" content="Protein Calorie Tracker">
+    <script src="js/home.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="css/home.css">
+    
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body data-theme="dark">
+
+    <header>
+      <h1>Calorie and Protein Counter</h1>
+      <h4 id=>User: <span id="username"></span> <span><button id = "logout_button">Logout</button></span></h4>
+    </header>
+
+    <section class="grid status_section">
+
+      <div class = "status status_calories">
+        <h2 class = "status_name">Calories</h2>
+        <h4 class = "status_value" id = "calories_value">0</h4>
+        <h4 class = "status_offset" id = "calories_offset">300 to go</h4>
+        <h4 class = "status_goal_text">
+          Goal:
+          <span class = "status_goal" id = "calories_goal">[N/A]</span>
+          <button class = "edit_goal" id="calories_goal_button">Edit</button>
+        </h4>
+      </div>
+
+      <div class = "status status_protein">
+        <h2 class = "status_name">Protein</h2>
+        <h4 class = "status_value" id = "protein_value">0</h4>
+        <h4 class = "status_offset" id = "protein_offset">300 to go</h4>
+        <h4 class = "status_goal_text">
+          Goal:
+          <span class = "status_goal" id = "protein_goal">[N/A]</span>
+          <button class = "edit_goal" id="protein_goal_button">Edit</button>
+        </h4>
+      </div>
+    </section>
+
+    <form class = "food_entry_form">
+
+      <label for="food_name">Name: </label>
+        <input type="text" id="food_name" placeholder="Name of food...">
+      
+        <label for="food_calories">Calories: </label>
+        <input type="number" id="food_calories" placeholder="Calories in kcal...">
+
+        <label for="food_protein">Protein: </label>
+        <input type="number" id="food_protein" placeholder="Protein in g...">
+      
+
+      <div class = "food_submit_container">
+        <div class = "food_buttons">
+          <button id = "food_submit_button">Submit</button>
+          <button id = "food_clear_button">Clear</button>
+        </div>
+        
+        <p id = "food_submit_message">def</p>
+      </div>
+      
+    </form>
+
+    <section id = "food_list">
+    </section>
+
+  </body>
+</html>
