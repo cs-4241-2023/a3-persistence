@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+
+h1 {
+  color: #752d23;
+  text-align: center;
+}
+
+p {
+  color: #750f01;
+  font-size: 12px;
+}
+
+/*Grid and Label CSS */
+form {
+  padding-bottom: 10px;
+  padding-left: 2px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Buttons CSS */
+button {
+  padding: 7px;
+  border: 2px solid #750f01;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #750f01;
+}
