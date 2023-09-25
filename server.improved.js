@@ -1,7 +1,5 @@
 const express = require("express"),
   passport = require("passport"),
-  LocalStrategy = require("passport-local"),
-  crypto = require("crypto"),
   { MongoClient, ObjectId } = require("mongodb"),
   cookie = require('cookie-session'),
   app = express(),
@@ -39,16 +37,17 @@ initializePassport(
   async (username) => {
     const result = await passwordCollection.find({ username: { $eq: username } }).toArray();
     //console.log(result);
-    if(result.length === 0){
+    if (result.length === 0) {
       return null;
     }
     return result[0]
   },
   async (username) => {
-    const newLoginResult = await passwordCollection.insertOne({username: username, oauth: 'github'});
+    console.log('adding new user')
+    const newLoginResult = await passwordCollection.insertOne({ username: username, oauth: 'github', new: 1 });
     const result = await passwordCollection.find({ username: { $eq: username } }).toArray();
-    console.log(result)
-    return(result)
+    console.log('new user', result)
+    return (result[0])
   })
 
 app.use(express.urlencoded({ extended: true }))
@@ -70,34 +69,57 @@ app.engine('hbs', handlebars.engine({
 app.set('views', './views')
 
 app.use(express.static('public'));
-app.use(express.json());
 
 app.get('/auth/github',
   passport.authenticate('github'));
 
-app.get('/auth/github/callback', 
+app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/loginFail' }),
-  function(req, res) {
+  function (req, res) {
+    console.log('redirecting')
+    req.session.login = true;
     // Successful authentication, redirect home.
     res.redirect('/main');
   });
 
-//app.post('/login',  passport.authenticate('local', { successRedirect: '/main', failureRedirect: '/login' }))
-
 const failAuth = () => 'Login failed'
 
+app.get('/', (req, res) => {
+  res.redirect('/login')
+})
+
 app.get('/loginFail', (req, res) => {
-  res.render('index', {layout: 'indexLayout', failed: failAuth()})
+  res.render('index', { layout: 'indexLayout', failed: failAuth() })
 })
 
 app.get('/login', (req, res) => {
-  res.render('index', {layout: 'indexLayout', failed: ''})
+  res.render('index', { layout: 'indexLayout', failed: '' })
 })
 
-app.get('/main',  (req, res) => {
-  console.log("Session Im checking ", req.user)
-  res.render('main', {layout: 'mainLayout'})
-  //res.redirect('main.html')
+app.get('/main', (req, res) => {
+  const update = async () => {
+    console.log("Session Im checking ", req.user)
+    const result = await passwordCollection.find({ username: { $eq: req.user.username } }).toArray();
+    if (result.length === 0) {
+      res.redirect('/login')
+    }
+    else if (result[0].new === 1) {
+      console.log('new user')
+      await passwordCollection.updateOne(
+        { username: { $eq: req.user.username } },
+        {
+          $set: {
+            new: 0
+          }
+        }
+      )
+      res.render('mainNew', { layout: 'mainLayout', username: req.user.username })
+    }
+    else {
+      res.render('main', { layout: 'mainLayout', username: req.user.username })
+    }
+  }
+  update();
 })
 
 app.delete('/logout', (req, res) => {
@@ -115,54 +137,21 @@ app.use(function (req, res, next) {
   else next();
 });
 
-//login request
-/*app.post('/login', async (req, res) => {
-  console.log(req.body)
-  const result = await passwordCollection.find({ username: { $eq: req.body.username } }).toArray()
-
-  if (result.length === 0) {
-    const newLoginResult = await passwordCollection.insertOne(req.body);
-  }
-
-  const result1 = await passwordCollection.find({ username: { $eq: req.body.username } }).toArray()
-  if (req.body.password === result1[0].password) {
-    req.session.login = true
-    req.session.username = req.body.username
-
-    console.log(req.session.username)
-
-    res.redirect('main.html')
-  } else {
-
-    res.sendFile(__dirname + '/public/index.html')
-  }
-})*/
-
-/*
-app.use(function (req, res, next) {
-  if (req.session.login === true)
-    next()
-  else
-    res.sendFile(__dirname + '/public/index.html')
-})*/
+app.use(express.json());
 
 // route to get all data
-app.get("/getData", async (req, res) => {
-  console.log("Getting data")
+app.get('/getData', async (req, res) => {
+  //console.log("Getting data")
   if (collection !== null) {
-    const docs = await collection.find({ username: { $eq: req.user } }).toArray()
-    console.log(docs)
+    const docs = await collection.find({ username: { $eq: req.user.username } }).toArray()
+    //console.log(docs)
     res.json(docs)
-  }
-  else{
-    console.log("DB failed")
   }
 })
 
-
 //route to submit data
 app.post('/submit', async (req, res) => {
-  console.log(req.body)
+  //console.log(req.body)
   let start = new Date(req.body.startDate),
     today = new Date(),
     diff = new Date(today - start).getFullYear() - 1970,
@@ -170,31 +159,31 @@ app.post('/submit', async (req, res) => {
     rate = req.body.rate,
     accrued = deposit * (1 + rate * diff);
   req.body['accrued'] = accrued
-  req.body['username'] = req.user;
+  req.body['username'] = req.user.username;
   const result = await collection.insertOne(req.body)
   if (collection !== null) {
-    const appdata = await collection.find({ username: { $eq: req.user } }).toArray()
-    console.log(appdata)
+    const appdata = await collection.find({ username: { $eq: req.user.username } }).toArray()
+    //console.log(appdata)
     res.json(appdata)
   }
 })
 
 //route to delete
 app.post('/delete', async (req, res) => {
-  console.log(req.body._id)
+  //console.log(req.body._id)
   const result = await collection.deleteOne({
     _id: new ObjectId(req.body._id)
   })
 
-  const appdata = await collection.find({ username: { $eq: req.user } }).toArray()
-  console.log(appdata)
+  const appdata = await collection.find({ username: { $eq: req.user.username } }).toArray()
+  //console.log(appdata)
   res.json(appdata)
 })
 
 //route to modify
 app.post('/modify', async (req, res) => {
 
-  console.log("modify request", req.body);
+  //console.log("modify request", req.body);
 
   for (let i = 0; i < req.body.length; i++) {
     if (req.body[i].changed === 1) {
@@ -219,8 +208,8 @@ app.post('/modify', async (req, res) => {
     }
   }
 
-  const appdata = await collection.find({ username: { $eq: req.user } }).toArray()
-  console.log(appdata)
+  const appdata = await collection.find({ username: { $eq: req.user.username } }).toArray()
+  //console.log(appdata)
   res.json(appdata)
 })
 

@@ -19,15 +19,7 @@
 
 <body>
   <header>
-    <div class="grid">
-      <h1>Interest Tracker</h1>
-      <form action="/logout?_method=DELETE" method="post">
-        <button type="submit" class="contrast">Log Out</button>
-      </form>
-      <div class="popup">
-        <span class="popuptext" id="loginPopup">New User Created</span>
-      </div>
-    </div>
+    {{{body}}}
   </header>
   <main>
     <div id="inputDiv">
@@ -51,10 +43,16 @@
     </div>
     <hr>
     <div id="controllerDiv">
-      <button id="modifyButton" class="contrast">Modify</button>
-      <button id="deleteButton" class="contrast">Delete</button>
-      <input id="finishModifyButton" type="submit" form="modifyForm" value="Finish" hidden class="contrast">
-      <button id="finishDeleteButton" hidden class="contrast">Finish</button>
+      <div class="controller">
+        <div class="controllerButton">
+          <button id="modifyButton" class="contrast">Modify</button>
+        </div>
+        <div class="controllerButton">
+          <button id="deleteButton" class="contrast">Delete</button>
+        </div>
+        <input id="finishModifyButton" type="submit" form="modifyForm" value="Finish" hidden class="contrast">
+        <button id="finishDeleteButton" hidden class="contrast">Finish</button>
+      </div>
     </div>
     <div id="tableDiv">
       <table id="results">

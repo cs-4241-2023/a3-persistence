@@ -57,7 +57,7 @@
 
 #controllerDiv {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin-top: 5px;
     margin-bottom: 5px;
     padding: 50px;
@@ -79,10 +79,25 @@
   justify-content: center;
 }
 
-#popupDiv {
+#title {
+  text-align: center;
+}
+
+#welcome {
+  text-align: center;
+}
+
+.controller {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.controllerButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
 }
 
 /* Popup container - can be anything you want */
@@ -107,12 +122,11 @@
     padding: 8px 0;
     position: absolute;
     z-index: 1;
-    top: 0%;
+    top: 125;
     left: 50%;
     margin-left: -80px;
   }
-  /*
-  /* Popup arrow 
+  /* Popup arrow */
   .popup .popuptext::after {
     content: "";
     position: absolute;
@@ -122,7 +136,7 @@
     border-width: 5px;
     border-style: solid;
     border-color: transparent transparent #555 transparent;
-  }*/
+  }
   
   /* Toggle this class - hide and show the popup */
   .popup .show {

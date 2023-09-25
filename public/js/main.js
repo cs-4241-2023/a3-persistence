@@ -321,8 +321,11 @@ const update = (data) => {
 
 const showLoginPopup = function() {
   const popUp = document.getElementById("loginPopup");
+  if(popUp === null){
+    return;
+  }
   popUp.classList.toggle("show")
-  setTimeout(() => {popUp.classList.toggle("show")} , 1000)
+  setTimeout(() => {popUp.classList.toggle("show")} , 3000)
 }
 
 window.onload = function () {

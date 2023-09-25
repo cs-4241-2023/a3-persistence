@@ -17,15 +17,9 @@
 
 <body>
   <div id='loginDiv'>
-    <form action='/login' method='POST'>
-      <h1>Sign in</h1>
-      <label for='username'>Username</label>
-      <input id='username' type='text' name='username' required>
-      <label for='password'>Password</label>
-      <input id='password' type='password' name='password' required>
-      <input type='submit' class="contrast" value="Login">
-    </form>
-    <a href="/auth/github">GitHub Login</a>
+    <h1>Interest Tracker</h1>
+    <p>Sign in with GitHub</p>
+    <a href="/auth/github" role="button" class="contrast">GitHub Login</a>
       {{{body}}}
   </div>
 </body>
