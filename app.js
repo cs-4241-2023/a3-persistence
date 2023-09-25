@@ -19,7 +19,7 @@ mongoose.connect(process.env.MONGO_URI, {
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: `${process.env.BASE_URL}/auth/github/callback`, // Update BASE_URL in your .env file
+    callbackURL: `${process.env.BASE_URL}/auth/github/callback`, 
 },
     async (accessToken, refreshToken, profile, done) => {
         try {
