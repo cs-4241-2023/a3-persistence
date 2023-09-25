@@ -26,7 +26,7 @@ I wanted to use a simple CSS framework that provided a nice contrast and that wa
 - Request Logger: A custom Express middleware that is useful in development as it allows me to see what type of requests that are being sent, as well as to what URLs.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I got 100% on all four lighthouse tests
+- **Tech Achievement 1**: I got 100% on all four lighthouse tests. This works locally, but performance drops when hosted on glitch
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: I followed the following 12 tips from the W3C Web Accessibility Initiative
