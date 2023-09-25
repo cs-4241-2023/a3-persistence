@@ -88,7 +88,7 @@ let collections = {
 }
 
 // Database Connection
-const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.yrccoan.mongodb.net`
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 const client = new MongoClient( uri )
 
 async function run() {
@@ -194,7 +194,8 @@ app.get("/github-callback", (request, response) => {
     .then((res) => res.data.access_token)
     .then((token) => {
       accessToken = token;
-      response.redirect(`/?token=${token}`);
+      // response.redirect(`/?token=${token}`);
+      response.redirect('/main.html')
     })
     .catch((err) => response.status(500).json({ err: err.message }));
 });
