@@ -3,8 +3,12 @@
     "version": "1.0.0",
     "description": "blog app for a3",
     "author": "huangrandy",
+    "engines": {
+        "node": "20.6.0",
+        "npp": "9.8.1"
+    },
     "scripts": {
-        "start": "nodemon app.js",
+        "start": "node app.js",
         "build-css": "tailwindcss build -i src/public/styles.css -o src/public/output.css --watch"
     },
     "dependencies": {
