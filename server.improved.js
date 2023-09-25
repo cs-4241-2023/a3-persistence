@@ -193,9 +193,8 @@ app.get("/github-callback", (request, response) => {
     .post("https://github.com/login/oauth/access_token", body, options)
     .then((res) => res.data.access_token)
     .then((token) => {
-      accessToken = token;
-      // response.redirect(`/?token=${token}`);
-      response.redirect('/main.html')
+      accessToken = token
+      response.redirect(`/?token=${token}`);
     })
     .catch((err) => response.status(500).json({ err: err.message }));
 });
