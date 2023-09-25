@@ -1,11 +1,12 @@
-Colin Fyock - https://a3-colin-fyock.glitch.me/
+Colin Fyock - https://a3-colin-fyock-91396a301d82.herokuapp.com/
 
 Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
 ===
 
 ## Your Web Application Title
 
-Your glitch (or alternative server) 
+I used Heroku to host my website, but the glitch is also listed below
+https://a3-colin-fyock-91396a301d82.herokuapp.com/
 https://a3-colin-fyock.glitch.me/
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
