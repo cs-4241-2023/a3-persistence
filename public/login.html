@@ -1,39 +1,92 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>CS4241 Assignment 2</title>
-    <meta charset="utf-8">
-    <script src="js/main.js"></script>
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif&display=swap" rel="stylesheet">
-    <!-- get rid of favicon error -->
-    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-  </head>
-  <body>
-    <h1 id="app-header">TODO List App</h1>
-    <form>
-      <input type="text" id="todo-name" placeholder="Enter task name">
-      <input type="date" id="due-date">
-      <!-- <input type="text" id="description" placeholder="Enter description"> -->
-      <button type="submit" id="create-button">Create task</button>
-    </form>
-    <ul id="todo-list">
-    </ul>
-    <table id="todo-table">
-      <thead class="table-head">
-        <tr>
-          <th>⠀</th>
-          <th>Task Name</th>
-          <th>Due Date</th>
-          <!-- <th>Description</th> -->
-          <!-- <th>Priority</th> -->
-        </tr>
-      </thead>
-      <tbody id="table-body">
-      </tbody>
-    </table>
-    <button id="delete-button">Delete task</button>
-  </body>
+
+    <head>
+        <title>Login Page</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Description" content="CS4241 Assignment 3">
+        <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+        <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"> -->
+    </head>
+
+    <body>
+        <h1>Login</h1>
+        <form id="login-form">
+            <label for="username">Username:</label>
+            <input type="text" id="user" name="user" required>
+            <br>
+            <label for="pass">Password:</label>
+            <input type="password" id="pass" name="pass" required>
+            <br>
+            <input type="submit" value="Login" id = submit-button >
+            <input type="submit" value="Register New User" id = register-button> 
+        </form>
+    </body>
+
 </html>
+
+<script>
+    const loginForm = document.getElementById('login-form');
+
+    document.getElementById('submit-button').addEventListener('click', function(event) {
+    console.log('Submit button clicked');
+    const user = document.getElementById('user').value
+    const pass = document.getElementById('pass').value
+    login(user, pass)
+    event.preventDefault();  // Prevents form submission
+    });
+
+    document.getElementById('register-button').addEventListener('click', function(event) {
+    console.log('Register button clicked');
+    const user = document.getElementById('user').value
+    const pass = document.getElementById('pass').value
+    register(user,pass)
+    event.preventDefault();  // Prevents form submission
+    });
+
+
+    const register = async function(user, pass) {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({username: user, password: pass})
+        });
+        const data = await response.json();
+        if (data) {
+            alert('Created new user!')
+            // set local storage
+            localStorage.setItem('logIn', true)
+            localStorage.setItem('user', user)
+            // Redirect to index.html
+            window.location.href = 'index.html';
+    }
+  }
+
+    const login = async function(user, pass) {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({username: user, password: pass})
+        });
+        const data = await response.json();
+        if (data) {
+            //data.success ? alert('Login successful!') : alert('Created new user!')
+            alert('Login successful!') 
+            // set local storage
+            localStorage.setItem('logIn', true)
+            localStorage.setItem('user', user)
+            // Redirect to index.html
+            window.location.href = 'index.html';
+        }
+        else {
+            alert('Login failed. Please check your credentials.');
+        }
+    }
+  
+</script>
