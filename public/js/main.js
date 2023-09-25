@@ -270,7 +270,7 @@ function makeDeleteButton(item) {
 
 function makeEditButton(item) {
     const buttonDiv = document.createElement('div');
-    buttonDiv.innerHTML = `<button class="btn btn-outline-dark border-0" type="button" data-toggle="collapse" data-target="#` + item["_id"] + `" aria-expanded="false" aria-controls="collapseEdit" aria-label="edit` + item["name"] + `>
+    buttonDiv.innerHTML = `<button class="btn btn-outline-dark border-0" type="button" data-toggle="collapse" data-target="#` + item["_id"] + `" aria-expanded="false" aria-controls="collapseEdit" aria-label="edit` + item["name"] + `">
     <i class="fa-solid fa-pen-to-square"></i>
   </button>`;
     return buttonDiv;
