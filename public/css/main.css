@@ -1,7 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+:root {
+  --primary: #1650BB;
+}
+
 body {
-  background-color: #6495ed;
+  background-color: #1650BB;
   display: flex;
   flex-flow: column wrap;
   align-items: center;
@@ -16,9 +20,23 @@ body {
 }
 
 h1 {
-  color: black;
+  --h1-color: black;
   background-color: yellow;
   border: 2px red solid;
+}
+
+h2 {
+  --h2-color: white;
+}
+
+h3 {
+  --h3-color: white;
+}
+
+form {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 70%;
 }
 
 input:invalid {
@@ -38,8 +56,16 @@ button {
   font-family: inherit;
 }
 
+button:focus-visible {
+  box-shadow: 0 0 8px 8px black;
+}
+
+#toggle-table {
+  width: 70%;
+}
+
 #stat-table {
-  width: 60% !important;
+  width: 70% !important;
   border: 2px #9b6a12 solid;
   background-color: white;
   border-collapse: collapse;
@@ -47,8 +73,10 @@ button {
 }
 
 th, td {
+  --color: black;
   text-align: center;
   border: 1px black solid;
+  color: black;
 }
 
 .table-input {

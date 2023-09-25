@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Login | CS:GO Stats Tracker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Statistics Tracker for Counter-Strike: Global Offensive">
+    <link rel="stylesheet" href="/index.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="icon" href="/favicon.ico">
+  </head>
+  <body>
+    <h1 class="grid">Login below (fields marked with * are required):</h1>
+    <form method="POST">
+      <div class="grid">
+        <input type="text" name="username" placeholder="* Enter username">
+        <input type="password" name="password" placeholder="* Enter password">
+      </div>
+      <input type="submit" formaction="/login" value="Login" class="contrast">
+      <input type="submit" formaction="/register" value="Register" class="contrast">
+    </form>
+    {{{msg}}}
+  </body>
+</html>

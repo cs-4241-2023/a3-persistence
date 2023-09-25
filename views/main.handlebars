@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS:GO Stats Tracker</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Statistics Tracker for Counter-Strike: Global Offensive">
+    <script src="/main.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="/main.css" type="text/css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="icon" href="/favicon.ico">
+  </head>
+  <body>
+    <h1 class="border-element">
+      Counter-Strike: Global Offensive Statistics Tracker
+    </h1>
+    <h2>Input statistics below, then click "Submit" to add them to the table:</h2>
+    <h3>Fields marked with * are required.</h3>
+    <form class="grid">
+      <input type="number" min="0" id="frag-input" placeholder="* Input number of frags" required>
+      <input type="number" min="0" id="assist-input" placeholder="* Input number of assists" required>
+      <input type="number" min="0" id="death-input" placeholder="* Input number of deaths" required>
+      <button type="submit" id="submit-button" class="contrast">Submit</button>
+    </form>
+    <br>
+    <br>
+    <h3>Click the button below to display all of your statistics:</h3>
+    <button type="button" id="toggle-table" class="contrast">Show Table</button>
+    <table class="border-element" id="stat-table" hidden>
+      <thead>
+        <tr>
+          <th>Username</th>
+          <th>Modify</th>
+          <th>Frags</th>
+          <th>Assists</th>
+          <th>Deaths</th>
+          <th>K/D</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </body>
+</html>

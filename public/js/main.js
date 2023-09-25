@@ -5,8 +5,21 @@ const showData = data => {
   data.forEach(d => {
     const row = document.createElement('tr');
     row.id = rowNum;
+    const usernameCell = document.createElement('td');
+    usernameCell.innerText = d.username;
+    usernameCell.id = d.username + rowNum;
+    row.appendChild(usernameCell);
+
+    const modifyCell = document.createElement('td');
+    const modifyButton = document.createElement('button');
+    modifyButton.innerText = "Modify";
+    let num = rowNum;
+    modifyButton.onclick = function() {modifyData(num, d)};
+    modifyCell.appendChild(modifyButton);
+    row.appendChild(modifyCell);
+
     for (const key in d) {
-      if (key !== "_id") {
+      if (key !== "_id" && key !== "username") {
         const cell = document.createElement('td');
         cell.innerText = d[key];
         cell.id = key + rowNum;
@@ -20,14 +33,6 @@ const showData = data => {
     deleteButton.onclick = function(event) {deleteData(event, d)};
     deleteCell.appendChild(deleteButton);
     row.appendChild(deleteCell);
-
-    const modifyCell = document.createElement('td');
-    const modifyButton = document.createElement('button');
-    modifyButton.innerText = "Modify";
-    let num = rowNum;
-    modifyButton.onclick = function() {modifyData(num, d)};
-    modifyCell.appendChild(modifyButton);
-    row.appendChild(modifyCell);
     tbody.appendChild(row);
     rowNum++;
   });
@@ -108,7 +113,7 @@ const modifyData = function(rowNum, obj) {
   for (let row of rows) {
     if (parseInt(row.id) === rowNum) {
       const cells = row.children;
-      for (let i = 0; i < 3; i++) {
+      for (let i = 2; i < 5; i++) {
         let cell = cells.item(i);
         const input = document.createElement('input');
         input.type = "number";
@@ -118,7 +123,7 @@ const modifyData = function(rowNum, obj) {
         cell.innerHTML = '';
         cell.appendChild(input);
       }
-      const button = row.lastElementChild.lastElementChild;
+      const button = row.children[1].firstChild;
       button.innerText = "Apply";
       button.onclick = function(event) {applyModification(event, rowNum, obj)};
     }
