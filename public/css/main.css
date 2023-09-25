@@ -1,15 +1,18 @@
+/* Custom CSS styles for your page */
+
 body {
   font-family: "Dosis";
   text-align: center;
   margin: 0;
   padding: 0;
   background-color: #f9f9f9;
-  display: flex;
-  flex-direction: column;
+
   align-items: center;
 }
 
-
+.font {
+  font-family: "Dosis";
+}
 
 .my-heading {
   font-family: "Dosis";
@@ -48,50 +51,37 @@ body {
   font-family: "Dosis";
 }
 
-.form-label{
+.form-label {
   font-size: 30px;
-  text-align:left;
+  text-align: left;
   font-family: "Dosis";
-
 }
 
 .login-box {
   width: 50%;
   margin: 0 auto;
-  margin-top: 100px; 
+  margin-top: 100px;
   background-color: #d8f6fa;
   padding: 20px;
   border: 1px solid #5585b5;
-  border-radius: 5px;
+  border-radius: 2px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   text-align: center;
 }
 
-.my-button {
-  font-family: "Dosis";
-  font-size: 30px;
-  padding: 10px 10px;
-  color: black;
-  background-color: #38b000;
-  border: none;
-  cursor: pointer;
-  border-radius: 3px;
+.box {
   width: 100%;
+  margin: 5% auto;
+  background-color: #e0f4f6;
+  padding: 15px;
+  border: 1px solid #5585b5;
+  border-radius: 2px;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
-
-.my-button:hover {
-  color: white;
-  background-color: #70e000;
-  font-weight: bold;
-}
-
-
-
 
 .my-form {
   font-family: "Dosis";
   width: 100%;
-  display: flex;
 }
 
 .my-label {
@@ -153,7 +143,6 @@ body {
   color: white;
   background-color: #0aa0f6;
 }
-
 
 .my-table {
   font-family: "Dosis";
