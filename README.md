@@ -1,8 +1,7 @@
-Assignment 2 - Short Stack: Basic Two-tier Web Application using HTML/CSS/JS and Node.js  
+Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS Template  
 ===
 
 Nicholas Heineman
-https://webware-character-creator.glitch.me/
 
 ---
 
@@ -11,9 +10,11 @@ https://webware-character-creator.glitch.me/
 This project is a mockup/beginnings of a website that could be used to manage characters for someone creating a book or a game with history they want to keep track of. It is specifically focused around keeping track of time, and one can create, delete and modify eras on the timeline that appears to the right. Then, any characters they create will be sorted into the eras on the timeline with real time updating.
 
 ## Project Structure:
-one HTML file, index.html, used to structure both the two tabs and the timeline.
+Two HTML files, 
+-index.html, used to structure both the two tabs and the timeline.
+-login.html, used to log a user in and handle github OAuth.
 
-one js file to manage the server, server.improved.js
+one js file to manage the server, database, OAuth, and other miscellaneous, server.improved.js
 
 3 js/css file pairs:
 -main.css/main.js, used to handle styling and code for the main page
@@ -21,14 +22,15 @@ one js file to manage the server, server.improved.js
 -characterSheet.css/characterSheet.js, handling stylnig and code for the character sheet.
 
 ## Functionalities Implemented:
--Server, contained in server.improved.js.
--Results: this is presented in multiple screens, but the two datasets are visible from the characters tab, and the timeline is always visible.
--Form/Entry: both sets of data have from/entry capability, which is done by filling in the form boxes and clicking submit.
--server logic: When a character is submitted, the server looks at the birth/death and calculates which eraI(s) that character belongs to. This updates in real time.
--derived field: See above. I'm aware the data is not from the new sent data, but it refers to other submissions and I believe this fullfills the spirit of this task.
+-Server, contained in server.improved.js, updated to use Express
+-Results: this is presented in multiple screens, but the two datasets are visible from the characters tab, and the timeline is always visible. It is differentiated between users, and logging in to one or another will display different data
+-Form/Entry: both sets of data have from/entry capability, which is done by filling in the form boxes and clicking submit. (keyed to different users still)
+-Persistent Data Storae in mongoDB
+-CSS Framework/Template: Uses Bootstrap for various formatting things
+-Login: can enter values and enter 'sign-in', then use those same values to 'login'
 
 ## Concepts Implemented:
--HTML: all content contained in index.html, data is presented 
+-HTML: content contained in index.html/login.html, data is presented 
 -CSS:
     -Used all of the CSS selector types, including connecting to classes, and elements
     -styled and positioned all of the elements, used non-default font
@@ -37,18 +39,11 @@ one js file to manage the server, server.improved.js
     -code that fullfills the requirement of sending/receiving data
 -Node.js
     -fullfills the requirements of creating the derived fields
+-General
+    -acheived at least 90% on all Lighthouse requirements (see further notes below)
 
 ## Achievements:
--5 Points: create app that allows submission of data and updates current server-side data. It is possible to see the changes in clientside when something is added, and more importantly, the derived fields will update with the new information that is changed in the timeline. I don't know about "one-page app" but all of this is part of one HTML file, and it is possible to see this all one one page
-
--5 Points: Add ability to modify data. Both the character and timeline items can be modified. To do this, enter in values in the submissions tab, and click the relevant 'modify' button on each item, what is in the submission boxes will go into 
-
--5 Points, UI study: 
-    Student: Will Ryan
-    Problems with design: Timeline box spacing and organization could be improved, standardization of button sizes/colors (specifically, get submit button on same line as other boxes in the timeline)
-    Comments they made that surprised you: "All in all it's not bad tho"
-    What you would change: I would spend time sizing the timeline specifically, ensure text fits properly in the boxes, improve organization of them
-
-
+-10 Points: implement OAuth authentication. Used Github, simply click the 'login with github' button on the login screen and it will add your credentials to the database and log you in. (If you are already signed into github, it may go through automatically, sometimes I had to sign out of github to see the screen)
+-5 Points: 100% in lighthouse tests. I got 100% on both pages when using the Localhost variety. However, my performance would drop to 99% when using . 
 
 

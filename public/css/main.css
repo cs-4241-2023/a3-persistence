@@ -1,10 +1,9 @@
 
-@import url('https://fonts.googleapis.com/css?family=Trirong');
+@import url('https://fonts.googleapis.com/css?family=Trirong&display=swap');
 body {
   background:gray;
   color:black;
   font-family: "Trirong", sans-serif;
-  font-display: swap;
 }
 
 .loginPage {

@@ -74,9 +74,6 @@ passport.use(new GitHubStrategy({
 
   accountName = profile.username;
 
-
-  //const user = users.find(user => user.id === 'ngheineman'); //change
-
   if (!user) {
     const document = {user : profile.id}
     const newUser = await client.db('world-data').collection('githubUsers').insertOne(document)
