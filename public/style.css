@@ -1,0 +1,105 @@
+
+header, footer{ 
+  display: flex;
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+h1 {
+  text-shadow: white 2px 2px 0;
+}
+
+.smalltext {
+  font-size: small;
+}
+
+.linktext {
+  color: #0F6DB0;
+}
+
+/*
+other colors
+fbdfa6
+f0d0b0
+f8d878
+d8f878
+b8f8d8
+d8d8d8
+a4e4fc
+*/
+html body {
+  background-color: #a4e4fc;
+  padding: 0 2.5rem;
+  margin: 0 2.5rem;
+}
+
+body .center .nes-table-responsive .nes-table {
+  min-width:80vw
+}
+
+.table-btn .nes-btn {
+  margin: 10px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+h1 {
+  padding: 40px;
+  margin: 20px;
+}
+
+h2 {
+  font-weight: normal;
+}
+
+
+/* overriding button text color for accessibility contract test */
+body .nes-table-responsive .nes-btn:hover, body .flexcontainer .nes-btn:hover, body .flexitem .nes-btn:hover{
+  color: #212529;
+}
+body .nes-table-responsive .nes-btn, body .flexcontainer .nes-btn, body .flexitem .nes-btn{
+  color: #212529;
+}
+body .nes-table-responsive .nes-btn:active, body .flexcontainer .nes-btn:active, body .flexitem .nes-btn:active{
+  color: #212529;
+}
+
+  
+/* flex container and items */
+.flexcontainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+  
+.flexitem {
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.popupContainer {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0,0,0,0.6);
+  visibility: hidden;
+}
+  
+.nes-container {
+  background-color: white;
+}
+  

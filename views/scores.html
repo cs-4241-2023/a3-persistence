@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A website for keeping track of high scores for different games.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
+    <script src="main.js"></script>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <header>
+      <h1 id = "test">HIGH SCORE!</h1>
+    </header>
+    <form class = "flexcontainer" id = "gameForm">
+      <div class = "nes-container with-title">
+      <h2 class="title">Add Score</h2>
+
+      <div class = "flexitem nes-field">
+        <label for = "game">Game</label>
+        <input class = "nes-input" type="text" id="game" placeholder="Tetris">
+      </div>
+
+      <div class = "flexitem nes-field">
+        <label for = "highscore">High Score</label>
+        <input class = "nes-input" type="number" id="highscore" placeholder="17776">
+      </div>
+
+      <div class = "flexitem nes-field" id = "notesForm">
+        <label for = "notes">Notes</label>
+        <textarea class = "nes-textarea" id="notes" placeholder="Tips for getting higher scores? A link to the game's webpage? A victory speech? Up to you!" rows="5" cols="20"></textarea>
+      </div>
+      <div class = "flexitem">
+        <button class = "nes-btn is-success" id = "submitForm">ENTER</button>
+      </div>
+      </div>
+    </form>
+  
+    <div class = "center">
+      <div class="nes-table-responsive">
+        <table class="nes-table is-bordered is-centered">
+          <thead>
+            <tr>
+              <th>GAME</th>
+              <th>HIGH SCORE</th>
+              <th>NOTES</th>
+              <th>DELETE/EDIT</th>
+            </tr>
+          </thead>
+          <tbody id = "data">
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class = "flexitem">
+      <button class = "nes-btn is-success" id = "logout">LOG OUT</button>
+    </div>
+
+    <div class = "popupContainer" id = "editwindow">
+      <div class = "popup">
+        <form class = "flexcontainer" id = "editForm">
+          <div class = "nes-container with-title">
+          <h2 class="title">Edit</h2>
+
+          <div class = "flexitem">
+            <p>Game</p>
+            <input class = "nes-input" type="text" id="gameEdit" placeholder="Tetris">
+          </div>
+
+          <div class = "flexitem">
+            <p>High Score</p>
+            <input class = "nes-input" type="number" id="highscoreEdit" placeholder="17776">
+          </div>
+
+          <div class = "flexitem">
+            <p>Notes</p>
+            <textarea class = "nes-textarea" id = "notesEdit" placeholder="Tips for getting higher scores? A link to the game's webpage? A victory yell? Up to you!" rows="5" cols="20"></textarea>
+          </div>
+          <div class = "flexitem">
+            <button class = "nes-btn is-success" id = "submitEdit">ENTER</button> 
+          </div>  
+          </div>     
+        </form>
+      </div>
+    </div>
+
+    <div class = "popupContainer" id = "errorPop">
+      <div class = "popup">
+        <div class = "nes-container is-centered">
+        <p id = "errorText"></p>
+        <button class = "nes-btn" id = "exitPop" onclick="exitPopup()">EXIT</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+    </footer>
+  </body>
+</html>

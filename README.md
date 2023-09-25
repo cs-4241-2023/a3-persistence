@@ -1,114 +1,44 @@
-Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
-===
+## High Score Tracker
 
-Due: September 22nd, by 11:59 AM.
-
-This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), 
-a database (mongodb), and a CSS application framework / template of your choice (Boostrap, Material Design, Semantic UI, Pure etc.)
-
-Baseline Requirements
----
-
-Your application is required to implement the following functionalities:
-
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data associated with a logged in user (except passwords)
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account. 
-- Persistent data storage in between server sessions using [mongodb](https://www.mongodb.com/cloud/atlas) (you *must* use mongodb for this assignment).
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks). 
-This should do the bulk of your styling/CSS for you and be appropriate to your application. 
-For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
-
-Your application is required to demonstrate the use of the following concepts:  
-
-HTML:  
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
-
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is 
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create 
-new user accounts upon login if none exist, however, you must alert your users to this fact.  
-
-CSS:  
-- CSS styling should primarily be provided by your chosen template/framework. 
-Oftentimes a great deal of care has been put into designing CSS templates; 
-don't override their stylesheets unless you are extremely confident in your graphic design capabilities. 
-The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
-
-JavaScript:  
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. 
-See the [previous assignment](https://github.com/cs-4241-23/shortstack) for reference.
-
-Node.js:  
-- A server using Express and a persistent database (mongodb).
-
-General:  
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests 
-using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment. 
-
-Deliverables
----
-
-Do the following to complete this assignment:
-
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. If you developed your project locally, deploy your project to Glitch (unless completing the alternative server technical acheivement described below), and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch (or an alternative server), it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
-
-Acheivements
----
-
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the 
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%. 
-These are recommended acheivements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README, 
-why it was challenging, and how many points you think the achievement should be worth. 
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
-
-*Technical*
-- (10 points) Implement OAuth authentication, perhaps with a library like [passport.js](http://www.passportjs.org/). 
-*You must either use Github authenticaion or provide a username/password to access a dummy account*. 
-Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. 
-Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!  
-- (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
-
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
-
-## Your Web Application Title
-
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
+http://a3-jade-logan.glitch.me
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
+The goal for this project was to allow the user to keep track of their high scores on different video games. It also includes a field for notes that a user may have, like a link for an online game or tips on achieving a higher score. 
+
+While changing project 2 to use a database went relatively smoothly, I found it challenging to adapt it to have different users. Certain functions wouldn't work, such as the onclick functions for the edit/delete buttons, and I had trouble figuring out where things were going wrong. I ended up just using username and password pairs for authentication. I didn't think I would have time for anything more complicated, but I did use the bcrypt library to hash passwords for more security.
+An account for testing:
+Username: gex3
+Password: N64
+
+I used NES.css for the framework because the video game look was what I was going for. I'd actually looked at NES.css while working on the second project for ideas, so I'd had this framework in mind from the start. Since NES.css just provides the components, I did a bit of CSS for layout things like flexboxes. I also needed to override the color of the button text from white to black for better contrast for accessibility.
+
+Middleware used:
+1. static - Used to serve static files in the public and views directories.
+2. json - Parses incoming JSON requests
+A custom function is used to check connection.
+I tried for awhile to get cookies to work, but was running out of time so I ended up not using cookie-session.
+(I was going off of the rubric on Canvas and didn't realize 5 different Express middleware packages were needed)
+
 - the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
 add a little more detail about what it does.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- **Bcrypt**: I didn't do the OAuth achievement, but I did use the bcrypt library to hash passwords before they're stored on the database. The main challenge was less with the code (bcrypt made things relatively simple) and more in figuring out what to use for hashing the passwords. I'd never used bcrypt or anything similar before, so I wanted to make sure it was a good option and that I was using it correctly. (5 points?)
+- **Lighthouse**: I was able to get 100 for both pages.
+
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+- **W3C Tips**
+1. Provide clear instructions - Form inputs have placeholder text that helps indicate how to fill them in, and error messages are clear about what the issue with the form input is.
+2. Associate a label with every form control - The inputs on both the login page and the main page all have labels associated with them.
+3. Identify page language and language changes - The <html lang="en"> tag is used on both pages to identify the page language.
+4. Help users avoid and correct mistakes - Errors with the forms on either page have different popup messages to indicate why the input was invalid.
+5. Provide sufficient contrast between foreground and background - The majority of the text is black on a white backdrop, and the buttons that are not white are brightly colored and contrast with the black text.
+6. Ensure that form elements include clearly associated labels - All form elements have a label directly above them.
+7. Provide easily identifiable feedback - Feedback from incorrect form inputs is in an unavaidable popup, ensuring that the user will know what to correct.
+8. Reflect the reading order in the code order - The ordering of the elements of the code matches the order they appear in on the page.
+9. Provide meaning for non-standard interactive elements - The "Register" text in "Don't have an account? Register" is a button created using a span, so it has role = "button" (the same goes for "Login" from the register form).
+10. Use mark-up to convey meaning and structure - The appropriate markup is used for headings, tables, and forms.
+11. Use headings and spacing to group related content - Headings are used at the top of forms, and spacing/visual elements are used to group relevant content.
+12. Don’t use color alone to convey information - Though buttons have color to differentiate them, text also makes it clear what their function is, and for the Register/Login span buttons have the same hover cursor as regular buttons to make it clear they can be clicked on.

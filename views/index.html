@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A website for keeping track of high scores for different games.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/nes.css/css/nes.css" rel="stylesheet" />
+    <script src="main.js"></script>
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <header>
+        <h1 id = "test">HIGH SCORE!</h1>
+    </header>
+
+    <form class = "flexcontainer" id = "loginForm">
+        <div class = "nes-container with-title">
+        <h2 class="title" id = "logtitle">Login</h2>
+  
+        <div class = "flexitem nes-field">
+          <label for = "username">Username</label>
+          <input class = "nes-input" type="text" id="username">
+        </div>
+  
+        <div class = "flexitem nes-field">
+          <label for = "password">Password</label>
+          <input class = "nes-input" type="password" id="password">
+        </div>
+
+        <div class = "flexitem">
+          <button class = "nes-btn is-success" id = "submitLogin">ENTER</button>
+        </div>
+        <p class = "smalltext" id = "logtext">Don't have an account? <span class="linktext nes-pointer" id = "textbtn" role="button">Register</span></p>
+        </div>
+      </form>
+
+      <div class = "popupContainer" id = "errorPop">
+        <div class = "popup">
+          <div class = "nes-container is-centered">
+          <p id = "errorText"></p>
+          <button class = "nes-btn" id = "exitPop" onclick="exitPopup()">EXIT</button>
+          </div>
+        </div>
+      </div>
+    
+    <footer>
+    </footer>
+  </body>
+</html>
