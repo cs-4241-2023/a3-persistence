@@ -26,24 +26,18 @@ app.get("/", (req, res) => {
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.post("/login", (req, res) => {
-  let dataString = "";
-
-  req.on("data", function (data) {
-    dataString += data;
-  });
-
-  req.on("end", function () {
-    const userData = JSON.parse(dataString);
-    const username = userData.username;
-    const password = userData.password;
-    const aUser = {
-      username: username,
-      password: password,
-    };
-    loginHelper(aUser, res, req);
-  });
+// Updated /login route
+app.post("/login", async (req, res) => {
+  try {
+    const { username, password } = req.body; // Automatically parsed by express.json()
+    const aUser = { username, password };
+    await loginHelper(aUser, res, req); // Assuming loginHelper is your authentication function
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
+
 app.post("/addRecipe", async (req, res) => {
   try {
     const recipeData = req.body;
@@ -107,9 +101,9 @@ app.delete("/deleteRecipe/:recipeName", async (req, res) => {
 
 async function loginHelper(aUser, res, req) {
   try {
-    console.log("Connected to the MongoDB database"); // Log when the connection is successful
+    console.log("Connected to the MongoDB database");
     const DB = client.db("recipeTracker");
-    const collection = DB.collection("Users");
+    const collection = DB.collection("user");
 
     const name = aUser.username;
     const key = { username: name };
@@ -121,13 +115,17 @@ async function loginHelper(aUser, res, req) {
     } else if (exists.password === aUser.password) {
       console.log("Login Successful");
       req.session.username = aUser.username;
-      res.redirect("/recipe.html");
+      req.session.isLoggedIn = true;
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Login successful", username: name }));
     } else {
       res.writeHead(400, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ username: name }));
     }
   } catch (e) {
     console.log(e);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Internal server error" }));
   }
 }
 
@@ -212,8 +210,8 @@ app.put("/updateRecipe", async (req, res) => {
 
 async function getUsers(username, res) {
   try {
-    const DB = client.db("a3DB");
-    const collection = DB.collection("Users");
+    const DB = client.db("recipeTracker");
+    const collection = DB.collection("User");
 
     const key = { username: username };
     const exists = await collection.findOne(key);
@@ -229,6 +227,37 @@ async function getUsers(username, res) {
     console.log(e);
   }
 }
+app.post("/register", async (req, res) => {
+  try {
+    const userData = req.body;
+    const username = userData.username;
+    const password = userData.password;
+
+    const newUser = {
+      username: username,
+      password: password,
+    };
+
+    const DB = client.db("recipeTracker");
+    const collection = DB.collection("user");
+
+    const existingUser = await collection.findOne({ username: username });
+    if (existingUser) {
+      res.writeHead(409, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Username already exists." }));
+      return;
+    }
+
+    await collection.insertOne(newUser);
+    res.writeHead(201, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "User registered successfully." }));
+    req.session.isLoggedIn = true;
+  } catch (e) {
+    console.error("Error registering user:", e);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Internal server error." }));
+  }
+});
 
 const sendFile = function (response, filename) {
   const type = mime.getType(filename);
