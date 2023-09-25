@@ -223,15 +223,15 @@ document.addEventListener('DOMContentLoaded', function () {
       const editButton = document.createElement("button")
       editButton.innerText = "Edit"
       editButton.className = "edit" 
+    
       li.innerText = `Title: ${d.title}\nAuthor: ${d.author}\nStart Date: ${d.startDate}\nFinish Date: ${d.dateFinished}\nTime to Finish: ${d.timeToFinish}`
 
-      li.innerHTML = `
-        <span id="title">Title: ${d.title}</span><br>
+      li.innerHTML = 
+      `<span id="title">Title: ${d.title}</span><br>
         <span id="author">Author: ${d.author}</span><br>
         <span id="startDate">Start Date: ${d.startDate}</span><br>
         <span id="dateFinished">Finish Date: ${d.dateFinished}</span><br>
-        <span id="timeToFinish">Time to Finish: ${d.timeToFinish}</span>
-      `
+        <span id="timeToFinish">Time to Finish: ${d.timeToFinish}</span>`
       list.appendChild(li)
       list.appendChild(deleteButton)
       list.appendChild(editButton)

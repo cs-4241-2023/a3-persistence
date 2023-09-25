@@ -1,90 +1,100 @@
+/* Reset default margin and padding */
+body, h1 {
+  margin: 0;
+  padding: 0;
+}
+
+/* Apply Chota styles to the body */
 body {
-  background: rgb(236, 210, 210);
-  color: black; 
+  background-color: #f0f0f0;
+  color: #333;
   font-family: 'Cormorant Garamond', serif;
-  margin-left: 50px;
-
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
-h1{
-  color:black;
+
+/* Apply Chota styles to h1 */
+h1 {
+  font-size: 28px;
+  margin: 20px 0;
+  text-align: center;
+  color: #333; 
 }
 
+/* Apply Chota styles to form */
+.userInput {
+  max-width: 800px;
+  width: 100%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
 
-.userInput{
-  display:grid; 
- gap:1rem;
-  grid-template-columns: repeat(4, 20%);
-
-} 
-
+/* Apply Chota styles to userLibrary */
 .userLibrary {
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(2, 2fr); 
-  margin-right: 170px;
-
-  
+  grid-gap: 1rem;
+  grid-template-columns: repeat(2, 1fr);
 }
 
+/* Apply Chota styles to li */
 li {
-  
   padding: 10px;
-  background-color: #ca91b5;
+  background-color: #f5dada; /* Change for better contrast */
   border: 1px solid #d49898;
   border-radius: 5px;
-  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   margin-bottom: 10px;
   position: relative;
-  
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
+/* Apply Chota styles to delete button on hover */
 .userLibrary .delete:hover {
   background-color: #c0392b;
 }
-button {
-	background: #8d6be3;
 
-	color: white;
-	font-size: 15px;
-	width: 60px;
-	margin: 10px 0 0;
-  font-family: 'Cormorant Garamond', serif;
-	cursor: pointer;
-  border: 5px;
+/* Apply Chota styles to buttons */
+button {
+  background: #8d6be3;
+  color: white;
+  font-size: 15px;
+  width: 120px;
+  margin: 10px 0;
+  margin-right: 30px;
+  cursor: pointer;
+  border: none;
   border-radius: 3px;
-  margin-top: 10px;
-  margin-bottom:10px;
 }
 
+/* Apply Chota styles to buttons on hover */
 button:hover {
   background: #2980b9;
 }
 
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
+/* Apply Chota styles to labels */
 label {
   font-weight: bold;
   margin-right: 5px;
 }
-b {
-  color:red; 
-  
 
+/* Apply Chota styles to bold text */
+b {
+  color: #d63031; 
 }
 
+/* Apply Chota styles to text inputs */
 input[type="text"] {
-	margin: 0;
-	font-size: 15px;
-	line-height: 15px;
-	height: 15px;
-	padding: 5px;
-	border: 1px solid #ddd;
-	background: #fff;
-	border-radius: 6px;
-  font-family: 'Cormorant Garamond', serif;
-	color: #888;
+  font-size: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 6px;
+  color: #333;
 }

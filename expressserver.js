@@ -1,3 +1,4 @@
+//SERVER SIDE
 const express = require( 'express' ),
  dotenv = require('dotenv').config(),
 { MongoClient, ObjectId } = require('mongodb'),
@@ -41,6 +42,7 @@ run()
 
 app.listen( process.env.PORT || port )
 
+
 app.use( (req,res,next) => {
   if( collection !== null ) {
     next()
@@ -48,6 +50,11 @@ app.use( (req,res,next) => {
     res.status( 503 ).send()
   }
 })
+
+
+
+
+
 
 app.post( '/add', async (req,res) => {
   try {
