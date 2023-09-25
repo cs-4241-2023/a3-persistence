@@ -1,6 +1,6 @@
 ## MyArtist Database
 
-Link to Glitch server: https://a3-traymodn.glitch.me/
+Link to Glitch server: https://a3-tucker-raymond.glitch.me/
 
 Project Description:
 

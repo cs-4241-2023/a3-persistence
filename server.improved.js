@@ -97,7 +97,7 @@ const handleGet = function(request, response) {
   else if (request.url.startsWith('/artists')) {
     loadDBData()
     const acct = request.session.username
-    addAcctList(acct) // Create a new list for an account if there is not one already maybe don't need because of the one in loadDBData
+    addAcctList(acct)
     console.log("acct:" + acct);
     console.log("appdata[admin]: " + appdata[acct]);
     response.writeHead(200, "OK", {'Content-Type': 'text/plain'});
@@ -128,7 +128,7 @@ const loadDBData = async function(){
     addAcctList(result[i].Account)
     let inList = false
     console.log(result[i].Account)
-    for(let j = 0; j < appdata[result[i].Account].length; j++){ //TODO this line is the problem, I think it has something to do with the result being async and the for loop tries to use it before the promise resolves
+    for(let j = 0; j < appdata[result[i].Account].length; j++){
       console.log(JSON.stringify(result[i].Artist), JSON.stringify(appdata[result[i].Account][j].Artist))
       if(result[i].Artist === appdata[result[i].Account][j].Artist && result[i].Genre === appdata[result[i].Account][j].Genre){
         inList = true
