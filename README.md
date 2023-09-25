@@ -6,7 +6,7 @@ cabbag3
 
 ## Creature Creator
 
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
+https://a3-mirandi-mccormick.glitch.me/
 
 - My application has 3 pages: login, create account, and the main creature creator page after successful login.
 - A big challenge I faced was getting res.render to work, I was using .handlebars extention, and the link would change, but the new page would not render. I was able to fix this by using hbs and the extention .hbs instead after seeing lots of people on stackoverflow using that version and not the .handlebars version.
