@@ -1,114 +1,26 @@
-Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
-===
+## Simple Banking App
 
-Due: September 25nd, by 11:59 AM.
+Ethan Catania
+https://a3-ethan-catania.glitch.me/
 
-This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), 
-a database (mongodb), and a CSS application framework / template of your choice (Boostrap, Material Design, Semantic UI, Pure etc.)
-
-Baseline Requirements
----
-
-Your application is required to implement the following functionalities:
-
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data associated with a logged in user (except passwords)
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account. 
-- Persistent data storage in between server sessions using [mongodb](https://www.mongodb.com/cloud/atlas) (you *must* use mongodb for this assignment). You can use either the [official mongodb node.js library](https://www.npmjs.com/package/mongodb) or use the [Mongoose library](https://www.npmjs.com/package/mongoose), which enables you to define formal schemas for your database. Please be aware that the course staff cannot provide in-depth support for use of Mongoose.  
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks). 
-This should do the bulk of your styling/CSS for you and be appropriate to your application. 
-For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
-
-Your application is required to demonstrate the use of the following concepts:  
-
-HTML:  
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
-
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is 
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create 
-new user accounts upon login if none exist, however, you must alert your users to this fact.  
-
-CSS:  
-- CSS styling should primarily be provided by your chosen template/framework. 
-Oftentimes a great deal of care has been put into designing CSS templates; 
-don't override their stylesheets unless you are extremely confident in your graphic design capabilities. 
-The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
-
-JavaScript:  
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. 
-See the [previous assignment](https://github.com/cs-4241-23/shortstack) for reference.
-
-Node.js:  
-- A server using Express and a persistent database (mongodb).
-
-General:  
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests 
-using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment. 
-
-Deliverables
----
-
-Do the following to complete this assignment:
-
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. If you developed your project locally, deploy your project to Glitch (unless completing the alternative server technical acheivement described below), and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch (or an alternative server), it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
-
-Acheivements
----
-
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the 
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%. 
-These are recommended acheivements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README, 
-why it was challenging, and how many points you think the achievement should be worth. 
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
-
-*Technical*
-- (10 points) Implement OAuth authentication, perhaps with a library like [passport.js](http://www.passportjs.org/). 
-*You must either use Github authenticaion or provide a username/password to access a dummy account*. 
-Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. 
-Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!  
-- (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
-
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
-
-## Your Web Application Title
-
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
-
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
-
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
+This project is a banking app using express, mongodb, a css framework, and a functioning login system. The page starts on a create account page. This page allows a user to input a username that doesnt exist in the database, a password that has to be entered twice and match, and a balance value. By clicking create user the application can will redirect the user to the application page. This page allows the user to deposit and withdraw from their account. They can deposit any amount but can only withdraw up to their balance. When a balance is updated, the newBalance is displayed on the screen and updated in the database. There is also a delte account button that will delete a given account and return the user to the login page. The login and create account can be switched between by clicking the already have an account and the need to create an account buttons. The login page allows an existing user to input their username and password and if correct then they will be redirected to the application page. The goal of this project was to create a much more complete and effective tool to keep track of expenses. I had a lot of challenges during this project, mainly with the location of files and the CORS policy preventing certain files from loading. This was largely due to me running my code through the vs run rather than through the node server. I also had a lot of trouble with the redirect function and had to add the window.location.href to ensure the page properly changed. I simply checked to see if the inputted password was equal to the password string created during the create account page. This was pretty simple and honestly seemed like the best strategy for checking if the password was accurate. I used the mvp.css framework to create a simple and engaging application. I did override a few of the css styles but this was mostly to acheive the 100 for each of the 4 categories in the lighthouse report. I used a lot of middleware in my server to handle certain requests. I had an app.use cookie to ensure that a logged in user could only access there account and not another. I also used app.use(expressurlencoded = true) to have the password be hidden in the url of the page. I used app.use(express.static('public')) to serve the static html and js files to the server. I also used app.use(express.json) to allow all of the passsed data to be in the form of a json object.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
 
-### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+- **Tech Achievement 1**:(5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment. I was able to override some css elements to center the page and add to contrast. This allowed for all 3 of my html pages to have 100s accross the board. This was somewhat challeging, especially the last few points, but with the contrast and format of the css framework and my overridden elements, i was able to create appealing and effiecient pages.
+
+## Design/Evaluation Achievements
+
+- **Design Achievement 1**:
+  1. Provide informative, unique page titles - Each of my html pages has a respective title that represents the process of the page. The respective titles are login, newAccount, and banking app for the login page, the create account page, and the application page.
+  2. Use headings to convey meaning and structure - The headings of the page are similar to the titles previously mentioned. There is a login page, a create account page, and a Simple banking App header to convery what functionality the user has on that specific page.
+  3. Make link text meaningful - The links that are present on the html pages are either Already have an Account? or Need an Account?. These links will redirect the user to the correct page to either create an accont or login.
+  4. Keep content clear and concise - Each page only has the necessary forms, buttons, and headers. This allows for a very clear and concise webpage and the user will be able to tell almost immediatly if they are on the page they desire.
+  5. Provide sufficient contrast between foreground and background - This was largely prompted by the lighthouse requirement. Because I needed good contrast on the page i made the buttons a darker blue than was present through mvp.css. I also changed the background color to be a milder blanchedalmond to create more contrast and appealing application.
+  6. Don’t use color alone to convey information - I use error messages or redirects to display information to the user. Any message that displays on the screen is done so with a red color to contrast with the background and also stand out to the user. The color alone is not enough to know what is wrong, so i also included the passed in data in many of the applicable error messages.
+  7. Ensure that form elements include clearly associated labels - All forms on the page are concisely and clearly labled to inform the user of the expected input. I also have the input types set to only allow certain inputs into the fields, such as balance can only be a number.
+  8. Associate a label with every form control - Every form input field has a corresponding label to better identify the inputs that are expected and the corresponding fields. These labels consist of username, password, REpassword, balance, and withdraw/deposit. These allow the user to know exactly what they are putting in for what.
+  9. Help users avoid and correct mistakes - There is a lot of error handling present within the application to steer the user along the right track. For example, when a user creates an account, the program will check if that username already exists, and if it does it will return an error essage instead of a redirect. There are any error messages present that will prevent the page from impropery formatting data and the user from accidentally inputting incorrect fields.
+  10. Ensure that interactive elements are easy to identify - All interactive elements on the page are either input fields with clearly marked labels, or highly contrasted buttons with specific labels to let the user know what each button does. The error handling also ensure that the user is inputting the correct information and pressing the proper button to perform a desired action.
+  11. Provide clear and consistent navigation options - The user has a few options to redirect between pages. When on the login or create account page, the user can freely switch between the pages by using the anchor link at the bottom of both pages. The application page also has a logout link to return the user to the login screen. The user can also automatically redirect to the proper page if they input the proper information into the forms present.
+  12. Use headings and spacing to group related content - The headings are seperated and larger from the rest of the fields, allowing the user to easily identify what form they are attempting to fill in. I also include breaks in the account that allow for the input fields and buttons to have enough space to easily be accesed by the user.
