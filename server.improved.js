@@ -105,6 +105,23 @@ run()
 
 app.get('/data', async (request, response) => {
 
+  var url = new URL(request.url.toString());
+  // OR: If you want to use the current page's URL
+  var url = window.location;
+
+  var access_token = new URLSearchParams(url.search).get('access_token');
+  console.log(JSON.stringify(access_token))
+  if( !!access_token ) {
+    request.session.login = true
+    request.session.user = data.login
+    let data = await axios.get('https://api.github.com/user', {}, {
+      headers: {
+        authorization: 'Bearer ' + token
+      }
+    })
+    console.log(JSON.stringify(data))
+  }
+
   let data = {
     username: "",
     schedules: [],
@@ -196,18 +213,8 @@ app.get("/github-callback", (request, response) => {
     .then((res) => res.data.access_token)
     .then(async (token) => {
       accessToken = token
-      response.redirect(`/?token=${token}`)
+      response.redirect(`/main.html/?token=${token}`)
       return token
-    })
-    .then( async (token) => {
-      request.session.login = true
-      request.session.user = data.login
-      let data = await axios.get('https://api.github.com/user', {}, {
-        headers: {
-          authorization: 'Bearer ' + token
-        }
-      })
-      console.log(JSON.stringify(data))
     })
     .catch((err) => response.status(500).json({ err: err.message }))
 });
