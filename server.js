@@ -30,9 +30,8 @@ const taskSchema = new mongoose.Schema({
 const Task = conn.model('Task', taskSchema);
 
 app.use(bodyParser.json());
-
 app.use(session({
-  secret: process.env.SESSION_SECRET, // This should be a secret and stored in an environment variable
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false,
 }));
@@ -52,12 +51,7 @@ passport.use(new GitHubStrategy({
   clientID: '46eed9c0b0d5d6d2692d',
   clientSecret: 'ff3757c5d09b21eb079a2b2e6b3036cd2d8dbee6',
   callbackURL: "https://a3colinm1215-m9bh3.ondigitalocean.app/auth/github/callback"
-},
-  function (accessToken, refreshToken, profile, cb) {
-    // Here you could potentially store the profile data in your database.
-    return cb(null, profile);
-  }
-));
+}));
 
 app.use(function (req, res, next) {
   console.log("use");
@@ -69,22 +63,17 @@ app.use(function (req, res, next) {
   }
 });
 
-app.use(express.static('public')); // Serve static files from the public directory
+app.use(express.static('public'));
 
-// Authentication routes
 app.get('/auth/github', passport.authenticate('github'));
 
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/' }),
   function (req, res) {
-    console.log("/auth/github/callback");
-    // Successful authentication.
     res.redirect('/index.html');
   });
 
-// Logout route
 app.get('/logout', (req, res) => {
-  console.log("logout");
   req.logout((err) => {
     if (err) {
       return res.status(500).send('Error during logout.');
@@ -99,9 +88,7 @@ app.get('/logout', (req, res) => {
 });
 
 app.get('/getName', async (req, res) => {
-  console.log("getName");
   try {
-    console.log(req.user.username);
     res.send(req.user.username);
   } catch (err) {
     res.status(500).send('Error fetching data from database.');
@@ -109,7 +96,6 @@ app.get('/getName', async (req, res) => {
 });
 
 app.get('/getData', async (req, res) => {
-  console.log(req.user.id);
   try {
     const tasks = await Task.find({ userId: req.user.id });
 
@@ -120,10 +106,7 @@ app.get('/getData', async (req, res) => {
 });
 
 app.post('/submit', async (req, res) => {
-
-  console.log(req.body);
   const receivedData = req.body;
-  console.log(receivedData);
 
   const task = receivedData.task;
   if (!task || task.trim() === "") {
@@ -166,8 +149,6 @@ app.post('/submit', async (req, res) => {
     userId: req.user.id
   });
 
-  console.log(newTask);
-
   try {
     await newTask.save();
     res.status(200).send("OK : Data received and added to the database");
@@ -177,7 +158,6 @@ app.post('/submit', async (req, res) => {
 });
 
 app.post('/modifyData/:id', async (req, res) => {
-  console.log(req.body);
   const receivedData = req.body;
 
   const task = receivedData.task;
@@ -220,7 +200,6 @@ app.post('/modifyData/:id', async (req, res) => {
     priority: priority,
     userId: req.user.id
   };
-  console.log(updatedData);
 
   try {
     await Task.findOneAndUpdate({ task: receivedData.task }, updatedData);
@@ -246,9 +225,6 @@ app.delete('/data', async (req, res) => {
   }
 });
 
-
-
-// Catch-all for other routes - serves files or sends 404 if file doesn't exist
 app.get('*', (req, res) => {
   const filename = __dirname + '/public' + req.url;
   const type = mime.getType(filename);
