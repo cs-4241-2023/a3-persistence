@@ -1,0 +1,48 @@
+@font-face{
+  font-family: 'Roboto', sans-serif;
+  src: url(https://fonts.googleapis.com/css2?family=Roboto&display=swap);
+}
+
+body {
+  background:gray;
+  color:white;
+}
+
+th{
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  color:red;
+}
+
+li{
+  font-family: Roboto, sans-serif;
+
+}
+input{
+  width:200px;
+  height: 50px;
+  font-size: 16px;
+  font-family: Roboto, sans-serif
+}
+
+button{
+  font-size: 16px;
+  width:200px;
+  height: 50px;
+}
+
+
+#yourname{
+  font-weight: bold;
+}
+
+#yourpass{
+  font-weight: bold;
+}
+
+.flexParent{
+  display:flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-content: flex-start;
+}
