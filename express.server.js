@@ -1,11 +1,17 @@
 require("dotenv").config();
 const express = require("express");
-const { MongoClient, ObjectId } = require("mongodb");
+const { MongoClient, ObjectId, ServerApiVersion } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 3000;
 
 const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@cluster.du4q9pb.mongodb.net/?retryWrites=true&w=majority`;
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
 let tasksCollection;
 let usersCollection;
 
@@ -13,21 +19,18 @@ app.use(express.json());
 app.use(express.static("public"));
 
 async function connectToDatabase() {
-  try {
-    await client.connect();
-    console.log("Connected to MongoDB!");
+  await client.connect();
 
-    tasksCollection = client.db("todoListApp").collection("tasks");
-    usersCollection = client.db("todoListApp").collection("users");
-  } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-  }
+  tasksCollection = client.db("todoListApp").collection("tasks");
+  usersCollection = client.db("todoListApp").collection("users");
+  await client.db("admin").command({ ping: 1 });
+  console.log("Connected to MongoDB!");
 }
 
-connectToDatabase();
+connectToDatabase().catch(console.dir);
 
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/login.html");
+app.get("/", function (req, resp) {
+  resp.send("OK!");
 });
 
 // Handle GET requests for tasks

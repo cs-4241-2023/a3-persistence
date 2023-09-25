@@ -21,7 +21,8 @@ const login = async function (username, password) {
 
     localStorage.setItem("loggedIn", true);
     localStorage.setItem("username", username);
-    // Redirect to index.html
     window.location.href = "todo.html";
+  } else {
+    alert("Incorrect user info. Please try again.");
   }
 };
