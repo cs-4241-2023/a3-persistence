@@ -17,4 +17,4 @@ Extension confirmed by Prof. Roberts.
 
 - **Tech Achievement 1**: Implement OAuth authentication by using local storage and MondoDB.
 
-- **Design Achievement 2**: I got 100% on each required Lighthouse test.
+- **Design Achievement 2**: I got 100% on each required Lighthouse test (Images of lighthouse tests on local server included in repository).
