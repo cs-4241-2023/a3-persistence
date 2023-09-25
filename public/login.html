@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang = 'en'>
+<head>
+    <meta charset = 'utf-8'/>
+    <script src="js/login.js" defer ></script>
+    <meta name ='viewport' content = 'width = device-width, initial-scale = 1'/> 
+    <meta name = 'description' content = 'Banking App login!'/>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css"/> 
+</head>
+<body>
+    <h2>Login</h2>
+    <form id="login-form">
+        
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br>
+        <button type = "submit" id="logIn">Login</button>
+        <p id="error-message" style="color: red;"></p>
+        <a href = "newAccount.html">Don't have an Account?</a>
+    </form>
+    <style> 
+    
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            max-width: 100%;
+        }
+        button{
+            background-color: darkblue;
+        }
+        a{
+            color: darkblue;
+        }
+        body{
+            background-color: blanchedalmond;
+        }
+        h2{
+            text-align: center;
+        }
+        input[type="text"], textarea {
+            width: 50%;
+        }
+        input[type="password"], textarea {
+            width: 50%
+        }
+        #error-message{
+        text-align: center
+    }
+        
+            </style> 
+</body>
+</html>
