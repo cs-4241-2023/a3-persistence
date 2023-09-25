@@ -1,0 +1,18 @@
+body {
+    background-color: lightblue;
+    font-family: 'Oswald', sans-serif;
+}
+#login-box {
+    margin-bottom: 20px;
+}
+#task-bar, #task-list {
+    margin: 10px 0;
+}
+.task-item {
+    margin-bottom: 10px;
+}
+.task-item {
+  width: 60%;
+  margin: 10px auto;  /* Centers the task */
+  /* ... other styles remain the same */
+}
