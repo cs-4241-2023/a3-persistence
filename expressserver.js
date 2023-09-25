@@ -26,7 +26,7 @@ app.use( cookie({
   keys: [key1, key2]
 }))
 
-/*
+
 app.use( (req,res,next) => {
   if( collection !== null ) {
     next()
@@ -34,7 +34,7 @@ app.use( (req,res,next) => {
     res.status( 503 ).send()
   }
 })
-*/
+
 
 
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.qsmz2rk.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`;
