@@ -31,6 +31,7 @@ for session managment.
 I uploaded a screenshot of my locla lighthouse test to the assests page on glitch
 https://cdn.glitch.global/db7315a0-8474-49dc-aacf-f842061bc606/Screenshot%202023-09-25%20134930.jpg?v=1695664185370
 
+![image](https://github.com/mlacadie/a3-matthew-lacadie/assets/93140416/7081655c-7337-4125-aafb-7d4dae7a1e88)
 
 ## Technical Achievements
 - **Tech Achievement 1**:
