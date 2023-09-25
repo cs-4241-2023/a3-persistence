@@ -188,21 +188,26 @@ app.get("/github-callback", (request, response) => {
   };
  
   let accessToken;
-  const options = { headers: { accept: "application/json" } };
+  const options = { headers: { accept: "application/json",
+   } };
  
   axios
     .post("https://github.com/login/oauth/access_token", body, options)
-    .then((res) => res.data.accessToken)
+    .then((res) => res.data.access_token)
     .then(async (token) => {
       accessToken = token
-      response.redirect(`/main/?token=${token}`)
-      const data = await axios.get('https://api.github.com/user', {}, {
-      headers: {
-      authorization: 'Bearer ' + token
-      }
+      response.redirect(`/main.html/?token=${token}`)
+      return token
     })
-    request.session.login = true
-    request.session.user = data.login
+    .then( async (token) => {
+      request.session.login = true
+      request.session.user = data.login
+      let data = await axios.get('https://api.github.com/user', {}, {
+        headers: {
+          authorization: 'Bearer ' + token
+        }
+      })
+      console.log(JSON.stringify(data))
     })
     .catch((err) => response.status(500).json({ err: err.message }))
 });
