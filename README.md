@@ -17,28 +17,21 @@ Include a very brief summary of your project here. Images are encouraged, along 
 -   Static File Middleware: Uses middleware to serve static CSS and JavaScript for my site.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy. The user can log in but they don't receive their own data but general data.
+- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy. The user can log in but they don't receive their own data but general data. (The code is in the server.js file but is commented out below the actual running server file)
 - **Tech Achievement 2**: I used Heroku to host my site. I really enjoyed using this service as it was very plug-and-play with GitHub and it automatically gets the main branch of my repo and runs it. Glitch is required to import the project and have a separate instance while Heroku just uses the current GitHub main version.
 - **Tech Achievement 3**: In my personal testing, I got a lighthouse score of 100 in all categories.
 ![Screenshot 2023-09-24 012150](https://github.com/MarekSGarbaczonek/a3-mareksgarbaczonek/assets/66498850/676eacc2-a0a9-4e2f-aad4-d8bcf07cb85e)
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: CRAP Principles:
-- Which element received the most emphasis (contrast) on each page?
--   The task list received the most emphasis and contrast as it is dark gray on top of a white background so it visually stands out from the rest of the UI. I wanted the user to look at the task list first as that is the most important part of the app.
+Which element received the most emphasis (contrast) on each page?
+- In my design, the element that receives the most emphasis through contrast is the task list. By using a dark gray color for the task list against a white background, I created a high level of visual contrast that makes the task list stand out from the rest of the UI. This choice is effective in drawing the user's attention to the most crucial part of the app, which is managing tasks. Additionally, I've used color contrast in the priority buttons, making it easy for users to distinguish between priorities, with green representing lower priority and red indicating high priority. These contrasting colors help users quickly grasp the significance of each task.
  
-- How did you use proximity to organize the visual information on your page?
--   I used proximity to group all of the tasks together as well as all of the relevant task information is on each task which is nicely grouped on the right side of each task. Since the task information is on the task itself, it visually has very clear proximity and association with the parent row task element.
+How did you use proximity to organize the visual information on your page?
+- I used proximity to group all of the tasks together in the right panel, and each task contains its relevant information, creating a clear association between the task and its details. This proximity makes it easy for users to identify the task and understand its attributes at a glance. Furthermore, I've grouped the priority buttons closely with each task, indicating the priority level of each task. The pop-up hints over the priority buttons provide additional context without cluttering the interface.
 
 - What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site?
--   I went with a nice white and gray color design and used color very consevratively to only show the priority of each cell whcih gives a lot of visual contrast and emphasis when just glancing at the site. I have pop up hints over the priority buttons but visually it is clear that green means dont worry and red means emergency which further helped sell my design. I have used a very simple non curvy font called Nunito Sans which gave the page a modern feel as the text is very readable and very minimalistic.
+-   I went with a nice white and gray color design and used color very conservatively to only show the priority of each cell which gives a lot of visual contrast and emphasis when just glancing at the site. I have pop-up hints over the priority buttons but visually it is clear that green means don't worry and red means emergency which further helped sell my design. I have used a very simple non curvy font called Nunito Sans which gave the page a modern feel as the text is very readable and very minimalistic.
 
 - How did you use alignment to organize information and/or increase contrast for particular elements.
--   Yes
-
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
+-   The page is split into two sections where the left is the menu (clearly contrasted with its color from the right panel) and the right is the main app that the user interfaces with. I decided to align the relevant information vertically on the right panel; you start by looking at the top with the current date and you move your gaze down to the tasks that are due and then further down to the field of adding more tasks. I have aligned the create task to the bottom to give visual separation from the tasks and also made the color of the input different to further separate it. The colors in the priority visuall;y contrast the tasks they are associated with and in the input as well. I made it so that the user almost immediately can identify which tasks they should do based on visual priority.
