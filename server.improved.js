@@ -205,8 +205,7 @@ app.get("/github-callback", (request, response) => {
   };
  
   let accessToken;
-  const options = { headers: { accept: "application/json",
-   } };
+  const options = { headers: { accept: "application/json" } };
  
   axios
     .post("https://github.com/login/oauth/access_token", body, options)
@@ -214,7 +213,6 @@ app.get("/github-callback", (request, response) => {
     .then(async (token) => {
       accessToken = token
       response.redirect(`/?token=${token}`)
-      return token
     })
     .catch((err) => response.status(500).json({ err: err.message }))
 });
