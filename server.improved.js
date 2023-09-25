@@ -44,11 +44,43 @@ app.post("/login", (req, res) => {
     loginHelper(aUser, res, req);
   });
 });
+app.post("/addRecipe", async (req, res) => {
+  try {
+    const recipeData = req.body;
+    const username = req.session.username;
+
+    // Calculate cooking time based on the number of commas in ingredients and directions
+    const cookingTime =
+      recipeData.recipe_ingredients.split(",").length +
+      recipeData.recipe_directions.split(",").length;
+
+    // Prepare the recipe object
+    const newRecipe = {
+      recipe_name: recipeData.recipe_name,
+      recipe_ingredients: recipeData.recipe_ingredients,
+      recipe_directions: recipeData.recipe_directions,
+      cooking_time: cookingTime,
+      username: username,
+    };
+
+    // Insert the new recipe into the MongoDB database
+    const DB = client.db("recipeTracker");
+    const collection = DB.collection("recipes");
+    await collection.insertOne(newRecipe);
+
+    res.writeHead(201, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Recipe added successfully." }));
+  } catch (e) {
+    console.error("Error adding recipe:", e);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Internal server error." }));
+  }
+});
 
 async function loginHelper(aUser, res, req) {
   try {
     console.log("Connected to the MongoDB database"); // Log when the connection is successful
-    const DB = client.db("a3DB");
+    const DB = client.db("recipeTracker");
     const collection = DB.collection("Users");
 
     const name = aUser.username;
@@ -71,33 +103,7 @@ async function loginHelper(aUser, res, req) {
   }
 }
 
-app.post("/createUser", (request, response) => {
-  let dataString = "";
-
-  request.on("data", function (data) {
-    dataString += data;
-  });
-
-  request.on("end", function () {
-    const userData = JSON.parse(dataString);
-    request.session.username = userData.username;
-    if (userData.password == userData.REpassword) {
-      // If the username doesn't exist add a create a new user
-      const newUser = {
-        username: request.session.username,
-        password: userData.password,
-        recipes: [],
-      };
-      addToDb(newUser, response);
-    } else {
-      console.log("Passwords do not match");
-      response.writeHead(400, { "Content-Type": "application/json" });
-      response.end(JSON.stringify({ username: request.session.username }));
-    }
-  });
-});
-
- // Check database connection and fetch data from the "Recipes" table when needed
+// Check database connection and fetch data from the "Recipes" table when needed
 app.get("/getRecipes", async (request, response) => {
   try {
     await client.connect(); // Ensure the database connection is established before proceeding
@@ -126,44 +132,6 @@ app.get("/getRecipes", async (request, response) => {
   }
 });
 
-app.post("/addRecipe", async (request, response) => {
-  try {
-    // Ensure the database connection is established before proceeding
-    await client.connect();
-    console.log("Connected to the MongoDB database");
-
-    const DB = client.db("recipeTracker");
-    const collection = DB.collection("recipes");
-
-    // Get the recipe data from the request body
-    const recipeData = request.body;
-
-    // Calculate the cooking time based on the number of steps and ingredients
-    const numSteps = recipeData.recipe_directions.split(/\r\n|\r|\n/).length;
-    const numIngredients =
-      recipeData.recipe_ingredients.split(/\r\n|\r|\n/).length;
-
-    const cookingTime = numSteps + numIngredients;
-
-    // Assign the calculated cooking time to the recipe data
-    recipeData.cooking_time = cookingTime;
-
-    // Insert the new recipe into the database
-    const result = await collection.insertOne(recipeData);
-
-    if (result.insertedCount === 1) {
-      response.status(201).json({ message: "Recipe added successfully" });
-      console.log("Recipe added");
-    } else {
-      response.status(500).json({ message: "Recipe could not be added" });
-      console.log("Recipe could not be added");
-    }
-  } catch (e) {
-    console.error("Error adding recipe to the database:", e);
-    response.status(500).json({ message: "Internal server error." });
-  }
-});
-
 app.get("/getRecipes", (request, response) => {
   const username = request.session.username;
   getUsers(username, response);
@@ -189,28 +157,6 @@ async function getUsers(username, res) {
   }
 }
 
-async function addToDb(newUser, res) {
-  try {
-    const DB = client.db("a3DB");
-    const collection = DB.collection("Users");
-
-    const name = newUser.username;
-    const key = { username: name };
-    const exists = await collection.findOne(key);
-
-    if (exists === null) {
-      await collection.insertOne(newUser);
-      res.type("html");
-      res.redirect("/recipe.html");
-    } else {
-      res.writeHead(300, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ username: newUser.username }));
-    }
-  } catch (e) {
-    console.log(e);
-  }
-}
-
 const sendFile = function (response, filename) {
   const type = mime.getType(filename);
 
@@ -230,3 +176,4 @@ app.use(express.static("public"));
 app.listen(process.env.PORT || port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
