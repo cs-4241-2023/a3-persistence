@@ -182,6 +182,7 @@ app.put("/assignment-edit", async (request, response) => {
                 assignmentName: request.body.assignmentName,
                 dueDate: request.body.dueDate,
                 difficulty: request.body.difficulty,
+                completed: request.body.completed,
                 priority: calculatePriority(request.body.dueDate, request.body.difficulty)
             }
         }

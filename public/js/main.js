@@ -200,6 +200,7 @@ const editPopUp = function (event, assignment) {
   document.querySelector("#assignment-name-edit").value = assignment.assignmentName;
   document.querySelector("#due-date-edit").value = assignment.dueDate;
   document.querySelector("#difficulty-edit").value = assignment.difficulty;
+  document.querySelector("#completed-edit").checked = assignment.completed;
 
   // set on-click listener for edit submission
   document.querySelector("#submit-button-edit").onclick = async (event) => {
@@ -230,6 +231,7 @@ const editAssignment = async function(event, assignmentId) {
     assignmentName: document.querySelector("#assignment-name-edit").value,
     dueDate: document.querySelector("#due-date-edit").value,
     difficulty: document.querySelector("#difficulty-edit").value,
+    completed: document.querySelector("#completed-edit").checked,
     priority: "" // priority will be re-calculated on the server
   };
 
