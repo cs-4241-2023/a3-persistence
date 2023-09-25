@@ -1,114 +1,75 @@
-Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
-===
+## Car Database
 
-Due: September 25nd, by 11:59 AM.
+http://a3-brendan-mannion.glitch.me
 
-This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), 
-a database (mongodb), and a CSS application framework / template of your choice (Boostrap, Material Design, Semantic UI, Pure etc.)
+## LOGIN INFORMATION
 
-Baseline Requirements
----
+I have setup four accounts in the login database for testing purposes. Here are the logins below in the format (username, password):
 
-Your application is required to implement the following functionalities:
+(admin, admin)
 
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data associated with a logged in user (except passwords)
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account. 
-- Persistent data storage in between server sessions using [mongodb](https://www.mongodb.com/cloud/atlas) (you *must* use mongodb for this assignment). You can use either the [official mongodb node.js library](https://www.npmjs.com/package/mongodb) or use the [Mongoose library](https://www.npmjs.com/package/mongoose), which enables you to define formal schemas for your database. Please be aware that the course staff cannot provide in-depth support for use of Mongoose.  
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks). 
-This should do the bulk of your styling/CSS for you and be appropriate to your application. 
-For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
+(tester, test123)
 
-Your application is required to demonstrate the use of the following concepts:  
+(cooldog, dogz)
 
-HTML:  
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
+(tree, forests)
 
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is 
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create 
-new user accounts upon login if none exist, however, you must alert your users to this fact.  
+## Project Info
 
-CSS:  
-- CSS styling should primarily be provided by your chosen template/framework. 
-Oftentimes a great deal of care has been put into designing CSS templates; 
-don't override their stylesheets unless you are extremely confident in your graphic design capabilities. 
-The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
+Goal - the main goal of this application is to create a site for users to enter information about cars while also seeing a calculated
+rating value to give a way to differentiate cars based on their attributes.
 
-JavaScript:  
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. 
-See the [previous assignment](https://github.com/cs-4241-23/shortstack) for reference.
+Challenges - one big challenge I faced building this application was trying to setup MongoDB and make sure all my GET, POST, PUT, and DELETE
+calls all functioned the same since it's a lot different than just storing information in a backend array. Another big issue I encountered was
+setting up sessions and ensuring that people can't reach and access pages they shouldn't be able to access.
 
-Node.js:  
-- A server using Express and a persistent database (mongodb).
+Authentication Strategy - I ended up choosing to use a basic authentication strategy of checking for a username and password combo in the login
+database, and showing information based on username. If I had more time I would have liked to look into the github authentication strategy.
 
-General:  
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests 
-using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment. 
+CSS Framework - the CSS framework I ended up choosing was Tacit. I chose Tacit mainly because I don't particuarly enjoy designing web pages too
+much, and Tacit did a lot of the work for me. I also found it looked very clean and modern compared to some of the other frameworks I looked at.
 
-Deliverables
----
+Middleware Packages Used -
 
-Do the following to complete this assignment:
-
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. If you developed your project locally, deploy your project to Glitch (unless completing the alternative server technical acheivement described below), and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch (or an alternative server), it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
-
-Acheivements
----
-
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the 
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%. 
-These are recommended acheivements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README, 
-why it was challenging, and how many points you think the achievement should be worth. 
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
-
-*Technical*
-- (10 points) Implement OAuth authentication, perhaps with a library like [passport.js](http://www.passportjs.org/). 
-*You must either use Github authenticaion or provide a username/password to access a dummy account*. 
-Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. 
-Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!  
-- (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
-
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
-
-## Your Web Application Title
-
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
-
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
-
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
-
-## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+1. Express was the main middleware package I used. Express was used a ton in my backend code to help simplify many of the basic
+   operations of the backend such as serving pages, redirecting, and handling requests.
+2. MongoDB was also an extremely helpful package since it was necessary to form connections to my MongoDB database. This package also helped a lot
+   when requesting and querying certain information from the database, such as data from certain users.
+3. Cookie-Session was quite impactful in creating sessions for different users when logging in. This helped a lot in ensuring that people without
+   a session can't reach certain pages, and also allows users to refresh the page and still have access to the right data.
+4. Crypto package was only used to generate large random numbers for creating sessions, to ensure better application security.
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+
+- **Design Achievement 1**: I followed the four CRAP principles
+
+Contrast:
+On the login page, contrast is evident in the use of a high-contrast color scheme. The background is white, while the login form is contained within a
+contrasting gray box. The form elements, such as the input fields and the "Log In" button, are darker than the background, making them stand out. The
+text fields use a consistent dark gray color for placeholders and input text, providing visual consistency. Moving on to the main page, contrast is achieved
+through a consistent color scheme, with a white background and darker gray text elements. The table headers, "Model," "Year," "MPG," and "Rating,"
+receive the most emphasis in terms of contrast, as they are bold and larger than the table data below. This contrast helps users quickly identify the
+purpose of each column.
+
+Repetition:
+Repetition plays a crucial role in ensuring a consistent and cohesive visual identity for your website. Throughout both pages, a clear and decisive design
+language is established, thanks to the deliberate repetition of design elements. A notable example of repetition is the consistent use of the "Quicksand"
+font family for all text elements. By maintaining the same font style and size, you create a unified and easily recognizable typography that reinforces brand
+consistency of your site. This repetition in font choice not only contributes to a clean and modern aesthetic but also ensures that users encounter a familiar
+view, promoting a sense of trust and professionalism. This style of repetition can also be seen through the use of the "Tacit" CSS framework that is used on
+both pages. This again highlights the consistency of design between the two pages, and makes the user feel more comfortable navigating the website.
+
+Alignment:
+Alignment is used to organize information and create a sense of order on both pages. The login page aligns the login form centrally, creating a balanced layout.
+The form elements are vertically aligned, creating a sense of order and making it easy for users to understand the form's structure. On the main page, alignment
+can be seen in the horizontal alignment of table headers and data. The headers align with the respective columns of data below them, making the tables easier to
+understand. The "Delete" and "Modify" are aligned horizontally with the each row of data to make it easy to understand for the user what data they are deleting
+or modifying. On the top of the page, the "Submit" button also aligns well horizontally with the form entry data to make it easy to comprehend what data you are
+submitting and how.
+
+Proximity:
+Proximity is used to group related information and separate different sections of content. On the login page, the proximity principle is applied by placing the
+"Username" and "Password" input fields close to each other within the login form. This grouping helps users understand that these fields are part of the same
+action of logging into the page. On the main page, proximity is demonstrated in the layout of the table. Each row of car data is grouped together, with clear
+separation between rows. The headers are in close proximity to the data they describe, making it easy for users to associate each header with its corresponding
+data. The "Delete" and "Modify" buttons are also located close to the rows they represent, making it easy to follow what the user is deleting or modifying.
