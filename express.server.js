@@ -1,5 +1,4 @@
 const express = require("express");
-const session = require("express-session");
 const { MongoClient, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 3000;

@@ -11,12 +11,10 @@ const submit = async (event, _id) => {
     document.getElementById("dueDate").value
   ).toLocaleDateString("en-US");
 
-  let id = _id;
   taskInput.value = "";
   descInput.value = "";
 
   const json = {
-    id: id,
     username: username,
     task: task,
     desc: desc,
@@ -140,14 +138,7 @@ const createHeaderRow = () => {
   const header = document.createElement("thead");
   const headerRow = document.createElement("tr");
 
-  const headers = [
-    "ID",
-    "Task",
-    "Description",
-    "Due Date",
-    "Priority",
-    "Buttons",
-  ];
+  const headers = ["Task", "Description", "Due Date", "Priority", "Buttons"];
   headers.forEach(text => {
     const headerCell = document.createElement("th");
     headerCell.textContent = text;
@@ -179,10 +170,9 @@ const createButtons = taskObject => {
   return cell;
 };
 
-const createRow = (_id, task, desc, dueDate, priority, taskObject) => {
+const createRow = (task, desc, dueDate, priority, taskObject) => {
   let row = document.createElement("tr");
 
-  row.append(createCell(_id));
   row.append(createCell(task));
   row.append(createCell(desc));
   row.append(createCell(dueDate));
@@ -206,7 +196,6 @@ const getTasks = data => {
   table.append(createHeaderRow());
   data.forEach(taskObject => {
     let row = createRow(
-      taskObject._id,
       taskObject.task,
       taskObject.desc,
       taskObject.dueDate,
