@@ -1,31 +1,13 @@
-/* CSS Positioning of login page (styling is done by CSS framework */
-#login-header, #login-status {
+/* Small amount of CSS styling. Most of the styling is done by the CSS framework. */
+#login-header, #login-status, #website-header {
     display: block;
     text-align: center;
-}
-
-#login-form {
-    margin-bottom: 0;
 }
 
 #username-input, #password-input, #login-button, #sign-up-button {
     display: block;
     margin: 15px auto;
     width: 25%
-}
-
-#current-username {
-    margin-bottom: 15px;
-}
-
-#logout-button {
-    margin: 0;
-}
-
-#website-header {
-    margin-top: 5px;
-    display: block;
-    text-align: center;
 }
 
 #header-description {
@@ -35,30 +17,10 @@
     margin-right: 25%;
 }
 
-/* Center the text on some of the elements */
 #assignment-form, #table-title, #edit-window, td, th {
     text-align: center;
 }
 
-#edit-header {
-    margin-top: 10px;
-}
-
-table {
-    width: fit-content;
-    margin: 0 auto;
-}
-
-/* Hide submission message by default */
-#submission-message {
-    visibility: hidden;
-}
-
-button:hover {
-    transition: 0.4s;
-}
-
-/* Edit pop-up window, do not display by default */
 #edit-window {
     display: none;
     margin: 0 auto;
@@ -66,5 +28,4 @@ button:hover {
     padding-right: 5px;
     width: fit-content;
     border: 2px solid grey;
-    border-radius: 10px;
 }

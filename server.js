@@ -205,7 +205,7 @@ const calculatePriority = function (dueDate, difficulty, completed) {
   let date = new Date(dueDate);
 
   if(completed === true) {
-      return "None";
+      return "No";
   } else if((difficulty > 0 && difficulty <= 3) || date.getDay() >= 14) {
       return "Low";
   } else if((difficulty > 3 && difficulty <= 6) || (date.getDay() >= 7 && date.getDay() < 14)) {
