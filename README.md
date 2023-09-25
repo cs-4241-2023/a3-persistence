@@ -19,6 +19,8 @@ Express middleware packages:
 - urlencoded: parses requests with url-encoded payloads
 - static: serves the static files in the public directory
 
+Lighthouse: ![Alt text](lighthouse.jpg)
+
 ## Technical Achievements
 - **Tech Achievement 1**: Added dismissable alerts using Bootstrap's Alert component, which are generated in 3 places: the login screen when the user is not authenticated, from the name field if the name is not filled out, and when there is an error with adding an object to the database. 
 - **Tech Achievement 2**: Added a logout button that removes the user from cookies and redirects to the login screen. 
