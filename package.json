@@ -11,7 +11,9 @@
     "type": "git",
     "url": "git+https://github.com/Tdonnelly20/a3-persistence.git"
   },
-  "keywords": [],
+  "keywords": [
+    "heroku"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {

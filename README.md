@@ -5,6 +5,8 @@ Server: https://glitch.com/~tall-spurious-periwinkle
 ## Summary
 This website allows users to connect to a mongodb server and load in data about pending tasks on their todo list. Additionally, it allows you to add, edit, and delete your task data on the server. It will generate a priority depending on how close the task's deadline is to the current day.
 
+To access all accounts use the username 'admin' with the password 'admin'
+
 ### Challenges
 The biggest challenge I faced was incorporating mongodb, as I had relatively little experience working with servers before this project.
 
