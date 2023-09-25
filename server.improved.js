@@ -15,7 +15,7 @@ server.use(express.static('public'));
 
 server.use(express.json());
 
-server.listen(3000, () => {
+server.listen(process.env.PORT || 3000, () => {
   console.log("Server successfully started at http://localhost:3000");
 })
 
