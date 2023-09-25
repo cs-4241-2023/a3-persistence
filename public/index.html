@@ -18,7 +18,7 @@
   <body>
 <h1>Login to Use Simple Digital Library</h1>
 
-    <form action='/login' method= "POST">
+    <form id="login-form">
        <div>
         <label for="username">Username</label>
         <input type='text' id="username" username="username" required>
@@ -26,11 +26,59 @@
        <div>
         <label for="password">Password</label>
         <input type='password' id="password" username="password" required>
+
        </div>
     <button type="submit">Login</button>
+    <p id="error-message" style="color: red;"></p>
+
     
     </form>
 
+    <script>
+      const loginForm = document.getElementById('login-form')
+      const errorMessage = document.getElementById('error-message')
+
+
+      loginForm.addEventListener('submit', function(event) {
+        event.preventDefault()
+
+        // Get the username and password from the form
+        const username = document.getElementById('username').value
+        const password = document.getElementById('password').value
+
+      
+        const loginData = {
+          username: username,
+          password: password
+        }
+
+        // Send the JSON data to the server 
+        fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(loginData)
+        })
+        .then(response => {
+          if (response.status === 200) {
+            console.log('Login Successful.')
+
+            window.location.href = `/main.html?username=${encodeURIComponent(username)}`
+
+          } else {
+
+            console.log('Login failed.')
+            errorMessage.textContent = 'Login failed. Please check your credentials.'
+
+            
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error)
+          errorMessage.textContent = 'An error occurred during login. Please try again.'
+
+        })
+      })
+    </script>
   
   
   </body>

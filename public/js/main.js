@@ -1,5 +1,7 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 document.addEventListener('DOMContentLoaded', function () {
+  let username = ''
+ 
 
   const submit = async function (event) {
     event.preventDefault()
@@ -10,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const startInput = document.querySelector('#startDate')
     const finishInput = document.querySelector('#dateFinished')
     const submitButton = document.querySelector('button')
+    
 
     if (!titleInput.value.trim() || !authorInput.value.trim() || !startInput.value.trim() || !finishInput.value.trim()) {
       submitButton.disabled = true
@@ -21,8 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const startDate = new Date(startInput.value)
     const finishDate = new Date(finishInput.value)
     const timeDif = await calcTime(startDate, finishDate)
+   
 
     const json = {
+      username: username, 
       title: titleInput.value,
       author: authorInput.value,
       startDate: startInput.value,
@@ -51,6 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error('Failed to add data to MongoDB:', response.statusText)
     }
   }
+
+
 
   async function calcTime(start, end){
     const timeDif = end - start
@@ -132,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const response = await fetch(`/update/${id}`, {
         method: 'PUT', 
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: updatedTitle, author: updatedAuthor, startDate:updatedStart, dateFinished: updatedFinish, timeToFinish: updatedTime2Finish}),
+        body: JSON.stringify({ username: username, title: updatedTitle, author: updatedAuthor, startDate:updatedStart, dateFinished: updatedFinish, timeToFinish: updatedTime2Finish}),
       })
 
       if (response.status === 200) {
@@ -158,13 +165,6 @@ document.addEventListener('DOMContentLoaded', function () {
     })
   } 
 
-  document.querySelector('#userLibrary').addEventListener('click', (event) => {
-    const listItem = event.target.closest('.userLibrary') 
-    if (!listItem) return 
-
-    const id = listItem.dataset.id 
-    editBook(id, listItem)
-  })
 
   document.querySelector('#title').addEventListener('input', checkForm)
   document.querySelector('#author').addEventListener('input', checkForm)
@@ -187,9 +187,12 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   const getLibrary = async function () {
-    const libRes = await fetch('/docs', {
+    console.log(`/docs/${username}`)
+    const libRes = await fetch(`/docs/${username}`, {
       method: 'GET'
-    });
+
+
+    })
 
     let libData = ""
     if (libRes.status === 200) {
@@ -242,10 +245,22 @@ document.addEventListener('DOMContentLoaded', function () {
     document.body.appendChild(list)
   }
 
+  const urlSearchParams = new URLSearchParams(window.location.search)
+  const usernameParam = urlSearchParams.get('username')
+  if (usernameParam) {
+    username = decodeURIComponent(usernameParam)
+  } else {
+    console.error('Username not found in query parameters.')
+  }
+
   window.onload = function() {
-    const submitButton = document.querySelector("#submit")
-    submitButton.disabled = true;
-    submitButton.addEventListener('click', submit)
-    getLibrary()
+    
+    if (window.location.pathname.includes('main.html')){
+      const submitButton = document.querySelector("#submit")
+      submitButton.disabled = true;
+      submitButton.addEventListener('click', submit)
+      getLibrary()
+    }
+  
   }
 })

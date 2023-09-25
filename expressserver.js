@@ -1,5 +1,7 @@
 //SERVER SIDE
 const express = require( 'express' ),
+cookie=require('cookie-session'),
+crypto=require('crypto'),
  dotenv = require('dotenv').config(),
 { MongoClient, ObjectId } = require('mongodb'),
       app = express(),
@@ -10,8 +12,30 @@ const logger = (req,res,next) => {
   next()
 }
 app.use( express.static( 'public' ) )
-app.use( express.static( 'views'  ) ) 
+
 app.use( express.json() )
+// use express.urlencoded to get data sent by defaut form actions
+
+app.use( express.urlencoded({ extended:true }) )
+
+const key1 = crypto.randomBytes(32).toString('hex')
+const key2 = crypto.randomBytes(32).toString('hex')
+// cookie middleware
+app.use( cookie({
+  name: 'session',
+  keys: [key1, key2]
+}))
+
+/*
+app.use( (req,res,next) => {
+  if( collection !== null ) {
+    next()
+  }else{
+    res.status( 503 ).send()
+  }
+})
+*/
+
 
 const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.qsmz2rk.mongodb.net/?retryWrites=true&w=majority&appName=AtlasApp`;
 console.log(uri)
@@ -19,20 +43,22 @@ console.log(uri)
 const client = new MongoClient( uri )
 
 let collection = null
-
+let userCollection = null
+let username = '' //init username
 async function run() {
   try {
     await client.connect();
     collection = await client.db("dbtest").collection("col1")
+    userCollection = await client.db("dbtest").collection("users")
     console.log("Connected to MongoDB Atlas")
   } catch (error) {
     console.error("MongoDB connection error:", error)
   }
 
   // route to get all docs
-  app.get("/docs", async (req, res) => {
+  app.get("/docs/:username", async (req, res) => {
     if (collection !== null) {
-      const docs = await collection.find({}).toArray()
+      const docs = await collection.find({username:username}).toArray()
       res.json( docs )
     }
   })
@@ -43,23 +69,47 @@ run()
 app.listen( process.env.PORT || port )
 
 
-app.use( (req,res,next) => {
-  if( collection !== null ) {
-    next()
-  }else{
-    res.status( 503 ).send()
+
+
+//login stuff
+app.post('/login', async (req, res) => {
+  username = req.body.username
+  const password = req.body.password
+
+  try {
+    const existingUsername = await userCollection.findOne({ username: username })
+    if (existingUsername) {
+      if (existingUsername.password === password) {
+        req.session.login = true;
+        res.status(200).json({ message: 'Successful Login' })
+       // res.redirect('main.html')
+      } else {
+        res.render(__dirname + '/public/index.html')
+        //res.status(404).json({ message: 'Password not found' })
+      }
+    } else {
+      // create new user
+      const newUser = {
+        username,
+        password,
+      }
+      const result = await userCollection.insertOne(newUser)
+      console.log(result)
+      res.json(result)
+    }
+  } catch (error) {
+    console.error('Error during findOne operation:', error)
+    res.status(500).json({ message: 'Server error during login' })
   }
 })
 
 
 
-
-
-
 app.post( '/add', async (req,res) => {
   try {
-
     const newItem = req.body;
+    newItem.username = username 
+
     const existingItem = await collection.findOne(newItem)
     if (existingItem) {
       return res.status(409).json({message: "Duplicate entry. "})
@@ -127,14 +177,14 @@ app.post( '/update', async (req,res) => {
 })
 
 
-app.get('/docs', async (req, res) => {
+app.get('/docs/:username', async (req, res) => {
   if (collection !== null) {
-    const docs = await collection.find({}).toArray();
+    const docs = await collection.find({username:username}).toArray();
     res.json(docs);
   }
 });
 
 
 app.get('/', (request, response) => {
-  sendFile(response, 'public/index.html')
+  response.render('public/index.html')
 })
