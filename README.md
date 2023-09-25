@@ -2,8 +2,6 @@
 
 http://a3-jade-logan.glitch.me
 
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
-
 The goal for this project was to allow the user to keep track of their high scores on different video games. It also includes a field for notes that a user may have, like a link for an online game or tips on achieving a higher score. 
 
 While changing project 2 to use a database went relatively smoothly, I found it challenging to adapt it to have different users. Certain functions wouldn't work, such as the onclick functions for the edit/delete buttons, and I had trouble figuring out where things were going wrong. I ended up just using username and password pairs for authentication. I didn't think I would have time for anything more complicated, but I did use the bcrypt library to hash passwords for more security.
@@ -16,16 +14,16 @@ I used NES.css for the framework because the video game look was what I was goin
 Middleware used:
 1. static - Used to serve static files in the public and views directories.
 2. json - Parses incoming JSON requests
+
 A custom function is used to check connection.
 I tried for awhile to get cookies to work, but was running out of time so I ended up not using cookie-session.
 (I was going off of the rubric on Canvas and didn't realize 5 different Express middleware packages were needed)
 
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
-
 ## Technical Achievements
 - **Bcrypt**: I didn't do the OAuth achievement, but I did use the bcrypt library to hash passwords before they're stored on the database. The main challenge was less with the code (bcrypt made things relatively simple) and more in figuring out what to use for hashing the passwords. I'd never used bcrypt or anything similar before, so I wanted to make sure it was a good option and that I was using it correctly. (5 points?)
-- **Lighthouse**: I was able to get 100 for both pages.
+- **Lighthouse**: I was able to get 100 for both pages (on Glitch the main page performance had a 99, but it was fine locally).
+
+
 
 
 ### Design/Evaluation Achievements

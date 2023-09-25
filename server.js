@@ -50,7 +50,7 @@ app.use( (req,res,next) => {
   }
 })
 
-app.post( '/reset', async (req,res) => {
+app.get( '/reset', async (req,res) => {
   const result = await users.updateOne(
     {},
     { $set: { currentUser: "" } }

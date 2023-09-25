@@ -2,10 +2,10 @@
 
 async function reset() {
   const response = await fetch( '/reset', {
-    method:'POST',
+    method:'GET',
     headers: { "Content-Type": "application/json" }
   })
-  const resetTrue = await response.json()
+  const resetTrue = await response.json();
 }
 
 const login = async function(u, p) {
