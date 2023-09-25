@@ -1,5 +1,6 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
+var loggedInUser = null;
 const submit = async function( event ) {
   // stop form submission from trying to load
   // a new .html page for displaying results...
@@ -84,6 +85,9 @@ function addToTable(newRow){
     typeCell.innerHTML = newRow["type"]
     majorCell.innerHTML = newRow["dept"]
 
+    if (newRow._id === loggedInUser._id){
+      return
+    }
     const xButton = document.createElement('button');
     xButton.className = 'deleteButton'
     xButton.onclick=() => {
@@ -93,10 +97,33 @@ function addToTable(newRow){
     xCell.append(xButton)
 }
 
+async function getLoggedInUser(){
+  const loggedInUserLabel = document.getElementById("loggedinuser");
+  const response = await fetch( '/getLoggedInUser' )
+  const text = await response.text()
+
+  loggedInUserLabel.innerHTML = "Logged in as: " + JSON.parse(text).email
+  loggedInUser = JSON.parse(text)
+} 
+
+async function logout(){
+  const body = {}
+  const response = await fetch( '/logout', {
+    method:'POST',
+    body
+  })
+  const text = await response.text()
+  window.location.replace('/login.html')
+}
+
 window.onload = function() {
   const submitButton = document.getElementById("submitButton");
-  const clearTableButton = document.getElementById("clearTableButton");
+  const logoutButton = document.getElementById("logoutButton");
+
+  //const clearTableButton = document.getElementById("clearTableButton");
   getUsersData()
+  getLoggedInUser()
   submitButton.onclick = submit;
-  clearTableButton.onclick = clearAll
+  logoutButton.onclick = logout;
+  //clearTableButton.onclick = clearAll
 }

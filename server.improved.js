@@ -1,9 +1,4 @@
 const http = require("http"),
-  fs = require("fs"),
-  // IMPORTANT: you must run `npm install` in the directory for this assignment
-  // to install the mime library if you're testing this on your local machine.
-  // However, Glitch will install it automatically by looking in your package.json
-  // file.
   express = require('express'),
   dotenv = require('dotenv');
   app = express(),
@@ -26,22 +21,75 @@ const client = new MongoClient(uri, {
   }
 });
 
+var loggedInUser = null
+
 app.get('/getUsers', (request, response) => {
-    console.log('getting users...')
     client.connect();
     var db = client.db('usersDB');
-    //console.log(db)
     var coll = db.collection('users');
-    coll.find().toArray().then( result => {
-      response.json( result )
-    } )
+    if (loggedInUser.dept === 'All'){
+      coll.find().toArray().then( result => {
+        response.json( result )
+      } )
+    }else{
+      coll.find({'dept': loggedInUser.dept}).toArray().then( result => {
+        response.json( result )
+      } )
+    }
+
 })
 
+app.get('/getLoggedInUser', (request, response) => {
+    response.json( loggedInUser )
+})
 app.get('/', (request, response) => {
   handleGet(request, response)
 })
+// app.get('/index', (request, response) => {
+//   sendFile(response, "public/index.html");
+// })
 app.post('/newUser', (request, response) => {
   handlePost(request, response)
+})
+app.post( '/login', async (request, response) => {
+    // let invalidInput = req.body.Username === null && password === null;
+    // if(!invalidInput){
+    let dataString = "";
+
+    request.on("data", function (data) {
+      dataString += data;
+    });
+    request.on("end", async function () {
+      const json = JSON.parse(dataString);
+      let email = json.email
+      let pass = json.pass
+      var db = client.db('usersDB');
+      var coll = db.collection('users');
+  
+      let admin = await coll.findOne({'email': email});
+      if(admin === null){
+        console.log("no user found");
+      }
+      if(pass === admin.pass){
+        if (admin.type === 'Systems Admin'){
+          loggedInUser = admin
+        }else{  
+          console.log("user is not an admin");
+        }
+      }else{
+          console.log("wrong pass");
+      }
+      if(loggedInUser !== null){
+          console.log(loggedInUser)
+          //response.set('location', '/public/index.html');
+          response.redirect('/index.html')
+      }
+    })
+})
+app.post( '/logout', async (request, response) => {
+  loggedInUser = null
+  console.log("logged out")
+  response.redirect('/login.html')
 })
 
 app.delete('/deleteUser', (request, response) => {
@@ -60,7 +108,7 @@ const server = http.createServer(app)
 const handleGet = function (request, response) {
   const filename = dir + request.url.slice(1);
   if (request.url === "/") {
-    sendFile(response, "public/index.html");
+    sendFile(response, "public/login.html");
   }else{
     sendFile(response, filename);
   }
@@ -104,16 +152,6 @@ const handleDelete = function (request, response) {
     coll.deleteOne({"_id" : new ObjectID(data._id)})
     response.writeHead(200, "OK", { "Content-Type": "text/json" });
     response.end("deleted user!");
-    // for (var i = 0; i < appdata.length; i++) {
-    //   if (appdata[i].id === data.id) {
-    //     appdata.splice(i, 1);
-    //     response.writeHead(200, "OK", { "Content-Type": "text/json" });
-    //     response.end("deleted user!");
-    //     return;
-    //   }
-    // }
-    // response.writeHead(200, "OK", { "Content-Type": "text/json" });
-    // response.end("user not found!");
   });
 };
 

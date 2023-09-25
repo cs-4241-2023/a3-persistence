@@ -16,7 +16,12 @@
       <h1>User Database</h1>
     </header>
     <div class="flex-container">
-      <form method="post">
+      <div>
+        <p>
+          <label id="loggedinuser"></label>
+          <button class="logoutButton", id="logoutButton">Log out</button>
+        </p>
+        <form method="post">
         <ul>
           <p>
             Create New User:
@@ -39,12 +44,14 @@
               <option value="Undergrad Student">Undergrad Student</option>
               <option value="Graduate Student">Graduate Student</option>
               <option value="Professor"> Professor</option>
+              <option value="Systems Admin">Systems Admin</option>
             </select>         
           </p>
 
           <p>
             <label for="department">Department:</label>
             <select name="text" id="department">
+              <option value="All">Any/All</option>
               <option value="CS">Computer Science</option>
               <option value="IMGD">Interactive Media and Game Design</option>
               <option value="CHE">Chemical Engineering</option>
@@ -64,6 +71,7 @@
             <button id="submitButton">Create new user</button>
         </ul>
       </form>
+      </div>
       <span></span>
       <div class="center-flex">
         <p class="flex-text">------------ REGISTERED USERS ------------</p>
@@ -79,7 +87,7 @@
               <tbody id="usertablebody">
               </tbody>
             </table>
-            <button class="tablebutton" id="clearTableButton">Clear all users</button>
+            <!-- <button class="tablebutton" id="clearTableButton">Clear all users</button> -->
         </div>
     </div>
   </body>

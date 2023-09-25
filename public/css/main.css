@@ -80,3 +80,13 @@ button {
   font-style: oblique;
 }
 
+
+.logoutButton {
+  color: #FFFADD;
+  background-color: #6bafc0;
+  font-family: "Courier Prime", normal;
+  font-size: 15px;
+  width: 30%;
+  font-style: oblique;
+}
+
