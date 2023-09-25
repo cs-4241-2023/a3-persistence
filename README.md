@@ -8,12 +8,10 @@ https://a3-sean-arackal.glitch.me/
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
+Access:
 Username: cs4241
 Password: admin
-USER=cs4241
-PASS=admin
-HOST="a3.sojs76r.mongodb.net/?retryWrites=true&w=majority"
-DB=a3
+
 ---
 
 ### The goal of the application

@@ -1,12 +1,12 @@
-const express = require( 'express' ),
-    mongodb = require( 'mongodb' ),
-    helmet =require('helmet'),
-    ObjectID = mongodb.ObjectId,
-    app = express()
+const express = require("express"),
+  mongodb = require("mongodb"),
+  helmet = require("helmet"),
+  ObjectID = mongodb.ObjectId,
+  app = express();
 
-require('dotenv').config();
+require("dotenv").config();
 
-app.use( express.static('./views/') )
+app.use(express.static("./views/"));
 app.use( express.json() )
 app.use( express.urlencoded({ extended:true }) )
 app.use(helmet());
