@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Create Account</title>
+    <title>Create Account - Creature Creator</title>
     <meta charset="utf-8">
     <meta name="description" content="Account Creator for Creature Creator">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,12 +13,12 @@
   <body class="margin-l">
     <h1>Create Your Account</h1>
     <form method="post" action="/saveAcc">
-      <input class="max-width-xs" type="text" aria-label="username" alt="username" name="user" maxlength="30" required>
-      <input class="max-width-xs" type="text" aria-label="password" alt="password" name="pass" maxlength="30" required>
+      <input class="max-width-xs" type="text" value="Username" onfocus="this.value=''" aria-label="username" alt="username" name="user" minlength="5" maxlength="30" required>
+      <input class="max-width-xs" type="text" value="Password" onfocus="this.value=''" aria-label="password" alt="password" name="pass" minlength="3" maxlength="30" required>
       
       <button id="createAccount">Create Account</button>
     </form>
     {{{msg}}}
-    <a href="/">Return to login</a>
+    <p><a href="/">Click here to return to login</a></p>
   </body>
 </html>

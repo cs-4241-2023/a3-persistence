@@ -122,7 +122,7 @@ app.post('/submit', (req, res, next) => {
       }else{
         console.log('fail')
         console.log(err)
-        res.render('views/layouts/index.hbs',{msg: 'login failed'})
+        res.render('views/layouts/index.hbs',{msg: '<h3 class="border-radius padding-xs text-align-center max-width-xs color-white background-error-400">Login FAILED: make sure to enter your correct username and password</h3>'})
         //res.redirect('/')
       }
       
@@ -144,7 +144,7 @@ app.post('/saveAcc', (req, res) => {
     if(result){
       //username is taken
       console.log('username in use')
-      res.render('views/layouts/createAccount.hbs', {msg: 'Username is taken :('})
+      res.render('views/layouts/createAccount.hbs', {msg: '<h3 class="border-radius padding-xs text-align-center max-width-xs color-white background-error-400">ERROR: Username is already taken, please try again</h3>'})
     }else{
       //successfully created account
       console.log('creating new account...')
@@ -152,7 +152,7 @@ app.post('/saveAcc', (req, res) => {
       console.log(acc.password)
       const newUser = new Login ({username: acc.username, password: acc.password})
       newUser.save()
-      res.render('views/layouts/createAccount.hbs', {msg: 'Account created successfully!'})
+      res.render('views/layouts/createAccount.hbs', {msg: '<h3 class="border-radius padding-xs text-align-center max-width-xs color-white background-success">SUCCESS: Account created, please return to login page</h3>'})
     }
   })
 

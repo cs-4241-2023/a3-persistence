@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>CS4241 Assignment 3</title>
+    <title>Make Creatures - Creature Creator</title>
     <meta charset="utf-8">
     <meta name="description" content="Main Page for Creature Creator">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,18 +13,18 @@
         console.log("edit event called")
         console.log(event._id)
         console.log(event)
-        let htmltext = "<form id='updateItem' name='"+event._id+"' method='POST' action='/updateItem/"+event._id+"'><input type='text' aria-label='creature name' alt='enter creature name' name='name"
+        let htmltext = "<form id='updateItem' name='"+event._id+"' method='POST' action='/updateItem/"+event._id+"'><td><label>Edit Creature Name</label><input form='updateItem' type='text' aria-label='creature name' alt='enter creature name' name='name"
         +event._id+
-        "' maxlength='30' required value='"
+        "' maxlength='30' minlength='3' required value='"
         +event.name+
-        "'><label>Creature type</label><select name='type"
+        "'></td><td><label>Edit Creature type</label><select form='updateItem' name='type"
         +event._id+
         "' value='"
         +event.type+
-        "'><option value='Chameleon'>Chameleon</option><option value='Gecko'>Gecko</option><option value='Frog'>Frog</option><option value='Snake'>Snake</option><option value='Cat'>Cat</option><option value='Dog'>Dog</option><option value='Rat'>Rat</option><option value='Capybara'>Capybara</option></select><label>Creature age</label><input type='number' aria-label='creature age' alt='enter creature age' name='age"
+        "'><option value='Chameleon'>Chameleon</option><option value='Gecko'>Gecko</option><option value='Frog'>Frog</option><option value='Snake'>Snake</option><option value='Cat'>Cat</option><option value='Dog'>Dog</option><option value='Rat'>Rat</option><option value='Capybara'>Capybara</option></select></td><td><label>Edit Creature Age</label><input form='updateItem' type='number' aria-label='creature age' alt='enter creature age' name='age"
         +event._id+
         "' min='0' required value='"
-        +event.age+"'><button id='save"+event._id+"' name='save' >Save</button></form>";
+        +event.age+"'></td><td><button form='updateItem' id='save"+event._id+"' name='save' >Save</button></td></form>";
         
         document.getElementById("list"+event._id).innerHTML = htmltext; 
 
@@ -36,11 +36,11 @@
       <h1 id="formTitle">Create a Creature!!</h1>
       <form id="creature" method="post" action="/creatureMaker">
         <div class="padding-vertical-s">
-          <label class="font-size-m" >Name your creature</label>
-          <input class="max-width-xs" type="text" aria-label="creature name" alt="enter creature name" name="name" maxlength="30" required>
+          <label class="font-size-m" >Enter Creature Name</label>
+          <input class="max-width-xs" type="text" aria-label="creature name" alt="enter creature name" name="name" maxlength="30" minlength="3" required>
         </div>
         <div class="padding-vertical-s">
-          <label class="font-size-m" >Creature type</label>
+          <label class="font-size-m" >Select Creature Type</label>
           <select class="max-width-xs" name="type">
             <option value="Chameleon">Chameleon</option>
             <option value="Gecko">Gecko</option>
@@ -53,7 +53,7 @@
           </select>
         </div>
         <div class="padding-vertical-s">
-          <label class="font-size-m" >Creature age</label>
+          <label class="font-size-m" >Enter Creature Age</label>
           <input class="max-width-xs" type="number" aria-label="creature age" alt="enter creature age" name="age" min="0" required>
         </div>
         <button id="submitButton" alt="submit your creature">Create</button>
@@ -62,19 +62,32 @@
     <div id="resultsDiv" >
       <h1 id="resultsTitle" class="padding-top-m" >Your Creatures</h1>
       {{{allCreatures}}}
-      <ul class="creature_list">
-        {{#each e}}
-          <li id="list{{_id}}">
-            <span>{{this.name}} the {{this.type}} is age {{this.age}}</span>
-            <span>your creature is {{this.status}}!!</span>
-            <img src={{this.picture}} alt={{this.altText}} width=100px height=100px>
-            <button onclick='editEvent({{json this}})' id="edit{{_id}}" name="edit" >Edit</button>
-            <form class="display-inline-block" id="deleteItem" method="POST" action="/delItem/{{_id}}">
-              <button id={{_id}} name="delete" >X</button>
-            </form>
-          </li>
-        {{/each}}
-      </ul>
+      <table id="creature_list" class="max-width-xl">
+        <thead>
+          <tr>
+            <th scope="col">Creature Information</th>
+            <th scope="col">Creature Photo</th>
+            <th scope="col">Edit Creature</th>
+            <th scope="col">Delete Creature</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each e}}
+            <tr id="list{{_id}}" class="text-align-center">
+                <td>{{this.name}} the {{this.type}} is age {{this.age}} {{this.status}}!!</td>
+                <td><img src={{this.picture}} alt={{this.altText}} width=100px height=100px></td>
+                <td>
+                  <button onclick='editEvent({{json this}})' id="edit{{_id}}" name="edit" >Edit</button>
+                </td>
+                <td>
+                  <form class="display-inline-block" id="deleteItem" method="POST" action="/delItem/{{_id}}">
+                    <button id={{_id}} name="delete" >X</button>
+                  </form>
+                </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
     </div>
   </body>
 </html>

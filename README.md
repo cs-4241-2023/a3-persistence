@@ -1,64 +1,43 @@
 Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
 ===
+Mirandi McCormick
+mlmccormick
+cabbag3
 
-using milligram for css
-used mongoose with mongoDB
----
-
-3 pages:
-one for account creation, one to login, and one to make creatures
-
-Google Lighthouse score of 100 in all 4 categories
----
-
-Do the following to complete this assignment:
-
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. If you developed your project locally, deploy your project to Glitch (unless completing the alternative server technical acheivement described below), and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch (or an alternative server), it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
-
-Acheivements
----
-
-*Technical*
-- (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
-
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
-
-## Your Web Application Title
+## Creature Creator
 
 your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
 
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
+- My application has 3 pages: login, create account, and the main creature creator page after successful login.
+- A big challenge I faced was getting res.render to work, I was using .handlebars extention, and the link would change, but the new page would not render. I was able to fix this by using hbs and the extention .hbs instead after seeing lots of people on stackoverflow using that version and not the .handlebars version.
+- The authentication strategy I use is checking for a "Login" entry in the database that has the entered User and Pass, I found that to be the easiest way.
+- I used TurretCSS, it seemed simple, straightforward, and I liked the page they provided for how to use their CSS package and the different color, elements, and etc. that comes with it. I made no custom modifications/I have no css file of my own.
+- I used the cookies and the handlebars which were listed in the setup instructions and covered in class. I then also used many get and post middlewares for the differnt pages my app has, I also have middleware for deleting, adding, and editing entries.
 
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- **Tech Achievement 1**: I scored a 100 in all 4 required lighthouse tests, screenshot attached.
+
+![screenshot of my application scoring 100 in all 4 google lighthouse tests](app100inLighthouse.png)
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+- **Design Achievement 1**: I followed 12 of the tips from W3C
+
+Design:
+- Tip - Provide sufficient contrast between foreground and background - the CSS I use defaults to the classic white background and black text, which is as much contrast as it gets.
+- Tip - Provide clear and consistent navigation options - I have a link on the login page to the signup page, and a link on the signup page to the login page. Both are in basically the same location and use similar words (click here) to signify that it is a link to another page.
+- Tip - Ensure that form elements include clearly associated labels - all my fields have associated lables which tell the user what information goes in which box and they are not positioned too - far away from the boxes
+- Tip - Use headings and spacing to group related content - I use this on the creature maker page where I have a heading that separates where you make a creature and a header that separates your already creatued creatures. I also use a table to separate the creatures created and separate the fields of the creature and the fields when editing the creature
+
+Writing:
+- Tip - Provide informative, unique page titles - For each page I have what you do on the page, followed by the site name, for the page titles
+- Tip - Use headings to convey meaning and structure - For each page I have a heading that says what you do on the form of the page, and for the creature creator page I have two headings which list the form to make creatures, and where you view your created creatures
+- Tip - Make link text meaningful - I have a link to go from login to create account, and to go from create account to login, both links list the purpose/site you visit, and mention "click here"
+- Tip - Provide clear instructions - I have errors and success messages that pop up. I have an error for unsuccessful login and for a taken username when creating an account. Also the css that I am using has a built in popup warning when you try to submit a username/password/creature name that is too short or too long
+
+Developing:
+- Tip - Include alternative text for images - I have alt text available for the creature images I use which tells what kind of animal the image is showing
+- Tip - Help users avoid and correct mistakes - I have error messages for when a username is already taken, or when a login fails due to not finding the user and pass. There are also popups which say when a user tries to enter something in a field and it is too long or too short
+- Tip - Reflect the reading order in the code order - I use this for my forms (reading and entering information top to bottom) and when a user is looking at and editing/deleting their creatures (listed left to right since there can be multiple creatures and that would make the top to bottom format confusing for the user)
+- Tip - Ensure that all interactive elements are keyboard accessible - all my fields and buttons are keyboard accessible, can use tab and enter to select and "click" items without the need for a mouse, I don't use any listeners for "on click" I use form submissions so this avoids the issue of on click
+
