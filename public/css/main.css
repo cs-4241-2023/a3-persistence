@@ -1,0 +1,22 @@
+body {
+  background: #EACDC2;
+  color: #1A1423;
+  font-family: Arial, sans-serif; 
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top:15px;
+  border: 2px inset #1A1423;
+}
+
+th, td, tr {
+  padding: 5px;
+  text-align: center;
+  border: 2px solid #1A1423;
+}
+
+th {
+  background: #B75D69; 
+}
