@@ -1,1 +1,1 @@
-web: node.exe ./server.improved.js
+web: node.exe .\server.improved.js
