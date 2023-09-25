@@ -77,6 +77,32 @@ app.post("/addRecipe", async (req, res) => {
   }
 });
 
+// Delete a recipe
+app.delete("/deleteRecipe/:recipeName", async (req, res) => {
+  try {
+    const recipeName = req.params.recipeName;
+    const username = req.session.username;
+
+    const DB = client.db("recipeTracker");
+    const collection = DB.collection("recipes");
+
+    const result = await collection.deleteOne({ recipe_name: recipeName, username: username });
+
+    if (result.deletedCount === 1) {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Recipe deleted successfully." }));
+    } else {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Recipe not found." }));
+    }
+  } catch (e) {
+    console.error("Error deleting recipe:", e);
+    res.writeHead(500, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Internal server error." }));
+  }
+});
+
+
 async function loginHelper(aUser, res, req) {
   try {
     console.log("Connected to the MongoDB database"); // Log when the connection is successful
