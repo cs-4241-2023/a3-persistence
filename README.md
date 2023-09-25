@@ -113,6 +113,7 @@ Include a very brief summary of your project here. Images are encouraged, along 
 - **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy. The user can log in but they don't receive their own data but general data.
 - **Tech Achievement 2**: I used Heroku to host my site. I really enjoyed using this service as it was very plug-and-play with GitHub and it automatically gets the main branch of my repo and runs it. Glitch is required to import the project and have a separate instance while Heroku just uses the current GitHub main version.
 - **Tech Achievement 3**: In my personal testing, I got a lighthouse score of 100 in all categories.
+![Screenshot 2023-09-24 012150](https://github.com/MarekSGarbaczonek/a3-mareksgarbaczonek/assets/66498850/676eacc2-a0a9-4e2f-aad4-d8bcf07cb85e)
 
 
 ### Design/Evaluation Achievements
