@@ -99,7 +99,6 @@ passport.use(new GitHubStrategy({
   }
 ))
 
-app.use( express.json() )
 app.use( express.urlencoded({ extended:true }) )
 app.use( express.static( 'public' ) )
 
@@ -135,10 +134,9 @@ app.get('/oauth2/github/redirect', passport.authenticate('github', { failureRedi
 )
 
 app.use( function( req,res,next) {
-  let contain_login = req.url.includes('login')
   let contain_robots = req.url.includes('robots.txt') // Prvents SEO error in Lighthouse test
 
-  if( req.session.login !== true && !contain_login && !contain_robots ) {
+  if( req.session.login !== true && !contain_robots ) {
     res.redirect( '/login' )
   } else {
     next()
