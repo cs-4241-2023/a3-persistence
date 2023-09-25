@@ -13,8 +13,10 @@
 <div class="signup">
 	<h1>Signup</h1>
 	<form action='/createAccount' method="POST">
-		<input type='text' placeholder="Username" name='Username' required="required">
-		<input type='password' placeholder="Password" name='Password' required="required">
+		<label for="Username">Username: </label>
+		<input type='text' placeholder="Username" id='Username' name='Username' required="required">
+		<label for="Password">Password: </label>
+		<input type='password' placeholder="Password" id='Password' name='Password' required="required">
 		<button class="signup-button">Signup</button>
 	</form>
 </div>
