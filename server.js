@@ -20,8 +20,6 @@ app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 
-
-
 // MongoDB connection
 const uri = `mongodb+srv://${process.env.TESTER}:${process.env.PASS}@${process.env.HOST}`
 const client = new MongoClient(uri);
@@ -34,7 +32,6 @@ async function dbconnect() {
 dbconnect();
 
 // From video passport tutorial
-
 app.use(session({
   secret: process.env.USER_SECRET,
   resave: false,
