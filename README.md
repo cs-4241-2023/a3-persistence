@@ -100,7 +100,7 @@ URL: https://personalmanager-f9ebf3c35885.herokuapp.com/
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
 - The goal of the app is for the user to have a very easy way to plan their day with a to-do list with different priority levels.
-- I have faced the challenge of time and unfortunately was not able to get the authentication to give the user's data once logged in. I have the authentication code working and getting the user data (commented below server code) but not fetching the user specific data.
+- I have faced the challenge of time and unfortunately was not able to get the authentication to give the user's data once logged in. I have the authentication code working and getting the user data (commented below server code) but not fetching the user-specific data.
 - I went for the github2 authentication with passport.js but I did not have enough time to do anything with the user data.
 - I used the sanitize.css CSS reset. Professor Roberts allowed me to just use a CSS reset for the framework requirement since I really liked the custom CSS I created.
 - Express Middleware:
@@ -110,7 +110,10 @@ Include a very brief summary of your project here. Images are encouraged, along 
 -   Static File Middleware: Uses middleware to serve static CSS and JavaScript for my site.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy. The user can log in but they don't receive their own data but general data.
+- **Tech Achievement 2**: I used Heroku to host my site. I really enjoyed using this service as it was very plug-and-play with GitHub and it automatically gets the main branch of my repo and runs it. Glitch is required to import the project and have a separate instance while Heroku just uses the current GitHub main version.
+- **Tech Achievement 3**: In my personal testing, I got a lighthouse score of 100 in all categories.
+
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
