@@ -73,13 +73,13 @@
         <tr>
           {{#if (idEqual _id ../modifyId)}}
             <td class="modifyTD">
-              <input form="modifyForm" type="text" name="item" value="{{item}}" required>
+              <input id="modifyItem" aria-label="Modify Item" form="modifyForm" type="text" name="item" value="{{item}}" required>
             </td>
             <td class="modifyTD">
-              <input form="modifyForm" type="number" name="amount" value="{{amount}}" min="0" max="999999999999" required>
+              <input form="modifyForm" aria-label="Modify Amount" type="number" name="amount" value="{{amount}}" min="0" max="999999999999" required>
             </td>
             <td class="modifyTD">
-              <input form="modifyForm" type="number" name="unit_value" value="{{unit_value}}" min="0" max="999999999" step="0.01" required>
+              <input form="modifyForm" aria-label="Modify Unit Value" type="number" name="unit_value" value="{{unit_value}}" min="0" max="999999999" step="0.01" required>
             </td>
           {{else}}
             <td>{{item}}</td>
