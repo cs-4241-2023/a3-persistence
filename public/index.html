@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Scoreboard • CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <script src="js/main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    
+    <meta name="description" content="Author: Bright Lin, Class: CS4241, Professor: Charles Roberts">
+
+    <link rel="stylesheet" href="https://unpkg.com/@blaze/css@x.x.x/dist/blaze/blaze.css">
+
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+
+      <h1 class="u-centered">Scoreboard</h1>
+  
+      <form class="u-centered" id="submission">
+        <input type="text" id="yourName" placeholder="Name">
+        <input type="number" id="yourKills" placeholder="Kills" min="0" step="1">
+        <input type="number" id="yourDeaths" placeholder="Deaths" min="0" step="1">
+        <input type="number" id="yourAssists" placeholder="Assists" min="0" step="1">
+        <button class="c-button">Submit</button>
+      </form>
+
+
+      <table class="c-table c-table--striped">
+        <thead class="c-table__head">
+        <tr class="c-table__row c-table__row--heading"> <!-- Defines a Row -->
+          <th class="c-table__cell">Name</th> <!-- Header Cells -->
+          <th class="c-table__cell">Kills</th>
+          <th class="c-table__cell">Deaths</th>
+          <th class="c-table__cell">Assists</th>
+          <th class="c-table__cell">KDA</th> <!-- KDA = (kills + assists)/ deaths -->
+          <th class="c-table__cell">Delete</th>
+          <th class="c-table__cell">Modify</th>
+        </tr>
+        </thead>
+
+        <tbody class="c-table__body" id="scoreData"></tbody>
+        
+      </table>
+
+      <form class="u-centered" id="modify" hidden>
+        <input type="text" id="modifyName" placeholder="Name">
+        <input type="number" id="modifyKills" placeholder="Kills" min="0" step="1">
+        <input type="number" id="modifyDeaths" placeholder="Deaths" min="0" step="1">
+        <input type="number" id="modifyAssists" placeholder="Assists" min="0" step="1">
+        <button class="c-button">Save Modify</button>
+        <button class="c-button" type="button" id="cancelButton">Cancel</button>
+      </form>
+
+  </body>
+</html>
