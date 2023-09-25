@@ -1,8 +1,9 @@
 const express    = require('express'),
       app        = express(),
-      { MongoClient, ObjectId } = require('mongodb')
+      { MongoClient, ObjectId } = require('mongodb'),
+      cookie  = require( 'cookie-session' ),
+      crypto = require('crypto')
   
-let cardata    = []
 let nextId = 1
 
 const url = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.kxz0njx.mongodb.net/?retryWrites=true&w=majority`
@@ -10,29 +11,84 @@ const url = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.kxz0
 app.use( express.static( 'public' ) )
 app.use( express.json() )
 
-
 const client = new MongoClient( url )
 
 let cardata2 = null
+let logins = null
 
 async function run() {
   await client.connect()
   cardata2 = await client.db("data").collection("cardata")
+  logins = await client.db("data").collection("logindata")
 }
 
 run()
 
+
+app.use( express.urlencoded({ extended:true }) )
+
+// Generate random keys
+const key1 = crypto.randomBytes(32).toString('hex');
+const key2 = crypto.randomBytes(32).toString('hex');
+
+app.use(cookie({
+  name: 'session',
+  keys: [key1, key2]
+}));
+
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/views/login.html');
+});
+
+app.get('/index', (req, res) => {
+  if (req.session.login) {
+    res.sendFile(__dirname + '/views/index.html');
+  }
+  else {
+    res.redirect('/')
+  }
+  
+});
+
+
+app.post('/login', async (req, res) => {
+  console.log("Login: ")
+  console.log( req.body )
+  
+  const { username, password } = req.body;
+
+  // Query the database to check if the username and password match
+  const user = await logins.findOne({ username, password });
+
+  if (user) {
+    // Authentication successful
+    req.session.login = true;
+    req.session.username = username;
+    res.redirect('/index');
+  } else {
+    // Authentication failed, redirect back to login page
+    res.sendFile(__dirname + '/views/login.html');
+  }
+});
+
+
 // route to get all docs
 app.get("/docs", async (req, res) => {
+  console.log("GET 2: ")
+  console.log(req.session.username)
   if (cardata2 !== null) {
-    const docs = await cardata2.find({}).toArray()
-    res.json( docs )
+    const filter = { username: req.session.username };
+    
+    const docs = await cardata2.find(filter).toArray();
+    
+    res.json(docs);
   }
 })
 
 app.post( '/docs', async (req,res) => {
   console.log("POST 2: ")
   console.log(req.body)
+  req.body.username = req.session.username
   if (req.body.hasOwnProperty('year') && req.body.hasOwnProperty('mpg')) {
       const year = Number(req.body.year); 
       const mpg = Number(req.body.mpg);   
