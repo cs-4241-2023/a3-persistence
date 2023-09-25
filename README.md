@@ -104,7 +104,10 @@ Include a very brief summary of your project here. Images are encouraged, along 
 - I went for the github2 authentication with passport.js but I did not have enough time to do anything with the user data.
 - I used the sanitize.css CSS reset. Professor Roberts allowed me to just use a CSS reset for the framework requirement since I really liked the custom CSS I created.
 - Express Middleware:
--   
+-   Body-parser Middleware: Used to parse incoming JSON data in the request body.
+-   Custom Request Logging Middleware called requestLog: This logs information from requests.
+-   Error Handling Middleware called errorHandler: Catches and handles errors then sends an error message
+-   Static File Middleware: Uses middleware to serve static CSS and JavaScript for my site.
 
 ## Technical Achievements
 - **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
