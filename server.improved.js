@@ -88,7 +88,7 @@ let collections = {
 }
 
 // Database Connection
-const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cluster0.yrccoan.mongodb.net`
 const client = new MongoClient( uri )
 
 async function run() {
