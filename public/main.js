@@ -6,53 +6,55 @@ async function fetchAndDisplayTasks() {
     }
 
     const tasks = await response.json();
-
     const tasksContainer = document.getElementById("tasksContainer");
     tasksContainer.innerHTML = ""; // Clear previous tasks
 
     tasks.forEach((task) => {
       const taskElement = document.createElement("div");
-      
-      const prioritySymbol = document.createElement('span');
-      prioritySymbol.className = `prioritySymbol ${task.priority}`;
-      prioritySymbol.textContent = task.priority;
-      taskElement.appendChild(prioritySymbol);
+      taskElement.className = "card";
 
+      const cardContent = document.createElement("div");
+      cardContent.className = "card-content";
+
+      const prioritySymbol = document.createElement('span');
+      prioritySymbol.className = `badge ${task.priority}`;
+      prioritySymbol.textContent = task.priority.toUpperCase();
+      cardContent.appendChild(prioritySymbol);
 
       const taskText = document.createElement("span");
+      taskText.className = "card-title";
       taskText.textContent = task.taskName;
-      taskElement.appendChild(taskText);
+      cardContent.appendChild(taskText);
 
-      const taskDescription = document.createElement("div");
-      taskDescription.className = "taskDescription";
+      const taskDescription = document.createElement("p");
       taskDescription.textContent = task.description;
-      taskElement.appendChild(taskDescription);
+      cardContent.appendChild(taskDescription);
 
-      const taskInfo = document.createElement("div");
-      taskInfo.className = "taskInfo";
-      
+      const taskInfo = document.createElement("p");
       const taskAssignedTo = document.createElement("span");
-      taskAssignedTo.className = "taskAssignedTo";
       taskAssignedTo.textContent = `Assigned to: ${task.assignedTo}`;
-      taskAssignedTo.style.right = `${taskAssignedTo.textContent.length}px`;
       taskInfo.appendChild(taskAssignedTo);
 
       const dueDate = document.createElement("span");
-      dueDate.className = "dueDate";
       dueDate.textContent = `Due: ${task.dueDate}`;
       taskInfo.appendChild(dueDate);
-      taskElement.appendChild(taskInfo);
+      cardContent.appendChild(taskInfo);
 
-      const deleteButton = document.createElement("button");
-      deleteButton.className = "deleteTask";
-      deleteButton.textContent = "delete";
+      taskElement.appendChild(cardContent);
+
+      const cardAction = document.createElement("div");
+      cardAction.className = "card-action";
+
+      const deleteButton = document.createElement("a");
+      deleteButton.href = "#!";
+      deleteButton.textContent = "Delete";
       deleteButton.onclick = async function () {
         const response = await fetch("/deleteTask", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ task: task.task, dueDate: task.dueDate }),
+          body: JSON.stringify({ taskName: task.taskName, dueDate: task.dueDate }),
         });
 
         if (response.ok) {
@@ -68,18 +70,18 @@ async function fetchAndDisplayTasks() {
           alert(errorData.error);
         }
       };
-      taskElement.appendChild(deleteButton);
+      cardAction.appendChild(deleteButton);
 
-      const updateButton = document.createElement("button");
-      updateButton.className = "updateTask";
-      updateButton.textContent = "update";
+      const updateButton = document.createElement("a");
+      updateButton.href = "#!";
+      updateButton.textContent = "Update";
       updateButton.onclick = async function () {
         const response = await fetch("/deleteTask", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ task: task.task, dueDate: task.dueDate }),
+          body: JSON.stringify({ taskName: task.taskName, dueDate: task.dueDate }),
         });
 
         if (response.ok) {
@@ -100,11 +102,13 @@ async function fetchAndDisplayTasks() {
           alert(errorData.error);
         }
       };
-      taskElement.appendChild(updateButton);
+      cardAction.appendChild(updateButton);
 
+      taskElement.appendChild(cardAction);
       tasksContainer.appendChild(taskElement);
     });
   } catch (error) {
+    M.toast({ html: 'Error fetching and displaying tasks.' });
     console.error("Error fetching and displaying tasks:", error);
   }
 }
@@ -135,21 +139,21 @@ document.getElementById("todoForm").addEventListener("submit", async (e) => {
     if (result.success) {
       document.getElementById("todoForm").reset();
       fetchAndDisplayTasks(); // Refresh the list of tasks
+      M.toast({ html: 'Task added successfully!' });
     } else {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Error adding task.",
-      });
+      M.toast({ html: 'Error adding task.' });
     }
   } else {
     const errorData = await response.json();
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: errorData.error,
-    });
+    M.toast({ html: errorData.error });
   }
 });
 
+// Initialize Materialize components
+document.addEventListener('DOMContentLoaded', function () {
+  var elems = document.querySelectorAll('select');
+  var instances = M.FormSelect.init(elems);
+});
+
+// Fetch and display tasks on page load
 window.onload = fetchAndDisplayTasks;
