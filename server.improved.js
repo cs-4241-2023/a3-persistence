@@ -42,8 +42,8 @@ app.post('/signup', signup)
 app.use(express.static('public'));
 
 app.get('/', async function(req, res) {
-  //console.log(req.session);
-  if (req.session === undefined || req.session.login === null || req.session.login === false || req.session.login === true) {
+  console.log(req.session);
+    if (req.session === undefined || req.session === {} || req.session.login === undefined || req.session.login === null || req.session.login === false || req.session.login === true) {
     res.sendFile(__dirname + "/views/no_pass.html")
   } else {
     const username = await getUserName(req.session.login);
