@@ -25,6 +25,8 @@ I chose this way to do authentication because it was the first way i thought of 
 - **Tech Achievement**: 
 
 1. I've achieved 100% on all lighthouse report fields on both the login page and the main page.
+<img src="LoginPage_Lighthouse.png">
+<img src="MainPage_Lighthouse.png">
 2. Uploaded project on Heroku: It was very simple to just create a new app in Heroku and then you can easily connect a repo to Heroku and run the website. 
 
 
