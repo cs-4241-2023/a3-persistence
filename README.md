@@ -1,6 +1,6 @@
 ## a3-SmeeBoi
 
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
+Project Link: 
 
 Modified a2 "game" to use Express, MongoDB, GitHub OAuth Authentication (with Passport.js), and CSS with Bootstrp. I also used EJS to render different views instead of sending different html files in server code. 
 
