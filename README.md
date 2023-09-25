@@ -62,11 +62,10 @@ Express middleware packages:
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative:
-Make link text meaningful: I made sure that all of my links have meaningful text, such as "Login with Github" instead of just "Login".
-Provide informative page titles: The page titles are informative and describe the page, which includes 'Blogging App' to describe the app.
-Ensure that interactive elements are easy to identify: The logout link is highlighted during mouse hover.
-Create designs for different viewport sizes: I used Tailwind's responsive breakpoints to make the site responsive, modifying margin sizes for mobile devices.
-Write code that adapts to the user’s technology: I used Tailwind's responsive breakpoints to make the site responsive.
-
-
+- Make link text meaningful: I made sure that all of my links have meaningful text, such as "Login with Github" instead of just "Login".
+- Provide informative page titles: The page titles are informative and describe the page, which includes 'Blogging App' to describe the app.
+- Ensure that interactive elements are easy to identify: The logout link is highlighted during mouse hover.
+- Create designs for different viewport sizes: I used Tailwind's responsive breakpoints to make the site responsive, modifying margin sizes for mobile devices.
+- Write code that adapts to the user’s technology: I used Tailwind's responsive breakpoints to make the site responsive.
+- Ensure that all interactive elements are keyboard accessible: Added aria labels to buttons like submit, as well as roles for the form elements.
 

@@ -20,7 +20,7 @@
 
     <header class="flex justify-between items-center py-4">
         <h1 class="mx-auto text-3xl md:text-4xl lg:text-5xl font-bold">My Blog</h1>
-        <a href="/logout" class="hover:bg-blue-500 hover:text-white hover:underline">Logout</a>
+        <a href="/logout" class="hover:bg-blue-500 hover:text-white hover:underline" role="button">Logout</a>
     </header>
 
 
@@ -30,10 +30,13 @@
         <form id="blog-post-form">
             <label for="title" class="block font-semibold">Title:</label>
             <input type="text" id="title" class="border rounded px-2 py-1 w-full mt-2" required>
+
             <label for="content" class="block font-semibold mt-4">Content:</label>
             <textarea id="content" rows="4" class="border rounded px-2 py-1 w-full mt-2" required></textarea>
+
             <button type="submit" id="create-button"
-                class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded">Submit</button>
+                class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white font-semibold py-2 px-4 rounded"
+                aria-label="Submit Blog Post">Submit</button>
         </form>
     </section>
 
