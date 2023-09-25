@@ -14,6 +14,8 @@ const http = require("http"),
 dotenv.config();
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const ObjectID = require('mongodb').ObjectId
+
 //const uri = `mongodb+srv://TestUser:Oe1wY0NZGom47CB5@cluster0.ffqniuy.mongodb.net/?retryWrites=true&w=majority`;
 const uri = `mongodb+srv://TestUser:${process.env.PASSWORD}@cluster0.ffqniuy.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, {
@@ -24,66 +26,17 @@ const client = new MongoClient(uri, {
   }
 });
 
-async function run() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-    await listDatabases(client);
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-
-run().catch(console.dir);
-
-async function listDatabases(client){
-  databasesList = await client.db().admin().listDatabases();
-
-  console.log("Databases:");
-  databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-};
-
-const appdata = [
-  {
-    name: "Alex Marrinan",
-    email: "ammarrinan@wpi.edu",
-    type: "Undergrad Student",
-    department: "IMGD",
-    id: 0,
-  },
-  {
-    name: "Dale Messer",
-    email: "ammarrinan@wpi.edu",
-    type: "Undergrad Student",
-    department: "HUA",
-    id: 1,
-  },
-  {
-    name: "Charlie Roberts",
-    email: "croberts@wpi.edu",
-    type: "Professor",
-    department: "IMGD",
-    id: 2,
-  },
-  {
-    name: "Michael Engling",
-    email: "croberts@wpi.edu",
-    type: "Professor",
-    department: "CS",
-    id: 3,
-  },
-];
-
-var nextId = 4;
-
 app.get('/getUsers', (request, response) => {
-  response.writeHead(200, "OK", { "Content-Type": "text/json" });
-  response.end(JSON.stringify(appdata));
+    console.log('getting users...')
+    client.connect();
+    var db = client.db('usersDB');
+    //console.log(db)
+    var coll = db.collection('users');
+    coll.find().toArray().then( result => {
+      response.json( result )
+    } )
 })
+
 app.get('/', (request, response) => {
   handleGet(request, response)
 })
@@ -96,8 +49,9 @@ app.delete('/deleteUser', (request, response) => {
 })
 
 app.delete('/clearUsers', (request, response) => {
-  var len = appdata.length;
-  appdata.splice(0, len);
+  var db = client.db('usersDB');
+  var coll = db.collection('users');
+  coll.deleteMany({})
   response.writeHead(200, "OK", { "Content-Type": "text/json" });
   response.end("deleted all users!");
 })
@@ -127,9 +81,9 @@ const handlePost = function (request, response) {
     const email = `${json.name.charAt(0)}${json.email}@wpi.edu`.toLowerCase();
     json["name"] += ` ${json.email}`;
     json["email"] = email;
-    json.id = nextId;
-    nextId += 1;
-    appdata.push(json);
+    var db = client.db('usersDB');
+    var coll = db.collection('users');
+    coll.insertOne(json);
     response.writeHead(200, "OK", { "Content-Type": "text/json" });
     response.end(JSON.stringify(json));
   });
@@ -144,16 +98,22 @@ const handleDelete = function (request, response) {
 
   request.on("end", function () {
     let data = JSON.parse(dataString);
-    for (var i = 0; i < appdata.length; i++) {
-      if (appdata[i].id === data.id) {
-        appdata.splice(i, 1);
-        response.writeHead(200, "OK", { "Content-Type": "text/json" });
-        response.end("deleted user!");
-        return;
-      }
-    }
+    var db = client.db('usersDB');
+    var coll = db.collection('users');
+    console.log(data)
+    coll.deleteOne({"_id" : new ObjectID(data._id)})
     response.writeHead(200, "OK", { "Content-Type": "text/json" });
-    response.end("user not found!");
+    response.end("deleted user!");
+    // for (var i = 0; i < appdata.length; i++) {
+    //   if (appdata[i].id === data.id) {
+    //     appdata.splice(i, 1);
+    //     response.writeHead(200, "OK", { "Content-Type": "text/json" });
+    //     response.end("deleted user!");
+    //     return;
+    //   }
+    // }
+    // response.writeHead(200, "OK", { "Content-Type": "text/json" });
+    // response.end("user not found!");
   });
 };
 

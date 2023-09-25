@@ -14,15 +14,15 @@ const submit = async function( event ) {
         inputEmail = form["email"],
         inputType = form["type"],
         inputDepartment = form["department"]
+        inputPass = form['password']
 
   console.log(inputName)
   console.log(inputEmail)
   console.log(inputType)
   console.log(inputDepartment)
       
-  const json = { 'name': inputName.value, 'email': inputEmail.value, 'type': inputType.value, 'department': inputDepartment.value }, //whatever: "whatever" },
+  const json = { 'name': inputName.value, 'email': inputEmail.value, 'type': inputType.value, 'dept': inputDepartment.value, 'pass': inputPass.value }, //whatever: "whatever" },
         body = JSON.stringify( json )
-        console.log(body)
   
   const response = await fetch( '/newUser', {
     method:'POST',
@@ -42,7 +42,6 @@ const deleteUser = async function ( json, event ){
     body:body
   })
   const text = await response.text()
-  console.log( 'text:', text)
   location.reload()
 }
 
@@ -53,13 +52,11 @@ const clearAll = async function ( event ){
     body: body
   })
   const text = await response.text()
-  console.log( 'text:', text)
   location.reload()
 }
 
 const getUsersData = async function ( event ){  
   const response = await fetch( '/getUsers' )
-
   const text = await response.text()
   updateTable(JSON.parse(text))
 }
@@ -85,7 +82,7 @@ function addToTable(newRow){
     nameCell.innerHTML = newRow["name"]
     emailCell.innerHTML = newRow["email"]
     typeCell.innerHTML = newRow["type"]
-    majorCell.innerHTML = newRow["department"]
+    majorCell.innerHTML = newRow["dept"]
 
     const xButton = document.createElement('button');
     xButton.className = 'deleteButton'
