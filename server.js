@@ -153,7 +153,7 @@ app.post("/submit", async (request, response) => {
     } else if (difficulty === "" || isNaN(difficultyNum) || difficultyNum < 0 || difficultyNum > 10) {
         result = {result: "failure", message: "Difficulty must be an integer between 1 and 10!"};
     } else {
-        let priority = calculatePriority(dueDate, difficulty); // calculate derived field
+        let priority = calculatePriority(dueDate, difficulty, completed); // calculate derived field
 
         await assignmentCollection.insertOne(
             {
@@ -183,7 +183,7 @@ app.put("/assignment-edit", async (request, response) => {
                 dueDate: request.body.dueDate,
                 difficulty: request.body.difficulty,
                 completed: request.body.completed,
-                priority: calculatePriority(request.body.dueDate, request.body.difficulty)
+                priority: calculatePriority(request.body.dueDate, request.body.difficulty, request.body.completed)
             }
         }
     );
@@ -201,14 +201,16 @@ app.delete("/assignment-delete", async (request, response) => {
 
 app.listen(process.env.PORT || port) // set up server to listen on port 3000
 
-const calculatePriority = function (dueDate, difficulty) {
+const calculatePriority = function (dueDate, difficulty, completed) {
   let date = new Date(dueDate);
 
-  if((difficulty > 0 && difficulty <= 3) || date.getDay() >= 14) {
-      return "Low"
+  if(completed === true) {
+      return "None";
+  } else if((difficulty > 0 && difficulty <= 3) || date.getDay() >= 14) {
+      return "Low";
   } else if((difficulty > 3 && difficulty <= 6) || (date.getDay() >= 7 && date.getDay() < 14)) {
-      return "Medium"
+      return "Medium";
   } else {
-      return "High"
+      return "High";
   }
 }
