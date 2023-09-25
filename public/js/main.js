@@ -61,9 +61,10 @@ document.addEventListener("DOMContentLoaded", function () {
           console.log(data.message);
           getRecipes();
           displayRecipes();// Refresh the recipe list
-          recipeName.value = "";
-        recipeIngredients.value = "";
-        recipeDirections.value = "";
+          document.getElementById("recipe_name").value = "";
+          document.getElementById("recipe_ingredients").value = "";
+          document.getElementById("recipe_directions").value = "";
+
         } else {
           console.error("Error adding recipe:", await response.text());
         }
@@ -71,6 +72,31 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error adding recipe:", error);
       }
     });
+  // Add event listener for the "Delete Recipe" button
+  document.getElementById("delete_recipe").addEventListener("click", async function (e) {
+    e.preventDefault();
+
+    const recipeToDelete = document.getElementById("recipe_to_delete").value;
+
+    try {
+      const response = await fetch(`/deleteRecipe/${recipeToDelete}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message);
+        getRecipes();  // Refresh the recipe list
+
+        // Clear the delete field
+        document.getElementById("recipe_to_delete").value = "";
+      } else {
+        console.error("Error deleting recipe:", await response.text());
+      }
+    } catch (error) {
+      console.error("Error deleting recipe:", error);
+    }
+  });
 });
 
 // Display recipes with error handling
@@ -103,4 +129,5 @@ const displayError = function (message) {
   const recipeTable = document.querySelector("#recipe_table");
   recipeTable.innerHTML = `<tr><td colspan='4'>${message}</td></tr>`;
 };
+
 
