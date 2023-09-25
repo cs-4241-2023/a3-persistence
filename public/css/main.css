@@ -53,25 +53,9 @@ table {
   font-weight: bold;
 }
 
-p, h1 {
-  font-family: Roboto Condensed, Trebuchet MS, Arial;
-}
-
-/* p {
-  font-size: 36px;
-}
-
-label {
-  font-size: 36px;
-} */
-
 .invalid_text {
   color: red;
 }
-
-/* h1 {
-  font-size: 48px;
-}*/
 
 button {
   padding: 5% 5% 5% 5%;
