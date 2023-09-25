@@ -24,7 +24,7 @@ const submit = async function( event ) {
 
   const text = await response.text()
   if (response == null){
-    
+
   }
   window.location.replace('/index.html')
   form.reset()

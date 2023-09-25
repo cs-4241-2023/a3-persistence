@@ -36,16 +36,6 @@ const submit = async function( event ) {
   addToTable(JSON.parse(text))
 }
 
-const deleteUser = async function ( json, event ){  
-  body = JSON.stringify( json )
-  const response = await fetch( "/deleteUser", {
-    method:"DELETE",
-    body:body
-  })
-  const text = await response.text()
-  location.reload()
-}
-
 const clearAll = async function ( event ){  
   body = {all: true}
   const response = await fetch( "/clearUsers", {
@@ -85,18 +75,24 @@ function addToTable(newRow){
     typeCell.innerHTML = newRow["type"]
     majorCell.innerHTML = newRow["dept"]
 
-    if (newRow._id === loggedInUser._id){
-      return
-    }
     const xButton = document.createElement('button');
     xButton.className = 'deleteButton'
     xButton.onclick=() => {
-      deleteUser(newRow);
+      editUser(newRow);
     }
-    xButton.innerHTML = "X"
+    xButton.className = "editButton"
+    xButton.innerHTML = "Edit"
     xCell.append(xButton)
 }
 
+async function editUser(user){
+  console.log(user)
+  const response = await fetch( '/edit', {
+    method:'POST',
+    body: JSON.stringify(user)
+  })
+  window.location.replace('/edit.html')
+}
 async function getLoggedInUser(){
   const loggedInUserLabel = document.getElementById("loggedinuser");
   const response = await fetch( '/getLoggedInUser' )

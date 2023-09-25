@@ -1,6 +1,18 @@
-body {
-  background:#FFFADD;
+body{
+  background:#fffefa;
+  color: #000000;
+}
+
+.mui-container {
+  background:#fffefa;
   color: #22668D;
+}
+.mui-panel {
+  background:#fffefa;
+  background-color: #22668D;
+}
+.mui-textfield .mui-textfield--float-label{
+  color:#000000
 }
 
 .flex-container {
@@ -17,11 +29,7 @@ body {
 }
 
 table, th, td {
-  border: 1px solid;
-  background-color: #FFCC70;
-  padding: 8px;
-  border-collapse: collapse;
-  font-family: "Courier Prime", normal;
+  background-color: #fddea6;
 }
 
 th {
@@ -59,6 +67,9 @@ p {
   font-family: "Trirong", serif;
 }
 
+.tableHeader {
+  color:#FFFADD;
+}
 select, input {
   color: #FFFADD;
   background-color: #6bafc0;
@@ -71,9 +82,9 @@ form {
   width: 380px;
 }
 
-button {
+.button .mui-btn .mui-btn--raised{
   color: #FFFADD;
-  background-color: #6bafc0;
+  background-color: #133447;
   font-family: "Courier Prime", normal;
   font-size: 25px;
   width: 100%;
@@ -83,10 +94,19 @@ button {
 
 .logoutButton {
   color: #FFFADD;
-  background-color: #6bafc0;
+  background-color: #133447;
   font-family: "Courier Prime", normal;
   font-size: 15px;
-  width: 30%;
+  width: 25%;
+  margin-left: 50px;
   font-style: oblique;
 }
 
+
+.editButton {
+  color: #FFFADD;
+  background-color: #295771;
+  font-family: "Courier Prime", normal;
+  font-size: 15px;
+  font-style: oblique;
+}

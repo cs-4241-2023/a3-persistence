@@ -22,6 +22,7 @@ const client = new MongoClient(uri, {
 });
 
 var loggedInUser = null
+var editUser = null
 
 app.get('/getUsers', (request, response) => {
     client.connect();
@@ -42,6 +43,9 @@ app.get('/getUsers', (request, response) => {
 app.get('/getLoggedInUser', (request, response) => {
     response.json( loggedInUser )
 })
+app.get('/getEditUser', (request, response) => {
+  response.json( editUser )
+})
 app.get('/', (request, response) => {
   handleGet(request, response)
 })
@@ -51,6 +55,7 @@ app.get('/', (request, response) => {
 app.post('/newUser', (request, response) => {
   handlePost(request, response)
 })
+
 app.post( '/login', async (request, response) => {
     // let invalidInput = req.body.Username === null && password === null;
     // if(!invalidInput){
@@ -86,6 +91,45 @@ app.post( '/login', async (request, response) => {
       }
     })
 })
+app.post( '/edit', async (request, response) => {
+  let dataString = "";
+
+  request.on("data", function (data) {
+    dataString += data;
+  });
+
+  request.on("end", function () {
+      const json = JSON.parse(dataString);
+      console.log(json)
+      editUser = json
+      response.redirect('/edit.html')
+  });
+})
+
+app.post( '/update', async (request, response) => {
+  console.log('posted!!')
+  let dataString = "";
+
+  request.on("data", function (data) {
+    dataString += data;
+  });
+
+  request.on("end", async function () {
+    const json = JSON.parse(dataString);
+    var db = client.db('usersDB');
+    var coll = db.collection('users');
+    console.log(json)
+    coll.updateOne({"_id": new ObjectID(json._id)},{ $set: {
+      "pass": json.pass,
+      "type": json.type,
+      "dept": json.dept
+    }})
+    const u = await coll.findOne({"_id": new ObjectID(json._id)});
+    console.log(u)
+    response.redirect('/edit.html')
+  });
+})
+
 app.post( '/logout', async (request, response) => {
   loggedInUser = null
   console.log("logged out")
