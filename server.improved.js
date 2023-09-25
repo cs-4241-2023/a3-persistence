@@ -28,16 +28,12 @@ const express = require('express'),
       app = express(),
       port = 3000
 
-//app.use(express.static('public'))
+
 app.use(express.json())
 
-// use express.urlencoded to get data sent by defaut form actions
-// or GET requests
+
 app.use( express.urlencoded({ extended:true }) )
 
-
-// cookie middleware! The keys are used for encryption and should be
-// changed
 app.use( cookie({
   name: 'session',
   keys: ['key1', 'key2']
@@ -46,36 +42,27 @@ app.use( cookie({
 
 
 app.post( '/login', async (req,res)=> {
-  // express.urlencoded will put your key value pairs 
-  // into an object, where the key is the name of each
-  // form field and the value is whatever the user entered
-  console.log( req.body )
   let username = req.body.username;
   let password = req.body.password;
 
   console.log(await loginCollection.findOne({username, password}))
   
-  // for A3, you should check username / password combos in your database
   if(await loginCollection.findOne({username, password})) {
-    // define a variable that we can check in other middleware
-    // the session object is added to our requests by the cookie-session middleware
     req.session.login = true
     req.session.username = username
-    // since login was successful, send the user to the main content
-    // use redirect to avoid authentication problems when refreshing
-    // the page or using the back button, for details see:
-    // https://stackoverflow.com/questions/10827242/understanding-the-post-redirect-get-pattern 
+
     res.redirect( 'index.html' )
   }else{
-    // password incorrect, redirect back to login page
     res.sendFile( __dirname + '/public/login.html' )
   }
 })
 
 
-// add some middleware that always sends unauthenicaetd users to the login page
+
 app.use( function( req,res,next) {
-  if( req.session.login === true )
+let robot = req.url.includes('robots.txt')
+
+  if( req.session.login === true || robot)
     next()
   else
     res.sendFile( __dirname + '/public/login.html' )
