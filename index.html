@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oswald&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Daily Planning App</title>
+</head>
+
+<body>
+
+<div id="login-box">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login / Register</button>
+</div>
+
+<div id="welcome-section" class="d-none d-flex justify-content-between">
+    <h2>Welcome <span id="user-name"></span>!</h2>
+    <button id="logout-button" class="btn btn-danger ml-auto" onclick="logout()">Logout</button>
+</div>
+
+
+
+<div id="task-bar" class="d-flex justify-content-center">
+    <input type="text" id="new-task-name" placeholder="Input Tasks">
+    <input type="date" id="new-task-date" placeholder="Creation Date">
+    <select id="new-task-priority">
+        <option value="high">High</option>
+        <option value="medium" selected>Medium</option>
+        <option value="low">Low</option>
+    </select>
+    <button onclick="addTask()">Add Task</button>
+</div>
+
+<div id="task-list">
+
+</div>
+
+<script src="js/main.js"></script>
+</body>
+
+</html>
