@@ -1,9 +1,10 @@
+require("dotenv").config();
 const express = require("express");
 const { MongoClient, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 3000;
 
-const uri = `mongodb+srv://ccordobaescobar464:${process.env.PASSWORD}@cluster.du4q9pb.mongodb.net/?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@cluster.du4q9pb.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
 let tasksCollection;
 let usersCollection;
