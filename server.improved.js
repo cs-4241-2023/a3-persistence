@@ -1,10 +1,3 @@
-
-const appdata = [
-  { 'id': 0, 'yourName': 'Bright', 'yourKills': 10, 'yourDeaths': 5, 'yourAssists': 1, 'KDA': 2.2},
-  { 'id': 1, 'yourName': 'Nelson', 'yourKills': 20, 'yourDeaths': 50, 'yourAssists': 3, 'KDA': .46 }
-]
-
-
 require('dotenv').config();
 
 const { MongoClient, ServerApiVersion } = require('mongodb');

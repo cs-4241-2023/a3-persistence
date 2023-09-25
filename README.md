@@ -1,5 +1,5 @@
 Bright Lin
-https://a3-bright183.glitch.me/
+https://a3-bright-lin-2e9e58c1e3a9.herokuapp.com/
 
 ## Your Web Application Title
 
@@ -20,19 +20,11 @@ I chose this way to do authentication because it was the first way i thought of 
 1. cookie-session: Used to establish a cookie based session for my login
 2. express.urlencoded({ extended:true }): Used to get data sent by defaut form actions and GET requests
 3. express.static('public'): Serves up static files in the directory public
-4. 
 
 ## Technical Achievements
-- **Tech Achievement 1**: 
+- **Tech Achievement**: 
 
-I've achieved 100% on all lighthouse report fields on both the login page and the main page.
+1. I've achieved 100% on all lighthouse report fields on both the login page and the main page.
+2. Uploaded project on Heroku: It was very simple to just create a new app in Heroku and then you can easily connect a repo to Heroku and run the website. 
 
 
-### Design/Evaluation Achievements
-- **Design Achievement 1**: 
-
-Make your site accessible using the resources and hints available from the W3C, Implement/follow twelve tips from their tips for writing, tips for designing, and tips for development. 
-
-Tips:
-1. Provide informative, unique page titles: Created unique informative page titles for the login page and the main page with the data table.
-2. Use headings to convey meaning and structure: Used a Login heading to convey the login page.
