@@ -43,10 +43,11 @@ app.use(express.static('public'));
 
 app.get('/', async function(req, res) {
   //console.log(req.session);
-  if (req.session === undefined || req.session.login === null || req.session.login === false) {
+  if (req.session === undefined || req.session.login === null || req.session.login === false || req.session.login === true) {
     res.sendFile(__dirname + "/views/no_pass.html")
   } else {
     const username = await getUserName(req.session.login);
+    //console.log(username)
     //console.log(username)
     res.render('index', {
       name: username.username
