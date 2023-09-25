@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<title>Combat Tracker - DM View</title>
+	<meta charset="utf-8" name="description" content="The DM view and control of the initiative tracker.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="js/dm.js"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+	<link rel="stylesheet" href="css/dm.css">
+
+	<!-- get rid of favicon error -->
+	<link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+<body>
+	<!--New entry, display entries, control entries (delete/modify/reorganize later)-->
+	<div id="entryBox">
+		<form>
+			<!--Character name - text box
+			max hp - int box
+			AC - int box
+			Physical representation - text box-->
+			<label for="Name">Creature Name:</label> <input type="text" id="Name" placeholder="Creature Name"><br>
+			<label for="CurrHP">Hit Points:</label> <input type="number" id="CurrHP" value="0"><br>
+			<label for="MaxHP">Max HP:</label> <input type="number" id="MaxHP" value="0"><br>
+			<label for="AC">Armor Class:</label> <input type="number" id="AC" value="10" min="0"><br>
+			<label for="Desc">Piece Description:</label> <input type="text" id="Desc" placeholder="Piece Description"><br>
+			<br>
+			<!--Refresh the table with new/edited entry-->
+			<a href="#" role="button" id="submit">Submit</a>
+			<a href="#" role="button" id="clear">Clear</a>
+		</form>
+	</div>
+
+	<div id="listBox">
+		<table id="list" role="grid">
+			<thead><tr><th>Name</th>	<th>HP</th>	<th>Status</th>	<th>AC</th>	<th>Piece</th></tr></thead>
+		</table>
+	</div>
+
+	<div id="entryControl">
+		<label for="selectedName">Selected: </label><input id="selectedName" contenteditable="false" placeholder="Selected Creature"><br><br>
+		<a href="#" id="selectEdit" role="button">Edit</a>
+		<a href="#" id="selectDelete" role="button">Delete Entry</a>
+		<a href="#" id="deselect" role="button">Deselect</a>
+	</div>
+</body>
+</html>
