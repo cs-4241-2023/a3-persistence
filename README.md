@@ -54,7 +54,7 @@ ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THE
 *Technical*
 
 - (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse?   
-
+I tried out Heroku to compare to Glitch. Glitch seemed to be aimed way more towards hobbyists than Heroku which appeared to have more tools and integrations available within it. It seemed to be used for dev teams and more reliable than Glitch.
 
 *Design/UX*
 
