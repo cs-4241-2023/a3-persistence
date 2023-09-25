@@ -96,6 +96,16 @@ app.get('/login', (req, res) => {
   res.render('index', { layout: 'indexLayout', failed: '' })
 })
 
+app.use(function (req, res, next) {
+  let index = req.url.includes("index");
+  let css = req.url.includes("css");
+  let js = req.url.includes("js");
+  let robot = req.url.includes("robots.txt");
+  if (req.session.login !== true && !index && !css && !js && !robot)
+    res.redirect("/login");
+  else next();
+});
+
 app.get('/main', (req, res) => {
   const update = async () => {
     console.log("Session Im checking ", req.user)
@@ -126,16 +136,6 @@ app.delete('/logout', (req, res) => {
   req.logout()
   res.redirect('/login')
 })
-
-app.use(function (req, res, next) {
-  let index = req.url.includes("index");
-  let css = req.url.includes("css");
-  let js = req.url.includes("js");
-  let robot = req.url.includes("robots.txt");
-  if (req.session.login !== true && !index && !css && !js && !robot)
-    res.redirect("/login");
-  else next();
-});
 
 app.use(express.json());
 
