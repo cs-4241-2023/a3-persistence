@@ -1,21 +1,27 @@
-// Collects the data in form inputs and sends it to the server to create a new task
+let username;
 const submit = async (event, _id) => {
   event.preventDefault();
 
   let taskInput = document.getElementById("task");
-  const task = taskInput.value;
-  taskInput.value = "";
-
   let descInput = document.getElementById("description");
-  const desc = descInput.value;
-  descInput.value = "";
 
+  const task = taskInput.value;
+  const desc = descInput.value;
   let dueDate = new Date(
     document.getElementById("dueDate").value
   ).toLocaleDateString("en-US");
-  let id = _id;
 
-  const json = { id, task, desc, dueDate };
+  let id = _id;
+  taskInput.value = "";
+  descInput.value = "";
+
+  const json = {
+    id: id,
+    username: username,
+    task: task,
+    desc: desc,
+    dueDate: dueDate,
+  };
   const body = JSON.stringify(json);
 
   const submitButton = document.getElementById("submitButton");
@@ -214,7 +220,7 @@ const getTasks = data => {
 // Helper function to fetch tasks from server and display them in a table
 const fetchTasks = async () => {
   try {
-    const fetchResponse = await fetch("/tasks", { method: "GET" });
+    const fetchResponse = await fetch(`/tasks/${username}`, { method: "GET" });
 
     if (fetchResponse.ok) {
       const data = await fetchResponse.json();
@@ -227,43 +233,17 @@ const fetchTasks = async () => {
   }
 };
 
-const fetchLogin = async () => {
-  try {
-    const fetchResponse = await fetch("/", { method: "GET" });
-
-    if (fetchResponse.ok) {
-      //const data = await fetchResponse.json();
-      //getTasks(data);
-    } else {
-      throw new Error("Fetch request failed");
-    }
-  } catch (error) {
-    console.error("Error fetching tasks:", error);
+window.onload = function () {
+  const loggedIn = localStorage.getItem("loggedIn");
+  if (!loggedIn) {
+    window.location = "index.html";
   }
-};
-
-window.onload = async function () {
-  // const button = document.getElementById("submitButton");
-  // const submitWithId = e => {
-  //   submit(e, null);
-  // };
+  username = localStorage.getItem("username");
+  fetchTasks();
 
   const submitButton = document.getElementById("submitButton");
-  const loginButton = document.getElementById("loginButton");
-
-  if (submitButton) {
-    const submitWithId = e => {
-      submit(e, null);
-    };
-
-    submitButton.onclick = submitWithId;
-    fetchTasks();
-  } else if (loginButton) {
-    const submitWithId = e => {
-      submit(e, null);
-    };
-
-    loginButton.onclick = submitWithId;
-    fetchLogin();
-  }
+  const submitWithId = e => {
+    submit(e, null);
+  };
+  submitButton.onclick = submitWithId;
 };
