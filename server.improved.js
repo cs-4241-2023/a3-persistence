@@ -76,7 +76,7 @@ passport.use(new LocalStrategy(async function verify(username, password, cb) {
 passport.use(new GitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
-    callbackURL: "http://localhost:3000/oauth2/github/redirect"
+    callbackURL: "https://a3-nelson-diaz.glitch.me/oauth2/github/redirect"
   },
   async function(accessToken, refreshToken, profile, cb) {
     
