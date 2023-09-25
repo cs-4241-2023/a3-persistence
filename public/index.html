@@ -1,0 +1,65 @@
+<!-- <!doctype html>
+<html lang="en">
+    <head>
+        <title>Login</title>
+        <meta charset="utf-8">
+
+        <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    </head>
+    <body>
+        <h1 id="login-header">Login</h1>
+        
+        <form >
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username"> 
+            <br>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password">
+            <br>
+            <button type="submit" name="action" value="login" id="loginButton">Login</button>
+            <button type="submit" name="action" value="create" id="createAccount">Create Account</button>
+            
+        </form>
+    </body>
+</html> -->
+
+<!-- action="/login" method="POST" -->
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 3</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="Description" content="CS4241 Assignment 3">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <h1 id="app-header">TODO List App</h1>
+    <form>
+      <label for="todo-name">Task Name:</label>
+      <input type="text" id="todo-name" placeholder="Enter task name">
+      <label for="due-date">Due Date:</label>
+      <input type="date" id="due-date">
+      <button type="submit" id="create-button">Create/modify task</button>
+    </form>
+    <ul id="todo-list">
+    </ul>
+    <table id="todo-table">
+      <thead class="table-head">
+        <tr>
+          <th>⠀</th>
+          <th>Task Name</th>
+          <th>Due Date</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+    </table>
+    <button id="delete-button">Delete task</button>
+  </body>
+</html>
+
