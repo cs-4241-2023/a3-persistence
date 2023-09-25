@@ -1,5 +1,5 @@
 Nelson Diaz
-https://a3-nadiaz2.glitch.me
+https://a3-nelson-diaz.glitch.me
 
 ## SIMS: Simple Inventory Management System
 
