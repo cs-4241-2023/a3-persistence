@@ -329,4 +329,4 @@ app.post('/update', async (request, response ) => {
 })
 
 // set up the server
-app.listen(3000)
+app.listen(`${process.env.PORT}`)
