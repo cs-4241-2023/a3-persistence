@@ -103,9 +103,10 @@ app.post( '/submit', express.json(), async (req, res) => {
     res.end();
 })
 
-app.post('/update',express.json(),(req,res)=>{
-    //let id=JSON.parse(req.body._id);
-
+app.post('/update',express.json(),async (req,res)=>{
+    let id=JSON.parse(req.body._id);
+    await taskCollection.updateOne({_id:new ObjectID(id)},{ $set: { task: req.body.task,creationDate:req.body.creationDate,deadline:req.body.deadline } });
+    res.redirect('app.html')
 })
 
 app.post('/delete',express.json(), async (req,res) => {

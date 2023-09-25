@@ -10,12 +10,12 @@ const submit = async function( event) {
     const form = document.querySelector('form')
 
     let task=form["Task"].value;
-    let deadline=new Date(form["Deadline"].value).toLocaleDateString("en-US");
-    let creationDate=new Date(form["CreationDate"].value).toLocaleDateString("en-US");
+    let deadlineDate=new Date(form["Deadline"].value);
+    let creationDate=new Date(form["CreationDate"].value);
 
     let taskValid=task!=="" && task!==undefined;
     let dateValid=creationDate.value !== "";
-    let deadlineValid=deadline.value !== "";
+    let deadlineValid=deadlineDate.value !== "";
 
     if(!taskValid){
         alert("Task is invalid");
@@ -28,7 +28,12 @@ const submit = async function( event) {
     }
 
     if(taskValid && dateValid && deadlineValid){
-        let taskObject = { task: task, creationDate:creationDate, deadline:deadline};
+        creationDate.setDate(creationDate.getDate()+1);
+        let creation=creationDate.toLocaleDateString();
+
+        deadlineDate.setDate(deadlineDate.getDate()+1);
+        let deadline=deadlineDate.toLocaleDateString();
+        let taskObject = { task: task, creationDate:creation, deadline:deadline};
         let body=JSON.stringify(taskObject);
         const response1 = await fetch( '/submit', {
             method:'POST',
@@ -151,21 +156,50 @@ function CreateEditButton(taskID){
     button.ariaLabel="Edit Task Button";
     button.innerHTML = "Edit";//`<i class="fa-solid fa-pen-to-square"></i>`;
     button.onclick= (e) => {
-        editData(id);
+        OpenEditForm(id);
     }
     cell.append(button);
     return cell;
 }
 
-const editData = (taskID, task, creationDate,deadline) => {
-    let data = {_id:taskID,task:task,creationDate:creationDate,deadline:deadline};
+let editableTaskID="";
 
-    let body=JSON.stringify(data);
-    fetch( "/edit", {
+function OpenEditForm(taskID) {
+    const editForm=document.querySelector(".Edit-Task");
+    editForm.style.display = "block";
+    editableTaskID=taskID;
+}
+
+const editData = (event) => {
+    event.preventDefault()
+    const form = document.forms[1];
+    console.log(form === null || form === undefined)
+    let task=form["Task"].value;
+    let deadlineDate=new Date(form["Deadline"].value);
+    let creationDate=new Date(form["CreationDate"].value);
+    creationDate.setDate(creationDate.getDate()+1);
+    let creation=creationDate.toLocaleDateString();
+
+    deadlineDate.setDate(deadlineDate.getDate()+1);
+    let deadline=deadlineDate.toLocaleDateString();
+    let taskObject = { _id:editableTaskID,task: task, creationDate:creation, deadline:deadline};
+    let body=JSON.stringify(taskObject);
+
+    fetch("/update", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
         body
-    }).then(() =>{
+    }).then(r =>{
+        console.log("Updated")
         window.location.reload();
     })
+}
+
+function closeEditForm(){
+    const editForm=document.querySelector(".Edit-Task");
+    editForm.style.display = "none";
 }
 
 function LoadFromServer(data){
@@ -194,6 +228,11 @@ function LoadFromServer(data){
 window.onload = async function() {
     const addButton = document.querySelector(".add-button");
     addButton.onclick = submit;
+    const editForm=document.querySelector(".Edit-Task");
+    editForm.style.display = "none";
+    const editSubmit=document.querySelector(".edit-button");
+    editSubmit.onclick=editData;
+
 
     const response = await fetch( '/loadTasks', {
         method:'GET'

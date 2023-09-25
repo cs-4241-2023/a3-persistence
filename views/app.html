@@ -24,12 +24,33 @@
 				<input type="date" name="Deadline" placeholder="Deadline" required="required">
 			</div>
 			<div class="addItem">
-				<button class="add-button">submit</button>
+				<button class="add-button">Add Task</button>
 			</div>
 			<div class="addItem">
 				<button class="resetForm-button" onclick="ClearForm()">reset</button>
 			</div>
 		</form>
+	</div>
+</div>
+
+<div class="Edit-Task">
+	<h1>Edit Task</h1>
+	<div>
+		<form id="taskContainer">
+			<div class="addItem">
+				<input type="text" name="Task" placeholder="Task" required="required">
+			</div>
+			<div class="addItem">
+				<input type="date" name="CreationDate" placeholder="CreationDate" required="required">
+			</div>
+			<div class="addItem">
+				<input type="date" name="Deadline" placeholder="Deadline" required="required">
+			</div>
+			<div class="addItem">
+				<button class="edit-button">Update</button>
+			</div>
+		</form>
+		<button onclick="closeEditForm()" class="close-edit-button">Close Edit Window</button>
 	</div>
 </div>
 <div id="task-table">
