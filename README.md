@@ -9,5 +9,5 @@ My project is an interest tracker where users can input a deposit, the time of p
 ## Technical Achievements
 - **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
 - **Lighthouse Tests**: I scored 100 for both login and main page on the lighthouse tests for Performance, Accessibility, Best practices, and SEO. Screenshots found below:
-![Alt loginPageTest](https://github.com/andrewhariyanto/webware-a3-persistence/lighthouse_tests/loginPageLighthouse.png)
-![Alt loginPageTest](https://github.com/andrewhariyanto/webware-a3-persistence/lighthouse_tests/mainPageLighthouse.png)
+![Alt loginPageTest](/lighthouse_tests/loginPageLighthouse.png)
+![Alt loginPageTest](/lighthouse_tests/mainPageLighthouse.png)
