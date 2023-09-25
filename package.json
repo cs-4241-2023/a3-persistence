@@ -6,6 +6,9 @@
   "scripts": {
     "start": "node express.server.js"
   },
+  "engines": {
+    "node": "16.x"
+  },
   "dependencies": {
     "bootstrap": "^5.3.2",
     "dotenv": "^16.3.1",
