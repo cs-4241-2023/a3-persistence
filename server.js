@@ -13,6 +13,11 @@ let appdata = [
   { TaskName: "Task 2", DueDate: "09/12/2023", Priority: 1, MyDay: true },
 ]
 
+function requestLog(req, res, next) {
+  console.log(`Request: ${req.method}, ${req.url}`);
+  next();
+}
+
 const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
@@ -22,6 +27,7 @@ const client = new MongoClient(uri, {
 });
 
 app.use(bodyParser.json());
+app.use(requestLog);
 
 app.post( '/submit', async ( req, res ) => {
   const json = req.body
@@ -80,5 +86,12 @@ app.get('/appdata', async (req, res) => {
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
+function errorHandler(err, req, res, next) {
+  console.error(err.stack)
+  res.status(500).send('Something broke!')
+}
+
+app.use(errorHandler);
 
 const listener = app.listen( process.env.PORT || 3000 )
