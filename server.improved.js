@@ -5,6 +5,7 @@ const http = require( 'http' ),
       dotenv = require("dotenv"),
       { MongoClient, ObjectId } = require("mongodb"),
       axios = require('axios'),
+      { Octokit } = require("octokit"),
       app = express()
 
 // allows use of environment variables
@@ -191,14 +192,24 @@ app.get("/github-callback", (request, response) => {
  
   axios
     .post("https://github.com/login/oauth/access_token", body, options)
-    .then((res) => res.data.access_token)
-    .then((token) => {
+    .then((res) => res.data.accessToken)
+    .then(async (token) => {
       accessToken = token
-      console.log(JSON.stringify(token))
-      response.redirect(`/?token=${token}`)
+      response.redirect(`/main/?token=${token}`)
+      const data = await axios.get('https://api.github.com/user', {}, {
+      headers: {
+      authorization: 'Bearer ' + token
+      }
     })
-    .catch((err) => response.status(500).json({ err: err.message }));
+    request.session.login = true
+    request.session.user = data.login
+    })
+    .catch((err) => response.status(500).json({ err: err.message }))
 });
+
+app.get('main', (request, response) => {
+  
+})
 
 // middleware for database checking and login checking
 app.use( (request,response,next) => {

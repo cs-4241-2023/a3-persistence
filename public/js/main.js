@@ -91,7 +91,9 @@ window.onload = async function () {
 
   data = await response.json();
 
-  if(data.username === "") {
+  console.log('username: ' + data.username)
+
+  if(!!data.username) {
     const response2 = await fetch( '/logout', {
       method:'POST'
     })
