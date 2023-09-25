@@ -1,0 +1,18 @@
+{
+  "name": "a3-persistence",
+  "description": "Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template\r ===",
+  "author": "Iain McEwen",
+  "scripts": {
+    "start": "node express.js"
+  },
+  "dependencies": {
+    "cookie-session": "^2.0.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mime": "^2.6.0",
+    "mongodb": "^6.1.0"
+  },
+  "version": "1.0.0",
+  "main": "express.js",
+  "license": "ISC"
+}
