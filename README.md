@@ -27,3 +27,18 @@ express.urlencoded({ extended: true }): parses incoming URL-encoded form data fr
 cookie(): Uses the cookie-session package. It is responsible for handling session cookies, including generating session keys and managing user sessions.
 
 (req,res,next): serves as a check to ensure that the collection variable is not null before allowing the request to proceed. If collection is null, it sends a "Service Unavailable" (503) response. Otherwise, it calls the next() function to pass the request to the next middleware.
+
+
+<h2>Design Achievements</h2>
+I implemented the tips from W3C to make my website accessible
+
+- Provide sufficient contrast between foreground and background: each section is a distinct color
+- Don’t use color alone to convey information: all of my information is conveyed using words
+- Ensure that interactive elements are easy to identify: all of my buttons and elements are clearly presented
+- Provide clear and consistent navigation options: page navigation is done with the use of buttons and scrolling
+- Ensure that form elements include clearly associated labels: every form element has a distinct label
+- Provide easily identifiable feedback: feedback is in console.log and on the webpage
+- Use headings and spacing to group related content: elements are adequately spaced out and not squished together
+- Create designs for different viewport sizes: there is a meta viewport tag in the html files
+- Include image and media alternatives in your design: there are no forms of media that would require alternatives for those who are disabled
+- Provide controls for content that starts automatically: no content starts automatically, everything is done based on user interaction
