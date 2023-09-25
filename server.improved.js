@@ -51,7 +51,7 @@ const logger = (req, res, next) => {
 };
 
 // tasks posts middleware
-const middleware_post = (req, res, next) => {
+const add_task_middleware = (req, res, next) => {
   let dataString = "";
   req.on("data", (data) => {
     dataString += data;
@@ -88,8 +88,15 @@ const middleware_post = (req, res, next) => {
 app.use(logger);
 app.use(express.static("public"));
 app.use(express.json());
-// app.use(middleware_post);
-app.post("/submit", middleware_post, (req, res) => {
+
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+  console.log("username: ", username);
+  console.log("password: ", password);
+  res.send("You successfully logged in!");
+});
+
+app.post("/submit", add_task_middleware, (req, res) => {
   // our request object now has a 'json' field in it from our previous middleware
   res.writeHead(200, { "Content-Type": "application/json" });
   res.end(req.json);
