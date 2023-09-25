@@ -7,7 +7,7 @@
 }
 
 body {
-  color: black;
+  background-color: #fcf5e5;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -24,7 +24,7 @@ body {
 
 h1, b1 {
   text-align: center;
-  text-shadow: -4px 4px red, -8px 8px green, -12px 12px blue;Ω
+  text-shadow: -4px 4px red, -8px 8px green, -12px 12px blue;
 }
 
 .todo_add {
@@ -36,12 +36,7 @@ h1, b1 {
 }
 
 
-div {
-  background-color: black; 
-
-}
-
-hr {
+hr, br {
   color: #fcf5e5;
   background-color: #fcf5e5;
 }

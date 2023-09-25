@@ -156,8 +156,12 @@ const login = async function (event) {
 
   console.log(text)
   if (text === "true") {
+    alert("Successfully Logged In!")
     document.getElementById("login").style.display = "none";
     document.getElementById("lower").style.display = "none";
+  }
+  else {
+    alert("Failed to Log In!")
   }
 
   console.log("text:", text);
@@ -183,6 +187,12 @@ const register = async function (event) {
   });
 
   const text = await response.text();
+  if (text === "true") {
+    alert("Successfully Registered!")
+  }
+  else {
+        alert("Failed to Register!")
+  }
 
 
   console.log("text:", text);

@@ -54,3 +54,6 @@ static files in express.
 - **Tech Achievement 1**: Get 100% in all four lighthouse tests:
 https://cdn.glitch.global/27ecaa25-6fa0-4ea2-967d-1b728de89cfd/a170871c-1b44-4b33-a109-fb40b297e0f4.image.png?v=1695619896864
 I did it, it required some tweaking specifically in the form labels that I lacked. The link is posted above for the screemshot of all the achievements.
+
+### Design/Evaluation Achievements
+- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
