@@ -1,114 +1,78 @@
-Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
-===
 
-Due: September 22nd, by 11:59 AM.
+## WPI Badminton Hour Tracker
 
-This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), 
-a database (mongodb), and a CSS application framework / template of your choice (Boostrap, Material Design, Semantic UI, Pure etc.)
+Sarah Olson: A3
 
-Baseline Requirements
----
+http://a3-sarah-olson.glitch.me
 
-Your application is required to implement the following functionalities:
+I created a web app for Badminton Club members who are using their participation in this course as a gym credit to track their progress toward their grade goal. First the user either enters or creates account information, so that they can only see their progress, and login in. The user then enters their target grade and the dates + amount of hours they attended on each day to keep track of the user's progress toward their grading goal. 
 
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data associated with a logged in user (except passwords)
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account. 
-- Persistent data storage in between server sessions using [mongodb](https://www.mongodb.com/cloud/atlas) (you *must* use mongodb for this assignment).
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks). 
-This should do the bulk of your styling/CSS for you and be appropriate to your application. 
-For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
+The user can also edit their grading goal and delete entries they make. 
 
-Your application is required to demonstrate the use of the following concepts:  
+There are two different pages, one thats a higher level overview (just showing their current goal and the number of hours they have left to acheive that goal), and a more in depth breakdown of their progress (showing their current goal, each time they logged their attendance) aswell as giving the user the ability to change their goal.
 
-HTML:  
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
+The main challenge I faced was converting my a2 iteration of this project to mongodb. I could not get it to connect without hard coding it, and still have been unable to do so with a .env on localhost. 
 
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is 
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create 
-new user accounts upon login if none exist, however, you must alert your users to this fact.  
+I have a simple username and password, the only requirement for the username and password is that it needs to be at least one character long. I chose this because it was the simpletest to implement.
 
-CSS:  
-- CSS styling should primarily be provided by your chosen template/framework. 
-Oftentimes a great deal of care has been put into designing CSS templates; 
-don't override their stylesheets unless you are extremely confident in your graphic design capabilities. 
-The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
+For the login page I used Pure.CSS and for the Main and Dashboard page I used Pico.CSS. The reason I switched to Pico for the subsequent pages was because I was finding it nearly imposible to override certain items to get my accesibility contrast at 100%. I felt the login page was more clear with Pure.CSS, so I kept that one.
 
-JavaScript:  
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. 
-See the [previous assignment](https://github.com/cs-4241-23/shortstack) for reference.
+As far as custom styling I have individual style pages for each of the html pages. I kept most of the flexbox styling that I used in a2 because I liked the way it displayed information. I also kept most of the colors and border-type information grouping from a2.
 
-Node.js:  
-- A server using Express and a persistent database (mongodb).
+I used:
 
-General:  
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests 
-using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment. 
+cookie-session: This stores session data on the server so that it is easily accessible (for example username and password information so that the user does not have to resign in while using the page)
 
-Deliverables
----
-
-Do the following to complete this assignment:
-
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. If you developed your project locally, deploy your project to Glitch (unless completing the alternative server technical acheivement described below), and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch (or an alternative server), it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
-
-Acheivements
----
-
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the 
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%. 
-These are recommended acheivements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README, 
-why it was challenging, and how many points you think the achievement should be worth. 
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
-
-*Technical*
-- (10 points) Implement OAuth authentication, perhaps with a library like [passport.js](http://www.passportjs.org/). 
-*You must either use Github authenticaion or provide a username/password to access a dummy account*. 
-Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. 
-Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!  
-- (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
-
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
-
-## Your Web Application Title
-
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
-
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
-
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
+express-handlebars: This allows me to preform server side rendering by sending messages to html files from a server file.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- **Tech Achievement 1**: Lighthouse 100 Score: I got a 100 for all 3 of my pages (images attached below)
+![Screenshot displaying a 100% in Google Lighthouse for: Login Page](<Login100.png>)
+![Screenshot displaying a 100% in Google Lighthouse for: Home Page](<Home100.png>)
+![Screenshot displaying a 100% in Google Lighthouse for: Progress Dashboard Page](<Dashboard100.png>)
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative and used these 12 tips.
+
+1. Provide informative, unique page titles:
+For each one of my pages, the titles include the name of the application and a descriptive title of the purpose of that pages' contents.
+
+2. [maybe swap] Use headings to convey meaning and structure:
+I use headings to help the user, at a glance, figure out where their eyes need to go based off of the information they want to receive
+
+3. Provide Clear instructions
+On the Login Page, there are clear labels telling the user the type of information that should be entered in each field, and at the top of the page, there is a sentence differentiating the meaning of both of the buttons (Login and Register)
+
+Additionally, on other pages where a goal needs to be entered for the first time, there are sentences explaining what the grade charts mean, and how you should submit the grade you would like to receive (in addition to the placeholders showing examples of the information that should be entered).
+
+4. Keep content clear and concise:
+I try to limit the amount of words that a user has to focus on at one time. I use short sentences that are grouped in boxes so that the information is not overwhelming and stuck in a block of text. I tried to limit the amount of words and make the words that do exist clear. 
+
+5. Provide sufficient contrast between foreground and background
+Each one of my pages has sufficient contrast between the foreground and background and this can be seen in the Lighthouse score, as I go no Accesibility points taken off for lack of contrast.
+
+6. Don’t use color alone to convey information
+For the Login Page, I use the color red to convey an error message, but also the text "Login Failed/Register Failed" to convey that there has been a failure and go on to explain why. 
+
+This can also be seen on any page where the grade information is shown, I use colors, letters, and numbers to show the value and commitment of each grade.
+
+7. Ensure that interactive elements are easy to identify
+For the login page, the buttons (interactive) are a different shade of gray and easy to compared to the rest of the elements on the login page.
+
+For the rest of the pages, all interactive buttons or clickable elements are denoted with an underline.
+
+8. Ensure that form elements include clearly associated labels/Associate a label with every form control
+
+All form elements include a label showing the user what kind of information should go into it. A clear example of this is when you are on my "Progress Dashboard" page and want to edit the Grade, the form has a label telling the user that the information you need to input here is the "New Grade".
+
+9. Provide easily identifiable feedback/Help users avoid and correct mistakes
+On the login page where there is a login or registration failure, the error message right under the buttons explains exactly what the error is. Whethere you are trying to register an existing user, or you password is wrong, you know what the problem is. 
+
+10. Use headings and spacing to group related content
+Throughout my page I use outlines to group content together. On teh Progress Dashboard page I have a box saying what the information is below and then a larger box with smaller sections inside it so that all the information is easily readable and grouped together. The goal infomation is on one side while your hour progress is on the other. It makes reading the information easier as all the content is grouped to different sections.
+
+11. Identify page language and language changes
+Each one of my pages contains lang="en" in the html tag
+
+12. Reflect the reading order in the code order
+All of my html is stuructured in the way that the user would recieve the information, so that users with screen readers are not lost. Even when some of my pages contain two side my side containers (for example in progress dashboard), all the information from one side is in a top to bottom format aswell as the other side. That way when a screen reader is being used, its not jumping from side to side, and all the grade information is read first, then the hour information

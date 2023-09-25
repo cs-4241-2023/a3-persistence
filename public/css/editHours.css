@@ -1,0 +1,157 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+body{
+  font-family: 'Roboto', sans-serif;
+  font-size: 22px;
+  padding: 70px;
+  flex-direction: column
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+th {
+  border: 5px solid black;
+  text-align: center;
+  padding: 10px;
+  border-color:#f96464;
+  background-color: #c9c9c8;
+}
+
+td {
+  border: 5px solid black;
+  text-align: center;
+  padding: 10px;
+  border-color:#ffb3b3;
+  background-color: #dddddd;
+
+}
+
+h1 {
+  outline-width: 10px;
+  color: rgb(179, 0, 0);
+
+  text-align: center;
+
+  border-width:3px;
+  border-style:solid;
+  border-color: #ff5353;
+}
+
+p {
+  text-align: center
+}
+
+#gradeList {
+  border-width:3px;
+  border-style:solid;
+  border-color: #575757;
+  text-align: center
+}
+
+.A{
+  border-width:3px;
+  border-style:solid;
+  border-color: #beffa6;
+  text-align: center
+}
+
+.B {
+  border-width:3px;
+  border-style:solid;
+  border-color: #e3ffa6;
+  text-align: center
+}
+
+.C {
+  border-width:3px;
+  border-style:solid;
+  border-color: #fbf3a3;
+  text-align: center
+}
+
+.NR {
+  border-width:3px;
+  border-style:solid;
+  border-color: #fbb7a3;
+  text-align: center
+}
+
+
+.border {
+  border-width:3px;
+  border-style:solid;
+  border-color: #d2d1fd;
+  text-align: center
+}
+
+#editGoalForm {
+  visibility: hidden;
+}
+
+.tableInputSection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#showEnterInfo {
+  background: #006600;
+  color: white;
+  border-radius: 4px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+  
+}
+
+.sideBySide {
+    visibility: visible;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+    padding: 10px
+  }
+
+
+.pure-menu-link {
+  color:black;
+  border-color: rgb(176, 40, 40);
+  border-width: 3px;
+  border-style: solid;
+  text-decoration: underline;
+}
+
+.gradeRules {
+  border-color: rgb(235, 39, 39);
+  border-width: 3px;
+  border-style: solid;
+  font-family: 'Roboto', sans-serif;
+  font-size: 25px;
+}
+
+.infoBox {
+  border-color: rgb(31, 229, 143);
+  border-width: 3px;
+  border-style: solid;
+}
+
+.underline {
+  border-color: rgb(178, 112, 177);
+  border-width: 3px;
+  border-style: solid;
+}
+
+.contrast:focus-visible {
+  box-shadow: 0 0 10px 10px blue
+}
+
+button {
+  text-decoration: underline;
+
+ }
+
+ #enterHourForm {
+  visibility: hidden;
+ }

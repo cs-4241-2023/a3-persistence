@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+
+<head>
+  <title>Home Page - WPI Badminton Club Grade Tracker</title>
+  <meta charset="utf-8">
+  <meta name="description" content="A page showing the grade goal and hours attended for WPI Badminton Club students">
+  <script src="/main.js" type="text/javascript"></script>
+  <link rel="stylesheet" href="/main.css" tex="text/css">
+
+  <!-- Pure.CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- get rid of favicon error -->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+
+<body>
+  <nav>
+    <ul>
+      <li><strong>Badminton Tracker</strong></li>
+    </ul>
+    <ul>
+      <li><a href="/main.html" class="pure-menu-link pure-menu-selected">Overview</a></li>
+      <li><a href="/editHours.html" class="pure-menu-link pure-menu-selected">Progress Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <h1>Welcome to WPI Badminton Club Hour Tracker</h1>
+
+
+
+  <p>If you are taking Badminton Club for Gym Credit you receive your grade based on the amount of
+    hours you attend.
+  </p>
+
+  <p>This tool is used to help track your progress toward your grading goal!</p>
+
+  <div>
+    <button class="contrast" id="displayInfo">Display Current Progress</button>
+  </div>
+
+  <div class="sideBySide" id="sideBySide">
+    <div id="displayGrade">
+    </div>
+
+
+    <div id="displayHoursLeft">
+
+    </div>
+  </div>
+
+  <div>
+    <div id="enterGoalForm">
+      <p>You have NOT previously established a goal!</p>
+      <p>Enter Below the Grade you would like to receive</p>
+
+      <form label="Enter Grade">
+        <label for="desiredGoal">Grade</label>
+        <input type="text" id="desiredGoal" placeholder="eg. A">
+        <button class="contrast" id="setGoal">Set Grade Goal</button>
+      </form>
+
+      <ul id="gradeList">
+        <li class="A">A: 28 Hours</li>
+        <li class="B">B: 24 Hours</li>
+        <li class="C">C: 21 Hours</li>
+        <li class="NR">NR: under 21 Hours</li>
+      </ul>
+
+      <p id="termGradeGoal">Grade Goal for this Term: </p>
+
+      </form>
+    </div>
+
+
+
+</body>
+
+</html>

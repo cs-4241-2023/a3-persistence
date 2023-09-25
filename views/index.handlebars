@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>User Login Page - WPI Badminton Club Grade Tracker</title>
+  <meta charset="utf-8">
+  <meta name="description" content="A page showing a login fields">
+  <link rel="stylesheet" href="/login.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- get rid of favicon error -->
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+</head>
+
+<body>
+  <h1>Welcome to WPI Badminton Tracker!</h1>
+  <form method="POST" class="pure-form-stacked">
+    <fieldset>
+      <legend>Enter login information or register an account</legend>
+      <div>
+        <label for="username">Username</label>
+        <input label="username" name="username" type="text" id="username">
+        <label for="password">Password</label>
+        <input label="password" name="password" type="password" id="password">
+      </div>
+      <input class="pure-button" formaction="/login" type="submit" value="Login"></button>
+      <input class="pure-button" formaction="/register" type="submit" value="Register">
+    </fieldset>
+
+  </form>
+  <div label="Error Message" id="error-message">{{{msg}}}</div>
+
+
+</body>
+
+</html>

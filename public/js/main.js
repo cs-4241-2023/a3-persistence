@@ -1,89 +1,62 @@
 
 
 window.onload = function () {
-  //const button = document.querySelector("button");
-  //button.onclick = submit;
-
-  const submitInfo = document.querySelector("#enter");
-  submitInfo.onclick = addHours
+  const showGrade = document.querySelector("#displayInfo")
+  showGrade.onclick = displayInfo
 
   const setGoalGrade = document.querySelector("#setGoal");
   setGoalGrade.onclick = setGoal
-
-  const displayBadmintonEnter = document.querySelector("#showEnterInfo")
-  displayBadmintonEnter.onclick = showEnterHourForm
-
 }
 
 const validGrades = ['A', 'B', 'C', 'NR']
 const tableHeaders = ['Date', 'Hours', 'Time Remaining Until Goal', 'Delete']
-/*
-const getResponse = async function (event) {
+
+const displayInfo = async function (event) {
   event.preventDefault()
 
-  const response = await fetch('/getTable', {
-    method: 'GET',
+  const response = await fetch('/getGradeProgress', {
+    method: 'GET'
   })
 
   const res = await response.json()
-  return res
-}
-*/
+  console.log(res)
 
-const drawTable = function (res) {
-  const tableHead = document.querySelector('thead')
-  const table = document.querySelector('tbody')
+  //if no grade was found must unlock setgoal
+  if (res.length === 0) {
+    const setGoalForm = document.querySelector('#enterGoalForm')
+    setGoalForm.style.visibility = 'visible'
+  } else {
 
-  table.innerHTML = ''
 
-  let idx = 0;
+    const sideBySide = document.querySelector('#sideBySide')
+    sideBySide.style.visibility = 'visible'
 
-  const headerRow = document.createElement('tr')
-  tableHeaders.forEach(title => {
-    const newTitle = document.createElement('td')
-    newTitle.innerText = title
-    headerRow.appendChild(newTitle)
-  })
-  tableHead.appendChild(headerRow)
+    const grade = document.createElement('p')
+    const hoursTilGoal = document.createElement('p')
 
-  res.forEach(d => {
+    const displayGrade = document.querySelector('#displayGrade')
+    displayGrade.innerHTML = ''
+    const titleGrade = document.createElement('p')
+    titleGrade.innerText = "Current Grade Goal: "
+    titleGrade.className = "border"
+    
+    grade.innerText = res.userGrade
+    grade.className = res.userGrade
+    titleGrade.appendChild(grade)
+    displayGrade.appendChild(titleGrade)
 
-    const newRow = document.createElement('tr')
+    const displayHours = document.querySelector('#displayHoursLeft')
+    displayHours.innerHTML = ''
+    const titleHours = document.createElement('p')
+    titleHours.innerText = "Amount of hours left until you achieve the goal:"
+    titleHours.className = "border"
+    displayHours.appendChild(titleHours)
 
-    for (let r in d) {
-      if(r !== "_id" && r !== "username"){
-        const element = document.createElement('td')
-        if(d[r] <= 0){
-          element.innerText = 0
-        } else {
-          element.innerText = d[r]    
-        }
-        newRow.appendChild(element)
-      }
+    hoursTilGoal.innerText = res.timeLeft
+    titleHours.appendChild(hoursTilGoal)
+    displayHours.appendChild(titleHours)
+  }
 
-    }
-
-    const buttonBox = document.createElement('td')
-
-    const deleteButton = document.createElement('button')
-    deleteButton.innerText = "Delete"
-    let currIdx = idx
-    deleteButton.onclick = function (event) { deleteEntry(event, currIdx) }
-    buttonBox.appendChild(deleteButton)
-    newRow.appendChild(buttonBox)
-
-    table.appendChild(newRow)
-    idx += 1
-  })
-}
-
-const showEnterHourForm = function (event) {
-  const showButton = document.querySelector('#showEnterInfo')
-  showButton.style.visibility = "hidden"
-
-  const enterForm = document.querySelector('#enterHourForm')
-  enterForm.style.visibility = "visible"
-  
 }
 
 const setGoal = async function (event) {
@@ -93,106 +66,28 @@ const setGoal = async function (event) {
     json = { goal: goal.value },
     body = JSON.stringify(json)
 
-  if(!validGrades.includes(goal.value)){
+  if (!validGrades.includes(goal.value)) {
     const displayGoal = document.querySelector('#termGradeGoal')
     displayGoal.innerText = "Invalid grade, please try again"
   }
 
-  else{
+  else {
     const response = await fetch('/setGoal', {
       method: 'POST',
-      headers: {"Content-Type": "application/json"},
+      headers: { "Content-Type": "application/json" },
       body
     })
-  
+
     const res = await response.json()
-    
+
     const displayGoal = document.querySelector('#termGradeGoal')
-  
+
     displayGoal.innerText = res[0].goal
     displayGoal.className = res[0].goal
-  
-    const editGoalButton = document.createElement('button')
-    editGoalButton.onclick = editGoal
-    editGoalButton.innerText = "Change Goal"
-  
-    goal.style.visibility = "hidden"
-    document.querySelector('#setGoal').style.visibility = "hidden"
-  
-    const editGoalForm = document.querySelector('#editGoalForm')
-    editGoalForm.style.visibility = "visible"
-    editGoalForm.appendChild(editGoalButton)
+
+    document.querySelector('#enterGoalForm').style.visibility = "hidden"
+
+    displayInfo(event)
   }
-
-}
-
-const editGoal = async function (event) {
-  event.preventDefault()
-
-  const goal = document.querySelector('#newDesiredGoal'),
-    json = { goal: goal.value },
-  body = JSON.stringify(json)
-
-  if(!validGrades.includes(goal.value)){
-    const displayGoal = document.querySelector('#termGradeGoal')
-    displayGoal.innerText = "Invalid grade, please try again"
-  }
-
-  else{
-    const response = await fetch('/editGoal', {
-      method: 'POST',
-      headers: {"Content-Type": "application/json"},
-      body
-    })
-  
-    const res = await response.json()
-  
-    const displayGoal = document.querySelector('#termGradeGoal')
-  
-    displayGoal.innerText = res.newGoal
-    displayGoal.className = res.newGoal
-  
-    drawTable(res.appdata)
-  }
-
-}
-
-
-const addHours = async function (event) {
-
-  event.preventDefault()
-
-  const input_date = document.querySelector('#date'),
-    input_hours = document.querySelector('#hours'),
-    json = { date: input_date.value, hours: input_hours.value },
-    body = JSON.stringify(json)
-
-  const response = await fetch('/addHours', {
-    method: 'POST',
-    headers: {"Content-Type": "application/json"},
-    body
-  })
-
-  const res = await response.json()
-
-  drawTable(res)
-
-}
-
-const deleteEntry = async function (event, index) {
-  event.preventDefault()
-
-  const json = { idx: index },
-    body = JSON.stringify(json)
-
-  const response = await fetch('/deleteEntry', {
-    method: 'POST',
-    headers: {"Content-Type": "application/json"},
-    body
-  })
-
-  const res = await response.json()
-
-  drawTable(res)
 
 }

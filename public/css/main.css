@@ -4,31 +4,12 @@ body{
   font-family: 'Roboto', sans-serif;
   font-size: 22px;
   padding: 70px;
+  color:black;
   flex-direction: column
 }
 
-form {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-
-th {
-  border: 5px solid black;
-  text-align: center;
-  padding: 10px;
-  border-color:#f96464;
-  background-color: #c9c9c8;
-}
-
-td {
-  border: 5px solid black;
-  text-align: center;
-  padding: 10px;
-  border-color:#ffb3b3;
-  background-color: #dddddd;
-
+p {
+  text-align: center
 }
 
 h1 {
@@ -42,15 +23,12 @@ h1 {
   border-color: #ff5353;
 }
 
-p {
-  text-align: center
-}
-
-#gradeList {
+.border {
   border-width:3px;
   border-style:solid;
-  border-color: #575757;
-  text-align: center
+  border-color: #d2d1fd;
+  text-align: center;
+  padding: 4px;
 }
 
 .A{
@@ -81,42 +59,38 @@ p {
   text-align: center
 }
 
-.termGoal {
-  border-width:3px;
-  border-style:solid;
-  border-color: #beffa6;
-  text-align: center
-}
-
-.border {
-  border-width:3px;
-  border-style:solid;
-  border-color: #d2d1fd;
-  text-align: center
-}
-
-.editGoalForm {
+#enterGoalForm {
   visibility: hidden;
 }
 
 .sideBySide {
+  visibility: hidden;
   display: flex;
   justify-content: space-evenly;
   flex-wrap: nowrap;
+
+  border-color: rgb(169, 31, 31);
+  border-width: 3px;
+  border-style: solid;
+  padding: 30px
 }
 
-.tableInputSection {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+nav {
+  color: black
 }
 
-.enterInfo {
-  visibility: hidden;
-}
+.pure-menu-link {
+  color:black;
+  border-color: rgb(176, 40, 40);
+  border-width: 3px;
+  border-style: solid;
+  text-decoration: underline;
+ }
 
-.showEnterInfoButton {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+ button {
+  text-decoration: underline;
+ }
+
+ .contrast:focus-visible {
+  box-shadow: 0 0 10px 10px blue
 }
