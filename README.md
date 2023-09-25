@@ -23,8 +23,8 @@ I tried for awhile to get cookies to work, but was running out of time so I ende
 - **Bcrypt**: I didn't do the OAuth achievement, but I did use the bcrypt library to hash passwords before they're stored on the database. The main challenge was less with the code (bcrypt made things relatively simple) and more in figuring out what to use for hashing the passwords. I'd never used bcrypt or anything similar before, so I wanted to make sure it was a good option and that I was using it correctly. (5 points?)
 - **Lighthouse**: I was able to get 100 for both pages (on Glitch the main page performance had a 99, but it was fine locally).
 
-
-
+![login_lighthouse](login_lighthouse.png)
+![main_lighthouse](main_lighthouse.png)
 
 ### Design/Evaluation Achievements
 - **W3C Tips**
