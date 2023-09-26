@@ -79,9 +79,7 @@ window.onload = async function () {
 
   const url = window.location.href
 
-  console.log('url: ' + url)
-
-  body = JSON.stringify({
+  const body = JSON.stringify({
     url
   })
 
