@@ -105,7 +105,7 @@ run()
 
 app.post('/data', async (request, response) => {
 
-  console.log('url: ' + JSON.stringify(request.body))
+  console.log('url: ' + JSON.stringify(request.url))
 
   if(!!request.body.url) {
     var access_token = request.body.url.split('token');
