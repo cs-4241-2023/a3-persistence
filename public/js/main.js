@@ -85,6 +85,8 @@ window.onload = async function () {
     url
   })
 
+  console.log('body: ' + body)
+
   const response = await fetch( '/data', {
     method:'POST',
     body
