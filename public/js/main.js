@@ -75,14 +75,6 @@ const displayErrors = async function ( data ) {
   }
 }
 
-const getData = async _ => {
-  const response = await fetch( '/data', {
-    method:'GET'
-  })
-
-  return await response.json();
-}
-
 window.onload = async function () {
 
   const url = window.location.href
@@ -91,7 +83,7 @@ window.onload = async function () {
 
   const response = await fetch( '/data', {
     method:'POST',
-    body: { url }
+    body: { url: url }
   })
 
   data = await response.json();
