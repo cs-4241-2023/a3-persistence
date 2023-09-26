@@ -1,5 +1,5 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
-
+let data = null
 const submit = function (event) {
   
   event.preventDefault();
@@ -34,6 +34,7 @@ const deleteLog = function(index){
   let body = JSON.stringify(json)
   fetch("/delete", {
             method: "POST",
+            headers: {"Content-Type": "application/json"},
             body,
         }).then(function(){
             refreshTable();
@@ -50,16 +51,11 @@ const refreshTable = function () {
   })
     .then((response) => response.json())
   
-    .then(function (json) {
-      let i = 0;
-
-    console.log(json);
-    
-      for (let response of json) {
-        
-        console.log(response);
-        
-        response.index = i;
+    .then(function (json) {        
+        let workoutdata = json[0]['workoutdata']
+        data = workoutdata
+        //Iterate over workout data and add to the table
+        workoutdata.forEach(function(currentElement, index){ 
         let row = table.insertRow(-1),
           date = row.insertCell(0),
           exercise = row.insertCell(1),
@@ -69,15 +65,14 @@ const refreshTable = function () {
           volume = row.insertCell(5),
           deleteCell = row.insertCell(6)
 
-        date.innerHTML = response.date;
-        exercise.innerHTML = response.exercise;
-        sets.innerHTML = response.sets;
-        reps.innerHTML = response.reps;
-        weight.innerHTML = response.weight;
-        volume.innerHTML = response.volume;
-        deleteCell.innerHTML = `<button class='delete' onclick=deleteLog(${i})>Delete</button>`;
-        i++;
-      }
+          date.innerHTML = currentElement.date;
+          exercise.innerHTML = currentElement.exercise;
+          sets.innerHTML = currentElement.sets;
+          reps.innerHTML = currentElement.reps;
+          weight.innerHTML = currentElement.weight;
+          volume.innerHTML = currentElement.volume;
+          deleteCell.innerHTML = `<button class='delete' onclick=deleteLog(${index})>Delete</button>`;
+        })
     });
 };
 
