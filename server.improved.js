@@ -12,6 +12,8 @@ const http = require( 'http' ),
 // allows use of environment variables
 dotenv.config()
 
+var accessToken = "";
+
 // Functions for validating and setting up data
 const validate = (data, id) => {
   const error = {
@@ -188,8 +190,6 @@ app.get("/github-callback", (request, response) => {
     code,
   };
 
-
-  let accessToken;
   const options = { headers: { accept: "application/json" } };
  
   axios
@@ -198,7 +198,7 @@ app.get("/github-callback", (request, response) => {
     .then((token) => {
       accessToken = token
       console.log('token: ' + token)
-      response.redirect('/success')
+      response.redirect('/success', {accessToken})
     })
     .catch((err) => response.status(500).json({ err: err.message }))
 });
