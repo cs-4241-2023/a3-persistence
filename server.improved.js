@@ -103,7 +103,7 @@ run()
 
 // GETs and POSTs that do not go through the middleware
 
-app.get('/data', async (request, response) => {
+app.post('/data', async (request, response) => {
 
   console.log('url: ' + JSON.stringify(request.body.url))
   // var url = new URL(request.body.url);

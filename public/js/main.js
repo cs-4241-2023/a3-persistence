@@ -88,7 +88,7 @@ window.onload = async function () {
   const url = window.location.href
 
   const response = await fetch( '/data', {
-    method:'GET',
+    method:'POST',
     body: url
   })
 
