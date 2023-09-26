@@ -104,24 +104,7 @@ run()
 
 // GETs and POSTs that do not go through the middleware
 
-app.post('/data', async (request, response) => {
-
-  console.log('data: ' + JSON.stringify(request.body))
-
-  if(!!request.body.url) {
-    var access_token = request.body.url.split('token=')[1];
-    console.log('access: ' + access_token)
-    if( !!access_token ) {
-      let userData = await fetch('https://api.github.com/user?access_token=' + access_token, 
-        {
-          method: 'GET'
-        }
-      )
-      console.log('access: ' + JSON.stringify(userData))
-      request.session.login = true
-      request.session.user = data.login
-    }
-  }
+app.get('/data', async (request, response) => {
   
   let data = {
     username: "",
@@ -213,6 +196,17 @@ app.get("/github-callback", (request, response) => {
     .then((res) => res.data.access_token)
     .then(async (token) => {
       accessToken = token
+      console.log('access: ' + access_token)
+        if( !!accessToken ) {
+          let userData = await fetch('https://api.github.com/user?access_token=' + accessToken, 
+            {
+              method: 'GET'
+            }
+          )
+          console.log('access: ' + JSON.stringify(userData))
+          request.session.login = true
+          request.session.user = data.login
+        }
       response.redirect(`/main.html?token=${token}`)
     })
     .catch((err) => response.status(500).json({ err: err.message }))
