@@ -1,4 +1,4 @@
-glitch: http://a2-rbdyer.glitch.me
+glitch: http://a3-rbdyer.glitch.me
 
 My project is a webpage that allows you to calculate player ratings for basketball players. The player attributes are inside shooting, outside shooting, athleticism, playmaking, defense (each on a scale from 0-99). These attributes are used to calclate the players overall rating.
 
