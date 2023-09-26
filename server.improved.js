@@ -1,20 +1,107 @@
 const express    = require('express'),
+      { MongoClient, ServerApiVersion } = require("mongodb"),
       app        = express(),
-      dreams     = [],
-      port       = 3000;
+      logdata    = []
 
-app.use( express.static( 'public' ) )
-app.use( express.static( 'views'  ) )
+app.use( "/", express.static( 'public' ) )
+app.use( "/", express.static( 'views'  ) )
 app.use( express.json() )
 
-app.post( '/submit', (req, res) => {
-  dreams.push( req.body.newdream )
-  console.log(req.body)
-  res.writeHead( 200, { 'Content-Type': 'application/json' })
-  res.end( JSON.stringify( dreams ) )
+const uri = "mongodb+srv://admin:<password>@workoutlog.cxtq02t.mongodb.net/?retryWrites=true&w=majority";
+
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
+let collection = null
+
+async function run() {
+  await client.connect()
+  // replace test with database name
+  collection = await client.db("workoutlogdb").collection("workoutlog")
+
+  app.get("/fetchData", async (req, res) => {
+    if (collection !== null) {
+      const docs = await collection.find({}).toArray()
+      res.json( docs )
+    }
+  })
+}
+
+// //example from mongodb
+// async function run() {
+//   try {
+//     await client.connect();
+//     await client.db("admin").command({ ping: 1 });
+//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+//   } finally {
+//     await client.close();
+//   }
+// }
+// run().catch(console.dir);
+
+// app.post( '/submit', async (request, response) => {
+//   logdata.push( request.body )
+//   console.log(request.body)
+//   response.writeHead( 200, { 'Content-Type': 'application/json' })
+//   response.end( JSON.stringify( logdata ) )
+// })
+
+app.use( (req,res,next) => {
+  if( collection !== null ) {
+    next()
+  }else{
+    res.status( 503 ).send()
+  }
 })
 
-app.listen( process.env.port )
+//submit
+app.post( '/submit', async (req,res) => {
+  const result = await collection.insertOne( req.body )
+  res.json( result )
+})
+
+//delete
+app.post( '/delete', async (req,res) => {
+  const result = await collection.deleteOne({ 
+    _id:new ObjectId( req.body._id ) 
+  })
+  res.json( result )
+})
+
+app.post( '/update', async (req,res) => {
+  const result = await collection.updateOne(
+    { _id: new ObjectId( req.body._id ) },
+    { $set:{ name:req.body.name } }
+  )
+
+  res.json( result )
+})
+
+// app.get("/fetchData", function (request, response) {
+//   response.json(logdata)
+// })
+
+run()
+
+app.listen( 3000 )
+
+const calculateVolume = function (sets, reps, weight) {
+  return sets * reps * weight;
+}
+
+// app.post("/delete", async function (request, response) {
+//   //only deletes the top one
+//   const index = request.body.deleteResponse;
+//   logdata.splice(response.json(logdata)[index], 1);
+
+// })
+
+
 
 // const http = require("http"),
 //   fs = require("fs"),
@@ -95,6 +182,5 @@ app.listen( process.env.port )
 // server.listen(process.env.PORT || port);
 
 // const calculateVolume = function (sets, reps, weight) {
-//   let volume = sets * reps * weight;
-//   return volume;
+//   return sets * reps * weight;
 // }
