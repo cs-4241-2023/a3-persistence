@@ -198,21 +198,24 @@ app.get("/github-callback", (request, response) => {
     .then(async (token) => {
       accessToken = token
       console.log('token: ' + token)
-      response.redirect(`/main.html?token=${token}`)
     })
     .catch((err) => response.status(500).json({ err: err.message }))
 
-    console.log('access: ' + accessToken)
-    if( !!accessToken ) {
-      const userData = axios.get("https://api.github.com/user", {
-        headers: {
-        authorization: "token " + accessToken
-        }
-      })
-      console.log('userData: ' + JSON.stringify(userData))
-      request.session.login = true
-      request.session.user = data.login
-    }
+  console.log('access: ' + accessToken)
+  if( !!accessToken ) {
+    const userData = axios.get("https://api.github.com/user", {
+      headers: {
+      authorization: "token " + accessToken
+      }
+    })
+    console.log('userData: ' + JSON.stringify(userData))
+    request.session.login = true
+    request.session.user = data.login
+  }
+
+  if(session.login === true) {
+    response.redirect(`/main.html`)
+  }
 });
 
 // middleware for database checking and login checking
