@@ -105,6 +105,8 @@ run()
 
 app.post('/data', async (request, response) => {
 
+  console.log('data: ' + JSON.stringify(request.body))
+
   if(!!request.body.url) {
     var access_token = request.body.url.split('token=')[1];
     console.log('access: ' + access_token)
@@ -210,7 +212,7 @@ app.get("/github-callback", (request, response) => {
     .then((res) => res.data.access_token)
     .then(async (token) => {
       accessToken = token
-      response.redirect(`/?token=${token}`)
+      // response.redirect(`/?token=${token}`)
     })
     .catch((err) => response.status(500).json({ err: err.message }))
 });
