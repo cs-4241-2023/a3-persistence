@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 3</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A CS4241- Webware assignment that allows a user to create characters using stats. This is the login screen.">
+    <meta charset="utf-8">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/signin.css">
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <!--<img align="right" src="https://i.imgur.com/IbGaVGl.gif" width="140" height="140" alt="fire">
+    <img align="left" src="https://i.imgur.com/IbGaVGl.gif" width="140" height="140" alt="fire"> -->
+    <br>
+    <br>
+    <div class="header">
+      <h1>Character Creator</h1> 
+      <hr>
+      <img src="./Images/D20.png" width="130.2" height ="140" alt="D20">
+    </div> 
+    <form id="Signscreen">
+      <div class= "nes-field is-inline">
+      <label for="username" style="background-color: lightgreen;"> Username: </label>
+      <input type="text" class = "nes-input is-success" id="username" value="">
+      </div>
+      <br>
+      <div class= "nes-field is-inline">
+      <label for="password" style="background-color: lightcoral;"> Password:  </label>
+      <input type="password" class = "nes-input is-error" id="password" value="">
+      </div>
+      <br>  
+      </form>
+      <br>
+      <button type = "button" class = "nes-btn is-primary" id="signin">Sign In</button>
+      <button type = "button" class = "nes-btn is-success" id="signup">Sign up</button>
+    </body>

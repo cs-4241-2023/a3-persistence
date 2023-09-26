@@ -92,23 +92,66 @@ Write a paragraph of at least 125 words *for each of four principles* (four para
 
 Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
 ---
-
-## Your Web Application Title
+I received a 12 hour extension for Assignment 3 from Professor Roberts, so this project was submitted on time. 
+## Character creator:
 
 your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
 - the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
+    The goal of this application was to create something that mimicked old school TTRPGS and video games. I went with a character creator because of my love of dungeons and dragons and the fact that it worked well with the requirements of the original projects. 
 
+- challenges you faced in realizing the application
+    The authentication was a challenge, especially testing server-side API. I used postman to test the server side API before using it from the client, which helped speed up the debugging in the server side. Also, I chose to use Model-Controller-Boundary organization for the server because it helped keep the code simple. 
+
+- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
+    I used JSON Web Token (jsonwebtoken v9.0.2) along with bcryptjs (a library for node.js) for encryption. While I was reading about authentication, I learned about JSON Web Token, and it looked extremely secure, with the token passing after the initial login. I was able to implement it using the sample provided for the JSON web token.
+
+- what CSS framework you used and why
+    I used NES.css. What caught my eye is that the professor had mentioned not to use it for non-game aplications. However, my application is to create characters, a very game related concept,  so I decided to test out NES. I was happy with the result. 
+
+- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please add a little more detail about what it does.
+    I used the following middleware packages:
+    1. express: Web application framework for node.js
+    2. Mongoose: Node.js object modeling library for MongoDB
+    3. jsonwebtoken: Node.js libraray that implements JSON Web Token (JWT), an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object.  
+    4. bcrypt.js: Node.js library that implements Bcrypt, the most popular and safest one-way hashing functions for passwords.
+    5. Cors: CORS is a node.js package for providing a Connect/Express middleware that can be used to enable CORS (Cross-Origin Resource Sharing (CORS) is an HTTP-header based mechanism that allows a server to indicate any origins (domain, scheme, or port) other than its own from which a browser should permit loading resources) with various options
+   6. mime.js: A comprehensive library for mime-type mapping
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+
+- **Tech Achievement 2**: 
+
+- **Tech Achievement 3**: Here is proof that my website achieved a 100 on all 4 lighthouse attributes: 
+![Login screen](image.png)
+![Content screen](image-1.png)
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+
+- **Design Achievement 2**: How my site uses the CRAP principles: 
+Contrast: 
+For the login page: The most contrast on the login page belongs to the label + input text for the username. That was my intention, as the Username is the focal point for the sign-on- it is necessary to access the characters you’ve created and you really can’t do anything without it. Sign in, sign up, and the password all rely on the username the most out of any other element, so placing it as the most prominent feature in contrast to the other colors is the most sensible option. 
+For the content page: The most contrast on my content page belongs to the stats labels + inputs. Creating a character is the whole fun of the page, so I decided to place the focus on that more than anything. The Name, Attack, Defense, and Speed stats are all highlighted in striking colors to represent that those are the most prominent features of the page and they are what should be looked at before anything else in order to make a character.
+
+Repetition:
+
+Repetition is a common element among my page, as that Is how I lay out familiarity. 
+
+The login page demonstrates its repetition very clearly, through the use of both side by side sign in/sign up buttons and username/password fields.For the content page, however- Starting from the very beginning, even the images on the page are repeated on either side to establish a sort of atmosphere. However, the primary example of this is the stats labels + inputs again. While they all may have different color labels, it is shown that they are all intertwined through the same usage of font + input color. This theme continues through the buttons- while I made the get font different to show that it wasn’t directly about creating or deleting and rather about just getting existing values from the page, both create/modify and delete have identical fonts to show that they’re part of the same cycle. Even within the table the font size/color/spacing are repeated to show that they are all part of the same table. 
+
+Alignment:
+
+For my pages, I tend to prefer a center alignment for important elements. 
+
+For the login page: This page is simple, but the username feeds into the password, and both of those are used to either create a user or log in with a user. 
+
+ For the content page: On my page, it is very obvious to notice that the elements link neatly to each other in a top down manner. The leading elements, like the title and images, are away from the main content to provide the atmosphere. The stats + labels very obviously feed into the create character/modify character button, as they are a necessary prerequisite. The get character button is placed in close proximity to the table, as to show that it is the way to access your previously stored characters on load in. Mirroring that, the delete character button, which removes elements, is at the bottom to provide an antithesis to the create/modify/get buttons, which all cause elements to appear. 
+
+
+Proximity:
+
+For the login page: This features important elements of grouping. Both username and password are visually similar and side by side, and this is the same with the sign in and sign up buttons as well. These are all visually pleasing, fitting within a neat rectangle in the center of the page.
+
+For the content page: The content page similarly fits these elements, with all the stats and inputs focused together near the top. That is placed in close proximity to the create button, which I chose to have colored white to represent the fact that the stats and create button together were part of a whole. Beyond this, the green table is flanked by red and blue buttons to show that these would fundamentally alter the view on the page if they were so used. The Table itself can feature many elements if the user so chooses, all of which have the same font, font color, and spacing between elements.
+
