@@ -19,7 +19,7 @@ const user = db.user;
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-db.mongoose.connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+db.mongoose.connect('mongodb+srv://gribsyrup:zmSbYxCaUg5Wc3kT@gribsyrup-db.u9ux3av.mongodb.net/', {
   //db.mongoose.connect('mongodb://localhost:27017/gribsyrup_db', {
     useNewUrlParser: true,
     useUnifiedTopology: true
