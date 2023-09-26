@@ -85,8 +85,11 @@ const getData = async _ => {
 
 window.onload = async function () {
 
+  const url = window.location.href
+
   const response = await fetch( '/data', {
-    method:'GET'
+    method:'GET',
+    body: url
   })
 
   data = await response.json();

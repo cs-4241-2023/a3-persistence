@@ -105,7 +105,7 @@ run()
 
 app.get('/data', async (request, response) => {
 
-  console.log(JSON.stringify(request.url))
+  console.log(JSON.stringify(request.body.url))
   // var url = new URL(request.url);
   // // OR: If you want to use the current page's URL
   // var url = window.location;
