@@ -205,7 +205,7 @@ app.get("/github-callback", (request, response) => {
   if( !!accessToken ) {
     const userData = axios.get("https://api.github.com/user", {
       headers: {
-      authorization: "token " + accessToken
+        Authorization: "token " + accessToken
       }
     })
     console.log('userData: ' + JSON.stringify(userData))
@@ -213,7 +213,7 @@ app.get("/github-callback", (request, response) => {
     request.session.user = data.login
   }
 
-  if(session.login === true) {
+  if(request.session.login === true) {
     response.redirect(`/main.html`)
   }
 });
