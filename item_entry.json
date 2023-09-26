@@ -1,0 +1,6 @@
+{
+    "_id": "ObjectId()",
+    "itemName": "itemName",
+    "price": 1.11,
+    "userID": "ObjectId()"
+}

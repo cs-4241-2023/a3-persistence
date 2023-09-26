@@ -97,6 +97,8 @@ Sample Readme (delete the above when you're ready to submit, and modify the belo
 
 your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
 
+Professor Roberts gave me an extension on this assignment
+
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
 - the goal of the application
