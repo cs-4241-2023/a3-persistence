@@ -87,10 +87,11 @@ window.onload = async function () {
 
   const response = await fetch( '/data', {
     method:'POST',
+    headers: { 'Content-Type': 'application/json' },
     body
   })
 
-  data = await response.json();
+  const data = await response.json();
 
   if(!!data.username) {
     const response2 = await fetch( '/logout', {
