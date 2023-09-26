@@ -105,9 +105,12 @@ run()
 
 app.post('/data', async (request, response) => {
 
-  console.log('url: ' + JSON.stringify(request))
+  console.log('url: ' + JSON.stringify(request.body))
 
-  // var access_token = request.body.url.split('token');
+  if(!!request.body.url) {
+    var access_token = request.body.url.split('token');
+    console.log('access: ' + access_token)
+  }
   // console.log('token: ' + JSON.stringify(access_token))
   // if( !!access_token ) {
   //   request.session.login = true
