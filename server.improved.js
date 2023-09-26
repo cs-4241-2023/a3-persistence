@@ -208,7 +208,7 @@ app.get('/success', function (request, response) {
       method: 'GET',
       url: "https://api.github.com/user",
       headers: {
-        Authorization: "token " + acessToken
+        Authorization: "token " + accessToken
       }
     }).then((response) => {
       request.session.login = true
