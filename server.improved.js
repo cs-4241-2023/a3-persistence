@@ -195,7 +195,7 @@ app.get("/github-callback", (request, response) => {
   axios
     .post("https://github.com/login/oauth/access_token", body, options)
     .then((res) => res.data.access_token)
-    .then(async (token) => {
+    .then((token) => {
       accessToken = token
       console.log('token: ' + token)
     })
