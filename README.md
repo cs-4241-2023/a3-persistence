@@ -129,6 +129,22 @@ Include a very brief summary of your project here. Images are encouraged, along 
 
 ### Design/Evaluation Achievements
 
+- **Design Achievement 1**: Here are some W3C principles that I constructed my pages to follow. Only principles that took active work on my part are listed:
+
+Principle 1: Provided Unique and Informative page titles between my two pages
+Principle 2: Expanded all my image alternate text to be extra descriptive, beyond just simple words.
+Principle 3: All my content is kept clear and concise, as it is fit within central flexboxes and containers that expand to fit the amount of content
+Principle 4: I provided sufficient contrast between my foreground and background by changing the color of my buttons and their text. This was also needed for lighthouse to achieve 100%. 
+Principle 5: I don’t use color alone to convey information. While I use color to differentiate a lot of things, such as my stats and buttons, the primary way for me to convey my images is through the text and positioning (which I elaborated a little bit for the CRAP principles), but the the color is still very helpful for distinguishing. 
+Principle 6: I ensured that form elements include clearly associated labels. All my inputs and form elements have attached labels to distinguish them. This was also needed for lighthouse to achieve 100%.
+Principle 7: I associate a label with every form control. All my labels are connected to inputs through the for="" tags. This was also needed for lighthouse to achieve 100%.
+Principle 8: I identified page language and language changes on all my pages by adding <lang=en> on each page. All my pages are in English, so this was made easier.
+Principle 9: I used mark-up to convey meaning and structure. Many of my elements have clear identifying mark-up through div tags. 
+Principle 10: I reflected the reading order in the code order. Since my page was built in a very deliberate top down manner, which I elaborate on in the CRAP principles, my code order follows the reading order for my pages. 
+Princple 11: I wrote code that adapts to the user’s technology. Through CSS styling, I made my page very extensively adaptive to technology, whether it was by adjusting the percentage width of certain elements like tables or containers, changing the alignment to follow a certain path on all devices, and setting the margins to have the elements fit in the same location on all devices. 
+Principle 12: Use headings and spacing to group related content. I did not use headings extensively in my project, but I used spacing extensively, which is something I elaborate on in the CRAP principles. My pages are very deliberately and precisely spaced in order to have related groups featured prominently, including use of color grouping for the elements of the content page. 
+Principle 13: Ensure that interactive elements are easy to identify: I used color in a striking manner to distinguish elements while keeping text as the identifying factor. 
+
 - **Design Achievement 2**: How my site uses the CRAP principles: 
 Contrast: 
 For the login page: The most contrast on the login page belongs to the label + input text for the username. That was my intention, as the Username is the focal point for the sign-on- it is necessary to access the characters you’ve created and you really can’t do anything without it. Sign in, sign up, and the password all rely on the username the most out of any other element, so placing it as the most prominent feature in contrast to the other colors is the most sensible option. 
