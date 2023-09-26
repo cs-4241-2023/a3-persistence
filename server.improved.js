@@ -6,7 +6,7 @@ const http = require( 'http' ),
       { MongoClient, ObjectId } = require("mongodb"),
       axios = require('axios'),
       { Octokit } = require("octokit"),
-      fetch = require("node-fetch"),
+      fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)),
       app = express()
 
 // allows use of environment variables
