@@ -1,0 +1,97 @@
+body {
+  background: black;
+  color: #ca4b56;
+  font-size: 1.25rem;
+  font-family: 'Rubik', sans-serif;
+
+}
+table, th, td{
+  border: 1px solid;
+  border-color: #b48888;
+  border-collapse: collapse;
+  padding: 5px;
+}
+
+/* styles.css */
+
+.tab-input-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.tab-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab {
+  margin-right: 10px;
+}
+
+.tablinks{
+  background-color: #ff8484;
+  font-family: 'Rubik', sans-serif;
+  border: 1px solid #cccccc;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin: 5px 5px
+}
+
+#deleteDropdown, #updateDropdown {
+  background-color: #f2f2f2;
+  font-family: 'Rubik', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+  margin: 5px 5px
+}
+
+.tablinks:hover {
+  background-color: #ddd;
+}
+
+.tabcontent {
+  display: none;
+}
+.inputs{
+  display: flex;
+  flex-direction: column;
+}
+.inputs div{
+  margin: 5px
+}
+
+.data-container{
+  padding-top: 20px;
+}
+
+.addPlayer input{
+  background-color: #f2f2f2;
+  font-family: 'Rubik', sans-serif;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.addPlayer button, .tabcontent button {
+  background-color: #1be741;
+  font-family: 'Rubik', sans-serif;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin: 5px 5px 5px 5px;
+  cursor: pointer;
+}
+
+ #deleteButton {
+  background-color: #e71b1b;
+  font-family: 'Rubik', sans-serif;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 5px 10px;
+  margin: 5px 5px 5px 5px;
+  cursor: pointer;
+}
