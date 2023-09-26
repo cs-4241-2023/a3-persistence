@@ -22,6 +22,7 @@ const submit = function (event) {
 
   fetch("/submit", {
     method: "POST",
+    headers: {"Content-Type": "application/json"},
     body,
   }).then(function (response) {
     refreshTable();
@@ -42,16 +43,22 @@ const deleteLog = function(index){
 const refreshTable = function () {
   const table = document.querySelector("table");
 
-  table.innerHTML = '<tr><th>Date</th><th>Exercise</th><th>Sets</th><th>Reps</th><th>Weight</th><th>Volume</th><th>Delete</th></tr>'
+  table.innerHTML = '<tr class="text-white h4 text-left"><th>Date</th><th>Exercise</th><th>Sets</th><th>Reps</th><th>Weight</th><th>Volume</th><th>Delete</th></tr>'
 
   fetch("/fetchData", {
     method: "GET",
   })
     .then((response) => response.json())
+  
     .then(function (json) {
       let i = 0;
 
+    console.log(json);
+    
       for (let response of json) {
+        
+        console.log(response);
+        
         response.index = i;
         let row = table.insertRow(-1),
           date = row.insertCell(0),
