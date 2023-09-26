@@ -81,9 +81,13 @@ window.onload = async function () {
 
   console.log('url: ' + url)
 
+  body = {
+    url
+  }
+
   const response = await fetch( '/data', {
     method:'POST',
-    body: { url: url }
+    body
   })
 
   data = await response.json();
