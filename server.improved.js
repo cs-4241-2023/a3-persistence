@@ -111,12 +111,9 @@ app.post('/data', async (request, response) => {
     var access_token = request.body.url.split('token=')[1];
     console.log('access: ' + access_token)
     if( !!access_token ) {
-      let userData = await axios.get('https://api.github.com/user', {}, {
-        headers: {
-          authorization: 'Bearer ' + access_token
-        }
+      let userData = await axios.get('https://api.github.com/user?access_token=ACCESS_TOKEN', {}, {
       })
-      console.log('data: ' + JSON.stringify(userData))
+      console.log('access: ' + JSON.stringify(userData))
       request.session.login = true
       request.session.user = data.login
     }
@@ -212,7 +209,7 @@ app.get("/github-callback", (request, response) => {
     .then((res) => res.data.access_token)
     .then(async (token) => {
       accessToken = token
-      response.redirect(`main.html?token=${token}`)
+      response.redirect(`/main.html?token=${token}`)
     })
     .catch((err) => response.status(500).json({ err: err.message }))
 });
