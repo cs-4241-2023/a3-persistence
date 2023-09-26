@@ -77,17 +77,9 @@ const displayErrors = async function ( data ) {
 
 window.onload = async function () {
 
-  const url = window.location.href
-
-  console.log('url: ' + url)
-
-  body = {
-    url
-  }
-
   const response = await fetch( '/data', {
     method:'POST',
-    body
+    body: window.location.href
   })
 
   data = await response.json();
