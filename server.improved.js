@@ -100,7 +100,6 @@ app.post('/login', async (req, res) => {
 app.post('/save',(req,res)=>{
     req.session.username = req.body.username
     req.session.password = req.body.password
-    console.log(req.body)
     result = collection.updateOne(
         {"Task": req.body.oldtask},{$set: {
                 Task: req.body.Task,
