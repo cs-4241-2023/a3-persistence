@@ -105,24 +105,21 @@ run()
 
 app.post('/data', async (request, response) => {
 
-  console.log('url: ' + JSON.stringify(request.body))
-
   if(!!request.body.url) {
-    var access_token = request.body.url.split('token');
+    var access_token = request.body.url.split('token=')[1];
     console.log('access: ' + access_token)
+    if( !!access_token ) {
+      request.session.login = true
+      request.session.user = data.login
+      let userData = await axios.get('https://api.github.com/user', {}, {
+        headers: {
+          authorization: 'Bearer ' + token
+        }
+      })
+      console.log('data: ' + JSON.stringify(userData))
+    }
   }
-  // console.log('token: ' + JSON.stringify(access_token))
-  // if( !!access_token ) {
-  //   request.session.login = true
-  //   request.session.user = data.login
-  //   let data = await axios.get('https://api.github.com/user', {}, {
-  //     headers: {
-  //       authorization: 'Bearer ' + token
-  //     }
-  //   })
-  //   console.log('data: ' + JSON.stringify(data))
-  // }
-
+  
   let data = {
     username: "",
     schedules: [],
