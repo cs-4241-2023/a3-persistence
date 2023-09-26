@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 3 Main Page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+  </head>
+  <body>
+    <div class = "container-fluid"> <!-- full screen width -->
+      <!-- To Do List Heading -->
+      <div class = "row">
+        <div class = "col-sm-12"><div class = "p-3 border-bottom border-dark border-4 bg-primary">
+          <div>
+            <form action = "/login" method = "GET">
+              <button type = "submit" class = "btn btn-small btn-light">
+                Log Out
+              </button>
+            </form>
+          </div>
+            <h1 class = "text-light text-center ">
+            To Do List
+          </h1>
+        </div></div>
+      </div>
+      <form action = "/maintask" method = "POST">
+        <!-- Three form items -->
+        <div class = "form-inline row">
+          <div class = "form-group mt-3 col-sm-12 col-md-4">
+            <label for = "task" class = "form-label">Add Task *</label>
+            <input type = "text" name = "task" id = "addTask" class = "form-control form-control-lg" placeholder = "Add Task">
+          </div>
+          <div class = "form-group mt-3 col-sm-12 col-md-4">
+            <label for = "date" class = "form-label">Add Due Date *</label>
+            <input type = "text" name = "date" id = "addDueDate" class = "form-control form-control-lg" placeholder = "Due Date">
+          </div>
+          <div class = "form-group mt-3 col-sm-12 col-md-4">
+            <label for = "time" class = "form-label">Add Time Date *</label>
+            <input type = "text" name = "time" id = "addDueTime" class = "form-control form-control-lg" placeholder = "Time Due">
+          </div>
+        </div>
+        <div class = "text-center">
+          <button type="submit" class="btn btn-lg btn-primary mt-3 mb-4 align-center">Add Task</button>
+          <p class = "text-danger">Required fields marked with a *</p>
+        </div>
+      </form>
+      <div class = "text-center">
+        <ul id = "list" class = "list-group">
+
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>
