@@ -179,7 +179,7 @@ app.get("/auth", (request, response) => {
   response.redirect(`https://github.com/login/oauth/authorize?${urlEncodedParams}`)
 })
 
-app.get("/github-callback", async (request, response) => {
+app.get("/github-callback", (request, response) => {
   const { code } = request.query;
  
   const body = {
@@ -209,7 +209,6 @@ app.get("/github-callback", async (request, response) => {
         authorization: "token " + accessToken
         }
       })
-    }
       console.log('userData: ' + JSON.stringify(userData))
       request.session.login = true
       request.session.user = data.login
