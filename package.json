@@ -2,9 +2,12 @@
   "name": "hw3",
   "version": "1.0.0",
   "description": "HW3",
-  "main": "server.imporved.js",
+  "main": "server.improved.js",
+  "engines": {
+    "node": "16.x"
+  }, 
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.improved.js"
   },
   "author": "",
   "license": "ISC",
