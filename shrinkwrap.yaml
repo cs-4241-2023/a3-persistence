@@ -1,4 +1,5 @@
 dependencies:
+  bootstrap: 5.3.2
   express: 4.18.2
   mime: 3.0.0
   mongodb: 6.1.0
@@ -9,18 +10,18 @@ packages:
     dev: false
     resolution:
       integrity: sha512-Xfijy7HvfzzqiOAhAepF4SGN5e9leLkMvg/OPOF97XemjfVCYN/oWa75wnkc6mltMSTwY+XlbhWgUOJmkFspSw==
-  /@types/node/20.6.3:
+  /@types/node/20.7.0:
     dev: false
     resolution:
-      integrity: sha512-HksnYH4Ljr4VQgEy2lTStbCKv/P590tmPe5HqOnv9Gprffgv5WXAY+Y5Gqniu0GGqeTCUdBnzC3QSrzPkBkAMA==
-  /@types/webidl-conversions/7.0.0:
+      integrity: sha512-zI22/pJW2wUZOVyguFaUL1HABdmSVxpXrzIqkjsHmyUjNhPoWM1CKfvVuXfetHhIok4RY573cqS0mZ1SJEnoTg==
+  /@types/webidl-conversions/7.0.1:
     dev: false
     resolution:
-      integrity: sha512-xTE1E+YF4aWPJJeUzaZI5DRntlkY3+BCVJi0axFptnjGmAoWxkyREIh/XMrfxVLejwQxMCfDXdICo0VLxThrog==
+      integrity: sha512-8hKOnOan+Uu+NgMaCouhg3cT9x5fFZ92Jwf+uDLXLu/MFRbXxlWwGeQY7KVHkeSft6RvY+tdxklUBuyY9eIEKg==
   /@types/whatwg-url/8.2.2:
     dependencies:
-      '@types/node': 20.6.3
-      '@types/webidl-conversions': 7.0.0
+      '@types/node': 20.7.0
+      '@types/webidl-conversions': 7.0.1
     dev: false
     resolution:
       integrity: sha512-FtQu10RWgn3D9U4aazdwIE2yzphmTJREDqNdODHrbrZmmMqI0vMheC/6NE/J1Yveaj8H+ela+YwWTjq5PGmuhA==
@@ -57,6 +58,12 @@ packages:
       npm: 1.2.8000 || >= 1.4.16
     resolution:
       integrity: sha512-jWi7abTbYwajOytWCQc37VulmWiRae5RyTpaCyDcS5/lMdtwSz5lOpDE67srw/HYe35f1z3fDQw+3txg7gNtWw==
+  /bootstrap/5.3.2:
+    dev: false
+    peerDependencies:
+      '@popperjs/core': ^2.11.8
+    resolution:
+      integrity: sha512-D32nmNWiQHo94BKHLmOrdjlL05q1c8oxbtBphQFb9Z5to6eGRDCm0QgeaZ4zFBHzfg2++rqa2JkqCcxDy0sH0g==
   /bson/6.1.0:
     dev: false
     engines:
@@ -538,6 +545,7 @@ registry: 'https://registry.npmjs.org/'
 shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
+  bootstrap: ^5.3.2
   express: ^4.18.2
   mime: ^3.0.0
   mongodb: ^6.1.0

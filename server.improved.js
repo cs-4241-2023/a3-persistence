@@ -2,12 +2,13 @@ const express    = require('express'),
       { MongoClient, ServerApiVersion } = require("mongodb"),
       app        = express(),
       logdata    = []
-
+let userdata = null
 app.use( "/", express.static( 'public' ) )
 app.use( "/", express.static( 'views'  ) )
 app.use( express.json() )
+require("dotenv").config()
 
-const uri = "mongodb+srv://admin:<password>@workoutlog.cxtq02t.mongodb.net/?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -21,35 +22,20 @@ let collection = null
 
 async function run() {
   await client.connect()
-  // replace test with database name
   collection = await client.db("workoutlogdb").collection("workoutlog")
+    const docs = await collection.find({}).toArray()
+    console.log(docs)
 
   app.get("/fetchData", async (req, res) => {
     if (collection !== null) {
-      const docs = await collection.find({}).toArray()
+      //replace with github userid
+      const docs = await collection.find({"userid":"admin"}).toArray()
+      userdata = docs
+      //console.log(userdata[0]['workoutdata'])
       res.json( docs )
     }
   })
 }
-
-// //example from mongodb
-// async function run() {
-//   try {
-//     await client.connect();
-//     await client.db("admin").command({ ping: 1 });
-//     console.log("Pinged your deployment. You successfully connected to MongoDB!");
-//   } finally {
-//     await client.close();
-//   }
-// }
-// run().catch(console.dir);
-
-// app.post( '/submit', async (request, response) => {
-//   logdata.push( request.body )
-//   console.log(request.body)
-//   response.writeHead( 200, { 'Content-Type': 'application/json' })
-//   response.end( JSON.stringify( logdata ) )
-// })
 
 app.use( (req,res,next) => {
   if( collection !== null ) {
@@ -61,16 +47,20 @@ app.use( (req,res,next) => {
 
 //submit
 app.post( '/submit', async (req,res) => {
-  const result = await collection.insertOne( req.body )
+  //add the body to the workoutdata array
+  userdata[0]['workoutdata'].push(req.body)
+
+  console.log(userdata)
+  const result = await collection.replaceOne({"userid": "admin" }, userdata[0])
   res.json( result )
 })
 
 //delete
 app.post( '/delete', async (req,res) => {
-  const result = await collection.deleteOne({ 
-    _id:new ObjectId( req.body._id ) 
-  })
-  res.json( result )
+   //splice the index from the array in userdata
+    userdata[0]['workoutdata'].splice(req.body.deleteResponse, 1);
+    const result = await collection.replaceOne({"userid": "admin" }, userdata[0])
+    res.json( result )
 })
 
 app.post( '/update', async (req,res) => {
@@ -81,10 +71,6 @@ app.post( '/update', async (req,res) => {
 
   res.json( result )
 })
-
-// app.get("/fetchData", function (request, response) {
-//   response.json(logdata)
-// })
 
 run()
 
