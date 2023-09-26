@@ -109,14 +109,14 @@ app.post('/data', async (request, response) => {
     var access_token = request.body.url.split('token=')[1];
     console.log('access: ' + access_token)
     if( !!access_token ) {
-      request.session.login = true
-      request.session.user = data.login
       let userData = await axios.get('https://api.github.com/user', {}, {
         headers: {
           authorization: 'Bearer ' + token
         }
       })
       console.log('data: ' + JSON.stringify(userData))
+      request.session.login = true
+      request.session.user = data.login
     }
   }
   
