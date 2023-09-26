@@ -197,18 +197,20 @@ app.get("/github-callback", async (request, response) => {
     .then((res) => res.data.access_token)
     .then(async (token) => {
       accessToken = token
+      console.log('token: ' + token)
       response.redirect(`/main.html?token=${token}`)
     })
     .catch((err) => response.status(500).json({ err: err.message }))
 
     console.log('access: ' + accessToken)
     if( !!accessToken ) {
-      let userData = await fetch('https://api.github.com/user?access_token=' + accessToken, 
-        {
-          method: 'GET'
+      const userData = axios.get("https://api.github.com/user", {
+        headers: {
+        authorization: "token " + accessToken
         }
-      )
-      console.log('access: ' + JSON.stringify(userData))
+      })
+    }
+      console.log('userData: ' + JSON.stringify(userData))
       request.session.login = true
       request.session.user = data.login
     }
