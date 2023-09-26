@@ -204,13 +204,15 @@ app.get("/github-callback", (request, response) => {
 });
 
 app.get('/success', function (request, response) {
+  console.log('accessToken in success: ' + accessToken)
     axios.get({
-      method: 'GET',
+      method: 'get',
       url: "https://api.github.com/user",
       headers: {
         Authorization: "token " + accessToken
       }
     }).then((response) => {
+      console.log('IN SUCESS THEN')
       request.session.login = true
       request.session.user = response.data.login
       console.log('final: ' + JSON.stringify(response.data))
