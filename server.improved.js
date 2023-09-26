@@ -111,7 +111,7 @@ app.post('/data', async (request, response) => {
     if( !!access_token ) {
       let userData = await axios.get('https://api.github.com/user', {}, {
         headers: {
-          authorization: 'Bearer ' + token
+          authorization: 'Bearer ' + access_token
         }
       })
       console.log('data: ' + JSON.stringify(userData))
