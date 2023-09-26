@@ -179,7 +179,7 @@ app.get("/auth", (request, response) => {
   response.redirect(`https://github.com/login/oauth/authorize?${urlEncodedParams}`)
 })
 
-app.get("/github-callback", (request, response) => {
+app.get("/github-callback", async (request, response) => {
   const { code } = request.query;
  
   const body = {
@@ -196,25 +196,22 @@ app.get("/github-callback", (request, response) => {
     .then((res) => res.data.access_token)
     .then(async (token) => {
       accessToken = token
-      console.log('access: ' + access_token)
-        if( !!accessToken ) {
-          let userData = await fetch('https://api.github.com/user?access_token=' + accessToken, 
-            {
-              method: 'GET'
-            }
-          )
-          console.log('access: ' + JSON.stringify(userData))
-          request.session.login = true
-          request.session.user = data.login
-        }
       response.redirect(`/main.html?token=${token}`)
     })
     .catch((err) => response.status(500).json({ err: err.message }))
-});
 
-app.get('main', (request, response) => {
-  
-})
+    console.log('access: ' + accessToken)
+    if( !!accessToken ) {
+      let userData = await fetch('https://api.github.com/user?access_token=' + accessToken, 
+        {
+          method: 'GET'
+        }
+      )
+      console.log('access: ' + JSON.stringify(userData))
+      request.session.login = true
+      request.session.user = data.login
+    }
+});
 
 // middleware for database checking and login checking
 app.use( (request,response,next) => {
