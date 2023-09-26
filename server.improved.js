@@ -187,7 +187,8 @@ app.get("/github-callback", async (request, response) => {
     client_secret: process.env.CLIENT_SECRET,
     code,
   };
- 
+
+
   let accessToken;
   const options = { headers: { accept: "application/json" } };
  
