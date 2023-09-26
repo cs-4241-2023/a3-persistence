@@ -102,14 +102,12 @@ app.post('/save',(req,res)=>{
     req.session.password = req.body.password
     console.log(req.body)
     result = collection.updateOne(
-        {"Task": req.body.Task},{$set: {
+        {"Task": req.body.oldtask},{$set: {
                 Task: req.body.Task,
                 Date: req.body.Date,
                 Priority: req.body.Priority
-            }})
-
-    console.log()
-   // ).then(result => res.json(result))
+            }}
+    ).then(result => res.json(result))
 })
 
 app.listen( 3000 )

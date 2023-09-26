@@ -1,5 +1,5 @@
 
-
+let old_edit_task = null
 const Todo = []
 const task = document.getElementById('to_do')
 const date = document.querySelector('#date')
@@ -63,7 +63,6 @@ function edit_row(index)
 {
     document.getElementById("edit_button"+index).style.display="none";
     document.getElementById("save_button"+index).style.display="block";
-
     let task=document.getElementById("task_row"+index);
     let date=document.getElementById("date_row"+index);
     let priority=document.getElementById("priority_row"+index);
@@ -72,6 +71,7 @@ function edit_row(index)
     let date_data=date.innerHTML;
     let priority_data=priority.innerHTML;
 
+    old_edit_task = task_data;
     task.innerHTML="<input type='text' id='task_text"+index+"' value='"+task_data+"'>";
     date.innerHTML="<input type='date' id='date_text"+index+"' value='"+date_data+"'>";
     priority.innerHTML="<select id='priority_text"+index+"''><option value='"+priority_data+"'>"+priority_data+"</option><option>High</option><option>Medium</option><option>Low</option></select>"
@@ -103,7 +103,8 @@ function save_row(index){
             Todo[i].Priority = priority_val
         }
     }
-
+    
+    Todo[index].oldtask = old_edit_task
     fetch('/save', {
         method:'POST',
         headers: { 'Content-Type': 'application/json' },
