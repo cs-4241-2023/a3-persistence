@@ -198,7 +198,7 @@ app.get("/github-callback", (request, response) => {
     .then((token) => {
       accessToken = token
       console.log('token: ' + token)
-      response.redirect('/success', {accessToken})
+      response.redirect('/success')
     })
     .catch((err) => response.status(500).json({ err: err.message }))
 });
