@@ -105,10 +105,10 @@ run()
 
 app.post('/data', async (request, response) => {
 
-  console.log('url: ' + request.body)
+  console.log('url: ' + request.body.url)
 
-  if(!!request.body) {
-    var access_token = request.body.split('token');
+  if(!!request.body.url) {
+    var access_token = request.body.url.split('token');
     console.log('access: ' + access_token)
   }
   // console.log('token: ' + JSON.stringify(access_token))
