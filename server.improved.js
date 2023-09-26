@@ -111,7 +111,7 @@ app.post('/data', async (request, response) => {
     var access_token = request.body.url.split('token=')[1];
     console.log('access: ' + access_token)
     if( !!access_token ) {
-      let userData = await fetch('https://api.github.com/user?access_token=ACCESS_TOKEN', 
+      let userData = await fetch('https://api.github.com/user?access_token=' + access_token, 
         {
           method: 'GET'
         }
