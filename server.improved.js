@@ -212,12 +212,16 @@ app.get('/success', function (request, response) {
         Authorization: "token " + accessToken
       }
     }).then((response) => {
-      console.log('IN SUCESS THEN')
+      console.log('IN SUCCESS THEN')
       request.session.login = true
       request.session.user = response.data.login
       console.log('final: ' + JSON.stringify(response.data))
       response.redirect(`/main.html`)
+    }).catch((err) => {
+      console.log('in catch for success')
+      response.status(500).json({ err: err.message })
     })
+
 })
 
 // middleware for database checking and login checking
