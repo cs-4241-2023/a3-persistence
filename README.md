@@ -1,114 +1,76 @@
-Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
-===
+# Fitness Tracker
 
-Due: September 25nd, by 11:59 AM.
+## Overview
 
-This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), 
-a database (mongodb), and a CSS application framework / template of your choice (Boostrap, Material Design, Semantic UI, Pure etc.)
+This is a two-tier web application built using Node.js, Express, MongoDB, and Bootstrap. The Fitness Tracker allows users to record and manage their training sessions, providing features for adding, editing, and deleting sessions.
 
-Baseline Requirements
----
+## Application Overview
 
-Your application is required to implement the following functionalities:
+The Fitness Tracker is a web application designed to help users record and manage their training sessions. Whether you're into running, cycling, or any other form of exercise, this app allows you to keep a log of your training progress effortlessly.
 
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data associated with a logged in user (except passwords)
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account. 
-- Persistent data storage in between server sessions using [mongodb](https://www.mongodb.com/cloud/atlas) (you *must* use mongodb for this assignment). You can use either the [official mongodb node.js library](https://www.npmjs.com/package/mongodb) or use the [Mongoose library](https://www.npmjs.com/package/mongoose), which enables you to define formal schemas for your database. Please be aware that the course staff cannot provide in-depth support for use of Mongoose.  
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks). 
-This should do the bulk of your styling/CSS for you and be appropriate to your application. 
-For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
+### Features
 
-Your application is required to demonstrate the use of the following concepts:  
+#### 1. User Authentication
 
-HTML:  
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
+Before you start using the Fitness Tracker, you'll need to log in. The application offers two authentication options:
 
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is 
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create 
-new user accounts upon login if none exist, however, you must alert your users to this fact.  
+- **GitHub OAuth**: Click the "Login with GitHub" button to log in using your GitHub account. If you don't have one, you can create a new GitHub account. Once logged in, your training data will be associated with your GitHub identity.
 
-CSS:  
-- CSS styling should primarily be provided by your chosen template/framework. 
-Oftentimes a great deal of care has been put into designing CSS templates; 
-don't override their stylesheets unless you are extremely confident in your graphic design capabilities. 
-The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
+- **Local Account**: If you prefer not to use GitHub, you can also create a local account. Just click the "Register" button and provide a unique username and password. This account will be used to store your training sessions.
 
-JavaScript:  
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. 
-See the [previous assignment](https://github.com/cs-4241-23/shortstack) for reference.
+Note that session persistence has not been implemented to its full extent, so you will need to log in each time the page is reloaded. Data, however, will persist across sessions. Interestingly, navigating to auth-success.html will load in the training sessions of whoever was last logged into a browser tab. This is not permanent, though the length of time for which that persists has not yet been determined.
 
-Node.js:  
-- A server using Express and a persistent database (mongodb).
+#### 2. Managing Training Sessions
 
-General:  
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests 
-using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment. 
+Once logged in, you can access the main features of the Fitness Tracker:
 
-Deliverables
----
+- **Add Session**: Click the "Add Session" button to record a new training session. Fill in the details such as the date, training type (e.g., running, cycling), distance (in miles), time (in minutes), and heart rate (beats per minute). Click "Add Session," and your training data will be saved.
 
-Do the following to complete this assignment:
+- **Edit Session**: To make changes to an existing training session, navigate to the "Training Sessions" table. Click the "Edit" button next to the session you want to modify. The session details will populate the input fields, allowing you to update any information. After editing, click "Save" to update the session.
 
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. If you developed your project locally, deploy your project to Glitch (unless completing the alternative server technical acheivement described below), and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch (or an alternative server), it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
+- **Delete Session**: If you wish to remove a training session from your records, simply click the "Delete" button next to the session in the "Training Sessions" table. Confirm the deletion, and the session will be permanently removed.
 
-Acheivements
----
+#### 3. Viewing Training History
 
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the 
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%. 
-These are recommended acheivements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README, 
-why it was challenging, and how many points you think the achievement should be worth. 
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
+- **Comprehensive Viewing**: The Fitness Tracker also provides a comprehensive view of your training history. All your recorded sessions are displayed in a table, showing key details such as date, training type, distance, time, and heart rate, alongside an additional extrapolated speed. This allows you to track your progress over time and make informed decisions about your fitness routine.
 
-*Technical*
-- (10 points) Implement OAuth authentication, perhaps with a library like [passport.js](http://www.passportjs.org/). 
-*You must either use Github authenticaion or provide a username/password to access a dummy account*. 
-Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. 
-Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!  
-- (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
+- **MongoDB Database**: Utilized MongoDB to persistently store training session data between server sessions.
 
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
+## Navigating the Application
 
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
+1. **Login/Registration**: When you first access the application, you'll be presented with a login screen. Choose your preferred authentication method (GitHub OAuth or local registration) to access the main features.
 
-## Your Web Application Title
+2. **Adding a Session**: To add a new training session, click the "Add Session" button. Fill in the session details and click "Add Session" to save.
 
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
+3. **Editing a Session**: To modify an existing training session, go to the "Training Sessions" table. Click the "Edit" button next to the session you want to update. Make your changes and click "Save."
 
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
+4. **Deleting a Session**: If you want to delete a training session, click the "Delete" button next to the session in the "Training Sessions" table. Confirm the deletion to remove the session.
 
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
+5. **Viewing Training History**: You can review your entire training history in the "Training Sessions" table. This table displays all your recorded sessions with relevant details.
+
+The Fitness Tracker is designed to be intuitive and user-friendly, helping you manage and monitor your fitness journey effectively.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
 
-### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+- **OAuth Authentication**: [10pts] Implemented GitHub OAuth authentication using the `passport-github` strategy, allowing users to log in with their GitHub accounts.
+
+- **Lighthouse Audit**: [5pts] Achieved a perfect score of 100% in all four categories (Performance, Best Practices, Accessibility, and SEO) on the Google Lighthouse audit at `a3-michael-mcinerney.glitch.me`.
+  <img src="https://cdn.glitch.global/daf8f679-ba70-4fad-b11d-79ef7fd13274/Screen%20Shot%202023-09-25%20at%2010.55.41%20AM.png?v=1695653764360">
+## Dependencies
+
+- **Express**: Used as the server framework to handle routes and requests.
+- **MongoDB**: Employed for data storage and retrieval.
+- **Bootstrap**: Utilized for CSS styling and layout.
+
+## Getting Started
+
+To run the Fitness Tracker locally, follow these steps:
+
+1. Clone this repository.
+2. Install the required dependencies using `npm install`.
+3. Start the server with `npm start`.
+4. Access the application in your web browser at `http://localhost:3000`.
+
+## Author
+
+Michael McInerney
