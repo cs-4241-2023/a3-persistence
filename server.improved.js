@@ -220,8 +220,6 @@ app.get('/success', function (request, response) {
     if(!!match) { // user does exist
       // log the user in
       console.log('found in database')
-      request.session.login = true
-      request.session.user = res.data.login
     } else { // user does not exist -> create their account
       const schedule = await collections.users.insertOne({})
       const newUser = await collections.users.insertOne({
