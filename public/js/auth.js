@@ -28,9 +28,17 @@ const accountCreation = async function (e) {
     })
 }
 
+const ghlogin = async function(e) {
+    e.preventDefault();
+
+    window.location.href = "/auth/github"
+}
+
 window.onload = function(){
     const login = document.getElementById('login')
     const reg = document.getElementById('register')
+    const gbut = document.getElementById('ghlog')
     login.onclick = auth;
     reg.onclick = accountCreation;
+    gbut.onclick = ghlogin;
 }

@@ -3,11 +3,13 @@ const denv = require('dotenv').config()
 const {MongoClient, ObjectId} = require('mongodb');
 const auth = require('passport');
 const ghauth = require('passport-github').Strategy;
-const cookie = require('cookie-session')
+const cookie = require('express-session')
 const app = exp();
 const port = process.env.PORT;
 const connect_uri = process.env.connectionStr
-console.log(`Here: ${connect_uri}`)
+const sec = process.env.ghAuthClientSecret;
+const cID = process.env.ghAuthClientId;
+
 const client = new MongoClient(connect_uri)
 let collection = null;
 
@@ -15,27 +17,68 @@ const totalPrice = { totalPrice: 0.0 };
 let retObject;
 const groceryList = [];
 
-app.use(exp.static('public'))
 app.use(exp.static('views'))
+app.use(exp.static('public'))
 app.use(exp.json())
-app.use(exp.urlencoded({extended: true}))
-app.use(cookie({
-  name: 'session',
-  keys: ['key1', 'key2']
-}))
 
 async function run() {
   await client.connect()
   collection = await client.db("GroceryList").collection("Grocery_Items")
-  if(collection !== null){
-    const docs = await collection.find({}).toArray()
-    console.log(docs)
-  }
-  app.get("/docs", async (req, res) => {
-    if(collection !== null){
-      const docs = await collection.find({}).toArray()
-      res.json(docs)
+
+app.use(cookie({ secret: 'areyoureadytorumbleelelelelelele', resave: false, saveUninitialized: true }));
+app.use(auth.initialize())
+
+  auth.use(new ghauth({
+    clientID: cID,
+    clientSecret: sec,
+    callbackURL: "http://localhost:3000/auth/github/callback"
+  }, async (accessToken, refreshToken, gituser, done) => {
+    await client.db("GroceryList").collection("Users").findOne({githubId: gituser.id}, async (err, user) => {
+      if(err) return done(err);
+      if(!user){
+        const newUsr = {
+          githubId: gituser.id,
+          username: gituser.username,
+          displayName: gituser.displayName,
+        };
+
+        let dummy = await client.db("GroceryList").collection("Users").insertOne(newUsr)
+          if(!dummy) return done(new Error("Could not insert"));
+           return done(null, newUsr);
+
+      }
+      else{
+        return done(null, user)
+      }
+    })
+  }))
+
+  auth.serializeUser((user, done) => {
+    done(null, user);
+  })
+
+  auth.deserializeUser(async (user, done) => {
+    let testusr = await client.db("GroceryList").collection("Users").findOne({user: user})
+    if(!testusr){
+      return done(new Error('user not found'));
     }
+    done(null, testusr)
+  })
+
+  app.get('/auth/github', auth.authenticate('github', {scope: ['user: email']}));
+  app.get('/auth/github/callback', auth.authenticate('github', { failureRedirect: '/' }), (req, res) => {
+    console.log(req)
+    console.log(req.isAuthenticated())
+      res.redirect('/index');
+  });
+
+  app.get("/", async (req, res) => {
+    res.sendFile(__dirname + "/views/index.html")
+  })
+
+  app.get("/index", async (req, res) => {
+    res.sendFile(__dirname + "/views/main.html")
+
   })
 
   app.post("/auth", async (req, res)=>{
@@ -45,11 +88,18 @@ async function run() {
     {
       req.session.login = true;
 
-      res.redirect('main.html')
+      res.redirect('/index')
     }else{
-      res.redirect('index.html')
+      res.redirect('/')
     }
 
+  })
+
+  app.use( function( req,res,next) {
+    if( req.session.login === true )
+      next()
+    else
+      res.sendFile( __dirname + '/views/index.html' )
   })
 
   app.post("/newAc", async (req, res)=> {
@@ -57,7 +107,7 @@ async function run() {
     /**
      * duplicate account creation logic
      */
-    if(usr !== null)
+    if(usr === null)
     {
       let newusr = await client.db("GroceryList").collection("Users").insertOne({
       uname: req.body.uname,
@@ -65,7 +115,7 @@ async function run() {
     });
     req.session.login = true;
 
-    res.redirect('main.html')
+    res.redirect('/views/main.html')
   }
   else{
     res.sendFile(__dirname + "/views/index.html")
