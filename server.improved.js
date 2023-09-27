@@ -210,30 +210,26 @@ app.get('/success', function (request, response) {
     headers: {
       Authorization: 'token ' + accessToken
     }
-  }).then((res) => {
-    console.log('IN SUCCESS THEN')
-    request.session.login = true
-    request.session.user = res.data.login
-    console.log('final: ' + JSON.stringify(res.data))
+  }).then(async (res) => {
+    // check if the user already exists
+    let match = await collections.users.find({'username': `${request.data.login}`}).toArray()
+    if(!!match) { // user does exist
+      // log the user in
+      request.session.login = true
+      request.session.user = res.data.login
+    } else { // user does not exist -> create their account
+      const schedule = await collections.users.insertOne({})
+        .then(async (schedule_result) => {
+          let result = await collections.users.insertOne({
+            username: res.data.login,
+            schdules: [new ObjectId(schdules.result.insertedId)]
+          })
+          console.log('inserted new user: ' + JSON.stringify(result))
+        })
+    }
+
     response.redirect(`/main.html`)
   })
-  // console.log('accessToken in success: ' + accessToken)
-  //   axios.get({
-  //     method: 'get',
-  //     url: "https://api.github.com/user",
-  //     headers: {
-  //       Authorization: "token " + accessToken
-  //     }
-  //   }).then((response) => {
-  //     console.log('IN SUCCESS THEN')
-  //     request.session.login = true
-  //     request.session.user = response.data.login
-  //     console.log('final: ' + JSON.stringify(response.data))
-  //     response.redirect(`/main.html`)
-  //   }).catch((err) => {
-  //     console.log('in catch for success')
-  //     response.status(500).json({ err: err.message })
-  //   })
 
 })
 

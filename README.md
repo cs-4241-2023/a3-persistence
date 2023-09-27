@@ -1,5 +1,6 @@
 Thea Caplan
 Link: https://hammerhead-app-rjt7q.ondigitalocean.app
+(NOTE: SA mentioned having the link be not in a3-first-last format was okay.)
 
 Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
 ===
