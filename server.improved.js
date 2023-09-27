@@ -123,7 +123,7 @@ app.get('/data', async (request, response) => {
     // get the classes of the logged in user
     const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
       .then( async current_user => {
-        if(!!current_user) {
+        if(!!current_user[0]) {
           const result2 = await collections.schedules.find({ _id : new ObjectId(current_user[0].schedules[0]) }).toArray() // get the schedules of the user
             .then( async current_schedule => {
               const classes = []
