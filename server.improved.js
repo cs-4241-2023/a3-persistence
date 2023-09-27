@@ -224,13 +224,11 @@ app.get('/success', function (request, response) {
       request.session.user = res.data.login
     } else { // user does not exist -> create their account
       const schedule = await collections.users.insertOne({})
-        .then(async (schedule_result) => {
-          let result = await collections.users.insertOne({
-            username: res.data.login,
-            schdules: [new ObjectId(schdules.result.insertedId)]
-          })
-          console.log('inserted new user: ' + JSON.stringify(result))
-        })
+      const newUser = await collections.users.insertOne({
+        username: res.data.login,
+        schdules: [new ObjectId(schedule.insertedId)]
+      })
+      console.log('inserted new user: ' + JSON.stringify(newUser))
     }
 
     response.redirect(`/main.html`)
