@@ -117,7 +117,7 @@ app.get('/data', async (request, response) => {
   // get the username of the logged in user
   data.username = request.session.user;
 
-  console.log('user? ' + request.session.user)
+  console.log('user2? ' + request.session.user)
 
   if(!!data.username) {
     // get the classes of the logged in user
