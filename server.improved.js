@@ -117,9 +117,9 @@ app.get('/data', async (request, response) => {
   // get the username of the logged in user
   data.username = request.session.user;
 
-  console.log('user2? ' + request.session.user)
+  console.log('user? ' + request.session.user)
 
-  if(!!data.username) {
+  if(request.session.login) {
     // get the classes of the logged in user
     const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
       .then( async current_user => {
