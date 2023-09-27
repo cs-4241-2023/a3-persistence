@@ -97,6 +97,10 @@ body {
   text-align: center;
 }
 
+.div{
+  margin: auto;
+}
+
 .my-button2 {
   font-family: "Dosis";
   font-size: 20px;
