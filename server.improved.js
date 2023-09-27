@@ -204,23 +204,36 @@ app.get("/github-callback", (request, response) => {
 });
 
 app.get('/success', function (request, response) {
-  console.log('accessToken in success: ' + accessToken)
-    axios.get({
-      method: 'get',
-      url: "https://api.github.com/user",
-      headers: {
-        Authorization: "token " + accessToken
-      }
-    }).then((response) => {
-      console.log('IN SUCCESS THEN')
-      request.session.login = true
-      request.session.user = response.data.login
-      console.log('final: ' + JSON.stringify(response.data))
-      response.redirect(`/main.html`)
-    }).catch((err) => {
-      console.log('in catch for success')
-      response.status(500).json({ err: err.message })
-    })
+  axios({
+    method: 'get',
+    url: `https://api.github.com/user`,
+    headers: {
+      Authorization: 'token ' + accessToken
+    }
+  }).then((res) => {
+    console.log('IN SUCCESS THEN')
+    request.session.login = true
+    request.session.user = res.data.login
+    console.log('final: ' + JSON.stringify(res.data))
+    response.redirect(`/main.html`)
+  })
+  // console.log('accessToken in success: ' + accessToken)
+  //   axios.get({
+  //     method: 'get',
+  //     url: "https://api.github.com/user",
+  //     headers: {
+  //       Authorization: "token " + accessToken
+  //     }
+  //   }).then((response) => {
+  //     console.log('IN SUCCESS THEN')
+  //     request.session.login = true
+  //     request.session.user = response.data.login
+  //     console.log('final: ' + JSON.stringify(response.data))
+  //     response.redirect(`/main.html`)
+  //   }).catch((err) => {
+  //     console.log('in catch for success')
+  //     response.status(500).json({ err: err.message })
+  //   })
 
 })
 
