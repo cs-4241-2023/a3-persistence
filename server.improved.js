@@ -123,21 +123,25 @@ app.get('/data', async (request, response) => {
     // get the classes of the logged in user
     const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
       .then( async current_user => {
-        const result2 = await collections.schedules.find({ _id : new ObjectId(current_user[0].schedules[0]) }).toArray() // get the schedules of the user
-          .then( async current_schedule => {
-            const classes = []
-            let i;
-            for(i = 0; i < current_schedule[0].classes.length; i++) {
-              const a_class = await collections.classes.find({'_id' : new ObjectId(current_schedule[0].classes[i]) }).toArray()
-              .then( async a => {
-                return a[0]
-              })
-              classes.push(a_class)
-            } 
-            return classes;
-          })
-          return result2;
-        })
+        if(!!current_user) {
+          const result2 = await collections.schedules.find({ _id : new ObjectId(current_user[0].schedules[0]) }).toArray() // get the schedules of the user
+            .then( async current_schedule => {
+              const classes = []
+              let i;
+              for(i = 0; i < current_schedule[0].classes.length; i++) {
+                const a_class = await collections.classes.find({'_id' : new ObjectId(current_schedule[0].classes[i]) }).toArray()
+                .then( async a => {
+                  return a[0]
+                })
+                classes.push(a_class)
+              } 
+              return classes
+            })
+          return result2
+        } else {
+          return undefined
+        }
+      })
 
     data.schedules = result
   }
