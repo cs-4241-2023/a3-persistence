@@ -34,7 +34,8 @@ app.use(auth.initialize())
     callbackURL: "http://localhost:3000/auth/github/callback"
   }, async (accessToken, refreshToken, gituser, done) => {
     await client.db("GroceryList").collection("Users").findOne({githubId: gituser.id}, async (err, user) => {
-      if(err) return done(err);
+      console.log("In here")
+      if(err) {console.log(err);return done(err);}
       if(!user){
         const newUsr = {
           githubId: gituser.id,
@@ -54,10 +55,12 @@ app.use(auth.initialize())
   }))
 
   auth.serializeUser((user, done) => {
+    console.log("In here2")
     done(null, user);
   })
 
   auth.deserializeUser(async (user, done) => {
+    console.log("In here3")
     let testusr = await client.db("GroceryList").collection("Users").findOne({user: user})
     if(!testusr){
       return done(new Error('user not found'));
