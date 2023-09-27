@@ -214,7 +214,7 @@ app.get('/success', function (request, response) {
     }
   }).then(async (res) => {
     // check if the user already exists
-    let match = await collections.users.find({'username': `${request.data.login}`}).toArray()
+    let match = await collections.users.find({'username': `${res.data.login}`}).toArray()
     console.log('match: ' + JSON.stringify(match))
 
     if(!!match) { // user does exist
