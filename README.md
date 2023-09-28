@@ -21,48 +21,38 @@ Your application is required to implement the following functionalities:
 
 - HTML input tags and form fields of various flavors
 - HTML that can display all data *for a particular authenticated user*. 
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests
-
-Acheivements
----
-
-*Technical*
-- (10 points) Implemented GitHub OAuth authentication
-- (5 points) host your site on a different service on [Digital Ocean]. Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
-
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
+- Achieves at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests
 
 ## College Schedule Maker
 
 Link: link e.g. https://hammerhead-app-rjt7q.ondigitalocean.app 
 
-Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
+The goal of this application is to create a visual schedule holding inforamation about the user's college course schedule. The user can add, modify, and delete their classes as desired. Each user has their own account. 
 
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
+The biggest challenge I faced in creating this application was formatting JSONs and get requests to specific routes properly. Especially the GitHub authentication, as it took a long time to figure out how to send requests to a 3rd party service. It was also hard to figure out how to get the values I wanted from MongoDB using the custom schema I was following. I also made a lot of typos I took hours to find :(
+
+I chose 2 authentication strategies. First I implemented logging in using a username and password. This was the simplest way I could see implementing peresonal accounts. I then implemented GitHub OAuth, mainly because it seemed like a fun challenge that would help me understand the functionality of JavaScript, JSONs, GET/POST requests, MongoDB, and cookies better, which with the hours I spent implementing it it certainly did help my understanding.
+
+I picked the sanatize.css framework, mainly because I wanted a very simplistic UI. 
 - the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
 add a little more detail about what it does.
 
+Acheivements
+---
+
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+- **Tech Achievement 1**: Implemented GitHub OAuth authentication.
+- **Tech Achievement 2**: Hosting site on Digital Ocean. By hosting on Digital Ocean my site will always be active as long as I pay for the service, rather than on glitch were the site will deactivate if not used. It was hard to upload files to Digital Ocean which slowed development, and database and port connections needed to be reformatted to work properly. I also have to pay for this service and any domains I want associated which is a downside. (was told by SA I didn't need to change the url to a3-thea-caplan so I didn't have to buy the domain)
+- **Tech Achievement 3**: Got 100% in all four lighthouse tests required for this assignment. Screenshot on the GitHub.
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+- **Design Achievement 1**: How I implemented the CRAP principles:
+
+The element that received the most emphasis on the main page of the site was the schedule display. It is the only part of the website that has color and is not limited to a singular column of the layout like the forms are. This is intentional to draw the user’s eyes to the all information they have inputted into the site. Every other row of the table alternates in shade to make the information in the table easier to digest and to make it clear that the information within each column changes as you move down the rows. The element with the most emphasis on the login screen are the buttons as they are not black text on white background as the rest of the screen is, but black text on light grey. This is intentional as it makes the user clearly see what they need to press to get complete the log in process.
+
+I used proximity to organize the visual information on my site by putting each of the 3 input functionalities (adding, deleting, and modifying) within their own column on the site. I put the data output display below the inputs on its own row to highlight its different functionality. Within each input form, similar fields were organized next to each other so their relationship to each other was clear. On the login screen, logging in using a username and password and logging in using GitHub authentication were given their own rows, but were still kept within the same column to show they have the same functionality despite the differences in input.
+
+The design elements I used throughout my site was the white background, black colored  courier font, and the thin black line borders around the forms. Originally, the background was a dark grey with white font on top, however to increase the contrast of the website and increase accessibility the colors were inversed. The font type was kept the same everywhere helping keep the site uniform, using size and boldness to differentiate labels. The thin black line wrapped around any container, keeping the pattern of whatever is wrapped within the thin black line is related: each input form as well as information display for the schedule and the delete class feature.
+
+I used alignment to organize information by putting the forms in line with each other in the first row of the website. This makes it clear were all information needs to be inputted. The schedule is placed below the forms such that the user can tell it is a different feature as it does not follow the 3-column layout of the forms but is centered on the page instead. Related fields within forms are kept next to each other, showing their relation and keeping them inline with each other.  The titles of the forms are all aligned horizontally with each other as well to show their similarities while highlighting each one’s different features. On the login screen, the 2 forms of login are kept in line vertically with each other to show that they are not interlinked with each other but have the same overall functionality of logging the user in.
+
