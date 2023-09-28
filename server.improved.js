@@ -239,7 +239,7 @@ app.get('/success', function (request, response) {
       Authorization: 'token ' + accessToken
     }
   }).then(async (res) => {
-    console.log('success - in res - response: ' + JSON.stringify(request.session))
+    console.log('success - in res - request: ' + JSON.stringify(request.session))
     // check if the user already exists
     let match = await collections.users.find({'username': `${res.data.login}`}).toArray()
     console.log('match: ' + JSON.stringify(match) + " length: " + match.length)
@@ -261,7 +261,7 @@ app.get('/success', function (request, response) {
       console.log('inserted new user: ' + JSON.stringify(newUser))
     }
 
-    console.log('success - after - response: ' + JSON.stringify(request.session))
+    console.log('success - after - request: ' + JSON.stringify(request.session))
        accessToken = null
     response.redirect(`/main.html`)
   })
@@ -271,7 +271,7 @@ app.get('/success', function (request, response) {
 
 // middleware for database checking and login checking
 app.use( (request,response,next) => {
-  console.log("in middleware")
+  console.log("in middleware: " + request.url)
   console.log('middleware: ' + JSON.stringify(request.session))
   if( collections !== false ) {
     if (request.session.login === true ) {
