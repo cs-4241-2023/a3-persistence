@@ -43,7 +43,7 @@ const dbConnect = async function() {
     }
   });
   
-  app.post("/bmi", async (req, res) => {
+  /*app.post("/bmi", async (req, res) => {
     try {
         // Extract data from the request body
         const { height, weight, age, gender } = req.body;
@@ -69,12 +69,12 @@ const dbConnect = async function() {
         console.error('Error:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
-});
+}); */
 
 }
 
 
-function calculateModifiedBMI(heightCM, weightKG, age, gender) {
+/* function calculateModifiedBMI(heightCM, weightKG, age, gender) {
   // Ensure height is in meters (convert from cm to m)
   const height = height/100;
   let bmi;
@@ -92,7 +92,7 @@ function calculateModifiedBMI(heightCM, weightKG, age, gender) {
 
   return parseFloat(bmi.toFixed(2)); // Round BMI to two decimal places
 }
-
+*/
 
 
 dbConnect()
