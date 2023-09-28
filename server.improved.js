@@ -238,15 +238,14 @@ app.get('/success', function (request, response) {
         username: res.data.login,
         schedules: [new ObjectId(schedule.insertedId)]
       })
-      request.session.login = true;
+      request.session.login = true
       request.session.user = res.data.login
+      res.session.user = res.data.login
       console.log('inserted new user: ' + JSON.stringify(newUser))
     }
 
+    console.log('login: ' + request.session.login + " user: " + request.sesssion.user)
     accessToken = null
-    request.session.save(function (err) {
-      console.log('fail - cookie')
-    })
     response.redirect(`/main.html`)
   })
 
