@@ -1,4 +1,5 @@
 let total = 0.0;
+let localItems = [];
 const submit = async function (event) {
   event.preventDefault();
 
@@ -22,6 +23,7 @@ const submit = async function (event) {
     body: body,
   });
 
+  console.log(response)
   const data = await response.json();
 
   addList(data);
