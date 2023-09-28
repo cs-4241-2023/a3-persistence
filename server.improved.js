@@ -5,6 +5,7 @@ const http = require( 'http' ),
       dotenv = require("dotenv"),
       { MongoClient, ObjectId } = require("mongodb"),
       axios = require('axios'),
+      // passport = require('passport'),
       app = express()
 
 // allows use of environment variables
@@ -243,7 +244,9 @@ app.get('/success', function (request, response) {
     }
 
     accessToken = null
-    request.session.save()
+    request.session.save(function (err) {
+      console.log('fail - cookie')
+    })
     response.redirect(`/main.html`)
   })
 
