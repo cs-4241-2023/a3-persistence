@@ -4,9 +4,9 @@
   "author": "",
   "scripts": {
     "start": "node server.improved.js",
-    "devStart": "nodemon server.improved.js" 
+    "devStart": "nodemon server.improved.js"
   },
-  "dependencies": { 
+  "dependencies": {
     "bcrypt": "^5.1.1",
     "bootstrap": "^5.3.2",
     "dotenv": "^16.3.1",

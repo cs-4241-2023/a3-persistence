@@ -34,58 +34,33 @@
       <div class="row">
         <div class="col-md-6">
           <div class="box">
-            <form>
+
+            <form method="post">
               <div class="mb-3 text-start">
-                <label for="Height" class="form-label">Height (cm)</label>
-                <input
-                  type="number"
-                  class="form-control text-start"
-                  id="Height"
-                />
+                <label class="form-label" for="height" >Height (cm)</label>
+                <input class="form-control text-start" type="number" id="height" required/>
               </div>
               <div class="mb-3 text-start">
-                <label for="Weight" class="form-label">Weight (kg)</label>
-                <input
-                  type="number"
-                  class="form-control text-start"
-                  id="Weight"
-                />
+                <label class="form-label" for="weight" >Weight (kg)</label>
+                <input class="form-control text-start" type="number" id="weight"/>
               </div>
               <div class="mb-3 text-start">
-                <label for="Age" class="form-label">Age</label>
-                <input type="number" class="form-control text-start" id="Age" />
+                <label class="form-label" for="age" >Age</label>
+                <input class="form-control text-start" type="number" id="age" />
               </div>
               <div class="mb-3 text-start">
                 <label for="Gender" class="form-label">Gender</label>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="Gender"
-                    id="Male"
-                    value="Male"
-                  />
+                  <input class="form-check-input" type="radio" name="gender" id="male" value="male"/>
                   <label class="form-check-label" for="Male">Male</label>
                 </div>
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="radio"
-                    name="Gender"
-                    id="Female"
-                    value="Female"
-                  />
+                  <input class="form-check-input" type="radio" name="gender" id="female" value="female"/>
                   <label class="form-check-label" for="Female">Female</label>
                 </div>
               </div>
               <div class="mb-3">
-                <button
-                  type="button"
-                  class="btn btn-success w-100"
-                  id="Calculate"
-                >
-                  Calculate BMI
-                </button>
+                <button class="btn btn-success w-100" type="button" id="Calculate">Calculate BMI</button>
               </div>
             </form>
           </div>
@@ -128,7 +103,7 @@
                 <th>ExampleWeight (kg)</th>
                 <th>ExampleBMI</th>
                 <th>
-                  <button type="button" class="btn btn-primary">Edit</button>
+                  <button type="button" class="btn btn-primary" id="deleteb">Edit</button>
                   <button type="button" class="btn btn-danger">Delete</button>
                 </th>
               </tbody>

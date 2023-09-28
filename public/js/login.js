@@ -1,7 +1,7 @@
-document.addEventListener("DOMContentLoaded", () => {
+/*document.addEventListener("DOMContentLoaded", () => {
     const loginForm = document.querySelector("#login-form");
 
-    //loginButton.addEventListener("click", () => {
+
      
       loginForm.addEventListener("submit", (event) => {
         const username = document.querySelector("#Username").value;
@@ -28,3 +28,5 @@ document.addEventListener("DOMContentLoaded", () => {
           });
       });
     });
+
+    */
