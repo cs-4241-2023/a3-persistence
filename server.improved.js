@@ -62,7 +62,7 @@ async function run() {
 
   app.get("/fetchData", async (req, res) => {
     const docs = await collection.find({"userid":userid}).toArray()
-    if (docs.length !== null) {
+    if (docs.length !== 0) {
       userdata = docs
       //console.log(userdata[0]['workoutdata'])
       //res.json( docs )
