@@ -223,6 +223,8 @@ app.get("/github-callback", (request, response) => {
 });
 
 app.get('/success', function (request, response) {
+
+  console.log('success - before - request: ' + JSON.stringify(request.session))
   axios({
     method: 'get',
     url: `https://api.github.com/user`,
@@ -230,6 +232,8 @@ app.get('/success', function (request, response) {
       Authorization: 'token ' + accessToken
     }
   }).then(async (res) => {
+    console.log('success - in res - res: ' + JSON.stringify(res.session))
+    console.log('success - in res - response: ' + JSON.stringify(request.session))
     // check if the user already exists
     let match = await collections.users.find({'username': `${res.data.login}`}).toArray()
     console.log('match: ' + JSON.stringify(match) + " length: " + match.length)
@@ -251,8 +255,9 @@ app.get('/success', function (request, response) {
       console.log('inserted new user: ' + JSON.stringify(newUser))
     }
 
-    console.log('login: ' + request.session.login + " user: " + request.sesssion.user)
-    accessToken = null
+    console.log('success - after - res: ' + JSON.stringify(res.session))
+    console.log('success - after - response: ' + JSON.stringify(request.session))
+       accessToken = null
     response.redirect(`/main.html`)
   })
 
