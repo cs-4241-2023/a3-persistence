@@ -6,7 +6,6 @@ const http = require( 'http' ),
       { MongoClient, ObjectId } = require("mongodb"),
       axios = require('axios'),
       cors = require('cors'),
-      // passport = require('passport'),
       app = express()
 
 // allows use of environment variables
