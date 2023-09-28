@@ -1,4 +1,7 @@
+## College Schedule Maker
+
 Thea Caplan
+
 Link: https://hammerhead-app-rjt7q.ondigitalocean.app
 (NOTE: SA mentioned having the link be not in a3-first-last format was okay.)
 
@@ -6,10 +9,6 @@ Assignment 3 - Persistence: Two-tier Web Application with Database, Express serv
 ===
 
 Due: ~~September 22nd, by 11:59 AM.~~ Given an extension by the professor.
-
-## College Schedule Maker
-
-Link: link e.g. https://hammerhead-app-rjt7q.ondigitalocean.app 
 
 The goal of this application is to create a visual schedule holding inforamation about the user's college course schedule. The user can add, modify, and delete their classes as desired. Each user has their own account. 
 
@@ -32,7 +31,7 @@ Acheivements
 ## Technical Achievements
 - **Tech Achievement 1**: Implemented GitHub OAuth authentication.
 - **Tech Achievement 2**: Hosting site on Digital Ocean. By hosting on Digital Ocean my site will always be active as long as I pay for the service, rather than on glitch were the site will deactivate if not used. It was hard to upload files to Digital Ocean which slowed development, and database and port connections needed to be reformatted to work properly. I also have to pay for this service and any domains I want associated which is a downside. (was told by SA I didn't need to change the url to a3-thea-caplan so I didn't have to buy the domain)
-- **Tech Achievement 3**: Got 100% in all four lighthouse tests required for this assignment on desktop. Screenshot on the GitHub.
+- **Tech Achievement 3**: Got 100% in all four lighthouse tests required for this assignment on desktop. Screenshots for both the login page and the main content page are on the GitHub.
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: How I implemented the CRAP principles:
