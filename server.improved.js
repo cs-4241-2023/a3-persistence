@@ -227,7 +227,7 @@ app.get('/success', function (request, response) {
       request.session.user = res.data.login
       console.log('found in database')
     } else { // user does not exist -> create their account
-      const schedule = await collections.users.insertOne({})
+      const schedule = await collections.schedule.insertOne({classes: []})
       const newUser = await collections.users.insertOne({
         username: res.data.login,
         schdules: [new ObjectId(schedule.insertedId)]
