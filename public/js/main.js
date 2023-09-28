@@ -107,7 +107,9 @@ window.onload = async function () {
     classModifySelect.onchange = loadClass
     
     // display any errors
-    displayErrors(data.error);
+    if(data.hasOwnProperty('error')) {
+      displayErrors(data.error);
+    }
 
     // display the username
     usernameDisplay.innerHTML = "User: " + data.username;
