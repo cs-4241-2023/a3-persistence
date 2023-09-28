@@ -7,12 +7,15 @@ const submit = async function (event) {
     json = {
       height: document.querySelector("#height").value,
       weight: document.querySelector("#weight").value,
-      age: document.querySelector("#taskPriority").value,
+      age: document.querySelector("#age").value,
       gender: document.querySelector("#gender").value,
+
+   
     }
    }else {
     json={id:evt.getAttribute('id')}
    }
+
 
     fetch(evt.getAttribute('formaction'), {
       method: "POST",
