@@ -5,14 +5,10 @@ const http = require( 'http' ),
       dotenv = require("dotenv"),
       { MongoClient, ObjectId } = require("mongodb"),
       axios = require('axios'),
-      { Octokit } = require("octokit"),
-      fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args)),
       app = express()
 
 // allows use of environment variables
 dotenv.config()
-
-axios.defaults.withCredentials = true
 
 var accessToken = "";
 
@@ -83,6 +79,7 @@ app.use(express.json())
 app.use( cookie({
   name: 'session',
   sameSite: 'none',
+  saveUninitialized: true,
   keys: ['key1', 'key2']
 }))
 
