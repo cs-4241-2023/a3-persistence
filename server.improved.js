@@ -103,6 +103,13 @@ async function run() {
 }
 run()
 
+const corsOptions = {
+  origin: 'https://hammerhead-app-rjt7q.ondigitalocean.app',
+  credentials: true,
+}
+
+app.use(cors(corsOptions))
+
 // GETs and POSTs that do not go through the middleware
 
 app.get('/data', async (request, response) => {
