@@ -219,9 +219,9 @@ app.get('/success', function (request, response) {
   }).then(async (res) => {
     // check if the user already exists
     let match = await collections.users.find({'username': `${res.data.login}`}).toArray()
-    console.log('match: ' + JSON.stringify(match))
+    console.log('match: ' + JSON.stringify(match) + " lrngth: " + match.length)
 
-    if(!!match) { // user does exist
+    if(match.length > 0) { // user does exist
       // log the user in
       console.log('found in database')
     } else { // user does not exist -> create their account
@@ -233,6 +233,7 @@ app.get('/success', function (request, response) {
       console.log('inserted new user: ' + JSON.stringify(newUser))
     }
 
+    accessToken = null
     response.redirect(`/main.html`)
   })
 
