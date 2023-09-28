@@ -12,6 +12,8 @@ const http = require( 'http' ),
 // allows use of environment variables
 dotenv.config()
 
+axios.defaults.withCredentials = true
+
 var accessToken = "";
 
 // Functions for validating and setting up data
