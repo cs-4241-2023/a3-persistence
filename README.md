@@ -16,6 +16,10 @@ The biggest challenge I faced in creating this application was formatting JSONs 
 
 I chose 2 authentication strategies. First I implemented logging in using a username and password. This was the simplest way I could see implementing peresonal accounts. I then implemented GitHub OAuth, mainly because it seemed like a fun challenge that would help me understand the functionality of JavaScript, JSONs, GET/POST requests, MongoDB, and cookies better, which with the hours I spent implementing it it certainly did help my understanding.
 
+LOGIN INFO: either use your GitHub account, or one of the two username/password accounts:
+Account 1: username = "test", password = "test"
+Account 2: username "user", password = "pw"
+
 I picked the sanatize.css framework, mainly because I wanted a very simplistic UI. I didn't want to draw away from the functionality of the site as it already has a lot of elements on it for the purposes of functionality (adding, deleting, modifying, and viewing data).
 
 The five Express middleware packages I used were:
