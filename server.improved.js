@@ -31,17 +31,17 @@ async function run() {
 app.post("/login", async (req, res) => {
   const username= req.body.username;
   const password = req.body.password;
-  const user = await collection.findOne({username : username },{ password: password });
+  const user = await collection.findOne({username : username, password: password });
 
-  if (user) {
+  console.log("username: " + username);
+  if (user !== null) {
    //res.json({ success: true, message: "Login successful" });
    console.log("Login successful")
-    res.redirect('/public/bmi.html');
+    res.redirect('bmi.html');
   } else {
     res.status(401).json({ success: false, message: "Login failed" });
   }
 });
-
 
 app.listen(3000)
 

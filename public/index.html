@@ -25,17 +25,17 @@
       <div class="my-auto display-5 font text-center">Keep track of your Health</div>
 
     <div class="login-box">
-    <form id="login-form">
+    <form id="login-form" action="/login" method="post">
       <div class="text-start">
         <label for="InputUsername" class="form-label"> Username</label>
-        <input type="email" class="text-start form-control" id="Username">
+        <input type="text" class="text-start form-control" id="username" name="username">
       </div>
       <div class="mb-3 text-start">
         <label for="InputPassword" class="form-label">Password</label>
-        <input type="password" class="text-start form-control" id="Password">
+        <input type="password" class="text-start form-control" id="password" name="password">
       </div>
       <div class="mb-3">
-        <button id="login-button" type="button" class="btn btn-success w-100">Login</button>
+        <button id="login-button" type="submit" class="btn btn-success w-100">Login</button>
       </div>
     </form>
   </div>
