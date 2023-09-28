@@ -80,7 +80,6 @@ app.use(express.json())
 app.use( cookie({
   name: 'session',
   sameSite: 'none',
-  saveUninitialized: true,
   keys: ['key1', 'key2']
 }))
 
