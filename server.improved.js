@@ -1,8 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
 
 const app = express();
 
@@ -59,22 +57,15 @@ app.post("/login", async (req, res) => {
     // check if user exists in the database
     const appUsersCollection = db.collection("app_users");
     const user = await appUsersCollection.findOne({ username: username });
-    if (!user) {
+    if (!user || user.password !== password) {
       return res
         .status(401)
         .send({ error: "Username or password is incorrect" });
     }
-
-    // check if password is correct
-    if (!(password === user.password)) {
-      res.status(401).send({ message: "Username or password is incorrect" });
-      res.end();
-    } else {
-      // Otherwise user is authenticated
-      res.send({ message: "Successfully logged in!" });
-    }
+    return res.redirect("/index.html");
   } catch (error) {
     console.error("Error from login route: ", error);
+    return res.status(500).send({ error: "Internal server error" });
   }
 });
 

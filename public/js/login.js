@@ -20,11 +20,15 @@ loginForm.addEventListener("submit", function (event) {
     },
     body: JSON.stringify(data),
   })
-    .then((response) => response.text())
-    .then((responseText) => {
-      console.log(responseText);
+    .then((response) => {
+      if (response.status === 200) {
+        window.location.href = "/index.html";
+      } else {
+        alert("Invalid username or password");
+      }
     })
     .catch((error) => {
       console.error("Error:", error);
+      alert("Error logging in. Please try again.");
     });
 });
