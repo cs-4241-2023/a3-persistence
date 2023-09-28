@@ -223,6 +223,8 @@ app.get('/success', function (request, response) {
 
     if(match.length > 0) { // user does exist
       // log the user in
+      request.session.login = true;
+      request.session.user = res.data.login
       console.log('found in database')
     } else { // user does not exist -> create their account
       const schedule = await collections.users.insertOne({})
@@ -230,6 +232,8 @@ app.get('/success', function (request, response) {
         username: res.data.login,
         schdules: [new ObjectId(schedule.insertedId)]
       })
+      request.session.login = true;
+      request.session.user = res.data.login
       console.log('inserted new user: ' + JSON.stringify(newUser))
     }
 
