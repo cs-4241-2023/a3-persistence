@@ -225,7 +225,7 @@ app.get('/success', function (request, response) {
   }).then(async (res) => {
     // check if the user already exists
     let match = await collections.users.find({'username': `${res.data.login}`}).toArray()
-    console.log('match: ' + JSON.stringify(match) + " lrngth: " + match.length)
+    console.log('match: ' + JSON.stringify(match) + " length: " + match.length)
 
     if(match.length > 0) { // user does exist
       // log the user in
@@ -236,7 +236,7 @@ app.get('/success', function (request, response) {
       const schedule = await collections.schedules.insertOne({classes: []})
       const newUser = await collections.users.insertOne({
         username: res.data.login,
-        schdules: [new ObjectId(schedule.insertedId)]
+        schedules: [new ObjectId(schedule.insertedId)]
       })
       request.session.login = true;
       request.session.user = res.data.login
@@ -244,6 +244,7 @@ app.get('/success', function (request, response) {
     }
 
     accessToken = null
+    app.session.save()
     response.redirect(`/main.html`)
   })
 
@@ -265,7 +266,7 @@ app.use( (request,response,next) => {
 })
 
 app.use('/main.html', function(request, response) {
-  //
+  console.log('main')
 })
 
 // POST requests that must go through the middleware
