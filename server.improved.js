@@ -1,8 +1,14 @@
 const express    = require('express'),
       { MongoClient, ServerApiVersion } = require("mongodb"),
       app        = express(),
+      axios      = require('axios'),
       logdata    = []
+
+var access_token = "";
+
 let userdata = null
+let userid = ""
+
 app.use( "/", express.static( 'public' ) )
 app.use( "/", express.static( 'views'  ) )
 app.use( express.json() )
@@ -20,20 +26,55 @@ const client = new MongoClient(uri, {
 
 let collection = null
 
+app.get('/callback', (req, res) => {
+
+  const requestToken = req.query.code
+  
+  axios({
+    method: 'post',
+    url: `https://github.com/login/oauth/access_token?client_id=${process.env.clientID}&client_secret=${process.env.clientSecret}&code=${requestToken}`,
+    headers: {
+         accept: 'application/json'
+    }
+  }).then((response) => {
+    access_token = response.data.access_token
+    res.redirect('/success');
+  })
+})
+
+app.get('/success', function(req, res) {
+
+  axios({
+    method: 'get',
+    url: `https://api.github.com/user`,
+    headers: {
+      Authorization: 'token ' + access_token
+    }
+  }).then((response) => {
+    userid = response.data.login
+    res.redirect('/main.html')
+  })
+});
+
 async function run() {
   await client.connect()
   collection = await client.db("workoutlogdb").collection("workoutlog")
-    const docs = await collection.find({}).toArray()
-    console.log(docs)
 
   app.get("/fetchData", async (req, res) => {
-    if (collection !== null) {
-      //replace with github userid
-      const docs = await collection.find({"userid":"admin"}).toArray()
+    const docs = await collection.find({"userid":userid}).toArray()
+    if (docs.length !== null) {
       userdata = docs
       //console.log(userdata[0]['workoutdata'])
-      res.json( docs )
+      //res.json( docs )
     }
+    else {
+      console.log("no data")
+      //insert empty workoutdata
+      userdata = [{"userid": userid, "workoutdata": []}]
+      res = await collection.insertOne(userdata)
+      console.log(userdata)
+    }
+    res.json(userdata)
   })
 }
 
@@ -48,10 +89,11 @@ app.use( (req,res,next) => {
 //submit
 app.post( '/submit', async (req,res) => {
   //add the body to the workoutdata array
+  console.log(userdata)
   userdata[0]['workoutdata'].push(req.body)
 
   console.log(userdata)
-  const result = await collection.replaceOne({"userid": "admin" }, userdata[0])
+  const result = await collection.replaceOne({"userid": userid }, userdata[0])
   res.json( result )
 })
 
@@ -59,7 +101,7 @@ app.post( '/submit', async (req,res) => {
 app.post( '/delete', async (req,res) => {
    //splice the index from the array in userdata
     userdata[0]['workoutdata'].splice(req.body.deleteResponse, 1);
-    const result = await collection.replaceOne({"userid": "admin" }, userdata[0])
+    const result = await collection.replaceOne({"userid": userid }, userdata[0])
     res.json( result )
 })
 
@@ -79,23 +121,6 @@ app.listen( 3000 )
 const calculateVolume = function (sets, reps, weight) {
   return sets * reps * weight;
 }
-
-// app.post("/delete", async function (request, response) {
-//   //only deletes the top one
-//   const index = request.body.deleteResponse;
-//   logdata.splice(response.json(logdata)[index], 1);
-
-// })
-
-
-
-// const http = require("http"),
-//   fs = require("fs"),
-//   mime = require("mime"),
-//   dir = "public/",
-//   port = 3000;
-
-// const appdata = [];
 
 // const server = http.createServer(function (request, response) {
 //   if (request.method === "GET") {
