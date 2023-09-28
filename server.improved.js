@@ -5,6 +5,7 @@ const http = require( 'http' ),
       dotenv = require("dotenv"),
       { MongoClient, ObjectId } = require("mongodb"),
       axios = require('axios'),
+      cors = require('cors'),
       // passport = require('passport'),
       app = express()
 
