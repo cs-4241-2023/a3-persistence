@@ -114,7 +114,8 @@ app.use(cors(corsOptions))
 // GETs and POSTs that do not go through the middleware
 
 app.get('/data', async (request, response) => {
-  
+  console.log('in data')
+
   let data = {
     username: "",
     schedules: [],
@@ -162,6 +163,7 @@ app.get('/data', async (request, response) => {
 });
 
 app.post('/login', async (request, response) => {
+  console.log('in login')
   
   // check if the username matches a username in the database
   let match = await collections.users.find({'username': `${request.body.username}`}).toArray()
@@ -183,6 +185,8 @@ app.post('/login', async (request, response) => {
 
 // GitHub Auth
 app.get("/auth", (request, response) => {
+  console.log('in auth')
+
   // Store parameters in an object
   const params = {
     scope: "read:user",
@@ -195,6 +199,8 @@ app.get("/auth", (request, response) => {
 })
 
 app.get("/github-callback", (request, response) => {
+  console.log('in github-callback')
+
   const { code } = request.query;
  
   const body = {
@@ -223,6 +229,7 @@ app.get("/github-callback", (request, response) => {
 });
 
 app.get('/success', function (request, response) {
+  console.log('in success')
 
   console.log('success - before - request: ' + JSON.stringify(request.session))
   axios({
@@ -232,7 +239,6 @@ app.get('/success', function (request, response) {
       Authorization: 'token ' + accessToken
     }
   }).then(async (res) => {
-    console.log('success - in res - res: ' + JSON.stringify(res.session))
     console.log('success - in res - response: ' + JSON.stringify(request.session))
     // check if the user already exists
     let match = await collections.users.find({'username': `${res.data.login}`}).toArray()
@@ -255,17 +261,18 @@ app.get('/success', function (request, response) {
       console.log('inserted new user: ' + JSON.stringify(newUser))
     }
 
-    console.log('success - after - res: ' + JSON.stringify(res.session))
     console.log('success - after - response: ' + JSON.stringify(request.session))
        accessToken = null
     response.redirect(`/main.html`)
   })
 
+  console.log('outside axios and then of success')
 })
 
 // middleware for database checking and login checking
 app.use( (request,response,next) => {
   console.log("in middleware")
+  console.log('middleware: ' + JSON.stringify(request.session))
   if( collections !== false ) {
     if (request.session.login === true ) {
       next()
@@ -285,13 +292,15 @@ app.use('/main.html', function(request, response) {
 // POST requests that must go through the middleware
 
 app.post('/logout', (request, response) => {
+  console.log('in logout')
   request.session.login = false;
   request.session.user = null;
   response.sendFile(__dirname + '/public/index.html')
 })
 
 app.post('/add', async (request, response) => {
-  
+  console.log('in add')
+
   // check has name, start time, end time, and 1 day associated
   const error = validate(request.body, '');
 
@@ -319,31 +328,35 @@ app.post('/add', async (request, response) => {
 })
 
 app.post('/remove', async (request, response ) => {
-      // get the class to remove id
-      if(!request.body.hasOwnProperty('selected')) {
-        response.redirect('/main.html')
-        return;
-      }
+  console.log('in remove')
+
+  // get the class to remove id
+  if(!request.body.hasOwnProperty('selected')) {
+    response.redirect('/main.html')
+    return;
+  }
   
-      const class_id = new ObjectId(JSON.parse(request.body.selected)._id)
-  
-      // get the user
-      const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
-        .then( async current_user => {    // remove the class from the user's schedule
-          const result2 = await collections.schedules.updateOne(  { _id : new ObjectId(current_user[0].schedules[0]) }, 
-                                                                  {$pull: { classes: { $eq: class_id }}}) // remove the class from the schedule
-        })
-  
-      // remove the class from classes
-      const result2 = await collections.classes.deleteOne({_id:  new ObjectId(class_id)})
-  
-      // set errors
-      request.session.errors = {errors: false}
-  
-      response.redirect('/main.html')
+  const class_id = new ObjectId(JSON.parse(request.body.selected)._id)
+
+  // get the user
+  const result = await collections.users.find({'username': `${request.session.user}`}).toArray() // get the user
+    .then( async current_user => {    // remove the class from the user's schedule
+      const result2 = await collections.schedules.updateOne(  { _id : new ObjectId(current_user[0].schedules[0]) }, 
+                                                              {$pull: { classes: { $eq: class_id }}}) // remove the class from the schedule
+    })
+
+  // remove the class from classes
+  const result2 = await collections.classes.deleteOne({_id:  new ObjectId(class_id)})
+
+  // set errors
+  request.session.errors = {errors: false}
+
+  response.redirect('/main.html')
 })
 
 app.post('/update', async (request, response ) => {
+  console.log('in update')
+
   if(!request.body.hasOwnProperty('previous')) {
     response.redirect('/main.html')
     return;
