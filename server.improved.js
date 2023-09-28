@@ -258,6 +258,10 @@ app.use( (request,response,next) => {
   }
 })
 
+app.use('/main.html', function(request, response) {
+  //
+})
+
 // POST requests that must go through the middleware
 
 app.post('/logout', (request, response) => {
