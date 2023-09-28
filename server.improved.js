@@ -27,11 +27,23 @@ connectToDB().catch((error) => {
   console.error("Error connecting to the database: ", error);
 });
 
+// middleware to check the connection to the database
+app.use((req, res, next) => {
+  if (db !== null) {
+    next();
+  } else {
+    res.status(503).send();
+  }
+});
+
 // logging middleware
 app.use((req, res, next) => {
   console.log(`${req.method} request for ${req.url}`);
   next();
 });
+
+// parses JSON bodies
+app.use(express.json());
 
 // Middleware for sessions
 app.use(
@@ -39,6 +51,9 @@ app.use(
     secret: "thisIsASecret",
     resave: false,
     saveUninitialized: false,
+    cookies: {
+      maxAge: 3600000, // 1 hour
+    },
   })
 );
 
@@ -60,24 +75,6 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/login.html");
 });
 
-// protection of the index.html route
-app.get("/index.html", ensureAuthenticated, (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-});
-
-app.use(express.static("public"));
-app.use(ensureAuthenticated);
-app.use(express.json());
-
-// middleware to check the connection to the database
-app.use((req, res, next) => {
-  if (db !== null) {
-    next();
-  } else {
-    res.status(503).send();
-  }
-});
-
 // login route
 app.post("/login", async (req, res) => {
   try {
@@ -96,12 +93,23 @@ app.post("/login", async (req, res) => {
         .status(401)
         .send({ error: "Username or password is incorrect" });
     }
+    // if login successful, create a session
+    req.session.user = user;
+    req.session.cookie.maxAge = 3600000; // 1 hour
     return res.redirect("/index.html");
   } catch (error) {
     console.error("Error from login route: ", error);
     return res.status(500).send({ error: "Internal server error" });
   }
 });
+
+// protection of the index.html route
+app.get("/index.html", ensureAuthenticated, (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
+
+app.use(express.static("public"));
+app.use(ensureAuthenticated);
 
 let currentId = 3;
 let tasksData = [
