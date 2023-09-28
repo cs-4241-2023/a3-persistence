@@ -19,23 +19,9 @@ Your application is required to implement the following functionalities:
 - Persistent data storage in between server sessions using [mongodb]
 - Use of a [CSS framework or template]
 
-Your application is required to demonstrate the use of the following concepts:  
-
-HTML:  
 - HTML input tags and form fields of various flavors
 - HTML that can display all data *for a particular authenticated user*. 
-
-General:  
 - Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests
-
-Deliverables
----
-
-Do the following to complete this assignment:
-
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
 
 Acheivements
 ---
