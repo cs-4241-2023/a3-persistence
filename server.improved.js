@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const session = require("express-session");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const app = express();
@@ -32,7 +33,40 @@ app.use((req, res, next) => {
   next();
 });
 
+// Middleware for sessions
+app.use(
+  session({
+    secret: "thisIsASecret",
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+// middleware to check if the user is logged in
+const ensureAuthenticated = (req, res, next) => {
+  if (req.session && req.session.user) {
+    // the user is logged in
+    next();
+  } else {
+    // the user is not logged in
+    res.status(401).send("Please log in to access this page.");
+    // res.redirect("/login.html");
+  }
+};
+
+// change the default route to login.html
+app.get("/", (req, res) => {
+  // console.log(__dirname + "/public/login.html");
+  res.sendFile(__dirname + "/public/login.html");
+});
+
+// protection of the index.html route
+app.get("/index.html", ensureAuthenticated, (req, res) => {
+  res.sendFile(__dirname + "/public/index.html");
+});
+
 app.use(express.static("public"));
+app.use(ensureAuthenticated);
 app.use(express.json());
 
 // middleware to check the connection to the database
