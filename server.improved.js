@@ -6,6 +6,78 @@ const session = require("express-session");
 
 const app = express();
 
+// MongoDB connection setup
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`;
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  },
+});
+
+let db = null;
+
+async function connectToDB() {
+  await client.connect();
+  db = await client.db("a3_todo_list_app");
+  console.log("Connected to DB successfully");
+}
+
+connectToDB().catch((error) => {
+  console.error("Error connecting to the database: ", error);
+});
+
+// logging middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} request for ${req.url}`);
+  next();
+});
+
+app.use(express.static("public"));
+app.use(express.json());
+
+// middleware to check the connection to the database
+app.use((req, res, next) => {
+  if (db !== null) {
+    next();
+  } else {
+    res.status(503).send();
+  }
+});
+
+// login route
+app.post("/login", async (req, res) => {
+  try {
+    // get username and password from request body
+    const { username, password } = req.body;
+    // check if credentials have been entered
+    if (!username || !password) {
+      res.status(401).send({ error: "Username or password not entered" });
+    }
+
+    // check if user exists in the database
+    const appUsersCollection = db.collection("app_users");
+    const user = await appUsersCollection.findOne({ username: username });
+    if (!user) {
+      return res
+        .status(401)
+        .send({ error: "Username or password is incorrect" });
+    }
+
+    // check if password is correct
+    if (!(password === user.password)) {
+      res.status(401).send({ message: "Username or password is incorrect" });
+      res.end();
+    } else {
+      // Otherwise user is authenticated
+      res.send({ message: "Successfully logged in!" });
+    }
+  } catch (error) {
+    console.error("Error from login route: ", error);
+  }
+});
+
 let currentId = 3;
 let tasksData = [
   {
@@ -44,12 +116,6 @@ function duration(date1, date2) {
   return diffDays;
 }
 
-// logging middleware
-const logger = (req, res, next) => {
-  console.log(`${req.method} request for ${req.url}`);
-  next();
-};
-
 // tasks posts middleware
 const add_task_middleware = (req, res, next) => {
   let dataString = "";
@@ -84,17 +150,6 @@ const add_task_middleware = (req, res, next) => {
     next();
   });
 };
-
-app.use(logger);
-app.use(express.static("public"));
-app.use(express.json());
-
-app.post("/login", (req, res) => {
-  const { username, password } = req.body;
-  console.log("username: ", username);
-  console.log("password: ", password);
-  res.send("You successfully logged in!");
-});
 
 app.post("/submit", add_task_middleware, (req, res) => {
   // our request object now has a 'json' field in it from our previous middleware
@@ -147,16 +202,6 @@ app.delete("/deleteTask", (req, res) => {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(tasksData));
   });
-});
-
-// MongoDB connection setup
-const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}`;
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
 });
 
 async function testDBConnection() {
