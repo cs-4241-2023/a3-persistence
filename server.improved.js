@@ -244,7 +244,7 @@ app.get('/success', function (request, response) {
     }
 
     accessToken = null
-    app.session.save()
+    request.session.save()
     response.redirect(`/main.html`)
   })
 
