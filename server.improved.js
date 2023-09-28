@@ -160,7 +160,6 @@ app.post('/login', async (request, response) => {
   if( match.length > 0 ) { // TODO
     // check if the password matches
     if(request.body.password === match[0].password) { // TODO
-      // request.session.login == true
       request.session.login = true
       request.session.user = request.body.username
       response.redirect("/main.html") // check this out
@@ -206,7 +205,13 @@ app.get("/github-callback", (request, response) => {
       console.log('token: ' + token)
       response.redirect('/success')
     })
-    .catch((err) => response.status(500).json({ err: err.message }))
+    .catch((err) => {
+      accessToken = null
+      request.session.login = false
+      request.session.user = null
+      response.redirect('/')
+      // return response.status(500).json({ err: err.message })
+      })
 });
 
 app.get('/success', function (request, response) {
