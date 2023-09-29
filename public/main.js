@@ -39,17 +39,17 @@ const submit = async function (event) {
       .then(function (res) {
         const list = document.getElementById("data");
         const header = document.createElement("tr");
-        header.innerHTML = `<th>Email</th> <th>Name</th> <th>Birth</th> <th>Age</th> <th>Delete</th>`;
+        header.innerHTML = `<th>Email</th> <th>Name</th> <th>Birth</th> <th>Age</th> <th>Delete/Edit</th>`;
         list.appendChild(header);
         let i = 0;
         res.forEach((d) => {
           const item = document.createElement("tr");
           item.innerHTML = `
-      <td>${d.Email}</td> 
-      <td>${d.Name}</td>
-      <td>${d.Birth}</td>
-      <td>${d.Age} years old</td>
-      <td>row:${i} <input type="checkbox" class="checkOnce" id="C${i}" 
+      <td contenteditable='false'>${d.Email}</td> 
+      <td contenteditable='false'>${d.Name}</td>
+      <td contenteditable='false'>${d.Birth}</td>
+      <td contenteditable='false'>${d.Age} years old</td>
+      <td contenteditable='false'>row:${i} <input type="checkbox" class="checkOnce" id="C${i}" 
       onclick="checkedOnClick(this)" value="${d._id}"/></td>
       `;
           i++;
@@ -66,11 +66,12 @@ const submit = async function (event) {
     table.innerHTML = "";
   };
   
+
   function deleterec(event) {
     event.preventDefault();
   
     let data;
-  
+    
     const dis = document.querySelectorAll(".checkOnce");
   
     for (let j = 0; j < dis.length; j++) {
@@ -78,15 +79,17 @@ const submit = async function (event) {
         data = j;
       }
     }
+    console.log(dis[data].value)
     let json = {
       _id: dis[data].value,
     };
+    console.log(dis[data].value)
     let response = fetch("/delete", {
       method: "POST",
       body: JSON.stringify(json),
     })
-      .then((text) => response.json())
-      .then(function () {
+      .then(res => res.json())
+      .then(function (res) {
         document.querySelector("#dell").style.display = "block";
         setTimeout(function () {
           document.querySelector("#dell").style.display = "none";

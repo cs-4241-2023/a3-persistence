@@ -1,3 +1,5 @@
+const { dir } = require("console");
+
 const express = require("express"),
      {mongodb, ObjectId,MongoClient} = require("mongodb"),
        crypto = require('crypto'),
@@ -19,6 +21,7 @@ app.use(cookie({
   name: 'session',
   keys: ['key1', 'key2']
 }));
+
 require('dotenv').config()
 const url= `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}/?retryWrites=true&w=majority&appName=AtlasApp`
 const dbconnect= new MongoClient(url)
@@ -48,27 +51,24 @@ app.use( (req,res,next) => {
 app.post("/login", async (req, res) => {
   const user = req.body.username;
   const pass = hash.update(req.body.password).digest('hex');
-  console.log(pass)
+  //console.log(pass)
+  //console.log(pass)
+
   let dis = await users.findOne({$and: [{ username: user }, { password: pass }]});
-  console.log(dis)
-  if (dis == null) {
-    res.render("login", {
-      message: "username not found, login failed!",
-      layout: false,
-    });
-    req.session.login = false;
-  } else {
+
+ // console.log(dis)
     if ((dis != null)&&(dis.username == user)&&(dis.password==pass)) {
       req.session.login = true;
-      res.redirect("index.html");
+      res.render('webpage', {message: "Login successful", layout: false})
+      //It cannot index.handlebars
+
     } else {
-      res.render("login", {
-        message: "incorrect password, login failed!",
+      res.render("index", {
+        message: "incorrect username or password, login failed try again!",
         layout: false,
       });
        req.session.login = false; 
     }
-  }
 });
 
 app.post("/submit", async (req, res) => {
@@ -83,27 +83,30 @@ app.get("/display", async (req,res)=>{
 });
 
 app.post("/delete", async (req,res)=>{
-  const results= await collection.deleteOnce({
+  const results= await collection.deleteOne({
     _id:new ObjectId(req.body._id)
   })
   res.json(results)
 })
 
 app.get("/", function (req, res) {
-    res.render("login", { msg: "", layout: false });
+    res.render("index", { msg: "", layout: false });
   });
   
   app.use(function (req, res, next) {
-    if (req.session.login === true) next();
-    else
+    if (req.session.login === true) {
+        next();
+    }
+    else{
       res.render("login", {
         msg: "login failed, please try again",
         layout: false,
       });
+    }
   });
   
   app.get("/index.html", (req, res) => {
-    res.render("index", { msg: "success you have logged in", layout: false });
+    res.render("webpage", { msg: "success you have logged in", layout: false });
   });
 run()
 app.listen(process.env.PORT || 3000);
