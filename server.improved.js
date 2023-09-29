@@ -57,10 +57,11 @@ const dbConnect = async function() {
   })
 
 app.post('/edit', async(req, res) => {
-  const {id, date, height, weight, age, gender } = req.body;
+  const {id, height, weight, age, gender} = req.body;
   const bmi = calculateBMI(height, weight, age, gender);
-  userData[0]['data'][req.body.id] = {
-    'date': req.body.date, 'height': req.body.height,'weight': req.body.weight, 'age': req.body.age, 'gender': req.body.gender, 'bmi': bmi
+  const oldDate = userData[0]['data'][id].date
+  userData[0]['data'][id] = {
+    'date': oldDate, 'height': req.body.height,'weight': req.body.weight, 'age': req.body.age, 'gender': req.body.gender, 'bmi': bmi
   } 
   const query = {$and: [{username: username, password: password}]}
   let result = await collection.replaceOne(query, userData[0]);
