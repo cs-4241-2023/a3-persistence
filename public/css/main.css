@@ -20,6 +20,13 @@ h1{
 label{
   font-family: "Oswald", serif;
 }
+div#logout-box{
+  position:absolute;
+  right: 10rem;
+}
+#logout{
+  position:absolute;
+}
 #groceryList{
   display: flex;
   flex-direction:column;

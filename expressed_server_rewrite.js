@@ -15,7 +15,7 @@ let collection = null;
 
 const totalPrice = { totalPrice: 0.0 };
 let retObject;
-const groceryList = [];
+let groceryList = [];
 
 app.use(exp.static("views"));
 app.use(exp.static("public"));
@@ -94,6 +94,7 @@ async function run() {
     (req, res) => {
       //console.log(req);
       //console.log(req.isAuthenticated());
+      req.session.login = true;
       res.redirect("/index");
     }
   );
@@ -114,6 +115,7 @@ async function run() {
 
     if (usr.pw === req.body.pw) {
       req.session.login = true;
+      req.session.user = usr
       res.redirect("/index");
     } else {
       res.redirect("/");
@@ -130,9 +132,6 @@ async function run() {
       .db("GroceryList")
       .collection("Users")
       .findOne({ uname: req.body.uname });
-    /**
-     * duplicate account creation logic
-     */
     if (usr === null) {
       let newusr = await client
         .db("GroceryList")
@@ -142,53 +141,83 @@ async function run() {
           pw: req.body.pw,
         });
       req.session.login = true;
+      req.session.user = await client.db("GroceryList").collection("Users").findOne(newusr.insertedId);
 
       res.redirect("/index");
     } else {
-      res.sendFile(__dirname + "/views/index.html");
+      res.redirect("/");
     }
   });
 
   app.post("/submit", async (req, res) => {
-    groceryList.push(req.body.item);
-    console.log("Printing session: ", req.session)
-    //const rst = await collection.insertOne(req.body.item);
-    //console.log(await rst);
-    calcTotalPrice();
-    retObject = { groceryList, totalPrice };
+    //groceryList.push(req.body.item);
+    let newItem = req.body.item;
+    newItem.user = (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id;
+    const rst = await client.db("GroceryList").collection("Grocery_Items").insertOne(newItem);
+    console.log(await rst);
+
+    newItem = await client.db("GroceryList").collection("Grocery_Items").findOne(rst.insertedId)
+    console.log(await newItem);
+    groceryList = await client.db("GroceryList").collection("Grocery_Items")
+    .find({user: (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id})
+    .toArray();
+    calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
+    retObject = { groceryList, totalPrice};
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(retObject));
   });
 
-  app.post("/modify", (req, res) => {
+  app.post("/modify", async (req, res) => {
+    console.log("Here's the modify body", req.body)
     modifyPrice(req.body);
-    calcTotalPrice();
+    calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
+    groceryList = await client.db("GroceryList").collection("Grocery_Items")
+      .find({user: (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id})
+      .toArray()
     retObject = { groceryList, totalPrice };
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(retObject));
   });
 
-  app.delete("/reset", (req, res) => {
+  app.delete("/reset", async (req, res) => {
     console.log(req);
     groceryList.splice(0, groceryList.length);
-    calcTotalPrice();
+    client.db("GroceryList").collection("Grocery_Items").deleteMany({user : (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id})
+    calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
     retObject = { groceryList, totalPrice };
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(retObject));
   });
 
-  app.delete("/del", (req, res) => {
+  app.delete("/del", async (req, res) => {
     console.log(req);
     deleteItems(req.body);
-    calcTotalPrice();
+    groceryList = await client.db("GroceryList")
+      .collection("Grocery_Items")
+      .find({user : (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id})
+      .toArray();
+    calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
     retObject = { groceryList, totalPrice };
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(retObject));
+  });
+
+  app.get("/items", async (req, res) => {
+    let items = await client.db("GroceryList").collection("Grocery_Items").find({user : (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id}).toArray();
+    console.log(items);
+    res.writeHead(200, {"Content-Type": "application/json"})
+    res.end(JSON.stringify(items));
+  })
+
+  app.get("/logout", async (req, res) => {
+    req.session.destroy();
+    console.log(req.session)
+    res.redirect("/");
   });
 
 }
 
-const calcTotalPrice = function () {
+const calcTotalPrice = async function (usrSes) {
   totalPrice.totalPrice = 0.0;
   if (groceryList.length !== 0) {
     groceryList.forEach((item) => {
@@ -199,25 +228,42 @@ const calcTotalPrice = function () {
       }
     });
   }
+  const addPrice = {
+    $set :{
+      totalPrice
+    }
+  }
+
+  let usr = await client.db("GroceryList").collection("Users").updateOne({_id: new ObjectId(`${usrSes}`)}, addPrice);
+  if(!usr){
+    return(new Error("Couldn't update user's total price"));
+  }
 };
 
-const modifyPrice = function (data) {
-  data.items.forEach((idx) => {
-    console.log(groceryList[idx]);
-    groceryList[idx].price = data.price;
+const modifyPrice = async function (data) {
+  console.log("New price: ", data.price)
+  const updater = {$set: {
+    price: data.price
+  }};
+  console.log(data)
+  data.items.forEach(async (_updateId) => {
+    let mod = await client.db("GroceryList").collection("Grocery_Items").updateOne({_id : new ObjectId(`${_updateId}`)}, updater)
+    console.log(mod);
+    if(!mod){
+      return (new Error("Couldn't modify item pricing"))
+    }
   });
 };
 
-const deleteItems = function (data) {
-  for (let i = groceryList.length - 1; i >= 0; i--) {
-    data.every((idx) => {
-      if (idx === i) {
-        groceryList.splice(i, 1);
-        return false;
-      }
-      return true;
-    });
-  }
+const deleteItems = async function (data) {
+
+  data.items.forEach(async (_delId) => {
+    let del = await client.db("GroceryList").collection("Grocery_Items").deleteOne({_id : new ObjectId(`${delId}`)})
+    if(!del){
+      return (new Error("Couldn't delete item"))
+    }
+  });
+
 };
 
 run();

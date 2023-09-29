@@ -32,16 +32,15 @@ const submit = async function (event) {
 const modify = async function (event) {
   event.preventDefault();
   let idxs = [];
-  let idx = 0;
   let list = [].slice.call(document.getElementById("groceryList").children);
   list = list.splice(1);
   list.forEach((element) => {
     if (element.getElementsByClassName("modbox").length === 1) {
       if (element.getElementsByClassName("modbox")[0].checked) {
-        idxs.push(idx);
+        idxs.push(element.getAttribute("dbid"));
+        console.log(element.getAttribute("dbid"));
       }
     }
-    idx += 1;
   });
 
   let err = document.getElementsByClassName("errorMsg")[0];
@@ -59,7 +58,8 @@ const modify = async function (event) {
 
   const response = await fetch("/modify", {
     method: "POST",
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: body,
   });
 
   const data = await response.json();
@@ -74,7 +74,8 @@ const reset = async function (event) {
 
   const resetResponse = await fetch("/reset", {
     method: "DELETE",
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: body,
   });
 
   let list;
@@ -131,6 +132,7 @@ const addList = function (data) {
     inTwo.setAttribute("type", "checkbox");
     inTwo.className = "modbox";
     li.className = "groceryItem";
+    li.setAttribute("dbid", data.groceryList[0]._id)
     li.appendChild(myIn);
     li.appendChild(checkLabel);
     li.appendChild(inTwo);
@@ -156,6 +158,7 @@ const addList = function (data) {
       inTwo.setAttribute("type", "checkbox");
       inTwo.className = "modbox";
       li.className = "groceryItem";
+      li.setAttribute("dbid", data.groceryList[i]._id)
       li.id = `item-${i}`;
       li.appendChild(myIn);
       li.appendChild(checkLabel);
@@ -172,23 +175,23 @@ const delItems = async function (event) {
   event.preventDefault();
 
   let idxs = [];
-  let idx = 0;
   let list = [].slice.call(document.getElementById("groceryList").children);
   list = list.splice(1);
   list.forEach((element) => {
     if (element.getElementsByClassName("modbox").length === 1) {
       if (element.getElementsByClassName("modbox")[0].checked) {
-        idxs.push(idx);
+        idxs.push(element.getAttribute("dbid"));
       }
     }
-    idx += 1;
+
   });
 
   const json = { items: idxs },
     body = JSON.stringify(json);
   const response = await fetch("/delete", {
     method: "DELETE",
-    body,
+    headers: { "Content-Type": "application/json" },
+    body: body,
   });
 
   const data = await response.json();
@@ -230,6 +233,7 @@ const updateList = function (data) {
     li.appendChild(checkLabel);
     li.appendChild(inTwo);
     li.id = "item-0";
+    li.setAttribute("dbid", data.groceryList[0]._id)
     list.appendChild(li);
   }
   for (let i = 0; i < data.groceryList.length; i++) {
@@ -251,6 +255,7 @@ const updateList = function (data) {
     inTwo.setAttribute("type", "checkbox");
     inTwo.className = "modbox";
     li.className = "groceryItem";
+    li.setAttribute("dbid", data.groceryList[i]._id)
     li.id = `item-${i}`;
     li.appendChild(myIn);
     li.appendChild(checkLabel);
@@ -262,6 +267,14 @@ const updateList = function (data) {
   tp.innerText = `$${data.totalPrice.totalPrice.toFixed(2)}`;
   total = parseFloat(data.totalPrice.totalPrice.toFixed(2));
 };
+
+const getItems = async function(){
+  let temp575 = await fetch("/items", {
+    method: "GET"
+  })
+
+  console.log(await temp575.json());
+}
 
 const defaultListItem = document.createElement("li");
 const defaultIn = document.createElement("input");
@@ -282,10 +295,21 @@ window.onload = function () {
   cartLabel.appendChild(document.createTextNode("In Your Cart"));
   cartLabel.id = "cart-lab";
 
+  getItems()
+
   const button = document.getElementById("submit");
   const resetBut = document.getElementById("reset");
   const modBut = document.getElementById("modify");
   const delBut = document.getElementById("delete");
+  const lgout = document.getElementById("logout");
+  lgout.onclick =  async function (e) {
+    e.preventDefault()
+    let lgout =  await fetch("/logout", {
+      method: "GET"
+    });
+
+    window.location.href = "/";
+  };
   modBut.onclick = modify;
   button.onclick = submit;
   resetBut.onclick = reset;
