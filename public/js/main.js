@@ -44,7 +44,7 @@ const deleteLog = function(index){
 const refreshTable = function () {
   const table = document.querySelector("table");
 
-  table.innerHTML = '<tr class="text-white h4 text-left"><th>Date</th><th>Exercise</th><th>Sets</th><th>Reps</th><th>Weight</th><th>Volume</th><th>Delete</th></tr>'
+  table.innerHTML = '<tr class="text-white h4 text-left"><th>Date</th><th>Exercise</th><th>Sets</th><th>Reps</th><th>Weight</th><th>Delete</th></tr>'
 
   fetch("/fetchData", {
     method: "GET",
@@ -62,15 +62,13 @@ const refreshTable = function () {
           sets = row.insertCell(2),
           reps = row.insertCell(3),
           weight = row.insertCell(4),
-          volume = row.insertCell(5),
-          deleteCell = row.insertCell(6)
+          deleteCell = row.insertCell(5)
 
           date.innerHTML = currentElement.date;
           exercise.innerHTML = currentElement.exercise;
           sets.innerHTML = currentElement.sets;
           reps.innerHTML = currentElement.reps;
           weight.innerHTML = currentElement.weight;
-          volume.innerHTML = currentElement.volume;
           deleteCell.innerHTML = `<button class='delete' onclick=deleteLog(${index})>Delete</button>`;
         })
     });
