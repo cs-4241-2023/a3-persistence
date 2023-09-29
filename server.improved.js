@@ -10,14 +10,20 @@ const uri = 'mongodb+srv://aszadaphiya:aarsh@a3-aarshzadaphiya.rnuxw22.mongodb.n
 const client = new MongoClient( uri )
 const bcrypt = require('bcrypt');  
 let collection = null
+let username = null
+let password = null
+let userData = null
 
 const dbConnect = async function() {
   await client.connect()
   collection = await client.db("a3").collection("Users")
  
+  //should fetch data at every successful login
   app.get("/docs", async (req, res) => {
     if (collection !== null) {
-      const docs = await collection.find({}).toArray()
+      const query = {$and: [{username: username, password: password}]}
+      const docs = await collection.find(query).toArray()
+      userData = docs //keep track of user data
       res.json( docs )
     } 
   })
@@ -26,8 +32,8 @@ const dbConnect = async function() {
     try{
       const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
-    const username= req.body.username;
-    const password = req.body.password;
+    username= req.body.username;
+    password = req.body.password;
     //const password = hashedPassword;
     console.log(req.body)  
     const query = {$and: [{username: username, password: password}]}
@@ -43,23 +49,44 @@ const dbConnect = async function() {
     }
   });
   
-  app.post("/bmi", async (req, res) => {
+  app.post('/delete', async(req, res) => {
+    userData[0]['data'].splice(req.body.id, 1)
+    const query = {$and: [{username: username, password: password}]}
+    let result = await collection.replaceOne(query, userData[0]);
+    res.json(userData);
+  })
+
+app.post('/edit', async(req, res) => {
+  const {id, date, height, weight, age, gender } = req.body;
+  const bmi = calculateBMI(height, weight, age, gender);
+  userData[0]['data'][req.body.id] = {
+    'date': req.body.date, 'height': req.body.height,'weight': req.body.weight, 'age': req.body.age, 'gender': req.body.gender, 'bmi': bmi
+  } 
+  const query = {$and: [{username: username, password: password}]}
+  let result = await collection.replaceOne(query, userData[0]);
+  res.json(userData);
+})
+
+  app.post("/submit", async (req, res) => {
     try {
         // Extract data from the request body
+        //we assume that a user already exists in the database
         const { height, weight, age, gender } = req.body;
-
         const bmi = calculateBMI(height, weight, age, gender);
-        const bmiData = {
-            height: height,
-            weight: weight,
-            age: age,
-            gender: gender,
-            bmi: bmi
-        };
-        await db.collection('bmiData').insertOne(bmiData);
+        
+        //Get the array in the json and push the new data
+        userData[0]['data'].push({
+          date: new Date().toLocaleDateString(),
+          height: height,
+          weight: weight,
+          age: age, 
+          gender: gender,
+          bmi: bmi
+        })
 
-        // Respond with a success message or the calculated BMI
-        res.json({ success: true, bmi: bmi });
+        const query = {$and: [{username: username, password: password}]}
+        let result = await collection.replaceOne(query, userData[0]);
+        res.json(userData);
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ success: false, message: 'Internal server error' });
@@ -68,12 +95,8 @@ const dbConnect = async function() {
 
 }
 
-
 function calculateBMI(height, weight, age, gender) {
-  
-  const height = height/100;
   let bmi;
-
   if (gender === 'male') {
       bmi = (0.74 * weight) / (height/100 * height/100);
       bmi += (0.063 * age) - 3.3;
@@ -86,8 +109,6 @@ function calculateBMI(height, weight, age, gender) {
 
   return parseFloat(bmi.toFixed(2));
 }
-
-
 
 dbConnect()
 

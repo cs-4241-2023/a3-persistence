@@ -35,7 +35,7 @@
         <div class="col-md-6">
           <div class="box">
 
-            <form method="post">
+            <form>
               <div class="mb-3 text-start">
                 <label class="form-label" for="height" >Height (cm)</label>
                 <input class="form-control text-start" type="number" id="height" required/>
@@ -60,7 +60,7 @@
                 </div>
               </div>
               <div class="mb-3">
-                <button class="btn btn-success w-100" type="button" id="Calculate">Calculate BMI</button>
+                <button class="btn btn-success w-100" type="button" id="Calculate" formaction="/submit">Calculate BMI</button>
               </div>
             </form>
           </div>
@@ -71,7 +71,7 @@
             <div class="px-1">
               <p>Your calculated BMI</p>
               <div class="alert alert-success">
-                <strong>BMI:</strong> <span id="calculatedBMI"></span>
+                <strong>BMI:</strong> <span id="bmi"></span>
               </div>
             </div>
 
@@ -88,25 +88,17 @@
             <table class="table my-table">
               <thead>
                 <tr>
-                  <th>Index</th>
                   <th>Date</th>
                   <th>Height (cm)</th>
                   <th>Weight (kg)</th>
+                  <th>Age</th>
+                  <th>Gender</th>
                   <th>BMI</th>
                   <th>Options</th>
                 </tr>
               </thead>
               <tbody id="entryTable">
-                <th>Example 1</th>
-                <th>Example Date</th>
-                <th>ExampleHeight (cm)</th>
-                <th>ExampleWeight (kg)</th>
-                <th>ExampleBMI</th>
-                <th>
-                  <button type="button" class="btn btn-primary" id="editButton">Edit</button>
-                  <button type="button" class="btn btn-danger" id="deleteButton">Delete</button>
-                </th>
-              </tbody>
+             
             </table>
           </div>
         </div>
