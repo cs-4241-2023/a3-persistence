@@ -112,21 +112,7 @@ app.get("/index.html", ensureAuthenticated, (req, res) => {
 app.use(express.static("public"));
 app.use(ensureAuthenticated);
 
-// tasks posts middleware
-const add_task_middleware = (req, res, next) => {
-  let dataString = "";
-  req.on("data", (data) => {
-    dataString += data;
-  });
-
-  req.on("end", () => {});
-};
-
-app.post("/submit", add_task_middleware, (req, res) => {
-  // our request object now has a 'json' field in it from our previous middleware
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(req.json);
-});
+app.post("/submit", (req, res) => {});
 
 app.get("/getTasks", ensureAuthenticated, async (req, res) => {
   try {
@@ -136,8 +122,18 @@ app.get("/getTasks", ensureAuthenticated, async (req, res) => {
 
     // Fetch tasks for the currently logged in user
     const tasks = await tasksCollection.find({ username: username }).toArray();
-    console.log(`Tasks for ${username}: , ${tasks}`);
+    for (const task of tasks) {
+      // Calculate the time remaining for each task
+      task.timeRemaining = duration(new Date(), new Date(task.taskDeadline));
 
+      // Calculate the total time spent on each task
+      task.totalTime = duration(
+        new Date(task.taskCreated),
+        new Date(task.taskDeadline)
+      );
+    }
+
+    console.log("Tasks: ", tasks);
     res.json(tasks);
   } catch (error) {
     console.error("Error fetching tasks: ", error);
