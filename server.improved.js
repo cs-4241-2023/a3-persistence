@@ -104,6 +104,12 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// route to get the username of the logged-in user
+app.get("/getUsername", ensureAuthenticated, (req, res) => {
+  res.setHeader("Content-Type", "application/json");
+  res.json({ username: req.session.user.username });
+});
+
 // protection of the index.html route
 app.get("/index.html", ensureAuthenticated, (req, res) => {
   res.sendFile(__dirname + "/public/index.html");

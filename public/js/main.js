@@ -1,6 +1,7 @@
 // FRONT-END (CLIENT) JAVASCRIPT HERE
 
 let currentEditId = null; // global variable to store the id of the task being edited
+let username = null; // global variable to store the username
 
 const submit = async function (event) {
   // stop form submission from trying to load
@@ -209,8 +210,24 @@ const initializeTable = async function () {
   console.log("tasks list: ", tasks);
 };
 
-window.onload = function () {
+const getUsername = async function () {
+  const response = await fetch("/getUsername", {
+    method: "GET",
+  });
+
+  const text = await response.text();
+
+  username = JSON.parse(text).username;
+};
+
+window.onload = async function () {
+  // initialize the table
   initializeTable();
+  // add the submit button onclick listener
   const button = document.getElementById("addTaskFormSubmitBtn");
   button.onclick = submit;
+  // update the username
+  await getUsername();
+  const username_span = document.getElementById("username-span");
+  username_span.innerText = `Hello, ${username || "there"}!`;
 };
