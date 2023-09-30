@@ -24,31 +24,25 @@ const submit = async function (event) {
     taskPriority,
     taskCreated,
   };
-  const body = JSON.stringify(json);
 
   const response = await fetch("/submit", {
     method: "POST",
-    body,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(json),
   });
 
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error("Error submitting task:", errorData.message);
+    return;
+  }
+
   const text = await response.text();
-
   tasks = JSON.parse(text);
-  updateTaskTable(tasks);
   console.log("new tasks list: ", tasks);
-
-  // const input = document.querySelector("#yourname"),
-  //   json = { yourname: input.value },
-  //   body = JSON.stringify(json);
-
-  // const response = await fetch("/submit", {
-  //   method: "POST",
-  //   body,
-  // });
-
-  // const text = await response.text();
-
-  // console.log("text:", text);
+  updateTaskTable(tasks);
 };
 
 const updateTaskTable = function (tasks) {

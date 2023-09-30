@@ -112,7 +112,61 @@ app.get("/index.html", ensureAuthenticated, (req, res) => {
 app.use(express.static("public"));
 app.use(ensureAuthenticated);
 
-app.post("/submit", (req, res) => {});
+app.post("/submit", ensureAuthenticated, async (req, res) => {
+  try {
+    const username = req.session.user.username;
+
+    // Extract data from the request body
+    const {
+      taskName,
+      taskDescription,
+      taskDeadline,
+      taskPriority,
+      taskCreated,
+    } = req.body;
+
+    if (!taskName || !taskDescription || !taskDeadline || !taskPriority) {
+      return res.status(400).json({ error: "Missing required field(s)." });
+    }
+
+    // Inserting into MongoDB
+    const tasksCollection = db.collection("tasks");
+    const newTask = {
+      username,
+      taskName,
+      taskDescription,
+      taskDeadline,
+      taskPriority,
+      taskCreated: taskCreated || new Date().toISOString(), // If taskCreated is null, use the current date
+    };
+    const result = await tasksCollection.insertOne(newTask);
+    console.log("result: ", result);
+
+    if (result.acknowledged === true) {
+      const updatedTasks = await tasksCollection.find({ username }).toArray();
+
+      // Calculate the time remaining and total time for each task
+      for (const task of updatedTasks) {
+        // Calculate the time remaining for each task
+        task.timeRemaining = duration(new Date(), new Date(task.taskDeadline));
+
+        // Calculate the total time spent on each task
+        task.totalTime = duration(
+          new Date(task.taskCreated),
+          new Date(task.taskDeadline)
+        );
+      }
+
+      res.setHeader("Content-Type", "application/json");
+      return res.status(201).json(updatedTasks);
+    } else {
+      return res.status(500).json({ error: "Failed to add task." });
+    }
+  } catch (error) {
+    console.error("Error from /submit route: ", error);
+    return res.status(500).json({ error: "Internal server error." });
+  }
+});
 
 app.get("/getTasks", ensureAuthenticated, async (req, res) => {
   try {
@@ -133,11 +187,11 @@ app.get("/getTasks", ensureAuthenticated, async (req, res) => {
       );
     }
 
-    console.log("Tasks: ", tasks);
+    res.setHeader("Content-Type", "application/json");
     res.json(tasks);
   } catch (error) {
     console.error("Error fetching tasks: ", error);
-    res.status(500).send("Failed to fetch your tasks.");
+    res.status(500).json({ error: "Failed to fetch your tasks." });
   }
 });
 
