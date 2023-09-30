@@ -85,7 +85,7 @@ const updateTaskTable = function (tasks) {
     } else {
       taskTimeRemainingCell.innerText = currentTask.timeRemaining;
     }
-    taskDeleteCell.innerHTML = `<button class="delete-btn" onclick="deleteTask(${currentTask.id})">X</button>`;
+    taskDeleteCell.innerHTML = `<button class="delete-btn" onclick="deleteTask('${currentTask._id}')">X</button>`;
     // append each cell to the row
     const currentRow = document.createElement("tr");
     currentRow.appendChild(taskNameCell);
@@ -104,14 +104,22 @@ const updateTaskTable = function (tasks) {
 const deleteTask = async function (id) {
   const response = await fetch("/deleteTask", {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify({ id }),
   });
 
-  const text = await response.text();
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error("Error deleting task:", errorData.message);
+    return;
+  }
 
+  const text = await response.text();
   tasks = JSON.parse(text);
-  updateTaskTable(tasks);
   console.log("new tasks list: ", tasks);
+  updateTaskTable(tasks);
 };
 
 const initializeTable = async function () {

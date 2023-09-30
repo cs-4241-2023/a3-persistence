@@ -145,7 +145,38 @@ app.get("/getTasks", ensureAuthenticated, async (req, res) => {
   }
 });
 
-app.delete("/deleteTask", (req, res) => {});
+app.delete("/deleteTask", ensureAuthenticated, async (req, res) => {
+  try {
+    const taskId = new ObjectId(req.body.id);
+    const username = req.session.user.username;
+
+    const tasksCollection = db.collection("tasks");
+
+    // Delete the task if it belongs to the logged-in user
+    const result = await tasksCollection.deleteOne({
+      _id: taskId,
+      username: username,
+    });
+
+    if (result.deletedCount === 1) {
+      // Fetch the updated list of tasks for the user
+      const updatedTasks = await tasksCollection
+        .find({ username: username })
+        .toArray();
+      res.setHeader("Content-Type", "application/json");
+      res.json(updatedTasks);
+    } else {
+      // Task not found
+      res.setHeader("Content-Type", "application/json");
+      res.status(404).json({ message: "Task to be deleted not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting task: ", error);
+    res
+      .status(500)
+      .json({ erorr: "Failed to delete task due to internal server error." });
+  }
+});
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on http://localhost:3000`);
