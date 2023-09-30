@@ -161,7 +161,7 @@ async function run() {
     groceryList = await client.db("GroceryList").collection("Grocery_Items")
     .find({user: (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id})
     .toArray();
-    calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
+    let t = await calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
     retObject = { groceryList, totalPrice};
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(retObject));
@@ -170,10 +170,11 @@ async function run() {
   app.post("/modify", async (req, res) => {
     console.log("Here's the modify body", req.body)
     modifyPrice(req.body);
-    calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
+
     groceryList = await client.db("GroceryList").collection("Grocery_Items")
       .find({user: (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id})
-      .toArray()
+      .toArray();
+      let t = await calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
     retObject = { groceryList, totalPrice };
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(retObject));
@@ -183,7 +184,7 @@ async function run() {
     console.log(req);
     groceryList.splice(0, groceryList.length);
     client.db("GroceryList").collection("Grocery_Items").deleteMany({user : (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id})
-    calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
+    let t = await calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
     retObject = { groceryList, totalPrice };
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(retObject));
@@ -196,17 +197,18 @@ async function run() {
       .collection("Grocery_Items")
       .find({user : (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id})
       .toArray();
-    calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
+    let t = await calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
     retObject = { groceryList, totalPrice };
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(retObject));
   });
 
   app.get("/items", async (req, res) => {
-    let items = await client.db("GroceryList").collection("Grocery_Items").find({user : (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id}).toArray();
-    console.log(items);
+    groceryList = await client.db("GroceryList").collection("Grocery_Items").find({user : (!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id}).toArray();
+    let t = await calcTotalPrice((!req.session.passport.user._id)?req.session.user._id:req.session.passport.user._id);
+    retObject = { groceryList, totalPrice };
     res.writeHead(200, {"Content-Type": "application/json"})
-    res.end(JSON.stringify(items));
+    res.end(JSON.stringify(retObject));
   })
 
   app.get("/logout", async (req, res) => {
@@ -258,7 +260,7 @@ const modifyPrice = async function (data) {
 const deleteItems = async function (data) {
 
   data.items.forEach(async (_delId) => {
-    let del = await client.db("GroceryList").collection("Grocery_Items").deleteOne({_id : new ObjectId(`${delId}`)})
+    let del = await client.db("GroceryList").collection("Grocery_Items").deleteOne({_id : new ObjectId(`${_delId}`)})
     if(!del){
       return (new Error("Couldn't delete item"))
     }

@@ -171,6 +171,48 @@ const addList = function (data) {
   total = parseFloat(data.totalPrice.totalPrice.toFixed(2));
 };
 
+const rebuild = function (data){
+  let list;
+  //let info = []
+  if (document.getElementById("groceryList") === null) {
+    list = document.createElement("ul");
+    list.setAttribute("id", "groceryList");
+    document.getElementById("lists-container").appendChild(list);
+  } else {
+    list = document.getElementById("groceryList");
+    list.innerHTML = "";
+    list.appendChild(listLabel);
+  }
+
+  for(let i = 0; i < data.groceryList.length; i++){
+    const li = document.createElement("li");
+    const myIn = document.createElement("input");
+    const inTwo = document.createElement("input");
+    const checkLabel = document.createElement("label");
+    checkLabel.appendChild(
+      document.createTextNode(
+        data.groceryList[i].itemName[0].toUpperCase() +
+          data.groceryList[i].itemName.slice(1) +
+          `: $${data.groceryList[i].price}`
+      )
+    );
+    myIn.setAttribute("type", "checkbox");
+    myIn.className = "giBox";
+    inTwo.setAttribute("type", "checkbox");
+    inTwo.className = "modbox";
+    li.className = "groceryItem";
+    li.setAttribute("dbid", data.groceryList[i]._id)
+    li.id = `item-${i}`;
+    li.appendChild(myIn);
+    li.appendChild(checkLabel);
+    li.appendChild(inTwo);
+    list.appendChild(li);
+  }
+  let tp = document.getElementById("tpNum");
+  tp.innerText = `$${data.totalPrice.totalPrice.toFixed(2)}`;
+  total = parseFloat(data.totalPrice.totalPrice.toFixed(2));
+}
+
 const delItems = async function (event) {
   event.preventDefault();
 
@@ -188,7 +230,7 @@ const delItems = async function (event) {
 
   const json = { items: idxs },
     body = JSON.stringify(json);
-  const response = await fetch("/delete", {
+  const response = await fetch("/del", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
     body: body,
@@ -196,7 +238,7 @@ const delItems = async function (event) {
 
   const data = await response.json();
 
-  updateList(data);
+  rebuild(data);
 };
 
 const updateList = function (data) {
@@ -273,7 +315,8 @@ const getItems = async function(){
     method: "GET"
   })
 
-  console.log(await temp575.json());
+  let data = await temp575.json();
+  if(data.groceryList.length > 0) rebuild(data);
 }
 
 const defaultListItem = document.createElement("li");
@@ -281,6 +324,7 @@ const defaultIn = document.createElement("input");
 const defaultLabel = document.createElement("label");
 const cartLabel = document.createElement("label");
 const listLabel = document.createElement("label");
+const modLab = document.createElement("label");
 
 let workingTotal = 0.0;
 let glist;
@@ -290,7 +334,10 @@ window.onload = function () {
   defaultListItem.className = "groceryItem";
   defaultListItem.appendChild(defaultIn);
   defaultListItem.appendChild(defaultLabel);
+  modLab.appendChild(document.createTextNode("Check to Modify/Delete"))
+  modLab.id = "modbox-label"
   listLabel.appendChild(document.createTextNode("Check items In Cart"));
+  listLabel.appendChild(modLab)
   listLabel.id = "glist-lab";
   cartLabel.appendChild(document.createTextNode("In Your Cart"));
   cartLabel.id = "cart-lab";
