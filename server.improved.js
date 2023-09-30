@@ -140,7 +140,7 @@ app.post("/submit", ensureAuthenticated, async (req, res) => {
       taskCreated: taskCreated || new Date().toISOString(), // If taskCreated is null, use the current date
     };
     const result = await tasksCollection.insertOne(newTask);
-    console.log("result: ", result);
+    // console.log("result: ", result);
 
     if (result.acknowledged === true) {
       const updatedTasks = await tasksCollection.find({ username }).toArray();
@@ -225,6 +225,67 @@ app.delete("/deleteTask", ensureAuthenticated, async (req, res) => {
     res
       .status(500)
       .json({ erorr: "Failed to delete task due to internal server error." });
+  }
+});
+
+app.put("/updateTask", ensureAuthenticated, async (req, res) => {
+  try {
+    const taskId = new ObjectId(req.body.id);
+    const username = req.session.user.username;
+
+    const {
+      taskName,
+      taskDescription,
+      taskDeadline,
+      taskPriority,
+      taskCreated,
+    } = req.body;
+
+    const tasksCollection = db.collection("tasks");
+
+    const updatedTask = {
+      username,
+      taskName,
+      taskDescription,
+      taskDeadline,
+      taskPriority,
+      taskCreated,
+    };
+
+    const result = await tasksCollection.updateOne(
+      { _id: taskId, username: username },
+      { $set: updatedTask }
+    );
+
+    if (result.modifiedCount === 1) {
+      // Successfully updated the task
+      // Fetch the updated list of tasks for the user
+      const updatedTasks = await tasksCollection
+        .find({ username: username })
+        .toArray();
+
+      // Calculate the time remaining and total time for each task
+      for (const task of updatedTasks) {
+        // Calculate the time remaining for each task
+        task.timeRemaining = duration(new Date(), new Date(task.taskDeadline));
+
+        // Calculate the total time spent on each task
+        task.totalTime = duration(
+          new Date(task.taskCreated),
+          new Date(task.taskDeadline)
+        );
+      }
+      res.setHeader("Content-Type", "application/json");
+      res.json(updatedTasks);
+    } else {
+      // Task not found
+      res.status(404).json({ message: "Task to be updated not found." });
+    }
+  } catch (error) {
+    console.error("Error updating task: ", error);
+    res
+      .status(500)
+      .json({ error: "Failed to update task due to internal server error." });
   }
 });
 
