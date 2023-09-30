@@ -111,37 +111,6 @@ app.get("/index.html", ensureAuthenticated, (req, res) => {
 app.use(express.static("public"));
 app.use(ensureAuthenticated);
 
-let currentId = 3;
-let tasksData = [
-  {
-    id: 0,
-    taskName: "Clean the garage",
-    taskDescription:
-      "Throw away old junk in the trash. Reorganize items to clear up more floor space.",
-    taskDeadline: "2023-09-22",
-    taskPriority: "Medium",
-    taskCreated: "2023-09-05",
-  },
-  {
-    id: 1,
-    taskName: "Wash the dishes",
-    taskDescription:
-      "Wash the dishes in the sink. Put them away in the cabinets.",
-    taskDeadline: "2023-09-10",
-    taskPriority: "High",
-    taskCreated: "2023-09-03",
-  },
-  {
-    id: 2,
-    taskName: "Do the laundry",
-    taskDescription:
-      "Wash the clothes in the washing machine. Dry them in the dryer. Fold them and put them away.",
-    taskDeadline: "2023-09-20",
-    taskPriority: "Low",
-    taskCreated: "2023-09-02",
-  },
-];
-
 // calculate the duration between two dates
 function duration(date1, date2) {
   const diffTime = date2 - date1;
@@ -236,38 +205,6 @@ app.delete("/deleteTask", (req, res) => {
     res.end(JSON.stringify(tasksData));
   });
 });
-
-async function testDBConnection() {
-  try {
-    // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
-    // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-// testDBConnection().catch(console.dir);
-
-let collection = null;
-async function basicConnection() {
-  await client.connect();
-  collection = await client.db("a3_todo_list_app").collection("tasks");
-
-  // route to get all docs
-  app.get("/docs", async (req, res) => {
-    if (collection !== null) {
-      const docs = await collection.find({}).toArray();
-      res.json(docs);
-    }
-  });
-}
-
-basicConnection().catch(console.dir);
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on http://localhost:3000`);
