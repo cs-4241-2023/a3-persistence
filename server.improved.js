@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
+const { duration } = require("./utils/helpers.js");
 
 const app = express();
 
@@ -111,13 +112,6 @@ app.get("/index.html", ensureAuthenticated, (req, res) => {
 app.use(express.static("public"));
 app.use(ensureAuthenticated);
 
-// calculate the duration between two dates
-function duration(date1, date2) {
-  const diffTime = date2 - date1;
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return diffDays;
-}
-
 // tasks posts middleware
 const add_task_middleware = (req, res, next) => {
   let dataString = "";
@@ -125,32 +119,7 @@ const add_task_middleware = (req, res, next) => {
     dataString += data;
   });
 
-  req.on("end", () => {
-    console.log(JSON.parse(dataString));
-    newTask = JSON.parse(dataString);
-    newTask.id = currentId;
-    currentId++;
-    tasksData.push(newTask);
-
-    // calculating derived fields
-    for (let i = 0; i < tasksData.length; i++) {
-      tasksData[i].timeRemaining = duration(
-        new Date(),
-        new Date(tasksData[i].taskDeadline)
-      );
-      tasksData[i].totalTime = duration(
-        new Date(tasksData[i].taskCreated),
-        new Date(tasksData[i].taskDeadline)
-      );
-    }
-    // add a 'json' field to our request object
-    // this field will be available in any additional
-    // routes or middleware.
-    req.json = JSON.stringify(tasksData);
-
-    // advance to next middleware or route
-    next();
-  });
+  req.on("end", () => {});
 };
 
 app.post("/submit", add_task_middleware, (req, res) => {
@@ -159,52 +128,24 @@ app.post("/submit", add_task_middleware, (req, res) => {
   res.end(req.json);
 });
 
-app.get("/getTasks", (req, res) => {
-  // calculating derived fields
-  for (let i = 0; i < tasksData.length; i++) {
-    tasksData[i].timeRemaining = duration(
-      new Date(),
-      new Date(tasksData[i].taskDeadline)
-    );
-    tasksData[i].totalTime = duration(
-      new Date(tasksData[i].taskCreated),
-      new Date(tasksData[i].taskDeadline)
-    );
+app.get("/getTasks", ensureAuthenticated, async (req, res) => {
+  try {
+    const username = req.session.user.username;
+
+    const tasksCollection = db.collection("tasks");
+
+    // Fetch tasks for the currently logged in user
+    const tasks = await tasksCollection.find({ username: username }).toArray();
+    console.log(`Tasks for ${username}: , ${tasks}`);
+
+    res.json(tasks);
+  } catch (error) {
+    console.error("Error fetching tasks: ", error);
+    res.status(500).send("Failed to fetch your tasks.");
   }
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify(tasksData));
 });
 
-app.delete("/deleteTask", (req, res) => {
-  let dataString = "";
-  req.on("data", (data) => {
-    dataString += data;
-  });
-
-  req.on("end", () => {
-    console.log(JSON.parse(dataString));
-    const id = JSON.parse(dataString).id;
-    // console.log("delete id: ", id);
-
-    // filter out the task with the given id
-    tasksData = tasksData.filter((task) => task.id !== id);
-
-    // calculating derived fields
-    for (let i = 0; i < tasksData.length; i++) {
-      tasksData[i].timeRemaining = duration(
-        new Date(),
-        new Date(tasksData[i].taskDeadline)
-      );
-      tasksData[i].totalTime = duration(
-        new Date(tasksData[i].taskCreated),
-        new Date(tasksData[i].taskDeadline)
-      );
-    }
-
-    res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(tasksData));
-  });
-});
+app.delete("/deleteTask", (req, res) => {});
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on http://localhost:3000`);
