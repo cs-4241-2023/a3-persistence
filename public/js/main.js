@@ -50,7 +50,6 @@ const submit = async function (event) {
   });
 };
 
-
 function calculateBMI(height, weight, age, gender) {
   let bmi;
   if (gender === "male") {

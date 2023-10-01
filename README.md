@@ -1,114 +1,85 @@
-Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
-===
 
-Due: September 25nd, by 11:59 AM.
+## BMI Calculator
 
-This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), 
-a database (mongodb), and a CSS application framework / template of your choice (Boostrap, Material Design, Semantic UI, Pure etc.)
+Glitch link : a3-aarsh-zadapiya.glitch.me
 
-Baseline Requirements
----
-
-Your application is required to implement the following functionalities:
-
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data associated with a logged in user (except passwords)
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account. 
-- Persistent data storage in between server sessions using [mongodb](https://www.mongodb.com/cloud/atlas) (you *must* use mongodb for this assignment). You can use either the [official mongodb node.js library](https://www.npmjs.com/package/mongodb) or use the [Mongoose library](https://www.npmjs.com/package/mongoose), which enables you to define formal schemas for your database. Please be aware that the course staff cannot provide in-depth support for use of Mongoose.  
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks). 
-This should do the bulk of your styling/CSS for you and be appropriate to your application. 
-For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
-
-Your application is required to demonstrate the use of the following concepts:  
-
-HTML:  
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
-
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is 
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create 
-new user accounts upon login if none exist, however, you must alert your users to this fact.  
-
-CSS:  
-- CSS styling should primarily be provided by your chosen template/framework. 
-Oftentimes a great deal of care has been put into designing CSS templates; 
-don't override their stylesheets unless you are extremely confident in your graphic design capabilities. 
-The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
-
-JavaScript:  
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. 
-See the [previous assignment](https://github.com/cs-4241-23/shortstack) for reference.
-
-Node.js:  
-- A server using Express and a persistent database (mongodb).
-
-General:  
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests 
-using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment. 
-
-Deliverables
----
-
-Do the following to complete this assignment:
-
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. If you developed your project locally, deploy your project to Glitch (unless completing the alternative server technical acheivement described below), and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch (or an alternative server), it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
-
-Acheivements
----
-
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the 
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%. 
-These are recommended acheivements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README, 
-why it was challenging, and how many points you think the achievement should be worth. 
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
-
-*Technical*
-- (10 points) Implement OAuth authentication, perhaps with a library like [passport.js](http://www.passportjs.org/). 
-*You must either use Github authenticaion or provide a username/password to access a dummy account*. 
-Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. 
-Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!  
-- (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
-
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
-
-## Your Web Application Title
-
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
+Username: aarsh
+Password: aarsh
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
-- the goal of the application
-- challenges you faced in realizing the application
+Summary:
+BMI Calculator is a web application designed to assist users in monitoring their BMI (Body Mass Index). It takes the user's height,weight, age and gender to calculate their body mass index. It keeps a track of the user's BMI everytime and summerises by date when they add their new measurements. The main challenges transitioning to Express, and using MongoDB to store the database.
+
+
 - what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
+
+CSS Framework:
+I have used Bootstrap CSS. Bootstrap is a popular and widely used front-end framework that provides a set of pre-designed CSS and JavaScript components for building responsive and visually appealing web applications. I have used it to style and structure the webpage, incorporating elements such as form controls, buttons, typography, spacing, and an alert component for a cohesive and responsive design. I made some modifications to bootstrap elements (eg, changed button text to be bold and use font that is consoistant with rest of the app).
+
+Middleware Packages:
+
+express: I used the Express.js framework to set up my web server and define routes.
+
+body-parser: Although I didn't explicitly mention it in my code, I implicitly used the body-parser middleware for parsing JSON and URL-encoded request bodies.
+
+MongoDB and MongoClient: While they're not middleware in the traditional sense, I utilized the MongoDB database and the MongoClient library to interact with my database.
+
+These middleware packages helped me handle HTTP requests, parse request data, and connect to the database, making it easier to develop my web application with Node.js and Express.js.
+
 
 ## Technical Achievements
 - **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
 
+I receaved a 100% in all four lighthouse tests required for this assignment (Image attached). Initially the accesibility score was 89%, therefore I changed the background and foreground colour, and had to add the id to the input tags so it associates with the correct label. And the initial SEO score was 78%, therefore I looked at all the recomendations lighthouse provides , and added the meta name="viewport" tag. Not really a challenge, however to meet some requierments to acheave 100%, I had to change some colour schemes that did not match with my personal prefferance and idiation for the app.
+
+(10 points) Implement OAuth authentication, perhaps with a library like passport.js. You must either use Github authenticaion or provide a username/password to access a dummy account. Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!
+(5 points) Instead of Glitch, host your site on a different service like Heroku or Digital Ocean. Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse?
+
+
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+- **Design Achievement 1**: 
+
+(10 points) Make your site accessible using the resources and hints available from the W3C, Implement/follow twelve tips from their tips for writing, tips for designing, and tips for development. Note that all twelve must require active work on your part. For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively getting it "for free" without having to actively change anything about your site. Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. List each tip that you followed and describe what you did to follow it in your site.
+
+My site is accessible by following these tips from the W3C site:
+
+Semantic HTML: I used semantic elements like headings and labels to create a meaningful document structure, aiding both browsers and screen readers in understanding content.
+
+Alt Text for Images: I added descriptive "alt" attributes to images, ensuring that users relying on screen readers receive meaningful image descriptions.
+
+Accessible Forms: I included clear labels for form fields, making it easy for users to understand the purpose of each input.
+
+Error Handling: I provided clear instructions and placeholder text in forms to help users avoid and correct mistakes during input.
+
+Color Contrast: I selected contrasting colors for better readability, benefiting users with visual impairments.
+
+Headings and Structure: I used heading tags to organize content hierarchically, enhancing navigation and comprehension.
+
+Semantic Structure: My pages have meaningful structures with appropriate container elements, ensuring content associations are clear.
+
+Focus Styles: I applied focus styles to interactive elements for keyboard navigation and highlighted focus states.
+
+Meaningful Link Text: I used descriptive link text to convey the purpose of each link clearly.
+
+Language Attributes: I specified the content language with the "lang" attribute for correct text interpretation.
+
+Clear Content: I used simple language and formatting, benefiting users with cognitive disabilities.
+
+Keyboard Navigation: Users can navigate through form fields and interactive elements using the "Tab" key, improving keyboard accessibility.
+
+
+My site applies the CRAP principles as follows:
+
+Contrast - I applied contrasting colors to enhance visual contrast, such as using #5585b5 for the heading background and #f5f8fa for text color in the <h1> element, making the heading stand out.
+
+Repetition - I try to maintain  consstancy through the use of the "Dosis" font family, ensuring a unified and professional appearance across the site.Repetition is evident in the consisten t use of background colors like #d8f6fa and #e0f4f6 for various boxes, promoting a cohesive and visually pleasing design.
+
+Alignment - Alignment is crucial for a clean layout, and I've aligned elements both horizontally and vertically to create an organized appearance.
+Text alignment is strategically used to enhance readability and usability. Elements are centered horizontally using "margin: 0 auto;", contributing to proper alignment.
+
+Proximity - I made sure that the procimity between labels and form elements for user comprehension, aiding the association between labels and inputs.
+Logical groupings and proximity are also maintained in the layout of form elements within the login box and BMI calculator form, making it easier for users to understand and interact with the content.
+
+
+
