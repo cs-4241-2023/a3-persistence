@@ -82,14 +82,12 @@ const reset = async function (event) {
   if (document.getElementById("groceryList") === null) {
     list = document.createElement("ul");
     list.setAttribute("id", "groceryList");
-    list.appendChild(listLabel);
     list.appendChild(defaultListItem);
     document.getElementById("lists-container").appendChild(list);
   } else {
     list = document.getElementById("groceryList");
     list.innerHTML = "";
   }
-  list.appendChild(listLabel);
   list.appendChild(defaultListItem);
 
   let tp = document.getElementById("tpNum");
@@ -100,11 +98,11 @@ const reset = async function (event) {
   tp.innerText = `$0.00`;
 
   document.getElementById("cartList").innerHTML = "";
-  document.getElementById("cartList").appendChild(cartLabel);
+
 };
 const addList = function (data) {
   let list;
-  let tmp;
+  let tmp = [];
   if (document.getElementById("groceryList") === null) {
     list = document.createElement("ul");
     list.setAttribute("id", "groceryList");
@@ -112,10 +110,10 @@ const addList = function (data) {
     list = document.getElementById("groceryList");
     tmp = [].slice.call(list.children);
   }
-  //console.log(tmp)
-  if (tmp[1].innerText == "Item Name: Price($)") {
-    console.log(tmp[1]);
-    list.removeChild(tmp[1]);
+  console.log(tmp)
+  if (tmp[0].innerText == "Item Name: Price($)") {
+    console.log(tmp[0]);
+    list.removeChild(tmp[0]);
     const li = document.createElement("li");
     const myIn = document.createElement("input");
     const inTwo = document.createElement("input");
@@ -139,9 +137,9 @@ const addList = function (data) {
     li.id = "item-0";
     list.appendChild(li);
   }
-  for (let i = 0; i < data.groceryList.length; i++) {
+  for (let i = 1; i < data.groceryList.length; i++) {
     console.log(i, tmp.length);
-    if (i >= tmp.length - 1) {
+    if (i === tmp.length) {
       const li = document.createElement("li");
       const myIn = document.createElement("input");
       const inTwo = document.createElement("input");
@@ -169,6 +167,7 @@ const addList = function (data) {
   let tp = document.getElementById("tpNum");
   tp.innerText = `$${data.totalPrice.totalPrice.toFixed(2)}`;
   total = parseFloat(data.totalPrice.totalPrice.toFixed(2));
+
 };
 
 const rebuild = function (data){
@@ -181,7 +180,6 @@ const rebuild = function (data){
   } else {
     list = document.getElementById("groceryList");
     list.innerHTML = "";
-    list.appendChild(listLabel);
   }
 
   for(let i = 0; i < data.groceryList.length; i++){
@@ -252,9 +250,9 @@ const updateList = function (data) {
     tmp = [].slice.call(list.children);
   }
   //console.log(tmp)
-  if (tmp[1].innerText == "Item Name: Price($) ") {
-    console.log(tmp[1]);
-    list.removeChild(tmp[1]);
+  if (tmp[0].innerText == "Item Name: Price($) ") {
+    console.log(tmp[0]);
+    list.removeChild(tmp[0]);
     const li = document.createElement("li");
     const myIn = document.createElement("input");
     const inTwo = document.createElement("input");
@@ -278,7 +276,7 @@ const updateList = function (data) {
     li.setAttribute("dbid", data.groceryList[0]._id)
     list.appendChild(li);
   }
-  for (let i = 0; i < data.groceryList.length; i++) {
+  for (let i = 1; i < data.groceryList.length; i++) {
     const li = document.createElement("li");
     const myIn = document.createElement("input");
     const inTwo = document.createElement("input");
@@ -292,8 +290,8 @@ const updateList = function (data) {
     );
     myIn.setAttribute("type", "checkbox");
     myIn.className = "giBox";
-    console.log(tmp[i + 1].getElementsByClassName("giBox")[0].checked);
-    myIn.checked = tmp[i + 1].getElementsByClassName("giBox")[0].checked;
+    console.log(tmp[i].getElementsByClassName("giBox")[0].checked);
+    myIn.checked = tmp[i].getElementsByClassName("giBox")[0].checked;
     inTwo.setAttribute("type", "checkbox");
     inTwo.className = "modbox";
     li.className = "groceryItem";
@@ -302,7 +300,7 @@ const updateList = function (data) {
     li.appendChild(myIn);
     li.appendChild(checkLabel);
     li.appendChild(inTwo);
-    list.removeChild(tmp[i + 1]);
+    list.removeChild(tmp[i]);
     list.appendChild(li);
   }
   let tp = document.getElementById("tpNum");
@@ -404,9 +402,9 @@ window.onload = function () {
             document.getElementById(
               "icNum"
             ).innerText = `$${workingTotal.toFixed(2)}`;
-            document.getElementById("difNum").innerText = `$${Math.abs(
+            document.getElementById("difNum").innerText = `$${(workingTotal !== 0)?Math.abs(
               (total - workingTotal).toFixed(2)
-            )}`;
+            ): 0.00.toFixed(2)}`;
             i.remove();
             return false;
           }

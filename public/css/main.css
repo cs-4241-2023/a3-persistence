@@ -31,21 +31,24 @@ div#logout-box{
   display: flex;
   flex-direction:column;
   list-style: none;
+  padding-left: 0;
 }
-#groceryList #modbox-label{
+
+#modbox-label{
   padding-left: 1.5rem;
+}
+#cart-lab{
+  padding-left: 6rem;
 }
 #cartList{
   display: flex;
   flex-direction:column;
   list-style: none;
+  padding-left: 0;
 }
 .errorMsg{
   visibility: hidden;
   display: none;
   color:red;
   font-size: 18px;
-}
-.priceCounts{
-
 }
