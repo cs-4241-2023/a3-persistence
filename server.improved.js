@@ -70,7 +70,6 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/submit", async (req, res) => {
-  console.log(req.body)
   const result = await collection.insertOne(req.body);
   res.json(result);
 });
