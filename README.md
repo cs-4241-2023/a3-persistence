@@ -1,10 +1,10 @@
 
 ## BMI Calculator
 
-Glitch link : a3-aarsh-zadapiya.glitch.me
+Glitch link : a3-aarsh-zadaphiya.glitch.me
 
-Username: aarsh
-Password: aarsh
+Username: username
+Password: password
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
