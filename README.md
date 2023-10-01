@@ -1,6 +1,6 @@
 # BMI Calculator
 
-**Glitch link:** [a3-aarsh-zadaphiya.glitch.me](a3-aarsh-zadaphiya.glitch.me)
+**Glitch link:** [https://a3-aarsh-zadaphiya.glitch.me/](https://a3-aarsh-zadaphiya.glitch.me/)
 
 **Username:** username  
 **Password:** password
