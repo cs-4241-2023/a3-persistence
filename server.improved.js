@@ -82,7 +82,7 @@ app.get("/display", async (req,res)=>{
 });
 
 app.post("/delete", async (req,res)=>{
-    console.log(req.body)
+
   const results= await collection.deleteOne({
     _id:new ObjectId(req.body._id)
   })
@@ -97,7 +97,7 @@ app.get("/", function (req, res) {
     const result = await collection.updateOne(
       { _id: new ObjectId( req.body._id ) },
       {$set: {
-          name: req.body.Email, 
+          Email: req.body.Email, 
           Name: req.body.Name,
           Birth: req.body.Birth,
           Age: req.body.Age,

@@ -1,5 +1,3 @@
-const { response } = require("express");
-
 const submit = function (event) {
     event.preventDefault();
   
@@ -25,6 +23,7 @@ const submit = function (event) {
       document.querySelector("#fade").style.display = "none";
     }, 1500);
     })
+    display(event)
     
   };
  const age= function(birth) {
@@ -66,32 +65,25 @@ const submit = function (event) {
         document.body.appendChild(list);
       });
   };
-  
+  //Clear
   const clear = function (event) {
     event.preventDefault();
     let table = document.getElementById("data");
     table.innerHTML = "";
   };
-
+//Delete
   function deleterec(event) {
     event.preventDefault();
-    
-  
     let data=[];
-
     let dis = document.querySelectorAll(".checkOnce");
     dis.forEach(function(box){
       if(box.checked==true){
         data.push(box.value)
       }
     })
-
-
-    console.log(data[0])
     let json = {
       _id: data[0],
     };
-    console.log(data[0])
     let response = fetch("/delete", {
       method: "POST",
       headers:{'Content-Type': 'application/json'},
@@ -105,33 +97,33 @@ const submit = function (event) {
         }, 1500);
       }).then(display(event));
   }
+  //Edit
   const edit= function(event){
     event.preventDefault()
     let num;
     let table= document.querySelector("#data");
-    let checkboxlist= document.querySelector('.checkOnce')
-    let cb;
-    checkboxlist.forEach(function(checkbox){
-      if(checkbox.checked){
-        let cb=checkbox.value
-        let strnum= checkbox.id.slice(1);
+    let checkboxlist= document.getElementsByClassName('checkOnce')
+    let cb="";
+    for(let i=0; i<checkboxlist.length; i++){
+      if(checkboxlist.item(i).checked){
+         cb = checkboxlist.item(i).value
+        let strnum= checkboxlist.item(i).id.slice(1);
         num= parseInt(strnum)
-      }
-    })
-    let age= pareseInt(table.rows[num+1].cells[3].split(" ")[0])
+    }
+    }
     json={
       _id: cb,
-      Email: table.rows[num+1].cells[0],
-      Name: table.rows[num+1].cells[1],
-      Birth: table.rows[num+1].cells[2],
-      Age: age,
+      Email: table.rows[num+1].cells[0].innerHTML,
+      Name: table.rows[num+1].cells[1].innerHTML,
+      Birth: table.rows[num+1].cells[2].innerHTML,
+      Age: age(table.rows[num+1].cells[2].innerHTML),
     }
     let response = fetch("/update", {
       method: "POST",
       headers:{'Content-Type': 'application/json'},
       body: JSON.stringify(json),
-    }).then(response=> response.jon())
-    .then(function(response){
+    }).then(res=> res.json())
+    .then(function(res){
       document.querySelector("#uD").style.display = "block";
       setTimeout(function () {
       document.querySelector("#uD").style.display = "none";
