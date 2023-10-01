@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>BMI Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BMI Calculator - Calculate Your Body Mass Index Online</title>
+    <meta name="description" content="Calculate your BMI online using our BMI calculator. Keep track of your health and fitness." />
     <meta charset="utf-8" />
     <script src="js/main.js"></script>
     <link rel="stylesheet" href="css/main.css" />
@@ -46,17 +48,17 @@
               </div>
               <div class="mb-3 text-start">
                 <label class="form-label" for="age" >Age</label>
-                <input class="form-control text-start" type="number" id="age" />
+                <input class="form-control text-start" type="number" id="age" placeholder="Age" />
               </div>
               <div class="mb-3 text-start">
                 <label for="Gender" class="form-label">Gender</label>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="gender" id="male" value="male"/>
-                  <label class="form-check-label" for="Male">Male</label>
+                  <label class="form-check-label" for="male" placeholder="Female">Male</label>
                 </div>
                 <div class="form-check">
                   <input class="form-check-input" type="radio" name="gender" id="female" value="female"/>
-                  <label class="form-check-label" for="Female">Female</label>
+                  <label class="form-check-label" for="female" placeholder="Female">Female</label>
                 </div>
               </div>
               <div class="mb-3">
@@ -66,17 +68,18 @@
           </div>
         </div>
 
-        <div class="col-md-6"> 
+        <div class="col-md-6 font2"> 
           <div class="box d-inline-flex">
-            <div class="px-1">
+            <div class="py-5 px-5">
               <p>Your calculated BMI</p>
               <div class="alert alert-success">
                 <strong>BMI:</strong> <span id="bmi"></span>
               </div>
             </div>
-
-            <div>
-              <p>About BMI Criteria</p>
+            
+            <div class="col-md-1"></div>
+            <div class="px-5">
+              <p>About BMI Criteria:</p>
               <p>Underweight = <18.5</p>
               <p>Normal weight = 18.5–24.9</p>
               <p>Overweight = 25–29.9</p>

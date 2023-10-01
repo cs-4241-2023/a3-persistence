@@ -12,13 +12,23 @@ body {
 
 .font {
   font-family: "Dosis";
+  font-weight: 100;
+  font-size: large;
+  color: #5585b5;
+}
+
+.font2 {
+  font-family: "Dosis";
+  font-weight: bolder;
+  font-size: large;
+  color: black;
 }
 
 .my-heading {
   font-family: "Dosis";
   font-size: 50px;
   font-weight: bold;
-  color: #bbe4e9;
+  color: black;
   background: #5585b5;
   text-align: center;
   padding: 20px;
@@ -55,14 +65,15 @@ body {
   font-size: 30px;
   text-align: left;
   font-family: "Dosis";
+  font-weight: bold;
 }
 
 .login-box {
   width: 50%;
   margin: 0 auto;
-  background-color: #d8f6fa;
+  background-color: #f5f8fa;
   padding: 20px;
-  border: 1px solid #5585b5;
+  border: 3px solid #5585b5;
   border-radius: 2px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   text-align: center;
@@ -70,10 +81,10 @@ body {
 
 .box {
   width: 100%;
-  margin: 5% auto;
-  background-color: #e0f4f6;
+  margin: 1%;
+  background-color: #f5f8fa;
   padding: 15px;
-  border: 1px solid #5585b5;
+  border: 3px solid #5585b5;
   border-radius: 2px;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
@@ -97,7 +108,7 @@ body {
   text-align: center;
 }
 
-.div{
+.div {
   margin: auto;
 }
 
