@@ -110,6 +110,11 @@ app.get("/getUsername", ensureAuthenticated, (req, res) => {
   res.json({ username: req.session.user.username });
 });
 
+app.get("/logout", (req, res) => {
+  req.session.destroy();
+  res.status(200).json({ status: "Logged out successfully" });
+});
+
 // protection of the index.html route
 app.get("/index.html", ensureAuthenticated, (req, res) => {
   res.sendFile(__dirname + "/public/index.html");

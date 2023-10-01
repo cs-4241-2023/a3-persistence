@@ -220,12 +220,31 @@ const getUsername = async function () {
   username = JSON.parse(text).username;
 };
 
+const logout = async function () {
+  const response = await fetch("/logout", {
+    method: "GET",
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    console.error("Error logging out:", errorData);
+    return;
+  }
+
+  window.location.href = "/login.html";
+  // prevent going back to the index page
+  window.history.replaceState(null, null, "/login.html");
+};
+
 window.onload = async function () {
   // initialize the table
   initializeTable();
   // add the submit button onclick listener
   const button = document.getElementById("addTaskFormSubmitBtn");
   button.onclick = submit;
+  // add the logout button onclick listener
+  const logoutButton = document.getElementById("logout-btn");
+  logoutButton.onclick = logout;
   // update the username
   await getUsername();
   const username_span = document.getElementById("username-span");
