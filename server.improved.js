@@ -22,7 +22,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
-client.connect()
+client.connect();
 
 app.set('view engine', 'squirrelly')
 
@@ -63,21 +63,13 @@ app.use(express.json());
 async function newScore(name, score, session) {
   const dateSub = new Date()
   const userID = await getUserName(session.login);
-  const newsc = {'name': name, 'score': score, 'date': dateSub, 'userID': userID};
+    console.log(userID);  
+  const newsc = {'name': name, 'score': score, 'date': dateSub, 'userID': userID.username};
   //console.log(newsc)
   //scores.push(newsc)
-
-  try {
-    await client.connect();
-
-    const database = client.db("cs4241"),
-          collection = database.collection("subway-scores");
-
-    await collection.insertOne(newsc);
-
-  } finally {
-    client.close();
-  }
+  const database = client.db("cs4241"),
+        collection = database.collection("subway-scores");
+  await collection.insertOne(newsc);
 }
 
 async function login(request, response) {
