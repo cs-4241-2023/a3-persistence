@@ -39,7 +39,7 @@ async function run() {
       {
         clientID: cID,
         clientSecret: sec,
-        callbackURL: "http://localhost:3000/auth/github/callback",
+        callbackURL: "http://grocerytracker.firescythe.net/auth/github/callback",
       },
       async (accessToken, refreshToken, gituser, done) => {
         let user = await client
