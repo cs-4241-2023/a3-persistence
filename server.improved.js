@@ -239,6 +239,18 @@ app.delete("/deleteTask", ensureAuthenticated, async (req, res) => {
       const updatedTasks = await tasksCollection
         .find({ username: username })
         .toArray();
+
+      // Calculate the time remaining and total time for each task
+      for (const task of updatedTasks) {
+        // Calculate the time remaining for each task
+        task.timeRemaining = duration(new Date(), new Date(task.taskDeadline));
+
+        // Calculate the total time spent on each task
+        task.totalTime = duration(
+          new Date(task.taskCreated),
+          new Date(task.taskDeadline)
+        );
+      }
       res.setHeader("Content-Type", "application/json");
       res.json(updatedTasks);
     } else {
