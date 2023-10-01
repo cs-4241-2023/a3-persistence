@@ -46,6 +46,9 @@ const submit = async function (event) {
   tasks = JSON.parse(text);
   console.log("new tasks list: ", tasks);
   updateTaskTable(tasks);
+
+  // reset the form
+  document.getElementById("addTaskForm").reset();
 };
 
 const updateTaskTable = function (tasks) {
