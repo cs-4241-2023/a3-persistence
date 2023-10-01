@@ -216,7 +216,7 @@ const delItems = async function (event) {
 
   let idxs = [];
   let list = [].slice.call(document.getElementById("groceryList").children);
-  list = list.splice(1);
+
   list.forEach((element) => {
     if (element.getElementsByClassName("modbox").length === 1) {
       if (element.getElementsByClassName("modbox")[0].checked) {
