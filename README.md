@@ -33,9 +33,6 @@ These middleware packages helped me handle HTTP requests, parse request data, an
 
 I receaved a 100% in all four lighthouse tests required for this assignment (Image attached). Initially the accesibility score was 89%, therefore I changed the background and foreground colour, and had to add the id to the input tags so it associates with the correct label. And the initial SEO score was 78%, therefore I looked at all the recomendations lighthouse provides , and added the meta name="viewport" tag. Not really a challenge, however to meet some requierments to acheave 100%, I had to change some colour schemes that did not match with my personal prefferance and idiation for the app.
 
-(10 points) Implement OAuth authentication, perhaps with a library like passport.js. You must either use Github authenticaion or provide a username/password to access a dummy account. Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!
-(5 points) Instead of Glitch, host your site on a different service like Heroku or Digital Ocean. Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse?
-
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: 
@@ -71,7 +68,7 @@ Keyboard Navigation: Users can navigate through form fields and interactive elem
 
 My site applies the CRAP principles as follows:
 
-Contrast - I applied contrasting colors to enhance visual contrast, such as using #5585b5 for the heading background and #f5f8fa for text color in the <h1> element, making the heading stand out.
+Contrast - I applied contrasting colors to enhance visual contrast, such as using #5585b5 for the heading background and #f5f8fa for text color in the h1 element, making the heading stand out.
 
 Repetition - I try to maintain  consstancy through the use of the "Dosis" font family, ensuring a unified and professional appearance across the site.Repetition is evident in the consisten t use of background colors like #d8f6fa and #e0f4f6 for various boxes, promoting a cohesive and visually pleasing design.
 
