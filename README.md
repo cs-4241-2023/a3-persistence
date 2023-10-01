@@ -3,8 +3,8 @@ Assignment 3 - Persistence: Two-tier Web Application with Database, Express serv
 
 ## David's Subway Challenge Leaderboard
 
-Self-host: 
-Glitch (if self host is down, message me, but this is a backup): 
+Self-host: http://66.189.31.92:3000/  \
+If it is down for whatever reason let me know.
 
 - Goal: I wanted there to be a central place for all the scores of the Subway Challenge (a challenge to go to all the subway stations in NYC) to be in one place
 - Challenge: The session object was really hard for me to wrap my head around.
