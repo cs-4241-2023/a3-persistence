@@ -65,8 +65,7 @@ const ensureAuthenticated = (req, res, next) => {
     next();
   } else {
     // the user is not logged in
-    res.status(401).send("Please log in to access this page.");
-    // res.redirect("/login.html");
+    res.status(401).redirect("/login.html");
   }
 };
 
@@ -100,11 +99,9 @@ app.post("/login", async (req, res) => {
         // create a session
         req.session.user = newUser;
         req.session.cookie.maxAge = 3600000; // 1 hour
-        return res
-          .status(201)
-          .send({
-            message: `New user, ${newUser.username}, created successfully`,
-          });
+        return res.status(201).send({
+          message: `New user, ${newUser.username}, created successfully`,
+        });
       } else {
         return res.status(500).send({ error: "Internal server error" });
       }
