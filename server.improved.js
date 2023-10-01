@@ -27,7 +27,7 @@ app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
 
-const uri = `mongodb+srv://rbdyer3:${process.env.PASS}@cluster0.h1jga56.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb+srv://rbdyer3:pass@cluster0.h1jga56.mongodb.net/?retryWrites=true&w=majority`
 const client = new MongoClient( uri )
 let PlayerCollection = null
 let userCollection = null
