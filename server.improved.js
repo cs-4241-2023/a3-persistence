@@ -1,5 +1,4 @@
 require('dotenv').config()
-const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const util = require('util');
 const hashAsync = util.promisify(bcrypt.hash);
