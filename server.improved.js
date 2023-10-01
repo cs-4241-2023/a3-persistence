@@ -256,7 +256,6 @@ app.get('/success', function (request, response) {
       })
       request.session.login = true
       request.session.user = res.data.login
-      res.session.user = res.data.login
       console.log('inserted new user: ' + JSON.stringify(newUser))
     }
 
