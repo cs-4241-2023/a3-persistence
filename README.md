@@ -19,7 +19,7 @@ I chose oauth with github for my authentication because of the challenge it impo
 
 ## Technical Achievements
 - **Tech Achievement 1**: Oauth via github! This was a pain but I got this running and I couldn't be prouder!
-- I also got it deployed using digital ocean lol
+- **Tech Achievement 2**: I also got it deployed using digital ocean lol
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: 100 on all 4 Lighthouse categories! When I tested this locally I was able to obtain 100 on all 4 categories of the lighthouse analysis and I provided a screenshot in the assets directory.
