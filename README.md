@@ -22,6 +22,4 @@ keys:["key1","key2"]
 
 ### Design/Evaluation Achievements
 - **Design Achievement 1**: 
-
-Login instructions
-Just type "test" in password field
+1. used bootstrap 
