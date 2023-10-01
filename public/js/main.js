@@ -1,10 +1,16 @@
 let editIndex = null;
 let userData = null;
 
+const updateBMI = function (height, weight, age, gender) {
+  const calculatedBMI = calculateBMI(height, weight, age, gender);
+  document.getElementById("bmi").textContent = `BMI: ${calculatedBMI}`;
+};
+
 const submit = async function (event) {
   event.preventDefault();
   let evt = event.target;
   let json = {};
+
   if (evt.getAttribute("formaction") === "/submit") {
     json = {
       height: document.querySelector("#height").value,
@@ -12,14 +18,12 @@ const submit = async function (event) {
       age: document.querySelector("#age").value,
       gender: document.querySelector('input[name="gender"]:checked').value,
     };
-    let btnSubmit = document.getElementById("Calculate");
-    btnSubmit.formAction = "/submit";
+
+    // Calculate and update the BMI display
+    updateBMI(json.height, json.weight, json.age, json.gender);
   } else if (evt.getAttribute("formaction") === "/delete") {
     json = { id: evt.getAttribute("id") };
   } else if (evt.getAttribute("formaction") === "/edit") {
-    // add the index to the json
-    // change button form action to submit
-    // reset the edit index
     json = {
       id: editIndex,
       height: document.querySelector("#height").value,
@@ -28,11 +32,10 @@ const submit = async function (event) {
       gender: document.querySelector('input[name="gender"]:checked').value,
     };
     serverData[0]["data"][editIndex] = json;
-  }
 
-  // Calculate BMI and update the span element
-  const calculatedBMI = calculateBMI(json.height, json.weight, json.age, json.gender);
-  document.getElementById("bmi").textContent = `BMI: ${calculatedBMI}`;
+    // Calculate and update the BMI display after editing
+    updateBMI(json.height, json.weight, json.age, json.gender);
+  }
 
   await fetch(evt.getAttribute("formaction"), {
     method: "POST",
@@ -43,11 +46,10 @@ const submit = async function (event) {
   }).then(async function (response) {
     let data = await response.json();
     populateTable(data);
-    let btnSubmit = document.getElementById("Calculate");
-    btnSubmit.formAction = "/submit";
     document.getElementById("bmiForm").reset();
   });
 };
+
 
 function calculateBMI(height, weight, age, gender) {
   let bmi;
@@ -65,9 +67,6 @@ function calculateBMI(height, weight, age, gender) {
 }
 
 function editRow(event) {
-  //get the row from the table using the index and populate the form
-  //change the button form action to edit
-  //set the edit index
   let evt = event.target;
   let rowId = evt.getAttribute("id");
   editIndex = rowId;
