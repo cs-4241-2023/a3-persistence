@@ -89,10 +89,28 @@ app.post("/login", async (req, res) => {
     // check if user exists in the database
     const appUsersCollection = db.collection("app_users");
     const user = await appUsersCollection.findOne({ username: username });
-    if (!user || user.password !== password) {
-      return res
-        .status(401)
-        .send({ error: "Username or password is incorrect" });
+    if (!user) {
+      // create the user in the database
+      const newUser = {
+        username: username,
+        password: password,
+      };
+      const result = await appUsersCollection.insertOne(newUser);
+      if (result.acknowledged === true) {
+        // create a session
+        req.session.user = newUser;
+        req.session.cookie.maxAge = 3600000; // 1 hour
+        return res
+          .status(201)
+          .send({
+            message: `New user, ${newUser.username}, created successfully`,
+          });
+      } else {
+        return res.status(500).send({ error: "Internal server error" });
+      }
+    } else if (user.password !== password) {
+      // check if the password is correct
+      return res.status(401).send({ error: "Incorrect password" });
     }
     // if login successful, create a session
     req.session.user = user;

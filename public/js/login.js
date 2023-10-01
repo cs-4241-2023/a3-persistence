@@ -23,6 +23,11 @@ loginForm.addEventListener("submit", function (event) {
     .then((response) => {
       if (response.status === 200) {
         window.location.href = "/index.html";
+      } else if (response.status === 201) {
+        response.json().then((data) => {
+          alert(data.message);
+          window.location.href = "/index.html";
+        });
       } else {
         alert("Invalid username or password");
       }
