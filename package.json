@@ -1,6 +1,6 @@
 {
   "name": "a3-aarshzadaphiya",
-  "description": "Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template   ===",
+  "description": "Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template",
   "author": "",
   "scripts": {
     "start": "node server.improved.js",
@@ -18,5 +18,8 @@
   "version": "1.0.0",
   "main": "server.improved.js",
   "keywords": [],
-  "license": "ISC"
+  "license": "ISC",
+  "engines": {
+    "node": "16.x"
+  }
 }
