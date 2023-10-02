@@ -1,6 +1,9 @@
 {
   "name": "Randy Dyer",
   "version": "",
+  "engines": {
+    "node": "16.x"
+  },
   "description": "Webpage to calculate a basketball players overll rating",
   "author": "",
   "scripts": {
