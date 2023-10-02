@@ -6,7 +6,7 @@ const express = require("express"),
 
 require("dotenv").config();
 
-app.use(express.static("./views/"));
+app.use(express.static("./views/"));    
 app.use( express.json() )
 app.use( express.urlencoded({ extended:true }) )
 app.use(helmet());
