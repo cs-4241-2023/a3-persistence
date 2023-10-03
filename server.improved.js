@@ -92,7 +92,7 @@
 // server.listen( process.env.PORT || port )
 
 
-const express    = require('express'),
+const express = require('express'),
       { MongoClient, ObjectId } = require("mongodb"),
       app = express()
 
@@ -126,14 +126,14 @@ run()
 const dreams = []
 app.post( '/submit', async (req, res) => {
 
-  await client.connect()
-  collection =  client.db("datatest").collection("test")
-  collection.insertOne(req.body)
+  //await client.connect()
+  //collection =  client.db("datatest").collection("test")
+  const response = collection.insertOne(req.body)
   // use insert one
 
 
   // dreams.push( req.body) //push into mongodb insteasd
-
+  console.log(response)
   
   res.writeHead( 200, { 'Content-Type': 'application/json' })
   res.end( JSON.stringify( dreams ) )
@@ -148,8 +148,6 @@ app.use( (req,res,next) => {
     res.status( 503 ).send()
   }
 })
-
-
 
 app.post( '/add', async (req,res) => {
   const result = await collection.insertOne( req.body )

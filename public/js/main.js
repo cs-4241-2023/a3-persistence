@@ -61,13 +61,17 @@ const del = function(event){
      deleteRow(newData)
   
   })
-
-
-
 }
 
 
+const getData = function(){
+  const response = fetch( '/docs', {
+    method:'GET'
+  }).then( async function (response){
+    render(response)
+})}
 
+getData();
 
 window.onload = function() {
    const button = document.querySelector("button");
