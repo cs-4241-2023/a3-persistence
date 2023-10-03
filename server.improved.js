@@ -18,7 +18,7 @@ mongoose.connect(process.env.MONGO_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   writeConcern: {
-    w: 'majority', // Correct write concern mode
+    w: 'majority',
   },
 })
   .then(() => {
@@ -42,71 +42,11 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 
 
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-
 // Showing home page
 app.get("/", function (req, res) {
   res.render("login");
 });
 
-
-// Showing register form
-app.get("/register", function (req, res) {
-  res.render("register");
-});
-
-// Handling user signup
-app.post("/register", async (req, res) => {
-  const user = await User.create({
-    username: req.body.username,
-    password: req.body.password
-  });
-  
-  return res.status(200).json(user);
-});
-
-app.get("/login", function(req, res) {
-  res.render("login");
-});
-//Handling user login
-app.post("/login", async function(req, res){
-  try {
-      // check if the user exists
-      const user = await User.findOne({ username: req.body.username });
-      if (user) {
-        //check if password matches
-        const result = req.body.password === user.password;
-        if (result) {
-          res.render("secret");
-        } else {
-          res.status(400).json({ error: "password doesn't match" });
-        }
-      } else {
-        res.status(400).json({ error: "User doesn't exist" });
-      }
-    } catch (error) {
-      res.status(400).json({ error });
-    }
-});
-
-//Handling user logout 
-app.get("/logout", function (req, res) {
-  req.logout(function(err) {
-      if (err) { return next(err); }
-      res.redirect('/');
-    });
-});
-
-
-app.post("/login", passport.authenticate("local", {
-  successRedirect: "/index",
-  failureRedirect: "/login"
-}));
 
 // Handle POST requests to add tasks to the database
 app.post('/tasks', async (req, res) => {
