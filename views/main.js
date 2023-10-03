@@ -90,10 +90,13 @@ function CreateRow(task, due, dataIndex) {
   return row;
 }
 
-const deleteData = (dataIndex) => {
-  const body = dataIndex;
-  fetch("/json", {
+const deleteData = (taskID) => {
+  const body = JSON.stringify({ _id: taskID });
+  fetch("/delete", {
     method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body,
   }).then(() => {
     window.location.reload();
@@ -156,15 +159,11 @@ function LoadFromServer(data) {
 
   table.append(firstRow);
   if (Array.isArray(data)) {
-  data.forEach((item) => {
-    let row = CreateRow(
-          item.task,
-          item.duedate,
-          item.toString()
-        );
-    table.append(row);
-  });
-}
+    data.forEach((item) => {
+      let row = CreateRow(item.task, item.duedate, item.toString());
+      table.append(row);
+    });
+  }
 
   let htmlTable = document.getElementById("task-table");
   htmlTable.replaceChildren();

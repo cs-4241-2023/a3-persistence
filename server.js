@@ -85,7 +85,6 @@ const checkLoginInfo = async (req, res) => {
 app.get("/loadTasks", async (req, res) => {
   if (userID !== null) {
     if (userID.toString() === process.env.USER) {
-      console.log("ADMIN");
       taskCollection
         .find()
         .toArray()
