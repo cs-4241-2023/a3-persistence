@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <style>
+      /* Align header1 to the center */
+      h1{
+        text-align: center;
+      }
+    
+    </style>
+    <title>Shows to Watch (CS4241 Assignment 2)</title>
+    <meta charset="utf-8">
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+   <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+  </head>
+  <body>
+    <!-- Banner + Title Stuff -->
+    <h1 class="header1">TV Watchlist</h1>
+    <!-- grid stuff -->
+    <div class="grid-container">
+      
+      <div class="grid-item" id="name">
+        <!-- Show Name Input -->
+        <label for="showName">Name of Show/Movie</label>
+        <input type="text" id="showName" value="">
+      </div>
+      
+      <div class="grid-item" id="year">
+        <!-- Year of Release Input -->
+        <label for="relYear">Year Of Release</label>
+        <input type="text" id="relYear" value="">
+      </div>
+
+      <div class="grid-item" id="genre">
+        <!-- Genre Input + Submit -->
+        <label for="genre">Genre</label>
+        <input type="text" id="showGenre" value="">
+        <button id="submit">Submit</button>
+      </div>
+
+      <div class="grid-item" id="results">
+        <!-- Results Table -->
+        <label for="showsTable">Shows and Movies</label>
+        <table  id="showsTable" border="2">
+          <thead class="thead">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Year of Release</th>
+              <th scope="col">Genre</th>
+              <th scope="col">Relevance</th>
+              <th scope="col">Edit/Delete</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+                      
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <form>
+    </form>
+
+  </body>
+</html>
