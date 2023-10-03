@@ -7,7 +7,10 @@ https://a3-sean-arackal.glitch.me/
 
 Access:
 Username: cs4241
+
 Password: admin
+
+or create an account!
 
 ---
 

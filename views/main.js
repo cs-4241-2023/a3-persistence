@@ -35,14 +35,12 @@ const submit = async function (event) {
       body,
     });
 
-    await response1;
     const response2 = await fetch("/loadTasks", {
       method: "GET",
     });
 
     const data = await response2.json();
     LoadFromServer(data);
-    ClearForm();
   }
 };
 
@@ -119,7 +117,7 @@ function CreateEditButton(dataIndex) {
 let editableTaskID = "";
 
 function OpenEditForm(dataIndex) {
-  const editForm = document.querySelector(".Edit-Task");
+  const editForm = document.querySelector(".todo-edit");
   editForm.style.display = "block";
   editableTaskID = dataIndex;
 }
@@ -160,7 +158,6 @@ function LoadFromServer(data) {
   if (Array.isArray(data)) {
   data.forEach((item) => {
     let row = CreateRow(
-          item._id,
           item.task,
           item.duedate,
           item.toString()
@@ -178,7 +175,7 @@ window.onload = async function () {
   const addButton = document.querySelector(".add-button");
   addButton.onclick = submit;
 
-  const editForm = document.querySelector(".Edit-Task");
+  const editForm = document.querySelector(".todo-edit");
   editForm.style.display = "none";
   const editSubmit = document.querySelector(".edit-button");
   editSubmit.onclick = editData;
