@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>CS4241 Assignment 2</title>
+  <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="js/main.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=" />
+</head>
+<body>
+  <div class="form_table" align="center">
+    <div class="q full_width">
+      <div class="segment_header">
+        <h1>Login/Register</h1>
+      </div>
+    </div>
+    <form>
+      <div class="loginInputs" align="left">
+        <div class="itemBox">
+          <label class="lbl-username">Username*:</label>
+          <input type="text" aria-labelledby="lbl-username" id="username" value="" required="required"  />
+        </div>
+        <div class="itemBox">
+          <label class="lbl-password">Password*:</label>
+          <input type="password" aria-labelledby="lbl-password" id="password" value="" required="required" />
+        </div>
+      </div>
+      <button class="login" onclick="loginCall()">Login</button>
+      <button class="Register" onclick="registerCall()">Register</button>
+    </form>
+  </div>
+</body>
+</html>
+<style>
+
+  button {
+    border: 1px solid black !important;
+    margin:2px;
+    background: #0000FF;
+  }
+  
+  #username, #password{
+    width:40%;
+  }
+  .lbl-password, .lbl-username{
+    color:red;
+  }
+  
+  }
+</style>
