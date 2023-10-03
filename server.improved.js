@@ -1,17 +1,13 @@
 var express = require("express"),
     mongoose = require("mongoose"),
-    passport = require("passport"),
-    bodyParser = require("body-parser"),
-    LocalStrategy = require("passport-local"),
-    passportLocalMongoose = require("passport-local-mongoose")
+    bodyParser = require("body-parser")
 require('dotenv').config();
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-
-const User = require('./models/user')
-const Task = require('./models/task')
+const User = require('./models/user');
+const Task = require('./models/task');
 
 // Configure MongoDB connection using the MONGO_STRING environment variable
 mongoose.connect(process.env.MONGO_STRING, {
@@ -41,12 +37,10 @@ app.use(bodyParser.json());
 // Serve static files from the 'public' directory
 app.use(express.static('public'));
 
-
-// Showing home page
+// Showing login page as the homepage
 app.get("/", function (req, res) {
   res.render("login");
 });
-
 
 // Handle POST requests to add tasks to the database
 app.post('/tasks', async (req, res) => {
