@@ -3,7 +3,7 @@ Assignment 3 - Persistence: Two-tier Web Application with Database, Express serv
 
 ## What do I have to do?
 
-https://a3-sean-arackal.glitch.me/
+https://a3-seanarackal.glitch.me/
 
 Access:
 Username: cs4241
