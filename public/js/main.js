@@ -53,10 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Error fetching tasks:", error);
     }
   }
-
   const addTaskButton = document.getElementById("add-task");
-  addTaskButton.addEventListener("click", () => {
-    submit(event);
+  addTaskButton.addEventListener("click", async (event) => {
+    await submit(event);
     fetchTasks(); // Fetch tasks after adding a new task
   });
 
@@ -71,17 +70,30 @@ document.addEventListener("DOMContentLoaded", () => {
       const taskDetails = document.createElement("div");
       taskDetails.classList.add("task-details");
 
-      const taskName = document.createElement("span");
-      taskName.textContent = `Task: ${task.task}`;
+      // Check if task properties are defined before creating elements
+      if (task.task) {
+        const taskName = document.createElement("span");
+        taskName.textContent = `Task: ${task.task}`;
+        taskDetails.appendChild(taskName);
+      }
 
-      const taskDescription = document.createElement("span");
-      taskDescription.textContent = `Description: ${task.description}`;
+      if (task.description) {
+        const taskDescription = document.createElement("span");
+        taskDescription.textContent = `Description: ${task.description}`;
+        taskDetails.appendChild(taskDescription);
+      }
 
-      const dueDate = document.createElement("span");
-      dueDate.textContent = `Due Date: ${task.dueDate}`;
+      if (task.dueDate) {
+        const dueDate = document.createElement("span");
+        dueDate.textContent = `Due Date: ${task.dueDate}`;
+        taskDetails.appendChild(dueDate);
+      }
 
-      const priority = document.createElement("span");
-      priority.textContent = `Priority: ${task.priority}`;
+      if (task.priority) {
+        const priority = document.createElement("span");
+        priority.textContent = `Priority: ${task.priority}`;
+        taskDetails.appendChild(priority);
+      }
 
       const deleteButton = document.createElement("button");
       deleteButton.textContent = "Delete";
@@ -94,16 +106,11 @@ document.addEventListener("DOMContentLoaded", () => {
         taskList.removeChild(listItem);
       });
 
-      // Append elements to the task details div
-      taskDetails.appendChild(taskName);
-      taskDetails.appendChild(taskDescription);
-      taskDetails.appendChild(dueDate);
-      taskDetails.appendChild(priority);
-      taskDetails.appendChild(deleteButton); // Append the delete button here
-
       // Append the task details div to the task item
       listItem.appendChild(taskDetails);
+      listItem.appendChild(deleteButton); // Append the delete button here
 
+      // Append the task item to the task list
       taskList.appendChild(listItem);
     });
   }
@@ -170,11 +177,12 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Fetch and display tasks when the page loads
+  /*
   window.onload = function () {
     const button = document.querySelector("button");
     button.onclick = submit;
 
     // Fetch and display tasks from the server
     fetchTasks();
-  };
+  };*/
 });
