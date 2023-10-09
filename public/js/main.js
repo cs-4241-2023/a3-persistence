@@ -27,6 +27,7 @@ const submit = async function( event ) {
         
   const response = await fetch( '/submit', {
     method:'POST',
+    headers: { 'Content-Type': 'application/json' },
     body
   })
     
@@ -41,6 +42,8 @@ const submit = async function( event ) {
   i = 0;
   newData.forEach(item => {
     
+
+      debugger;
       const editBtn =  document.createElement("BUTTON")
       editBtn.innerHTML = "Edit";
 
@@ -91,6 +94,7 @@ const deleteARow = async function(row){
   debugger;
   const response = await fetch( '/delete', {
     method:'POST',
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify( body )
   }
   )
@@ -111,7 +115,7 @@ function relevanceByYear(currentYear, yearOfRelease){
     relevanceByYear = "That's a pretty old one!"
   }
 
-  else if(yearDiff > 80){
+  else if(yearDiff > 80 || yearDiff < 0){
     relevanceByYear = "No show should even be that old!"
   }
 
