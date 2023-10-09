@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Todo List</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <!-- Clerk Authentication Section -->
+  <div id="clerk-auth-section">
+    <h1>Clerk JavaScript Starter</h1>
+    <div id="auth-links">
+      <button onclick="Clerk.openSignIn()">Sign In</button>
+    </div>
+  </div>
+
+  <script src="js/main.js"></script>
+  <script>
+    const publishableKey = "pk_test_ZW5vcm1vdXMtY2hpcG11bmstNS5jbGVyay5hY2NvdW50cy5kZXYk";
+
+    const startClerk = async () => {
+      const Clerk = window.Clerk;
+
+      try {
+        // Load Clerk environment and session if available
+        await Clerk.load();
+
+        const authLinks = document.getElementById("auth-links");
+        const clerkAuthSection = document.getElementById("clerk-auth-section");
+
+        Clerk.addListener(({ user }) => {
+          // Display links conditionally based on user state
+          authLinks.style.display = user ? "none" : "block";
+
+          // Redirect to home page if the user is authenticated
+          if (user) {
+            window.location.href = "index.html";
+          }
+        });
+      } catch (err) {
+        console.error("Error starting Clerk: ", err);
+      }
+    };
+
+    (() => {
+      const script = document.createElement("script");
+      script.setAttribute("data-clerk-publishable-key", publishableKey);
+      script.async = true;
+      script.src = `https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js`;
+      script.crossOrigin = "anonymous";
+      script.addEventListener("load", startClerk);
+      document.body.appendChild(script);
+    })();
+  </script>
+</body>
+</html>
