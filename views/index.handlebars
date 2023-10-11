@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>CS4241 Assignment 2</title>
+    <meta charset="utf-8">
+    <script src="main.js"></script>
+    <!--<link rel="stylesheet" href="main.css">-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    
+    <!-- get rid of favicon error -->
+    <link rel="icon" href="data:;base64,iVBORw0KGgo=">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Dosis:wght@300;600&family=Oswald:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body class="center">
+    {{{msg}}}
+    <h1 class="center">Homework Tracker</h1>
+    <p>add your upcoming assignment:</p>
+    <form id="homework" action= "/add" method="POST">
+      <input type="text" name="course" id="course" placeholder="course">
+      <input type="text" name= "assignment" id="assignment" placeholder="assignment details">
+      <input type="date" name= "dueDate" id="dueDate">
+      <input type="time" name= "dueTime" id="dueTime" value="23:59">
+      <input id="submit" type="submit" value="submit">
+    </form>
+    <table id="homework-table">
+        <tr>
+          <th>Course</th>
+          <th>Assignment</th>
+          <th>Due Date</th>
+          <th>Due Time</th>
+        </tr>
+    </table>
+  </body>
+</html>

@@ -2,21 +2,25 @@ const http = require('http'),
   fs = require('fs'),
   mime = require('mime'),
   dir = 'public/',
-  port = 3000
+  port = 3000,
+  hbs = require("express-handlebars").engine
   const express = require('express')
   const app = express(),
-    {MongoClient} =require('mongodb')
-
+    {MongoClient, ObjectId} =require('mongodb')
+  //require('.env').config()
    process.env.USER
    process.env.PASS 
-  const uri = 'mongodb+srv://${process.env.USER}:${process.env.PASS}@cs4341a3.sqkz12t.mongodb.net/?retryWrites=true&w=majority';
+   const uri = `mongodb+srv://${process.env.USER}:${process.env.PASS}@cs4341a3.sqkz12t.mongodb.net/?retryWrites=true&w=majority`;
 app.use(express.static('./'))
 app.use(express.json())
 
-
-app.use(express.static("public") )
+app.use(express.static(dir))
+app.use(express.static("views") )
 app.use(express.json() )
 app.use(express.urlencoded({ extended: true }));
+app.engine("handlebars", hbs())
+app.set("view engine", "handlebars")
+app.set("views", "./views")
 
 const client = new MongoClient( uri )
 
@@ -27,18 +31,14 @@ let user = null;
 async function run() {
   await client.connect()
   collection = await client.db("datatest").collection("test")
-
-  // route to get all docs
-  app.get("/docs", async (req, res) => {
-    if (collection !== null ) {
-      const docs = await collection.find({}).toArray()
-      res.json( docs )
-    }
-    userCollection = await client.db("datatest").collection("userCollection");
-  })
+  userCollection = await client.db("datatest").collection("userCollection");
 }
 
 run()
+
+app.get("/", (req, res) => {
+   res.render("login", {msg: "", layout: false})
+})
 
 app.use( (req,res,next) => {
   if( collection !== null ) {
@@ -51,9 +51,12 @@ app.use( (req,res,next) => {
 app.post( '/add', async (req,res) => {
   let result = await collection.insertOne({
     user: user,
+    course: req.body.course,
     assignment: req.body.assignment,
+    dueDate: req.body.dueDate,
+    dueTime: req.body.dueTime
   });
-
+//console.log(result)
   const userList = await collection.find({ user: user }).toArray();
   userList.forEach((assignment) => {
     console.log("add: " + JSON.stringify(Object.values(assignment)));
@@ -80,33 +83,42 @@ app.post( '/update', async (req,res) => {
 })
 
 app.post('/login', async (req, res) => {
-  let username = req.body.username
+ //console.log(req)
+  user = req.body.username
   let password = req.body.password
+  console.log(user + ": " + password)
   const userAlreadyCreated = await userCollection.findOne({ user: user });
-
+  console.log(userAlreadyCreated)
+  if(userAlreadyCreated!=null){
+    if(userAlreadyCreated.password===password){
+      //req.session.login = true;
+      res.render("index" , {msg: "Welcome back", layout: false,})
+    }
+    else{
+      //req.session.loin = false;
+      res.render('login', {msg: "invalid password, try again", layout: false,})
+    }
+  }
+  else{
+    const newUser = {
+      user,
+      password,
+    };
+    let result = userCollection.insertOne(newUser)
+    console.log(result)
+    //req.session.login = true;
+      res.render("index", {msg: "Successfully created new account", layout: false,})
+  }
 })
 
 app.listen(3000)
-
-
-
-
-
-
-
-
-
-
-
-
 
 let appdata = [
   {
     'course': 'CS4241',
     'assignment': 'A2',
     'dueDate': '2023-09-12',
-    'dueTime': '11:59',
-    'daysLeft': '0',
+    'dueTime': '11:59'
   },
 ]
 

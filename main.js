@@ -15,8 +15,8 @@ const submit = async function (event) {
       }
     //const daysLeft = calculateDaysLeft(dueDate.value);
 
-    json = {course: course.value,assignment: assignment.value,dueDate: dueDate.value,dueTime: dueTime.value},
-      body = JSON.stringify(json)
+    const json = {course: course.value,assignment: assignment.value,dueDate: dueDate.value,dueTime: dueTime.value}
+    const body = JSON.stringify(json)
   
     const response = await fetch('/submit', {
       method: 'POST',
@@ -46,7 +46,11 @@ const submit = async function (event) {
     console.log(table)
     table.innerHTML = "<tr> <th>Course</th><th>Assignment</th><th>Due Date</th><th>Due Time</th><th>Days Left</th><th>Done?</th> </tr>"
     jsonData.forEach(entry => {
-      table.innerHTML += `<tr> <td>${entry.course}</td> <td>${entry.assignment}</td> <td>${entry.dueDate}</td><td>${entry.dueTime}</td><td>${entry.daysLeft}</td><td><button onclick="removeRow(\'${entry.assignment}\')">done</button></td></tr>`
+      table.innerHTML += `<tr> 
+      <td>${entry.course}</td> 
+      <td>${entry.assignment}</td> 
+      <td>${entry.dueDate}</td>
+      <td>${entry.dueTime}</td>`
     })
   }
 
