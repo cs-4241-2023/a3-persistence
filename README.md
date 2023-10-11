@@ -7,6 +7,9 @@ a3-nicole-burgess-.glitch.me
 
 The goal of the application is to be able to have an account and 
 be able to track your homework assignments and mark them as done.
+You can create accounts, login to old accounts and it will only display the 
+assignments that belong to that account, however once you submit the assignments
+it displays the JSON of the assignments but I was unable to put them in the table.
 The challenges I faced were that I wasn't able to download many of
 packages at first but once I was able to I was able to get more parts working
 and I was also not able to add any assignments to the table. I used the water.css 
