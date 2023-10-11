@@ -1,114 +1,61 @@
-Assignment 3 - Persistence: Two-tier Web Application with Database, Express server, and CSS template
-===
+## I was given an extension on this assignment
 
-Due: September 25nd, by 11:59 AM.
+## Request for Extension
 
-This assignnment continues where we left off, extending it to use the most popular Node.js server framework (express), 
-a database (mongodb), and a CSS application framework / template of your choice (Boostrap, Material Design, Semantic UI, Pure etc.)
-
-Baseline Requirements
----
-
-Your application is required to implement the following functionalities:
-
-- a `Server`, created using Express (no alternatives will be accepted for this assignment)
-- a `Results` functionality which shows all data associated with a logged in user (except passwords)
-- a `Form/Entry` functionality which allows users to add, modify, and delete data items (must be all three!) associated with their user name / account. 
-- Persistent data storage in between server sessions using [mongodb](https://www.mongodb.com/cloud/atlas) (you *must* use mongodb for this assignment). You can use either the [official mongodb node.js library](https://www.npmjs.com/package/mongodb) or use the [Mongoose library](https://www.npmjs.com/package/mongoose), which enables you to define formal schemas for your database. Please be aware that the course staff cannot provide in-depth support for use of Mongoose.  
-- Use of a [CSS framework or template](https://github.com/troxler/awesome-css-frameworks). 
-This should do the bulk of your styling/CSS for you and be appropriate to your application. 
-For example, don't use [NES.css](https://nostalgic-css.github.io/NES.css/) (which is awesome!) unless you're creating a game or some type of retro 80s site.
-
-Your application is required to demonstrate the use of the following concepts:  
-
-HTML:  
-- HTML input tags and form fields of various flavors (`<textarea>`, `<input>`, checkboxes, radio buttons etc.)
-- HTML that can display all data *for a particular authenticated user*. Note that this is different from the last assignnment, which required the display of all data in memory on the server.
-
-Note that it might make sense to have two pages for this assignment, one that handles login / authentication, and one that contains the rest of your application.
-For example, when visiting the home page for the assignment, users could be presented with a login form. After submitting the login form, if the login is 
-successful, they are taken to the main application. If they fail, they are sent back to the login to try again. For this assignment, it is acceptable to simply create 
-new user accounts upon login if none exist, however, you must alert your users to this fact.  
-
-CSS:  
-- CSS styling should primarily be provided by your chosen template/framework. 
-Oftentimes a great deal of care has been put into designing CSS templates; 
-don't override their stylesheets unless you are extremely confident in your graphic design capabilities. 
-The idea is to use CSS templates that give you a professional looking design aesthetic without requiring you to be a graphic designer yourself.
-
-JavaScript:  
-- At minimum, a small amount of front-end JavaScript to get / fetch data from the server. 
-See the [previous assignment](https://github.com/cs-4241-23/shortstack) for reference.
-
-Node.js:  
-- A server using Express and a persistent database (mongodb).
-
-General:  
-- Your site should achieve at least 90% on the `Performance`, `Best Practices`, `Accessibility`, and `SEO` tests 
-using Google [Lighthouse](https://developers.google.com/web/tools/lighthouse) (don't worry about the PWA test, and don't worry about scores for mobile devices).
-Test early and often so that fixing problems doesn't lead to suffering at the end of the assignment. 
-
-Deliverables
----
-
-Do the following to complete this assignment:
-
-1. Implement your project with the above requirements. I'd begin by converting your A2 assignment. First, change the server to use express. Then, modify the server to use mongodb instead of storing data locally. Last but not least, implement user accounts and login. User accounts and login is often the hardest part of this assignment, so budget your time accordingly.
-2. If you developed your project locally, deploy your project to Glitch (unless completing the alternative server technical acheivement described below), and fill in the appropriate fields in your package.json file.
-3. Test your project to make sure that when someone goes to your main page on Glitch (or an alternative server), it displays correctly.
-4. Ensure that your project has the proper naming scheme `a3-yourfirstname-yourlastname` so we can find it.
-5. Fork this repository and modify the README to the specifications below.
-6. Create and submit a Pull Request to the original repo. Name the pull request using the following template: `a3-firstname-lastname`.
-
-Acheivements
----
-
-Below are suggested technical and design achievements. You can use these to help boost your grade up to an A and customize the 
-assignment to your personal interests, for a maximum twenty additional points and a maximum grade of a 100%. 
-These are recommended acheivements, but feel free to create/implement your own... just make sure you thoroughly describe what you did in your README, 
-why it was challenging, and how many points you think the achievement should be worth. 
-ALL ACHIEVEMENTS MUST BE DESCRIBED IN YOUR README IN ORDER TO GET CREDIT FOR THEM.
-
-*Technical*
-- (10 points) Implement OAuth authentication, perhaps with a library like [passport.js](http://www.passportjs.org/). 
-*You must either use Github authenticaion or provide a username/password to access a dummy account*. 
-Course staff cannot be expected, for example, to have a personal Facebook, Google, or Twitter account to use when grading this assignment. 
-Please contact the course staff if you have any questions about this. THIS IS THE HARDEST ACHEIVEMENT OFFERED IN WEBWARE. You have been warned!  
-- (5 points) Instead of Glitch, host your site on a different service like [Heroku](https://www.heroku.com) or [Digital Ocean](https://www.digitalocean.com). Make sure to describe this a bit in your README. What was better about using the service you chose as compared to Glitch? What (if anything) was worse? 
-- (5 points) Get 100% (not 98%, not 99%, but 100%) in all four lighthouse tests required for this assignment.  
-
-*Design/UX*
-- (10 points) Make your site accessible using the [resources and hints available from the W3C](https://www.w3.org/WAI/), Implement/follow twelve tips from their [tips for writing](https://www.w3.org/WAI/tips/writing/), [tips for designing](https://www.w3.org/WAI/tips/designing/), and [tips for development](https://www.w3.org/WAI/tips/developing/). *Note that all twelve must require active work on your part*. 
-For example, even though your page will most likely not have a captcha, you don't get this as one of your twelve tips to follow because you're effectively 
-getting it "for free" without having to actively change anything about your site. 
-Contact the course staff if you have any questions about what qualifies and doesn't qualify in this regard. 
-List each tip that you followed and describe what you did to follow it in your site.
-- (5 points) Describe how your site uses the CRAP principles in the Non-Designer's Design Book readings. 
-Which element received the most emphasis (contrast) on each page? 
-How did you use proximity to organize the visual information on your page? 
-What design elements (colors, fonts, layouts, etc.) did you use repeatedly throughout your site? 
-How did you use alignment to organize information and/or increase contrast for particular elements. 
-Write a paragraph of at least 125 words *for each of four principles* (four paragraphs, 500 words in total). 
-
-Sample Readme (delete the above when you're ready to submit, and modify the below so with your links and descriptions)
----
-
-## Your Web Application Title
-
-your glitch (or alternative server) link e.g. http://a3-charlie-roberts.glitch.me
+http://a3-sophia-silkaitis.glitch.me
 
 Include a very brief summary of your project here. Images are encouraged, along with concise, high-level text. Be sure to include:
 
-- the goal of the application
-- challenges you faced in realizing the application
-- what authentication strategy you chose to use and why (choosing one because it seemed the easiest to implement is perfectly acceptable)
-- what CSS framework you used and why
-  - include any modifications to the CSS framework you made via custom CSS you authored
-- the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for *one* (and one alone) middleware please 
-add a little more detail about what it does.
+- the goal of my application was to have a user sign in to view a form to request an extension, and only be able to see their form submissions.
+- I had a lot of challenges in this application. Most of them included my backend and issues with mongodb, as well as troubles inputting buttons and ensuring the functionality of my site.
+- the authentication strategy I chose was just to have the user input their username and password in the database when they create an account, and then have the database check if the username was in the database, and if so what the password associated with it was. i chose this method since it seemed the easiest and most intuitive for me to implement.
+- I used bootstrap as when I looked it up it was one of the most popular css frameworks and i thought it would be valuable to learn. I did not put in any custom css.
+- Middleware packages:
+  1. app.use (login)- checks if the user is logged in during the session and if not redirects back to the log in page.
+  2. app.post(login) - authenticates the user and connects to database as they try to sign in to see if their user/pass match the database. if the user account does not exist, adds an account in the database and logs them in
+  3. submit - adds the user entry to the database and returns all entries associated with the logged in user
+  4. delete - removes the selected entry from the database and returns all entries associated with the logged in user
+  5. modify - modifies the selected entry in the database and returns all entries associated with the logged in user.
+     the five Express middleware packages you used and a short (one sentence) summary of what each one does. If you use a custom function for _one_ (and one alone) middleware please
+     add a little more detail about what it does.
 
 ## Technical Achievements
-- **Tech Achievement 1**: I used OAuth authentication via the GitHub strategy
+
+- **Tech Achievement 1**: I got 100% in all lighthouse tests for each page.
+  Screenshot 2023-09-30 at 11.32.31 AM
+  Screenshot 2023-09-30 at 11.34.30 AM
 
 ### Design/Evaluation Achievements
-- **Design Achievement 1**: I followed the following tips from the W3C Web Accessibility Initiative...
+
+TWELVE INITIATIVES I INPUTTED:
+
+Tips for Writing:
+
+1. Provided informative, unique page titles
+   - "Log-In Page", "Extension Form"
+2. Use headings to convey meaning and structur
+   - used headings for login to convey explanation for log-in and provide more info
+3. Provide clear instructions
+   - used help text for email for input requirements
+
+Tips for Design: 
+1. Provide sufficient contrast
+  - input dark button outline instead of former light grey that blended into background for both buttons 
+2. Don't use color alone to convey information
+  -added asterisk + red color for required fields in form 
+3. Ensure that form elements include clearly associated labels
+  - every form input has a clear associated label 
+4. Ensure that interactive elements are easy to identify
+ - made the submit buttons a different background color from input areas to clearly distinguish between the two. chose black as the background color for buttons to make it clear that it was submit
+
+Tips for Accessibility: 
+1. associate a label with every form control
+  - similar to #6, every form control element has a label 
+2. Help users avoid and correct mistakes
+  - input help text for date to avoid confusion about negative/past due assignments 
+3. Identify page language
+  - includes html lang= en on each page 
+4. Use markup to convey meaning and structure
+  - uses aside tage for login screen to properly structure the message about creating a new account
+5. Reflect the reading order in the code
+  - the submit buttons are at the bottom to properly show the order. the "sort by priority button" is also only shown when submitted and therefore only in the render function, as well as shows up at the beginning of the code to show that that button is shown before all other code.
