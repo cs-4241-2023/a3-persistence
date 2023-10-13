@@ -1,15 +1,7 @@
-// FRONT-END (CLIENT) JAVASCRIPT HERE
-
-
-let idNum = 1;
+let idNum = 0;
 
 const submit = async function( event ) {
 
-
-  // stop form submission from trying to load
-  // a new .html page for displaying results...
-  // this was the original browser behavior and still
-  // remains to this day
   event.preventDefault() // Prevents default browser behavior
    //add more fields to your json based on your form 
     const showName = document.querySelector( '#showName' )
@@ -20,7 +12,6 @@ const submit = async function( event ) {
                   relYear: relYear.value,
                   showGenre: showGenre.value,
                   id: idNum},
-        idNum++;
         body = JSON.stringify( json ) // converts json to string 
         
         
@@ -30,36 +21,45 @@ const submit = async function( event ) {
     headers: { 'Content-Type': 'application/json' },
     body
   })
-    
-  let newData = await response.json() //wait until response
-  console.log(newData)
+  getData()
+}
 
-  const table = document.querySelector("table") // Will find the FIRST table element in html.
-  const tableHeader = document.querySelector("th") // Will find the FIRST th element in html.
-  
-  table.innerHTML = '';
-  
-  i = 0;
-  newData.forEach(item => {
-    
+const deleteARow = async function(row){
 
-      debugger;
-      const editBtn =  document.createElement("BUTTON")
+  const body = { id: row };
+
+  const response = await fetch( '/delete', {
+    method:'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify( body )
+  }
+  )
+  getData()
+}
+
+const displayData = function(data){
+  tbody = document.getElementById('tableBody')
+  
+  tbody.innerHTML = '';
+
+  data.forEach(item => {
+
+
+      const editBtn =  document.createElement("button")
       editBtn.innerHTML = "Edit";
 
-      const deleteBtn =  document.createElement("BUTTON")
+      const deleteBtn =  document.createElement("button")
       deleteBtn.innerHTML = "Delete";
+
       deleteBtn.class = "delete";
-      deleteBtn.id = i;
-      deleteBtn.onclick = ()=> deleteARow(deleteBtn.id)
+      deleteBtn.id = data.id;
+      deleteBtn.onclick = () => deleteARow(deleteBtn.id)
 
       // Relevance Section:
       let curYear = new Date().getFullYear()
       let relQuote = relevanceByYear(curYear, item.relYear)
-      console.log("The show " + item.showName + " was made " + (curYear - item.relYear) + " years ago." + relQuote)
 
       const tr = document.createElement('tr')
-      console.log(item.idNum)
       const td1 = document.createElement('td')
       const td2 = document.createElement('td')
       const td3 = document.createElement('td')
@@ -69,6 +69,9 @@ const submit = async function( event ) {
       td2.innerHTML = item.relYear
       td3.innerHTML = item.showGenre
       td4.innerHTML = relQuote
+
+    idNum++
+
       td5.appendChild(editBtn)
       td5.appendChild(deleteBtn)
       tr.appendChild(td1)
@@ -76,29 +79,20 @@ const submit = async function( event ) {
       tr.appendChild(td3)
       tr.appendChild(td4)
       tr.appendChild(td5)
-      table.appendChild(tr)
-    i++
-//add a button to delete or modify your data
-//each button should have its own action listener
-//keep track of each entry by using an id
-// you might need that id to edit or delete an entry
+      tbody.appendChild(tr)
+})
+}
+
+const getData = async function(){
+  const response = await fetch( '/docs', {
+    method:'GET',
   })
-
+  let serverData = await response.json()
+  displayData(serverData)
 }
 
-const deleteARow = async function(row){
-  
-  document.getElementById("showsTable").deleteRow(row);
-  const body = { row }; // Taking the row number and turning it into an objet containing the row number.
+getData()
 
-  debugger;
-  const response = await fetch( '/delete', {
-    method:'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify( body )
-  }
-  )
-}
 
 function relevanceByYear(currentYear, yearOfRelease){
   let yearDiff = currentYear - yearOfRelease;
