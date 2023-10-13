@@ -25,7 +25,9 @@ const submit = async function( event ) {
 }
 
 const deleteARow = async function(row){
+  debugger;
 
+  console.log("WE DELETIN SOMETHING!")
   const body = { id: row };
 
   const response = await fetch( '/delete', {
@@ -52,7 +54,7 @@ const displayData = function(data){
       deleteBtn.innerHTML = "Delete";
 
       deleteBtn.class = "delete";
-      deleteBtn.id = data.id;
+      deleteBtn.id = item.id;
       deleteBtn.onclick = () => deleteARow(deleteBtn.id)
 
       // Relevance Section:

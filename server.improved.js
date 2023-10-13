@@ -33,7 +33,7 @@ server.post( '/submit', async (req,res) => {
 })
 
 server.post( '/delete', async (req,res) => {
-  const result = await collection.deleteOne({ id:req.body._id })
+  const result = await collection.deleteOne({ id:req.body.id })
   res.json( result )
 })
 
