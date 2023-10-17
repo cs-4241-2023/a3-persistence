@@ -1,7 +1,6 @@
 <h1>Simple Digital Library </h1>
 Aashi Mehta <br>
 https://a3-aashimehta.glitch.me <br>
-**Glitch was not loading my site when I uploaded my project but it worked locally so I'm not sure if this link will provide results**
 
 
 The goal of this application is for users to be able to sign in, track the books they've read, 
