@@ -18,5 +18,6 @@ Code: https://glitch.com/edit/#!/spiced-ajar-servant
     - None, time constraints/classes conflicting with office hours.
 - What CSS framework you used and why:
     - Bootstrap, simply because I saw it first.
+- Design Achievement 1: Followed CRAP design
 
 
